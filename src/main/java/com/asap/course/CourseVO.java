@@ -16,8 +16,8 @@ public class CourseVO implements Serializable {
 	private Integer sportTypeNo;
 	private String coachNo;
 
-	public CourseVO() {
-	}
+	public CourseVO(){}
+
 
 	public CourseVO(Integer courseNo, String courseName, Timestamp courseTime, Integer coursePplLimit,
 			String courseAddress, Integer coursePrice, String courseText, Byte[] courseImg, Integer sportTypeNo,
