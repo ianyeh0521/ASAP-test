@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface SiteDAO {
 
-	void add(Site site);
-	void update(Site site);
-	void insert(Site site);
+	void add(SiteVO site);
+	void update(SiteVO site);
+	void insert(SiteVO site);
 	void delete(int siteNo);
-	Site findByPK(Integer siteNo);
-	List<Site> getAll();
+	SiteVO findByPK(Integer siteNo);
+	List<SiteVO> getAll();
 }

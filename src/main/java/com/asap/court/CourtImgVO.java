@@ -2,16 +2,16 @@ package com.asap.court;
 
 import java.io.Serializable;
 
-public class CourtImg implements Serializable{
+public class CourtImgVO implements Serializable{
 
 	private Integer courtImgNo;
 	private Integer courtNo;
 	private Byte[] courtImg;
 	
-	public CourtImg() {
+	public CourtImgVO() {
 	}
 
-	public CourtImg(Integer courtImgNo, Integer courtNo, Byte[] courtImg) {
+	public CourtImgVO(Integer courtImgNo, Integer courtNo, Byte[] courtImg) {
 		super();
 		this.courtImgNo = courtImgNo;
 		this.courtNo = courtNo;

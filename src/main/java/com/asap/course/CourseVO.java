@@ -3,7 +3,7 @@ package com.asap.course;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Course implements Serializable {
+public class CourseVO implements Serializable {
 
 	private Integer courseNo;
 	private String courseName;
@@ -16,10 +16,10 @@ public class Course implements Serializable {
 	private Integer sportTypeNo;
 	private String coachNo;
 
-	public Course() {
+	public CourseVO() {
 	}
 
-	public Course(Integer courseNo, String courseName, Timestamp courseTime, Integer coursePplLimit,
+	public CourseVO(Integer courseNo, String courseName, Timestamp courseTime, Integer coursePplLimit,
 			String courseAddress, Integer coursePrice, String courseText, Byte[] courseImg, Integer sportTypeNo,
 			String coachNo) {
 		super();

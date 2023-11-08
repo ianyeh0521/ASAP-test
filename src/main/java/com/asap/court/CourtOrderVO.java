@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class CourtOrder implements Serializable{
+public class CourtOrderVO implements Serializable{
 
 	private Integer courtOrdNo;
 	private String mbrNo;
@@ -15,10 +15,10 @@ public class CourtOrder implements Serializable{
 	private Integer courtOrdTime;
 	private Integer totalPrice;
 	
-	public CourtOrder() {
+	public CourtOrderVO() {
 	}
 
-	public CourtOrder(Integer courtOrdNo, String mbrNo, Integer courtNo, Boolean courtOrdStat,
+	public CourtOrderVO(Integer courtOrdNo, String mbrNo, Integer courtNo, Boolean courtOrdStat,
 			Timestamp courtOrdCrtTime, Date courtOrdDate, Integer courtOrdTime, Integer totalPrice) {
 		super();
 		this.courtOrdNo = courtOrdNo;

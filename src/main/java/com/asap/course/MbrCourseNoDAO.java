@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface MbrCourseNoDAO {
 
-	void add(MbrCourseNo mbrCourseNo);
-	void update(MbrCourseNo mbrCourseNo);
-	void insert(MbrCourseNo mbrCourseNo);
+	void add(MbrCourseNoVO mbrCourseNo);
+	void update(MbrCourseNoVO mbrCourseNo);
+	void insert(MbrCourseNoVO mbrCourseNo);
 	void delete(int mbrCourseNo);
-	MbrCourseNo findByPK(Integer mbrCourseNo);
-	List<MbrCourseNo> getAll();
+	MbrCourseNoVO findByPK(Integer mbrCourseNo);
+	List<MbrCourseNoVO> getAll();
 }

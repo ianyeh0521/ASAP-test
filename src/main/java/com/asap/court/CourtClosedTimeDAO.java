@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface CourtClosedTimeDAO {
 
-	void add(CourtClosedTime courtclosedtime);
-	void update(CourtClosedTime courtclosedtime);
-	void insert(CourtClosedTime courtclosedtime);
+	void add(CourtClosedTimeVO courtclosedtime);
+	void update(CourtClosedTimeVO courtclosedtime);
+	void insert(CourtClosedTimeVO courtclosedtime);
 	void delete(int courtClosedTimeNo);
-	CourtClosedTime findByPK(Integer courtClosedTimeNo);
-	List<CourtClosedTime> getAll();
+	CourtClosedTimeVO findByPK(Integer courtClosedTimeNo);
+	List<CourtClosedTimeVO> getAll();
 }

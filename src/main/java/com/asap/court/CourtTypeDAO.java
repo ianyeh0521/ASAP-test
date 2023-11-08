@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface CourtTypeDAO {
 
-	void add(CourtType courttype);
-	void update(CourtType courttype);
-	void insert(CourtType courttype);
+	void add(CourtTypeVO courttype);
+	void update(CourtTypeVO courttype);
+	void insert(CourtTypeVO courttype);
 	void delete(int courtTypeNo);
-	CourtType findByPK(Integer courtTypeNo);
-	List<CourtType> getAll();
+	CourtTypeVO findByPK(Integer courtTypeNo);
+	List<CourtTypeVO> getAll();
 }

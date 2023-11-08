@@ -2,16 +2,16 @@ package com.asap.court;
 
 import java.io.Serializable;
 
-public class CourtSaveList implements Serializable{
+public class CourtSaveListVO implements Serializable{
 
 	private Integer courtSaveNo;
 	private String mbrNo;
 	private Integer courtNo;
 	
-	public CourtSaveList() {
+	public CourtSaveListVO() {
 	}
 
-	public CourtSaveList(Integer courtSaveNo, String mbrNo, Integer courtNo) {
+	public CourtSaveListVO(Integer courtSaveNo, String mbrNo, Integer courtNo) {
 		super();
 		this.courtSaveNo = courtSaveNo;
 		this.mbrNo = mbrNo;
