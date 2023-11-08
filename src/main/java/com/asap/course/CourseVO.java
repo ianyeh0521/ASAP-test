@@ -115,5 +115,5 @@ public class CourseVO implements Serializable {
 		this.coachNo = coachNo;
 	}
 
-	
+
 }
