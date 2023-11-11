@@ -3,17 +3,17 @@ package com.asap.court;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class CourtClosedTime implements Serializable {
+public class CourtClosedTimeVO implements Serializable {
 
 	private Integer courtClosedTimeNo;
 	private Integer courtNo;
 	private Date courtClosedDate;
 	private Integer courtClosedTime;
 	
-	public CourtClosedTime() {
+	public CourtClosedTimeVO() {
 	}
 
-	public CourtClosedTime(Integer courtClosedTimeNo, Integer courtNo, Date courtClosedDate,
+	public CourtClosedTimeVO(Integer courtClosedTimeNo, Integer courtNo, Date courtClosedDate,
 			Integer courtClosedTime) {
 		super();
 		this.courtClosedTimeNo = courtClosedTimeNo;

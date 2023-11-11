@@ -3,7 +3,7 @@ package com.asap.course;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class MbrCourseNo implements Serializable{
+public class MbrCourseNoVO implements Serializable{
 
 	private Integer mbrCourseNo;
 	private Integer courseNo;
@@ -12,10 +12,10 @@ public class MbrCourseNo implements Serializable{
 	private Boolean mbrCourseStat;
 	private String coachNo;
 	
-	public MbrCourseNo() {
+	public MbrCourseNoVO() {
 	}
 
-	public MbrCourseNo(Integer mbrCourseNo, Integer courseNo, String mbrNo, Timestamp mbrCourseTime,
+	public MbrCourseNoVO(Integer mbrCourseNo, Integer courseNo, String mbrNo, Timestamp mbrCourseTime,
 			Boolean mbrCourseStat, String coachNo) {
 		super();
 		this.mbrCourseNo = mbrCourseNo;

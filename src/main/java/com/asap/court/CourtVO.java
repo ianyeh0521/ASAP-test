@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class Court implements Serializable {
+public class CourtVO implements Serializable {
 	
 	private Integer courtNo;
 	private String courtName;
@@ -20,10 +20,10 @@ public class Court implements Serializable {
 	private Timestamp courtCrtTime;
 	private Boolean courtStat;
 
-	public Court() {
+	public CourtVO() {
 	}
 
-	public Court(Integer courtNo, String courtName, Integer courtTypeNo, Boolean indoor, String courtAddress,
+	public CourtVO(Integer courtNo, String courtName, Integer courtTypeNo, Boolean indoor, String courtAddress,
 			Integer siteNo, BigDecimal courtLong, BigDecimal courtLat, String courtText, Integer courtPplLimit,
 			Integer courtPrice, Timestamp courtCrtTime, Boolean courtStat) {
 		super();

@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface CourseDAO {
 
-	void add(Course course);
-	void update(Course course);
-	void insert(Course course);
+	void add(CourseVO course);
+	void update(CourseVO course);
+	void insert(CourseVO course);
 	void delete(int courseNo);
-	Course findByPK(Integer courseNo);
-	List<Course> getAll();
+	CourseVO findByPK(Integer courseNo);
+	List<CourseVO> getAll();
 }

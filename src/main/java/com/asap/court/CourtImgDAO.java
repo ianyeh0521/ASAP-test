@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface CourtImgDAO {
 
-	void add(CourtImg courtimg);
-	void update(CourtImg courtimg);
-	void insert(CourtImg courtimg);
+	void add(CourtImgVO courtimg);
+	void update(CourtImgVO courtimg);
+	void insert(CourtImgVO courtimg);
 	void delete(int courtImgNo);
-	CourtImg findByPK(Integer courtImgNo);
-	List<CourtImg> getAll();
+	CourtImgVO findByPK(Integer courtImgNo);
+	List<CourtImgVO> getAll();
 }

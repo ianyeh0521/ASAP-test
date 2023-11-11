@@ -2,15 +2,15 @@ package com.asap.court;
 
 import java.io.Serializable;
 
-public class Site implements Serializable{
+public class SiteVO implements Serializable{
 
 	private Integer siteNo;
 	private String regions;
 	
-	public Site() {
+	public SiteVO() {
 	}
 	
-	public Site(Integer siteNo, String regions) {
+	public SiteVO(Integer siteNo, String regions) {
 		super();
 		this.siteNo = siteNo;
 		this.regions = regions;

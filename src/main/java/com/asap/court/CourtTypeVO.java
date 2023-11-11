@@ -2,15 +2,15 @@ package com.asap.court;
 
 import java.io.Serializable;
 
-public class CourtType implements Serializable {
+public class CourtTypeVO implements Serializable {
 
 	private Integer courtTypeNo;
 	private String courtType;
 	
-	public CourtType() {
+	public CourtTypeVO() {
 	}
 
-	public CourtType(Integer courtTypeNo, String courtType) {
+	public CourtTypeVO(Integer courtTypeNo, String courtType) {
 		super();
 		this.courtTypeNo = courtTypeNo;
 		this.courtType = courtType;
