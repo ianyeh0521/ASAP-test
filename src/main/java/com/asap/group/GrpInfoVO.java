@@ -5,31 +5,31 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 
-
-public class GrpInfoVO implements Serializable{
-	private static final long serialVersionUID=1L;
+public class GrpInfoVO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Integer grpNo;
 	private String orgMbrNo;
 	private Integer sportTypeNo;
 	private String grpName;
 	private Date grpDate;
 	private Time grpStartTime;
-	private Time grpEndTime; 
+	private Time grpEndTime;
 	private String grpAddress;
 	private Integer grpPplLimit;
 	private Integer grpPplMin;
-	private Timestamp grpSignStrTime; 
-	private Timestamp grpSignEndTime; 
+	private Timestamp grpSignStrTime;
+	private Timestamp grpSignEndTime;
 	private String grpNote;
 	private byte[] grpImg;
-	
+	private Integer grpStat;
+
 	public GrpInfoVO() {
 		super();
 	}
-	
-	public GrpInfoVO(Integer grpNo, String orgMbrNo, Integer sportTypeNo, String grpName, Date grpDate, Time grpStartTime,
-			Time grpEndTime, String grpAddress, Integer grpPplLimit, Integer grpPplMin, Timestamp grpSignStrTime,
-			Timestamp grpSignEndTime, String grpNote, byte[] grpImg) {
+
+	public GrpInfoVO(Integer grpNo, String orgMbrNo, Integer sportTypeNo, String grpName, Date grpDate,
+			Time grpStartTime, Time grpEndTime, String grpAddress, Integer grpPplLimit, Integer grpPplMin,
+			Timestamp grpSignStrTime, Timestamp grpSignEndTime, String grpNote, byte[] grpImg,Integer grpStat) {
 		super();
 		this.grpNo = grpNo;
 		this.orgMbrNo = orgMbrNo;
@@ -45,6 +45,7 @@ public class GrpInfoVO implements Serializable{
 		this.grpSignEndTime = grpSignEndTime;
 		this.grpNote = grpNote;
 		this.grpImg = grpImg;
+		this.grpStat=grpStat;
 	}
 
 	public Integer getGrpNo() {
@@ -159,6 +160,13 @@ public class GrpInfoVO implements Serializable{
 		this.grpImg = grpImg;
 	}
 	
+	public int getGrpStat() {
+		return grpStat;
+	}
+
+	public void setGrpImg(Integer grpStat) {
+		this.grpStat = grpStat;
+	}
 	
-	
+
 }
