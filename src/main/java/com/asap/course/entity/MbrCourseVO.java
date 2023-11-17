@@ -1,21 +1,41 @@
-package com.asap.course;
-
-import java.io.Serializable;
+package com.asap.course.entity;
 import java.sql.Timestamp;
 
-public class MbrCourseNoVO implements Serializable{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="MbrCourse")
+public class MbrCourseVO{
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "MbrCourseNo", updatable = false)
 	private Integer mbrCourseNo;
+	
+	@Column(name = "CourseNo")
 	private Integer courseNo;
+	
+	@Column(name = "MbrNo")
 	private String mbrNo;
+	
+	@Column(name = "MbrCourseTime")
 	private Timestamp mbrCourseTime;
+	
+	@Column(name = "MbrCourseStat")
 	private Boolean mbrCourseStat;
+	
+	@Column(name = "CoachNo")
 	private String coachNo;
 	
-	public MbrCourseNoVO() {
+	public MbrCourseVO() {
 	}
 
-	public MbrCourseNoVO(Integer mbrCourseNo, Integer courseNo, String mbrNo, Timestamp mbrCourseTime,
+	public MbrCourseVO(Integer mbrCourseNo, Integer courseNo, String mbrNo, Timestamp mbrCourseTime,
 			Boolean mbrCourseStat, String coachNo) {
 		super();
 		this.mbrCourseNo = mbrCourseNo;
@@ -72,6 +92,13 @@ public class MbrCourseNoVO implements Serializable{
 
 	public void setCoachNo(String coachNo) {
 		this.coachNo = coachNo;
+	}
+
+	@Override
+	public String toString() {
+		return "MbrCourseVO [mbrCourseNo=" + mbrCourseNo + ", courseNo=" + courseNo + ", mbrNo=" + mbrNo
+				+ ", mbrCourseTime=" + mbrCourseTime + ", mbrCourseStat=" + mbrCourseStat + ", coachNo=" + coachNo
+				+ "]";
 	}
 	
 	
