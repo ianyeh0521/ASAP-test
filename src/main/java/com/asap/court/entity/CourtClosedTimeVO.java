@@ -1,13 +1,31 @@
-package com.asap.court;
+package com.asap.court.entity;
 
-import java.io.Serializable;
+
 import java.sql.Date;
 
-public class CourtClosedTimeVO implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="CourtClosedTime")
+public class CourtClosedTimeVO{
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "CourtClosedTimeNo", updatable = false)
 	private Integer courtClosedTimeNo;
+	
+	@Column(name = "CourtNo")
 	private Integer courtNo;
+	
+	@Column(name = "CourtClosedDate")
 	private Date courtClosedDate;
+	
+	@Column(name = "CourtClosedTime")
 	private Integer courtClosedTime;
 	
 	public CourtClosedTimeVO() {
@@ -52,6 +70,12 @@ public class CourtClosedTimeVO implements Serializable {
 
 	public void setCourtClosedTime(Integer courtClosedTime) {
 		this.courtClosedTime = courtClosedTime;
+	}
+
+	@Override
+	public String toString() {
+		return "CourtClosedTimeVO [courtClosedTimeNo=" + courtClosedTimeNo + ", courtNo=" + courtNo
+				+ ", courtClosedDate=" + courtClosedDate + ", courtClosedTime=" + courtClosedTime + "]";
 	}
 	
 	
