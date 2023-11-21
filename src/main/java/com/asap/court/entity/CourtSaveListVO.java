@@ -1,11 +1,25 @@
-package com.asap.court;
+package com.asap.court.entity;
 
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class CourtSaveListVO implements Serializable{
+@Entity
+@Table(name="CourtSaveList")
+public class CourtSaveListVO{
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "CourtSaveNo", updatable = false)
 	private Integer courtSaveNo;
+	
+	@Column(name = "MbrNo")
 	private String mbrNo;
+	
+	@Column(name = "CourtNo")
 	private Integer courtNo;
 	
 	public CourtSaveListVO() {
@@ -40,6 +54,11 @@ public class CourtSaveListVO implements Serializable{
 
 	public void setCourtNo(Integer courtNo) {
 		this.courtNo = courtNo;
+	}
+
+	@Override
+	public String toString() {
+		return "CourtSaveListVO [courtSaveNo=" + courtSaveNo + ", mbrNo=" + mbrNo + ", courtNo=" + courtNo + "]";
 	}
 	
 	

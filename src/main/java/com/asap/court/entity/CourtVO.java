@@ -1,23 +1,59 @@
-package com.asap.court;
+package com.asap.court.entity;
 
-import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class CourtVO implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Court")
+public class CourtVO {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "CourtNo", updatable = false)
 	private Integer courtNo;
+	
+	@Column(name = "CourtName")
 	private String courtName;
+	
+	@Column(name = "CourtTypeNo")
 	private Integer courtTypeNo;
+	
+	@Column(name = "Indoor")
 	private Boolean indoor;
+	
+	@Column(name = "CourtAddress")
 	private String courtAddress;
+	
+	@Column(name = "SiteNo")
 	private Integer siteNo;
+	
+	@Column(name = "CourtLong")
 	private BigDecimal courtLong;
+	
+	@Column(name = "CourtLat")
 	private BigDecimal courtLat;
+	
+	@Column(name = "CourtText")
 	private String courtText;
+	
+	@Column(name = "CourtPplLimit")
 	private Integer courtPplLimit;
+	
+	@Column(name = "CourtPrice")
 	private Integer courtPrice;
+	
+	@Column(name = "CourtCrtTime")
 	private Timestamp courtCrtTime;
+	
+	@Column(name = "CourtStat")
 	private Boolean courtStat;
 
 	public CourtVO() {
@@ -146,6 +182,14 @@ public class CourtVO implements Serializable {
 		this.courtStat = courtStat;
 	}
 
+	@Override
+	public String toString() {
+		return "CourtVO [courtNo=" + courtNo + ", courtName=" + courtName + ", courtTypeNo=" + courtTypeNo + ", indoor="
+				+ indoor + ", courtAddress=" + courtAddress + ", siteNo=" + siteNo + ", courtLong=" + courtLong
+				+ ", courtLat=" + courtLat + ", courtText=" + courtText + ", courtPplLimit=" + courtPplLimit
+				+ ", courtPrice=" + courtPrice + ", courtCrtTime=" + courtCrtTime + ", courtStat=" + courtStat + "]";
+	}
 
+	
 
 }

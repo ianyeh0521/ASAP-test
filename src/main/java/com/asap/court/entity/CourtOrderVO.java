@@ -1,18 +1,43 @@
-package com.asap.court;
+package com.asap.court.entity;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class CourtOrderVO implements Serializable{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="CourtOrder")
+public class CourtOrderVO{
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "CourtOrdNo", updatable = false)
 	private Integer courtOrdNo;
+	
+	@Column(name = "MbrNo")
 	private String mbrNo;
+	
+	@Column(name = "CourtNo")
 	private Integer courtNo;
+	
+	@Column(name = "CourtOrdStat")
 	private Boolean courtOrdStat;
+	
+	@Column(name = "CourtOrdCrtTime")
 	private Timestamp courtOrdCrtTime;
+	
+	@Column(name = "CourtOrdDate")
 	private Date courtOrdDate;
+	
+	@Column(name = "CourtOrdTime")
 	private Integer courtOrdTime;
+	
+	@Column(name = "TotalPrice")
 	private Integer totalPrice;
 	
 	public CourtOrderVO() {
@@ -93,6 +118,13 @@ public class CourtOrderVO implements Serializable{
 
 	public void setTotalPrice(Integer totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	@Override
+	public String toString() {
+		return "CourtOrderVO [courtOrdNo=" + courtOrdNo + ", mbrNo=" + mbrNo + ", courtNo=" + courtNo
+				+ ", courtOrdStat=" + courtOrdStat + ", courtOrdCrtTime=" + courtOrdCrtTime + ", courtOrdDate="
+				+ courtOrdDate + ", courtOrdTime=" + courtOrdTime + ", totalPrice=" + totalPrice + "]";
 	}
 	
 	
