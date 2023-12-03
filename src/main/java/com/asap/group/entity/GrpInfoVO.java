@@ -1,35 +1,61 @@
-package com.asap.group;
+package com.asap.group.entity;
 
-import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
 
-public class GrpInfoVO implements Serializable {
-	private static final long serialVersionUID = 1L;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "GrpInfo")
+public class GrpInfoVO {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "GrpNo", updatable = false)
 	private Integer grpNo;
+	@Column(name = "OrgMbrNo")
 	private String orgMbrNo;
+	@Column(name = "SportTypeNo")
 	private Integer sportTypeNo;
+	@Column(name = "GrpName")
 	private String grpName;
+	@Column(name = "GrpDate")
 	private Date grpDate;
+	@Column(name = "GrpStartTime")
 	private Time grpStartTime;
+	@Column(name = "GrpEndTime")
 	private Time grpEndTime;
+	@Column(name = "GrpAddress")
 	private String grpAddress;
+	@Column(name = "GrpPplLimit")
 	private Integer grpPplLimit;
+	@Column(name = "GrpPplMin")
 	private Integer grpPplMin;
+	@Column(name = "GrpSignStrTime")
 	private Timestamp grpSignStrTime;
+	@Column(name = "GrpSignEndTime")
 	private Timestamp grpSignEndTime;
+	@Column(name = "GrpNote")
 	private String grpNote;
+
+	@Column(name = "GrpImg", columnDefinition = "longblob")
 	private byte[] grpImg;
+	@Column(name = "GrpStat")
 	private Integer grpStat;
 
 	public GrpInfoVO() {
-		super();
+
 	}
 
 	public GrpInfoVO(Integer grpNo, String orgMbrNo, Integer sportTypeNo, String grpName, Date grpDate,
 			Time grpStartTime, Time grpEndTime, String grpAddress, Integer grpPplLimit, Integer grpPplMin,
-			Timestamp grpSignStrTime, Timestamp grpSignEndTime, String grpNote, byte[] grpImg,Integer grpStat) {
+			Timestamp grpSignStrTime, Timestamp grpSignEndTime, String grpNote, byte[] grpImg, Integer grpStat) {
 		super();
 		this.grpNo = grpNo;
 		this.orgMbrNo = orgMbrNo;
@@ -45,7 +71,7 @@ public class GrpInfoVO implements Serializable {
 		this.grpSignEndTime = grpSignEndTime;
 		this.grpNote = grpNote;
 		this.grpImg = grpImg;
-		this.grpStat=grpStat;
+		this.grpStat = grpStat;
 	}
 
 	public Integer getGrpNo() {
@@ -159,14 +185,22 @@ public class GrpInfoVO implements Serializable {
 	public void setGrpImg(byte[] grpImg) {
 		this.grpImg = grpImg;
 	}
-	
+
 	public int getGrpStat() {
 		return grpStat;
 	}
 
-	public void setGrpImg(Integer grpStat) {
+	public void setGrpStat(Integer grpStat) {
 		this.grpStat = grpStat;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "GrpInfoVO [grpNo=" + grpNo + ", orgMbrNo=" + orgMbrNo + ", sportTypeNo=" + sportTypeNo + ", grpName="
+				+ grpName + ", grpDate=" + grpDate + ", grpStartTime=" + grpStartTime + ", grpEndTime=" + grpEndTime
+				+ ", grpAddress=" + grpAddress + ", grpPplLimit=" + grpPplLimit + ", grpPplMin=" + grpPplMin
+				+ ", grpSignStrTime=" + grpSignStrTime + ", grpSignEndTime=" + grpSignEndTime + ", grpNote=" + grpNote
+				+ ", grpImg=" + Arrays.toString(grpImg) + ", grpStat=" + grpStat + "]";
+	}
 
 }
