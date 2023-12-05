@@ -6,21 +6,21 @@ import com.asap.course.entity.MbrCourseVO;
 
 public interface MbrCourseDAO_interface {
 
-	void update(MbrCourseVO mbrCourseVO);
-	void insert(MbrCourseVO mbrCourseVO);
-	void delete(Integer mbrCourseNo);
+	int update(MbrCourseVO mbrCourseVO);
+	int insert(MbrCourseVO mbrCourseVO);
+	int delete(Integer mbrCourseNo);
 	
 	// Find mbrCourseNo by PK
 	MbrCourseVO findByPK(Integer mbrCourseNo);
 	
 	// Find mbrCourseNo by course number
-	MbrCourseVO findByCourseNo(Integer courseNo);
+	List<MbrCourseVO> findByCourseNo(Integer courseNo);
 	
 	// Find mbrCourseNo by member number
-	MbrCourseVO findByMember(String mbrNo);
+	List<MbrCourseVO> findByMember(String mbrNo);
 	
 	// Find mbrCourseNo by coach number
-	MbrCourseVO findByCoach(String coachNo);
+	List<MbrCourseVO> findByCoach(String coachNo);
 	
 	List<MbrCourseVO> getAll();
 }
