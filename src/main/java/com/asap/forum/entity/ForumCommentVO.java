@@ -1,14 +1,41 @@
-package com.asap.forum;
+package com.asap.forum.entity;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+@Entity
+@Table(name="ForumComment")
 public class ForumCommentVO {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="CmtNo")
 	private Integer cmtNo;
+	
+	@Column(name="PostNo")
 	private Integer postNo;
+	
+	@Column(name="MbrNo")
 	private String  mbrNo;
+	
+	@Column(name="CmtText")
 	private String  cmtText;
+	
+	@CreationTimestamp
+	@Column(name="CmtCrtTime")
 	private Timestamp cmtCrtTime;
+	
+	@Column(name="CmtStatus")
 	private boolean cmtStatus;
+	
 	public ForumCommentVO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -59,5 +86,6 @@ public class ForumCommentVO {
 	public void setCmtStatus(boolean cmtStatus) {
 		this.cmtStatus = cmtStatus;
 	}
+	
 	
 }

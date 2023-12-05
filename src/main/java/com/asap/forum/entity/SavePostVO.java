@@ -1,9 +1,33 @@
-package com.asap.forum;
+package com.asap.forum.entity;
 
-public class SavePostVO {
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="SavePost")
+public class SavePostVO implements Serializable {
+	
+	@Override
+	public String toString() {
+		return "SavePostVO [sPNo=" + sPNo + ", postNo=" + postNo + ", mbrNo=" + mbrNo + "]";
+	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "SPNo", updatable = false)
 	private Integer sPNo;
+	
+	@Column(name="PostNo")
 	private Integer postNo;
+	
+	@Column(name="MbrNo")
 	private String mbrNo;
+	
 	public SavePostVO() {
 		super();
 		// TODO Auto-generated constructor stub

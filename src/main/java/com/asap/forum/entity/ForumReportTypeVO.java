@@ -1,7 +1,19 @@
-package com.asap.forum;
+package com.asap.forum.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="ForumReportType")
 public class ForumReportTypeVO {
+	
+	@Id
+	@Column(name="FRptTypeNo")
 	private Integer fRptTypeNo;
+	
+	@Column(name="FRptTypeName")
 	private String  fRptTypeName;
 	public ForumReportTypeVO() {
 		super();

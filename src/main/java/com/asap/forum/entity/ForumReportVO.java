@@ -1,17 +1,54 @@
-package com.asap.forum;
+package com.asap.forum.entity;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+
+@Entity
+@Table(name="ForumReport")
 public class ForumReportVO {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "fRptNo", updatable = false)
 	private Integer fRptNo;
+	
+	@Column(name = "PostNo")
 	private Integer postNo;
+	
+	@Column(name = "CmtNo")
 	private Integer cmtNo;
+	
+	@Column(name = "MbrNo")
 	private String  mbrNo;
+	
+	@Column(name = "FRptTypeNo")
 	private Integer fRptTypeNo;
+	
+	@Column(name = "FRptMsg")
 	private String  fRptMsg;
+	
+	@CreationTimestamp
+	@Column(name = "FRptTime")
 	private Timestamp  fRptTime;
-	private Integer backNo;
+	
+	@Column(name = "BackNo")
+	private String backNo;
+	
+	@Column(name = "FRptReply")
 	private String  fRptReply;
+	
+	@UpdateTimestamp
+	@Column(name = "FRptReplyTime")
 	private Timestamp  fRptReplyTime;
 	
 	public ForumReportVO() {
@@ -20,7 +57,7 @@ public class ForumReportVO {
 	}
 
 	public ForumReportVO(Integer fRptNo, Integer postNo, Integer cmtNo, String mbrNo, Integer fRptTypeNo,
-			String fRptMsg, Timestamp fRptTime, Integer backNo, String fRptReply, Timestamp fReplyTime) {
+			String fRptMsg, Timestamp fRptTime, String backNo, String fRptReply, Timestamp fReplyTime) {
 		super();
 		this.fRptNo = fRptNo;
 		this.postNo = postNo;
@@ -90,11 +127,11 @@ public class ForumReportVO {
 		this.fRptTime = fRptTime;
 	}
 
-	public Integer getBackNo() {
+	public String getBackNo() {
 		return backNo;
 	}
 
-	public void setBackNo(Integer backNo) {
+	public void setBackNo(String backNo) {
 		this.backNo = backNo;
 	}
 
