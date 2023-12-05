@@ -1,26 +1,64 @@
-package com.asap.forum;
+package com.asap.forum.entity;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
+
+
+@Entity
+@Table(name="Post")
 public class PostVO {
-	 private Integer postNo;
-	 private String  mbrNo;
-	 private String postTitle;
-	 private String postText;
-	 private Timestamp postCrtTime;
-	 private Integer postTypeNo;
-	 private Integer postViews;
-	 private boolean postStatus;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "PostNo", updatable = false)
+	private Integer postNo;
+	
+	@Column(name="MbrNo")
+	private String  mbrNo;
+	
+	@Column(name="PostTitle")
+	private String postTitle;
+	
+	@Column(name="PostText", columnDefinition = "longtext" )
+	private String postText;
+	
+	@CreationTimestamp
+	@Column(name="PostCrtTime")
+	private Timestamp postCrtTime;
+	
+	@Column(name="PostTypeNo")
+	private Integer postTypeNo;
+	
+	@Column(name="PostViews")
+	private Integer postViews;
+	
+	@Column(name="PostStatus")
+	private Integer postStatus;
 	
 	 
-	 public PostVO() {
+	 @Override
+	public String toString() {
+		return "PostVO [postNo=" + postNo + ", mbrNo=" + mbrNo + ", postTitle=" + postTitle + ", postText=" + postText
+				+ ", postCrtTime=" + postCrtTime + ", postTypeNo=" + postTypeNo + ", postViews=" + postViews
+				+ ", postStatus=" + postStatus + "]";
+	}
+
+
+	public PostVO() {
 		super();
 		
 	}
 
 
 	public PostVO(Integer postNo, String mbrNo, String postTitle, String postText, Timestamp postCrtTime,
-			Integer postTypeNo, Integer postViews, boolean postStatus) {
+			Integer postTypeNo, Integer postViews, Integer postStatus) {
 		super();
 		this.postNo = postNo;
 		this.mbrNo = mbrNo;
@@ -103,14 +141,20 @@ public class PostVO {
 	}
 
 
-	public boolean isPostStatus() {
+	public Integer getPostStatus() {
 		return postStatus;
 	}
 
 
-	public void setPostStatus(boolean postStatus) {
+	public void setPostStatus(Integer postStatus) {
 		this.postStatus = postStatus;
 	}
+
+
+
+
+
+
 	 
 	
 }

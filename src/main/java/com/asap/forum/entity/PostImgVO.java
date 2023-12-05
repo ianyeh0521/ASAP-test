@@ -1,8 +1,25 @@
-package com.asap.forum;
+package com.asap.forum.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="PostImg")
 public class PostImgVO {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "PostImgNo", updatable = false)
 	private Integer postImgNo;
+	
+	@Column(name ="PostNo")
 	private Integer postNo;
+	
+	@Column(name = "PostImg", columnDefinition = "longblob")
 	private byte[] postImg;
 	
 	public PostImgVO() {
