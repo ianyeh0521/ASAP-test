@@ -5,10 +5,17 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.asap.member.MemberVO;
 
 @Entity
 @Table(name="CourtOrder")
@@ -19,16 +26,19 @@ public class CourtOrderVO{
 	@Column(name = "CourtOrdNo", updatable = false)
 	private Integer courtOrdNo;
 	
-	@Column(name = "MbrNo")
-	private String mbrNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="MemberVO", referencedColumnName = "MbrNo")
+	private MemberVO memberVO;
 	
-	@Column(name = "CourtNo")
-	private Integer courtNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="CourtNo", referencedColumnName = "CourtNo")
+	private CourtVO courtVO;
 	
 	@Column(name = "CourtOrdStat")
 	private Boolean courtOrdStat;
 	
-	@Column(name = "CourtOrdCrtTime")
+	@Column(name = "CourtOrdCrtTime",  nullable = false, updatable = false)
+	@CreationTimestamp
 	private Timestamp courtOrdCrtTime;
 	
 	@Column(name = "CourtOrdDate")
@@ -43,18 +53,22 @@ public class CourtOrderVO{
 	public CourtOrderVO() {
 	}
 
-	public CourtOrderVO(Integer courtOrdNo, String mbrNo, Integer courtNo, Boolean courtOrdStat,
+
+
+	public CourtOrderVO(Integer courtOrdNo, MemberVO memberVO, CourtVO courtVO, Boolean courtOrdStat,
 			Timestamp courtOrdCrtTime, Date courtOrdDate, Integer courtOrdTime, Integer totalPrice) {
 		super();
 		this.courtOrdNo = courtOrdNo;
-		this.mbrNo = mbrNo;
-		this.courtNo = courtNo;
+		this.memberVO = memberVO;
+		this.courtVO = courtVO;
 		this.courtOrdStat = courtOrdStat;
 		this.courtOrdCrtTime = courtOrdCrtTime;
 		this.courtOrdDate = courtOrdDate;
 		this.courtOrdTime = courtOrdTime;
 		this.totalPrice = totalPrice;
 	}
+
+
 
 	public Integer getCourtOrdNo() {
 		return courtOrdNo;
@@ -64,21 +78,31 @@ public class CourtOrderVO{
 		this.courtOrdNo = courtOrdNo;
 	}
 
-	public String getMbrNo() {
-		return mbrNo;
+
+
+	public MemberVO getMemberVO() {
+		return memberVO;
 	}
 
-	public void setMbrNo(String mbrNo) {
-		this.mbrNo = mbrNo;
+
+
+	public void setMemberVO(MemberVO memberVO) {
+		this.memberVO = memberVO;
 	}
 
-	public Integer getCourtNo() {
-		return courtNo;
+
+
+	public CourtVO getCourtVO() {
+		return courtVO;
 	}
 
-	public void setCourtNo(Integer courtNo) {
-		this.courtNo = courtNo;
+
+
+	public void setCourtVO(CourtVO courtVO) {
+		this.courtVO = courtVO;
 	}
+
+
 
 	public Boolean getCourtOrdStat() {
 		return courtOrdStat;
@@ -120,12 +144,16 @@ public class CourtOrderVO{
 		this.totalPrice = totalPrice;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "CourtOrderVO [courtOrdNo=" + courtOrdNo + ", mbrNo=" + mbrNo + ", courtNo=" + courtNo
+		return "CourtOrderVO [courtOrdNo=" + courtOrdNo + ", memberVO=" + memberVO + ", courtVO=" + courtVO
 				+ ", courtOrdStat=" + courtOrdStat + ", courtOrdCrtTime=" + courtOrdCrtTime + ", courtOrdDate="
 				+ courtOrdDate + ", courtOrdTime=" + courtOrdTime + ", totalPrice=" + totalPrice + "]";
 	}
+
+
 	
 	
 }

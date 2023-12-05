@@ -5,9 +5,12 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,8 +22,9 @@ public class CourtClosedTimeVO{
 	@Column(name = "CourtClosedTimeNo", updatable = false)
 	private Integer courtClosedTimeNo;
 	
-	@Column(name = "CourtNo")
-	private Integer courtNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="CourtNo", referencedColumnName = "CourtNo")
+	private CourtVO courtVO;
 	
 	@Column(name = "CourtClosedDate")
 	private Date courtClosedDate;
@@ -31,14 +35,24 @@ public class CourtClosedTimeVO{
 	public CourtClosedTimeVO() {
 	}
 
-	public CourtClosedTimeVO(Integer courtClosedTimeNo, Integer courtNo, Date courtClosedDate,
+
+	public CourtClosedTimeVO(Integer courtClosedTimeNo, CourtVO courtVO, Date courtClosedDate,
 			Integer courtClosedTime) {
 		super();
 		this.courtClosedTimeNo = courtClosedTimeNo;
-		this.courtNo = courtNo;
+		this.courtVO = courtVO;
 		this.courtClosedDate = courtClosedDate;
 		this.courtClosedTime = courtClosedTime;
 	}
+
+
+	public CourtClosedTimeVO(CourtVO courtVO, Date courtClosedDate, Integer courtClosedTime) {
+		super();
+		this.courtVO = courtVO;
+		this.courtClosedDate = courtClosedDate;
+		this.courtClosedTime = courtClosedTime;
+	}
+
 
 	public Integer getCourtClosedTimeNo() {
 		return courtClosedTimeNo;
@@ -48,13 +62,16 @@ public class CourtClosedTimeVO{
 		this.courtClosedTimeNo = courtClosedTimeNo;
 	}
 
-	public Integer getCourtNo() {
-		return courtNo;
+
+	public CourtVO getCourtVO() {
+		return courtVO;
 	}
 
-	public void setCourtNo(Integer courtNo) {
-		this.courtNo = courtNo;
+
+	public void setCourtVO(CourtVO courtVO) {
+		this.courtVO = courtVO;
 	}
+
 
 	public Date getCourtClosedDate() {
 		return courtClosedDate;
@@ -72,13 +89,13 @@ public class CourtClosedTimeVO{
 		this.courtClosedTime = courtClosedTime;
 	}
 
+
 	@Override
 	public String toString() {
-		return "CourtClosedTimeVO [courtClosedTimeNo=" + courtClosedTimeNo + ", courtNo=" + courtNo
+		return "CourtClosedTimeVO [courtClosedTimeNo=" + courtClosedTimeNo + ", courtVO=" + courtVO
 				+ ", courtClosedDate=" + courtClosedDate + ", courtClosedTime=" + courtClosedTime + "]";
 	}
-	
-	
-	
+
+
 	
 }

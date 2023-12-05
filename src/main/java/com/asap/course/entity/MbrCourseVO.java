@@ -3,10 +3,16 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.asap.coach.CoachVO;
+import com.asap.member.MemberVO;
 
 @Entity
 @Table(name="MbrCourse")
@@ -17,11 +23,14 @@ public class MbrCourseVO{
 	@Column(name = "MbrCourseNo", updatable = false)
 	private Integer mbrCourseNo;
 	
-	@Column(name = "CourseNo")
-	private Integer courseNo;
 	
-	@Column(name = "MbrNo")
-	private String mbrNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="CourseVO", referencedColumnName = "CourseNo")
+	private CourseVO courseVO;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="MemberVO", referencedColumnName = "MbrNo")
+	private MemberVO memberVO;
 	
 	@Column(name = "MbrCourseTime")
 	private Timestamp mbrCourseTime;
@@ -29,22 +38,27 @@ public class MbrCourseVO{
 	@Column(name = "MbrCourseStat")
 	private Boolean mbrCourseStat;
 	
-	@Column(name = "CoachNo")
-	private String coachNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "coachNo", referencedColumnName = "coachNo")
+	private CoachVO coachVO;
 	
 	public MbrCourseVO() {
 	}
 
-	public MbrCourseVO(Integer mbrCourseNo, Integer courseNo, String mbrNo, Timestamp mbrCourseTime,
-			Boolean mbrCourseStat, String coachNo) {
+
+
+	public MbrCourseVO(Integer mbrCourseNo, CourseVO courseVO, MemberVO memberVO, Timestamp mbrCourseTime,
+			Boolean mbrCourseStat, CoachVO coachVO) {
 		super();
 		this.mbrCourseNo = mbrCourseNo;
-		this.courseNo = courseNo;
-		this.mbrNo = mbrNo;
+		this.courseVO = courseVO;
+		this.memberVO = memberVO;
 		this.mbrCourseTime = mbrCourseTime;
 		this.mbrCourseStat = mbrCourseStat;
-		this.coachNo = coachNo;
+		this.coachVO = coachVO;
 	}
+
+
 
 	public Integer getMbrCourseNo() {
 		return mbrCourseNo;
@@ -54,21 +68,6 @@ public class MbrCourseVO{
 		this.mbrCourseNo = mbrCourseNo;
 	}
 
-	public Integer getCourseNo() {
-		return courseNo;
-	}
-
-	public void setCourseNo(Integer courseNo) {
-		this.courseNo = courseNo;
-	}
-
-	public String getMbrNo() {
-		return mbrNo;
-	}
-
-	public void setMbrNo(String mbrNo) {
-		this.mbrNo = mbrNo;
-	}
 
 	public Timestamp getMbrCourseTime() {
 		return mbrCourseTime;
@@ -86,20 +85,54 @@ public class MbrCourseVO{
 		this.mbrCourseStat = mbrCourseStat;
 	}
 
-	public String getCoachNo() {
-		return coachNo;
+	
+
+	public CourseVO getCourseVO() {
+		return courseVO;
 	}
 
-	public void setCoachNo(String coachNo) {
-		this.coachNo = coachNo;
+
+
+	public void setCourseVO(CourseVO courseVO) {
+		this.courseVO = courseVO;
 	}
+
+
+
+	public MemberVO getMemberVO() {
+		return memberVO;
+	}
+
+
+
+	public void setMemberVO(MemberVO memberVO) {
+		this.memberVO = memberVO;
+	}
+
+
+
+	public CoachVO getCoachVO() {
+		return coachVO;
+	}
+
+
+
+	public void setCoachVO(CoachVO coachVO) {
+		this.coachVO = coachVO;
+	}
+
+
 
 	@Override
 	public String toString() {
-		return "MbrCourseVO [mbrCourseNo=" + mbrCourseNo + ", courseNo=" + courseNo + ", mbrNo=" + mbrNo
-				+ ", mbrCourseTime=" + mbrCourseTime + ", mbrCourseStat=" + mbrCourseStat + ", coachNo=" + coachNo
+		return "MbrCourseVO [mbrCourseNo=" + mbrCourseNo + ", courseVO=" + courseVO + ", memberVO=" + memberVO
+				+ ", mbrCourseTime=" + mbrCourseTime + ", mbrCourseStat=" + mbrCourseStat + ", coachVO=" + coachVO
 				+ "]";
 	}
+
+
+
+
 	
 	
 }

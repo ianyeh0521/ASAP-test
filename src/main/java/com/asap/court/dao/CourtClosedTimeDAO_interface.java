@@ -1,20 +1,20 @@
 package com.asap.court.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.asap.court.entity.CourtClosedTimeVO;
 
+
 public interface CourtClosedTimeDAO_interface {
 
-	void updateTime(CourtClosedTimeVO courtclosedtimeVO);
-	void insertTime(CourtClosedTimeVO courtclosedtimeVO);
-	void deleteTime(Integer courtClosedTimeNo);
+	int insert(CourtClosedTimeVO courtclosedtimeVO);
+	int delete(Integer courtClosedTimeNo);
 	
-	// Find by PK
-	CourtClosedTimeVO findByPK(Integer courtClosedTimeNo);
+	// Find by courtNo
+	List<CourtClosedTimeVO> findByCourtNo(Integer courtNo);
 	
-	// Find by court number
-	CourtClosedTimeVO findByCourtNo(Integer courtNo);
+	Boolean existsDeter(Integer courtNo,  Date courtClosedDate, Integer courtClosedTime);
 	
 	List<CourtClosedTimeVO> getAll();
 }

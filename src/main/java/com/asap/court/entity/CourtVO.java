@@ -1,15 +1,29 @@
-package com.asap.court.entity;
+ package com.asap.court.entity;
 
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.google.gson.annotations.Expose;
+
+
+
 
 @Entity
 @Table(name="Court")
@@ -23,8 +37,9 @@ public class CourtVO {
 	@Column(name = "CourtName")
 	private String courtName;
 	
-	@Column(name = "CourtTypeNo")
-	private Integer courtTypeNo;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "CourtTypeNo", referencedColumnName = "CourtTypeNo")
+	private CourtTypeVO courtTypeVO;
 	
 	@Column(name = "Indoor")
 	private Boolean indoor;
@@ -32,8 +47,9 @@ public class CourtVO {
 	@Column(name = "CourtAddress")
 	private String courtAddress;
 	
-	@Column(name = "SiteNo")
-	private Integer siteNo;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "SiteNo", referencedColumnName = "SiteNo")
+	private SiteVO siteVO ;
 	
 	@Column(name = "CourtLong")
 	private BigDecimal courtLong;
@@ -50,25 +66,70 @@ public class CourtVO {
 	@Column(name = "CourtPrice")
 	private Integer courtPrice;
 	
-	@Column(name = "CourtCrtTime")
+	@Column(name = "CourtCrtTime", nullable = false, updatable = false)
+	@CreationTimestamp
 	private Timestamp courtCrtTime;
 	
 	@Column(name = "CourtStat")
 	private Boolean courtStat;
+	
+//	@OneToMany(mappedBy = "courtVO")
+//	private List<CourtImgVO> courtImgVOs;
+
 
 	public CourtVO() {
 	}
 
-	public CourtVO(Integer courtNo, String courtName, Integer courtTypeNo, Boolean indoor, String courtAddress,
-			Integer siteNo, BigDecimal courtLong, BigDecimal courtLat, String courtText, Integer courtPplLimit,
+
+
+	public CourtVO(String courtName, CourtTypeVO courtTypeVO, Boolean indoor, String courtAddress, SiteVO siteVO,
+			BigDecimal courtLong, BigDecimal courtLat, String courtText, Integer courtPplLimit, Integer courtPrice,
+			Boolean courtStat) {
+		super();
+		this.courtName = courtName;
+		this.courtTypeVO = courtTypeVO;
+		this.indoor = indoor;
+		this.courtAddress = courtAddress;
+		this.siteVO = siteVO;
+		this.courtLong = courtLong;
+		this.courtLat = courtLat;
+		this.courtText = courtText;
+		this.courtPplLimit = courtPplLimit;
+		this.courtPrice = courtPrice;
+		this.courtStat = courtStat;
+	}
+	
+
+	public CourtVO(Integer courtNo, String courtName, CourtTypeVO courtTypeVO, Boolean indoor, String courtAddress,
+			SiteVO siteVO, BigDecimal courtLong, BigDecimal courtLat, String courtText, Integer courtPplLimit,
+			Integer courtPrice, Boolean courtStat) {
+		super();
+		this.courtNo = courtNo;
+		this.courtName = courtName;
+		this.courtTypeVO = courtTypeVO;
+		this.indoor = indoor;
+		this.courtAddress = courtAddress;
+		this.siteVO = siteVO;
+		this.courtLong = courtLong;
+		this.courtLat = courtLat;
+		this.courtText = courtText;
+		this.courtPplLimit = courtPplLimit;
+		this.courtPrice = courtPrice;
+		this.courtStat = courtStat;
+	}
+
+
+
+	public CourtVO(Integer courtNo, String courtName, CourtTypeVO courtTypeVO, Boolean indoor, String courtAddress,
+			SiteVO siteVO, BigDecimal courtLong, BigDecimal courtLat, String courtText, Integer courtPplLimit,
 			Integer courtPrice, Timestamp courtCrtTime, Boolean courtStat) {
 		super();
 		this.courtNo = courtNo;
 		this.courtName = courtName;
-		this.courtTypeNo = courtTypeNo;
+		this.courtTypeVO = courtTypeVO;
 		this.indoor = indoor;
 		this.courtAddress = courtAddress;
-		this.siteNo = siteNo;
+		this.siteVO = siteVO;
 		this.courtLong = courtLong;
 		this.courtLat = courtLat;
 		this.courtText = courtText;
@@ -77,6 +138,14 @@ public class CourtVO {
 		this.courtCrtTime = courtCrtTime;
 		this.courtStat = courtStat;
 	}
+
+
+
+	public CourtVO(Integer courtNo) {
+		this.courtNo = courtNo;
+	}
+
+
 
 	public Integer getCourtNo() {
 		return courtNo;
@@ -94,14 +163,6 @@ public class CourtVO {
 		this.courtName = courtName;
 	}
 
-	public Integer getCourtTypeNo() {
-		return courtTypeNo;
-	}
-
-	public void setCourtTypeNo(Integer courtTypeNo) {
-		this.courtTypeNo = courtTypeNo;
-	}
-
 	public Boolean getIndoor() {
 		return indoor;
 	}
@@ -116,14 +177,6 @@ public class CourtVO {
 
 	public void setCourtAddress(String courtAddress) {
 		this.courtAddress = courtAddress;
-	}
-
-	public Integer getSiteNo() {
-		return siteNo;
-	}
-
-	public void setSiteNo(Integer siteNo) {
-		this.siteNo = siteNo;
 	}
 
 	public BigDecimal getCourtLong() {
@@ -182,13 +235,54 @@ public class CourtVO {
 		this.courtStat = courtStat;
 	}
 
+
+
+	public CourtTypeVO getCourtTypeVO() {
+		return courtTypeVO;
+	}
+
+
+
+	public void setCourtTypeVO(CourtTypeVO courtTypeVO) {
+		this.courtTypeVO = courtTypeVO;
+	}
+
+
+
+	public SiteVO getSiteVO() {
+		return siteVO;
+	}
+
+
+
+	public void setSiteVO(SiteVO siteVO) {
+		this.siteVO = siteVO;
+	}
+
+
+
+
+
+//	public List<CourtImgVO> getCourtImgVOs() {
+//		return courtImgVOs;
+//	}
+//
+//
+//
+//	public void setCourtImgs(List<CourtImgVO> courtImgVOs) {
+//		this.courtImgVOs = courtImgVOs;
+//	}
+
+
+
 	@Override
 	public String toString() {
-		return "CourtVO [courtNo=" + courtNo + ", courtName=" + courtName + ", courtTypeNo=" + courtTypeNo + ", indoor="
-				+ indoor + ", courtAddress=" + courtAddress + ", siteNo=" + siteNo + ", courtLong=" + courtLong
+		return "CourtVO [courtNo=" + courtNo + ", courtName=" + courtName + ", courtTypeVO=" + courtTypeVO + ", indoor="
+				+ indoor + ", courtAddress=" + courtAddress + ", siteVO=" + siteVO + ", courtLong=" + courtLong
 				+ ", courtLat=" + courtLat + ", courtText=" + courtText + ", courtPplLimit=" + courtPplLimit
 				+ ", courtPrice=" + courtPrice + ", courtCrtTime=" + courtCrtTime + ", courtStat=" + courtStat + "]";
 	}
+
 
 	
 

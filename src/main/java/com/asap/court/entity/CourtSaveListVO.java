@@ -2,10 +2,15 @@ package com.asap.court.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.asap.member.MemberVO;
 
 @Entity
 @Table(name="CourtSaveList")
@@ -16,20 +21,22 @@ public class CourtSaveListVO{
 	@Column(name = "CourtSaveNo", updatable = false)
 	private Integer courtSaveNo;
 	
-	@Column(name = "MbrNo")
-	private String mbrNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="MemberVO", referencedColumnName = "MbrNo")
+	private MemberVO memberVO;
 	
-	@Column(name = "CourtNo")
-	private Integer courtNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="CourtNo", referencedColumnName = "CourtNo")
+	private CourtVO courtVO;
 	
 	public CourtSaveListVO() {
 	}
 
-	public CourtSaveListVO(Integer courtSaveNo, String mbrNo, Integer courtNo) {
+	public CourtSaveListVO(Integer courtSaveNo, MemberVO memberVO, CourtVO courtVO) {
 		super();
 		this.courtSaveNo = courtSaveNo;
-		this.mbrNo = mbrNo;
-		this.courtNo = courtNo;
+		this.memberVO = memberVO;
+		this.courtVO = courtVO;
 	}
 
 	public Integer getCourtSaveNo() {
@@ -40,26 +47,27 @@ public class CourtSaveListVO{
 		this.courtSaveNo = courtSaveNo;
 	}
 
-	public String getMbrNo() {
-		return mbrNo;
+
+
+	public MemberVO getMemberVO() {
+		return memberVO;
 	}
 
-	public void setMbrNo(String mbrNo) {
-		this.mbrNo = mbrNo;
+	public void setMemberVO(MemberVO memberVO) {
+		this.memberVO = memberVO;
 	}
 
-	public Integer getCourtNo() {
-		return courtNo;
+	public CourtVO getCourtVO() {
+		return courtVO;
 	}
 
-	public void setCourtNo(Integer courtNo) {
-		this.courtNo = courtNo;
+	public void setCourtVO(CourtVO courtVO) {
+		this.courtVO = courtVO;
 	}
 
 	@Override
 	public String toString() {
-		return "CourtSaveListVO [courtSaveNo=" + courtSaveNo + ", mbrNo=" + mbrNo + ", courtNo=" + courtNo + "]";
+		return "CourtSaveListVO [courtSaveNo=" + courtSaveNo + ", memberVO=" + memberVO + ", courtVO=" + courtVO + "]";
 	}
-	
-	
+
 }
