@@ -1,15 +1,23 @@
-package com.asap.group;
+package com.asap.group.entity;
 
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class SportTypeVO implements Serializable {
-	private static final long serialVersionUID=1L;
+@Entity
+@Table(name="SportType")
+public class SportTypeVO  {
+	
+	@Id
+	@Column(name="SportTypeNo",updatable = false)
 	private Integer sportTypeNo;
+	
+	@Column(name="SportTypeName")
 	private String sportTypeName;
 	
 	public SportTypeVO() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public SportTypeVO(Integer sportTypeNo, String sportTypeName) {
@@ -32,6 +40,11 @@ public class SportTypeVO implements Serializable {
 
 	public void setSportTypeName(String sportTypeName) {
 		this.sportTypeName = sportTypeName;
+	}
+
+	@Override
+	public String toString() {
+		return "SportTypeVO [sportTypeNo=" + sportTypeNo + ", sportTypeName=" + sportTypeName + "]";
 	}
 	
 	
