@@ -1,13 +1,38 @@
-package com.asap.backstage;
+package com.asap.backstage.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class CustMsgVO implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "custmsg")
+public class CustMsgVO implements Serializable {
+    @Id
+    @Column(name = "CustMsgNo", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer custMsgNo;
-	private String custMsgSubj, custMsgText, mbrNo, coachNo, backNo, custReText;
-	private Timestamp custMsgTime, custMsgReTime;
+    @Column(name = "CustMsgSubj")
+	private String custMsgSubj;
+    @Column(name = "CustMsgText")
+	private String custMsgText;
+    @Column(name = "MbrNo", updatable = false)
+	private String mbrNo;
+    @Column(name = "CoachNo", updatable = false)
+	private String coachNo;
+    @Column(name = "BackNo", updatable = false)
+	private String backNo;
+    @Column(name = "CustReText")
+	private String custReText;
+    @Column(name = "CustMsgTime")
+	private Timestamp custMsgTime;
+    @Column(name = "CustMsgReTime")
+	private Timestamp custMsgReTime;
 
 	public CustMsgVO() {
 	}
@@ -95,6 +120,13 @@ public class CustMsgVO implements Serializable {
 
 	public void setCustMsgReTime(Timestamp custMsgReTime) {
 		this.custMsgReTime = custMsgReTime;
+	}
+
+	@Override
+	public String toString() {
+		return "CustMsgVO [custMsgNo=" + custMsgNo + ", custMsgSubj=" + custMsgSubj + ", custMsgText=" + custMsgText
+				+ ", mbrNo=" + mbrNo + ", coachNo=" + coachNo + ", backNo=" + backNo + ", custReText=" + custReText
+				+ ", custMsgTime=" + custMsgTime + ", custMsgReTime=" + custMsgReTime + "]";
 	}
 
 }

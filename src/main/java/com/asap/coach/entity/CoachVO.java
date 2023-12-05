@@ -1,12 +1,39 @@
-package com.asap.coach;
+package com.asap.coach.entity;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "coach")
 public class CoachVO implements Serializable {
 
-	private String coachNo, coachEmail, coachPwd, coachName, coachPhone, bankNo, bankBr, bankAcct;
+	@Id
+	@Column(name = "CoachNo", updatable = false)
+	private String coachNo;
+	@Column(name = "CoachEmail")
+	private String coachEmail;
+	@Column(name = "CoachPwd")
+	private String coachPwd;
+	@Column(name = "CoachName")
+	private String coachName;
+	@Column(name = "CoachPhone")
+	private String coachPhone;
+	@Column(name = "BankNo", columnDefinition = "char" )
+	private String bankNo;
+	@Column(name = "BankBr")
+	private String bankBr;
+	@Column(name = "BankAcct")
+	private String bankAcct;
+	@Column(name = "CoachImg",columnDefinition = "longblob")
 	private byte[] coachImg;
+	@Column(name = "CoachExp")
 	private Integer coachExp;
+	@Column(name = "CoachStat")
 	private Boolean coachStat;
 
 	public CoachVO() {
@@ -113,6 +140,14 @@ public class CoachVO implements Serializable {
 
 	public void setCoachStat(Boolean coachStat) {
 		this.coachStat = coachStat;
+	}
+
+	@Override
+	public String toString() {
+		return "CoachVO [coachNo=" + coachNo + ", coachEmail=" + coachEmail + ", coachPwd=" + coachPwd + ", coachName="
+				+ coachName + ", coachPhone=" + coachPhone + ", bankNo=" + bankNo + ", bankBr=" + bankBr + ", bankAcct="
+				+ bankAcct + ", coachImg=" + Arrays.toString(coachImg) + ", coachExp=" + coachExp + ", coachStat="
+				+ coachStat + "]";
 	}
 
 }

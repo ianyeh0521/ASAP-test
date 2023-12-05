@@ -1,9 +1,22 @@
-package com.asap.backstage;
+package com.asap.backstage.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "backaccesstype")
 public class BackAccessTypeVO implements Serializable {
+
+	@Id
+	@Column(name = "BackAceTypeNo", updatable = false)
 	private Integer backAceTypeNo;
+	@Column(name = "BackAceTypeName")
 	private String backAceTypeName;
 
 	public BackAccessTypeVO() {
@@ -28,6 +41,11 @@ public class BackAccessTypeVO implements Serializable {
 
 	public void setBackAceTypeName(String backAceTypeName) {
 		this.backAceTypeName = backAceTypeName;
+	}
+
+	@Override
+	public String toString() {
+		return "BackAccessTypeVO [backAceTypeNo=" + backAceTypeNo + ", backAceTypeName=" + backAceTypeName + "]";
 	}
 
 }

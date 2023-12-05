@@ -1,11 +1,30 @@
-package com.asap.member;
+package com.asap.member.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.ColumnDefault;
+
+@Entity
+@Table(name = "news")
 public class NewsVO implements Serializable {
+	
+	@Id
+	@Column(name = "NewsNo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer newsNo;
-	private String newsSubj, newsText;
+	@Column(name = "NewsSubj")
+	private String newsSubj;
+	@Column(name = "NewsText")
+	private String newsText;
+	@Column(name = "NewsTime")
 	private Timestamp newsTime;
 
 	public NewsVO() {
@@ -48,6 +67,12 @@ public class NewsVO implements Serializable {
 
 	public void setNewsTime(Timestamp newsTime) {
 		this.newsTime = newsTime;
+	}
+
+	@Override
+	public String toString() {
+		return "NewsVO [newsNo=" + newsNo + ", newsSubj=" + newsSubj + ", newsText=" + newsText + ", newsTime="
+				+ newsTime + "]";
 	}
 
 }

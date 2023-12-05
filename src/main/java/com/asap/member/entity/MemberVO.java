@@ -1,11 +1,53 @@
-package com.asap.member;
+package com.asap.member.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "member")
 public class MemberVO implements Serializable {
 
-	private String mbrNo, mbrEmail, mbrPwd, mbrName, mbrPhone, bankNo, bankBr, bankAcct, sellerIntro;
-	private Integer cmtReScore, cmtReNum;
+	@Id
+	@Column(name = "MbrNo", updatable = false)
+	private String mbrNo;
+
+	@Column(name = "MbrEmail",updatable = false)
+	private String mbrEmail;
+
+	@Column(name = "MbrPwd")
+	private String mbrPwd;
+
+	@Column(name = "MbrName")
+	private String mbrName;
+
+	@Column(name = "MbrPhone")
+	private String mbrPhone;
+
+	@Column(name = "BankNo", columnDefinition = "char")
+	private String bankNo;
+
+	@Column(name = "BankBr")
+	private String bankBr;
+
+	@Column(name = "BankAcct")
+	private String bankAcct;
+
+	@Column(name = "SellerIntro")
+	private String sellerIntro;
+
+	@Column(name = "CmtReScore")
+	private Integer cmtReScore;
+
+	@Column(name = "CmtReNum")
+	private Integer cmtReNum;
 
 	public MemberVO() {
 	}
@@ -113,5 +155,12 @@ public class MemberVO implements Serializable {
 	public void setCmtReNum(Integer cmtReNum) {
 		this.cmtReNum = cmtReNum;
 	};
+
+	@Override
+	public String toString() {
+		return "MemberVO [mbrNo=" + mbrNo + ", mbrEmail=" + mbrEmail + ", mbrPwd=" + mbrPwd + ", mbrName=" + mbrName
+				+ ", mbrPhone=" + mbrPhone + ", bankNo=" + bankNo + ", bankBr=" + bankBr + ", bankAcct=" + bankAcct
+				+ ", sellerIntro=" + sellerIntro + ", cmtReScore=" + cmtReScore + ", cmtReNum=" + cmtReNum + "]";
+	}
 
 }

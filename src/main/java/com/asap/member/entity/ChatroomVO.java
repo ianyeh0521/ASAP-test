@@ -1,10 +1,26 @@
-package com.asap.member;
+package com.asap.member.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "chatroom")
 public class ChatroomVO implements Serializable {
+     
+	@Id
+	@Column(name = "ChatroomNo", updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer chatroomNo;
-	private String mbrNo1, mbrNo2;
+	@Column(name = "MbrNo1")
+	private String mbrNo1;
+	@Column(name = "MbrNo2")
+	private String mbrNo2;
 
 	public ChatroomVO() {
 	}
@@ -39,4 +55,8 @@ public class ChatroomVO implements Serializable {
 		this.mbrNo2 = mbrNo2;
 	}
 
+	@Override
+	public String toString() {
+		return "ChatroomVO [chatroomNo=" + chatroomNo + ", mbrNo1=" + mbrNo1 + ", mbrNo2=" + mbrNo2 + "]";
+	}
 }

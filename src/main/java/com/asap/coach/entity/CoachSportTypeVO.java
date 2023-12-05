@@ -1,9 +1,24 @@
-package com.asap.coach;
+package com.asap.coach.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "coachsporttype")
 public class CoachSportTypeVO implements Serializable {
-	private Integer coachSportTypeNo, sportTypeNo;
+	@Id
+	@Column(name = "CoachSportTypeNo", updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer coachSportTypeNo;
+	@Column(name = "SportTypeNo", updatable = false)
+	private Integer sportTypeNo;
+	@Column(name = "CoachNo", updatable = false)
 	private String coachNo;
 
 	public CoachSportTypeVO() {
@@ -37,6 +52,12 @@ public class CoachSportTypeVO implements Serializable {
 
 	public void setCoachNo(String coachNo) {
 		this.coachNo = coachNo;
+	}
+
+	@Override
+	public String toString() {
+		return "CoachSportTypeVO [coachSportTypeNo=" + coachSportTypeNo + ", sportTypeNo=" + sportTypeNo + ", coachNo="
+				+ coachNo + "]";
 	}
 
 }
