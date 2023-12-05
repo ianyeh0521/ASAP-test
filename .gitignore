@@ -7,4 +7,4 @@ target/
 *.idea
 *.iml
 src/main/resources/hibernate.cfg.xml
-context.xml
+src/main/webapp/META-INF/context.xml
