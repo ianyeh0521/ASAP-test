@@ -7,9 +7,9 @@ import com.asap.shop.entity.ItemInfoVO;
 public interface ItemInfoDAO_interface {
 	// 新增商品資訊
 
-	int insert(ItemInfoVO grpInfo);
+	int insert(ItemInfoVO itemInfo);
 
-	int update(ItemInfoVO grpInfo);
+	int update(ItemInfoVO itemInfo);
 
 	int delete(Integer id);
 
