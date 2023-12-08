@@ -2,6 +2,7 @@ package com.asap.shop.service;
 
 import java.util.List;
 
+import com.asap.shop.dao.ItemInfoDAO;
 import com.asap.shop.dao.ItemInfoDAO_interface;
 import com.asap.shop.entity.ItemInfoVO;
 
@@ -12,8 +13,8 @@ public class ItemInfoService implements ItemInfoService_interface {
 
     private ItemInfoDAO_interface dao;
 
-    public ItemInfoService(ItemInfoDAO_interface dao) {
-        this.dao = dao;
+    public ItemInfoService() {
+        dao = new ItemInfoDAO();
     }
 
     @Override
