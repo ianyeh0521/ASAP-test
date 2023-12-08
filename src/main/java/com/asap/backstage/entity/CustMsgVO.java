@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "custmsg")
 public class CustMsgVO implements Serializable {
@@ -29,6 +31,7 @@ public class CustMsgVO implements Serializable {
 	private String backNo;
     @Column(name = "CustReText")
 	private String custReText;
+    @CreationTimestamp
     @Column(name = "CustMsgTime")
 	private Timestamp custMsgTime;
     @Column(name = "CustMsgReTime")

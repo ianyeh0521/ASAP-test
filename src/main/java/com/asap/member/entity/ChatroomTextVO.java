@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "chatroomtext")
 public class ChatroomTextVO implements Serializable {
@@ -23,6 +25,7 @@ public class ChatroomTextVO implements Serializable {
 	private String chatText;
 	@Column(name = "ChatroomNo")
 	private Integer chatroomNo;
+	@CreationTimestamp
 	@Column(name = "ChatTime")
 	private Timestamp chatTime;
 
