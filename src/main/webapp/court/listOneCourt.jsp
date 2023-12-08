@@ -81,11 +81,11 @@
                             </ol>
                         </div>
                     </nav>
-                    <h1 href="${pageContext.request.contextPath}/court/listAllCourt_datatable.jsp">所有場地</h1>
+                    <h1 href="${pageContext.request.contextPath}/court/listAllCourts_datatable_Ajax.html">所有場地</h1>
                 </div>
             </div>
             <div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: left !important;">
-				<a href="/ASAP/court/listAllCourt.jsp">
+				<a href="${pageContext.request.contextPath}/court/listAllCourts_datatable_Ajax.html">
 				<button class="btn btn-primary btn-rounded btn-md">返回所有場地</button>
 				</a>
 			

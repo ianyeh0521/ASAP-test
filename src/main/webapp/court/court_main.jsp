@@ -18,7 +18,7 @@
 	<meta name="author" content="SW-THEMES">
 
 	<!-- Favicon -->
-	<link rel="icon" type="image/x-icon" href="/ASAP/assets/images/icons/favicon.png">
+	<link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
 
 	<script>
 		WebFontConfig = {
@@ -33,16 +33,16 @@
 	</script>
 
 	<!-- Plugins CSS File -->
-	<link rel="stylesheet" href="/ASAP/assets/css/bootstrap.min.css">
-	<link rel="preload" href="/ASAP/assets/fonts/porto.woff2?64334846" as="font" type="font/ttf" crossorigin>
-	<link rel="preload" href="/ASAP/assets/vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
+	<link rel="preload" href="${pageContext.request.contextPath}/assets/fonts/porto.woff2?64334846" as="font" type="font/ttf" crossorigin>
+	<link rel="preload" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
 		crossorigin>
-	<link rel="preload" href="/ASAP/assets/vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
+	<link rel="preload" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
 		crossorigin>
 
 	<!-- Main CSS File -->
-	<link rel="stylesheet" href="/ASAP/assets/css/style.min.css">
-	<link rel="stylesheet" type="text/css" href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 
 	
 </head>
@@ -55,21 +55,6 @@
 		</header><!-- header -->
 
 		<main class="main">
-			<!-- banner in main -->
-			<!-- <div class="category-banner-container bg-gray">
-				<div class="category-banner banner text-uppercase"
-					style="background: no-repeat 60%/cover url('assets/images/elements/page-header.jpg');">
-					<div class="container position-relative">
-						<nav aria-label="breadcrumb" class="breadcrumb-nav text-white">
-							<ol class="breadcrumb justify-content-center">
-								<li class="breadcrumb-item"><a href="demo4.html">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">找場地！</li>
-							</ol>
-						</nav>
-						<h1 class="page-title text-center text-white">找場地！</h1>
-					</div>
-				</div>
-			</div> -->
 
 			<!-- 搜尋列 -->
 			<div class="container" style="margin-top: 20px !important;">
@@ -131,7 +116,7 @@
 			<!-- 功能按鈕 -->
 			<div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
 				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
-				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的收藏</button>
+				<a href="${pageContext.request.contextPath}/court/court_savelist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的收藏</button></a>
 				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的預約</button>
 			</div>
 			
@@ -208,7 +193,7 @@
 									<div class="category-list">
 										<a href="category.html" class="type">{{data.courtTypeVO.courtType}}</a>
 									</div>
-									<h3 class="product-title" class="name"> <a href="product.html">{{data.courtName}}</a></h3>
+									<h3 class="product-title" class="name"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtNo">{{data.courtName}}</a></h3>
 									<p class="product-description" class="text">{{data.courtText}}</p>
 									<div class="price-box">
 										<span class="product-price" class="price">{{data.courtPrice}} / hr</span>
@@ -271,22 +256,21 @@
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	
 	<!-- Plugins JS File -->
-	<script src="/ASAP/assets/js/jquery.min.js"></script>
-	<script src="/ASAP/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="/ASAP/assets/js/plugins.min.js"></script>
-	<script src="/ASAP/assets/js/nouislider.min.js"></script>
-	<script src="/ASAP/assets/js/optional/isotope.pkgd.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/nouislider.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/optional/isotope.pkgd.min.js"></script>
 
 	<!-- Main JS File -->
-	<script src="/ASAP/assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<!-- datepicker -->
 <!-- 	<script> -->
-// 		import AirDatepicker from 'air-datepicker';
-// 		import 'air-datepicker/air-datepicker.css';
-
-// 		let dp = new AirDatepicker('#el');
-// 		dp.show();
+<!-- 		import AirDatepicker from 'air-datepicker'; -->
+<!-- 		import 'air-datepicker/air-datepicker.css'; -->
+<!-- 		let dp = new AirDatepicker('#el'); -->
+<!--  		dp.show(); -->
 <!-- 	</script> -->
 
 	<!-- header and footer template -->
@@ -343,6 +327,9 @@
 	                    })
 	            }
 	        }).mount('#divTest');
+			
+			
+			
 			
 			
 			

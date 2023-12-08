@@ -1,3 +1,5 @@
+<%@page import="com.asap.court.entity.CourtClosedTimeVO"%>
+<%@page import="com.asap.court.service.CourtClosedTimeService"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
@@ -8,9 +10,12 @@
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
 <%
-    CourtService courtSvc = new CourtService();
-	List<CourtVO> list = courtSvc.getAllCourts();
-    pageContext.setAttribute("list",list);
+	Integer courtNoToSetTime = Integer.valueOf(request.getParameter("courtNo"));
+	System.out.print(courtNoToSetTime);
+	CourtClosedTimeService closedTimeWithCourtNo = new CourtClosedTimeService();
+	
+	List<CourtClosedTimeVO> timeList = closedTimeWithCourtNo.findByCourtNo(courtNoToSetTime);
+	pageContext.setAttribute("timeList",timeList);
 %>
 
     <html lang="en">
@@ -21,7 +26,7 @@
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
     
-        <title>場地後台-所有場地-datatable</title>
+        <title>場地後台-場地不開放時間-datatable</title>
     
         <meta name="keywords" content="HTML5 Template" />
         <meta name="description" content="Porto - Bootstrap eCommerce Template" />
@@ -101,85 +106,51 @@
           <header class="header"></header>
           <!-- End .header -->
     
-    
           <main class="main">
             <div class="page-header">
                 <div class="container d-flex flex-column align-items-center">
                     <nav aria-label="breadcrumb" class="breadcrumb-nav">
                         <div class="container">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/court_index.jsp">場地管理</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">所有場地</li>
+                                <li class="breadcrumb-item"><a href="listAllCourts_datatable_Ajax.html">所有場地</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">不開放時間</li>
                             </ol>
                         </div>
                     </nav>
-                    <h1>所有場地</h1>
+                    <h1>不開放時間</h1>
                 </div>
             </div>
-            <div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
-				<a href="${pageContext.request.contextPath}/court/addCourt.jsp" style="">
-				<button class="btn btn-primary btn-rounded btn-md" >新增場地</button>
-				</a>
-			</div>
          
     
             <div class="container login-container">
               <div style="margin: 20px 10px ;border-radius: 10px;padding: 20px; box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;;">
-                <table id="table_id" class="display" >
+                <table id="table_id" class="display" width="100%" >
                   <thead>
                     <tr>
                       <!-- 欄位標題 可以調整欄位數量但標題和內容要一起-->
-                      <th width="80px">場地名稱</th>
-                      <th width="80px">場地類型</th>
-                      <th width="70px">室內/外</th>
-                      <th width="150px">地址</th>
-                      <th width="70px">地點</th>
-                      <th width="80px">經度</th>
-                      <th width="80px">緯度</th>
-                      <th width="500px">介紹內文</th>
-                      <th width="100px">場館人數限制</th>
-                      <th width="60px">價格</th> 
-                      <th width="100px">場地創建時間</th>
-                      <th width="80px">狀態</th>
-                      <th width="80px">修改場地</th>
-                      <th width="80px">編輯開放時間</th>
-                      <th width="80px">刪除場地</th>
+                      <th >編號</th>
+                      <th >場地編號</th>
+                      <th >不開放日期</th>
+                      <th >不開放時間</th>
+                      <th >刪除</th>
                     </tr>
                   </thead>
                   <tbody>
-                  	<c:forEach var="courtVO" items="${list}">
-                    <tr class="lookup" class="${courtVO.courtNo}" style="text-align: center !important">        
-<%-- 	                    <td>${courtVO.courtNo}</td> --%>
-	                    <td>${courtVO.courtName}</td>
-	                    <td>${courtVO.courtTypeVO.courtType}</td>
-	                    <td>${courtVO.indoor ?"室內":"室外"}</td>
-	                    <td>${courtVO.courtAddress}</td> 
-	                    <td>${courtVO.siteVO.regions}</td>
-	                    <td>${courtVO.courtLong}</td>
-                        <td>${courtVO.courtLat}</td>
-                        <td>${courtVO.courtText}</td>
-                        <td>${courtVO.courtPplLimit}</td> 
-                        <td>${courtVO.courtPrice}</td>  
-	                    <td>${courtVO.courtCrtTime}</td>
-	                    <td>${courtVO.courtStat? "營運中":"暫停營運"}</td>
-	                    <td>
-                           <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/court/court.do" style="margin-bottom: 0px;">
-                              <button type="submit" class="btn btn-primary btn-sm" style="border-radius:5px" id="lookup">修改</button>
-                              <input type="hidden" name="courtNo"  value="${courtVO.courtNo}">
-                              <input type="hidden" name="action"	value="getOne_For_Update">
-                           </FORM>
-                        </td>
-	                    <td>
-                             <a href="${pageContext.request.contextPath}/court/listClosedTime.jsp?courtNo=${courtVO.courtNo}"><button type="submit" class="btn btn-primary btn-sm" style="border-radius:5px" id="lookup">編輯開放時間</button></a> 
-                        </td>
+                  	<c:forEach var="timeVO" items="${timeList}">
+                    <tr class="lookup" class="${timeVO.courtClosedTimeNo}" style="text-align: center !important">        
+	                    <td>${timeVO.courtClosedTimeNo}</td>
+	                    <td>${timeVO.courtVO.courtNo}</td>
+	                    <td>${timeVO.courtClosedDate}</td>
+	                    <td>${timeVO.courtClosedTime}</td> 
                         <td>
-	                        <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/court/court.do" style="margin-bottom: 0px;">
-								<button type="button" class="btn btn-danger btn-sm" style="border-radius:5px" >刪除</button>			                   
-								<input type="hidden" name="courtNo"  value="${courtVO.courtNo}">
+	                        <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/court/courtClosedTime.do" style="margin-bottom: 0px;">
+								<button type="submit" class="btn btn-danger btn-sm" style="border-radius:5px" >刪除</button>			                   
+								<input type="hidden" name="courtNo"  value="${timeVO.courtVO.courtNo}">
+								<input type="hidden" name="closedDate"  value="${timeVO.courtClosedDate}">
+								<input type="hidden" name="closedTime"  value="${timeVO.courtClosedTime}">
 			                    <input type="hidden" name="action" value="delete">
 	                        </FORM>
                         </td>
-                        <!--按鈕樣式可以去https://getbootstrap.com/docs/4.0/components/buttons/ 找 -->
                    </tr>
                    </c:forEach>   
                   </tbody>

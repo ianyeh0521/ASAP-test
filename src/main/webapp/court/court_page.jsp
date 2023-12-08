@@ -38,6 +38,10 @@
    	pageContext.setAttribute("getSitePage",getSitePage);
    	pageContext.setAttribute("getCourtTypePage",getCourtTypePage);
    	pageContext.setAttribute("courtImgBase64", courtImgBase64);
+   	
+	// 先設一個 member，記得改
+	String mbrNo = "M1206202300001";
+	pageContext.setAttribute("mbrNo",mbrNo);
 %>
 <!DOCTYPE html>
 <html>
@@ -84,7 +88,7 @@
 	<style>
         #fs_alert {
         width: 100%;
-        height: 100vh;
+        height: 200vh;
         position: fixed;
         top: 0;
         /* display: block; */
@@ -104,7 +108,7 @@
 
         background-color: white;
         position: absolute;
-        top: 120px;
+        top: 90px;
         left: 0;
         right: 0;
         margin: auto;
@@ -148,6 +152,10 @@
       .btn_s:hover {
         background-color: rgb(76, 139, 150);
       }
+      
+      .icon-wishlist-2 span::after{
+      	content: "查看我的收藏" !important; 
+      }
     </style>
     
    
@@ -174,23 +182,22 @@
 				<br>
 				2. 請確定預約的具體時間，包括開始和結束時間。請遵守預約時間，以免影響其他使用者。
 				<br>
-				3. 若需取消預約，請提前通知，並確認取消或修改政策，以避免可能產生的費用。
+				3. 請明確了解預約場地的使用範圍，包括可使用的設施、場地區域和相關限制。
 				<br>
-				4. 請明確了解預約場地的使用範圍，包括可使用的設施、場地區域和相關限制。
+				4. 如有特殊設備或特殊需求，請在預約時提前通知，以確保場地提供合適的支援。
 				<br>
-				5. 如有特殊設備或特殊需求，請在預約時提前通知，以確保場地提供合適的支援。
+				5. 請遵守場地的安全守則，包括緊急程序和應急設備的使用。確保使用期間能夠保持安全。
 				<br>
-				6. 請遵守場地的安全守則，包括緊急程序和應急設備的使用。確保使用期間能夠保持安全。
+				6. 使用結束後，請確保將場地保持整潔，按時歸還。了解場地管理方的清潔政策。
 				<br>
-				7. 使用結束後，請確保將場地保持整潔，按時歸還。了解場地管理方的清潔政策。
-				<br>
-				8. 明確預約方和場地管理方之間的責任歸屬，包括任何損壞或意外事件的處理。
+				7. 明確預約方和場地管理方之間的責任歸屬，包括任何損壞或意外事件的處理。
 			  </div>
 			  <div class="btn_s" id="alert_ok">已詳細閱讀</div>
 			  <!-- <input type="hidden" name="" value=""/> -->
 			<!-- </form> -->
 			</div>
 		</div>
+		
 
 		<main class="main">
 			<div class="container">
@@ -200,9 +207,16 @@
 						<li class="breadcrumb-item">球場名稱</li>
 					</ol>
 				</nav>
+				
+				<!-- 功能按鈕 -->
+				<div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
+					<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
+					<a href="${pageContext.request.contextPath}/court/court_savelist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的收藏</button></a>
+					<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的預約</button>
+				</div>
+
 
 				<div class="product-single-container product-single-default">
-
 					<div class="row">
 						<div class="col-lg-5 col-md-6 product-single-gallery" style="text-align: center;">
 							<div class="product-slider-container">
@@ -235,6 +249,8 @@
 							</div>
 						</div><!-- End .product-single-gallery -->
 
+						<div id="hiddenDivForCourt" style="display: none;">${getCourtPage.courtNo}</div>	<!-- 暫放場地編號給前端 --> 
+						<div id="hiddenDivForMember" style="display: none;">${mbrNo}</div>		<!-- 暫放會員編號給前端 -->
 						<div class="col-lg-7 col-md-6 product-single-details">
 							<h1 class="product-title">${getCourtPage.courtName}</h1>
 
@@ -264,57 +280,61 @@
 							</ul>
 							
 							<hr class="divider mb-0 mt-0">
-							<br>
 							
-							<div style="margin: 10px 0">
-								請選擇日期：<input type="date" id="choose-date">
+							<div style="display: flex; flex-direction: row; align-items: center;">
+								<div style="margin: 10px 10px 10px 0;">
+									請選擇日期：<input type="date" id="choose-date">
+								</div>
+								<div style="margin: 10px 10px; display: flex;">
+									<div style="margin: 10px 10px">
+										開始時間：
+										<select>
+											<option value="6">06:00</option>
+											<option value="7">07:00</option>
+											<option value="8">08:00</option>
+											<option value="9">09:00</option>
+											<option value="10">10:00</option>
+											<option value="11">11:00</option>
+											<option value="12">12:00</option>
+											<option value="13">13:00</option>
+											<option value="14">14:00</option>
+											<option value="15">15:00</option>
+											<option value="16">16:00</option>
+											<option value="17">17:00</option>
+											<option value="18">18:00</option>
+											<option value="19">19:00</option>
+											<option value="20">20:00</option>
+											<option value="21">21:00</option>
+											<option value="22">22:00</option>
+											<option value="23">23:00</option>
+										 </select>
+									</div>
+									
+									<div style="margin: 10px 10px">
+										結束時間：
+										<select>
+											<option value="6">06:00</option>
+											<option value="7">07:00</option>
+											<option value="8">08:00</option>
+											<option value="9">09:00</option>
+											<option value="10">10:00</option>
+											<option value="11">11:00</option>
+											<option value="12">12:00</option>
+											<option value="13">13:00</option>
+											<option value="14">14:00</option>
+											<option value="15">15:00</option>
+											<option value="16">16:00</option>
+											<option value="17">17:00</option>
+											<option value="18">18:00</option>
+											<option value="19">19:00</option>
+											<option value="20">20:00</option>
+											<option value="21">21:00</option>
+											<option value="22">22:00</option>
+											<option value="23">23:00</option>
+									  	</select>
+									</div>
+								</div>
 							</div>
-							<div style="margin: 10px 0">
-								開始時間：
-								<select>
-									<option value="6">06:00</option>
-									<option value="7">07:00</option>
-									<option value="8">08:00</option>
-									<option value="9">09:00</option>
-									<option value="10">10:00</option>
-									<option value="11">11:00</option>
-									<option value="12">12:00</option>
-									<option value="13">13:00</option>
-									<option value="14">14:00</option>
-									<option value="15">15:00</option>
-									<option value="16">16:00</option>
-									<option value="17">17:00</option>
-									<option value="18">18:00</option>
-									<option value="19">19:00</option>
-									<option value="20">20:00</option>
-									<option value="21">21:00</option>
-									<option value="22">22:00</option>
-									<option value="23">23:00</option>
-								  </select>
-								
-								結束時間：
-								<select>
-									<option value="6">06:00</option>
-									<option value="7">07:00</option>
-									<option value="8">08:00</option>
-									<option value="9">09:00</option>
-									<option value="10">10:00</option>
-									<option value="11">11:00</option>
-									<option value="12">12:00</option>
-									<option value="13">13:00</option>
-									<option value="14">14:00</option>
-									<option value="15">15:00</option>
-									<option value="16">16:00</option>
-									<option value="17">17:00</option>
-									<option value="18">18:00</option>
-									<option value="19">19:00</option>
-									<option value="20">20:00</option>
-									<option value="21">21:00</option>
-									<option value="22">22:00</option>
-									<option value="23">23:00</option>
-								  </select>
-							</div>
-							
 							
 							<div class="product-filters-container custom-product-filters">
 								<div class="product-single-filter">
@@ -357,8 +377,9 @@
 										title="Mail"></a>
 								</div><!-- End .social-icons -->
 
-								<a href="wishlist.html" class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i
+								<a href="" class="btn-icon-wish add-wishlist" title="Go to Wishlist"><i
 										class="icon-wishlist-2"></i><span>加入收藏</span></a>
+									
 							</div><!-- End .product single-share -->
 						</div><!-- End .product-single-details -->
 					</div><!-- End .row -->
@@ -404,11 +425,99 @@
 		$(window).on("load", function(){
 			$("#lookup").on("click", function(){
 				$("#fs_alert").css("display", "block");
-			})
+			});
+			
 			$("#alert_ok").on("click", function(){
 				$("#fs_alert").css("display", "none");
-			})
+			});
+			
+			// 待新增：會員進來頁面自動判斷場地是否有在 savelist 中，依此調整 save icon
+			$.ajax({
+	            url: 'courtSaveListAjax.do', // Servlet URL
+	            type: 'POST',
+	            contentType: 'application/json',
+	            data: JSON.stringify({
+	                action: "check",
+	                mbrNo: $("#hiddenDivForMember").html(),	
+	                courtNo: $("#hiddenDivForCourt").html()
+	            }),
+	            success: function(response) {
+	            	var i = $(".btn-icon-wish");
+	                if(response == "isOne"){
+	                	i.addClass("added-wishlist");
+			            "" !== i.find("span").text() && i.find("span").text("已加入收藏！");
+			            i.attr("title", "Go to Wishlist");
+	                }
+	            },
+	            error: function() {
+	                console.log('Error in AJAX request');
+	            }
+	        });
+			
+			
+			// 收藏按鈕
+			$("body").on("click", ".btn-icon-wish", function(e){
+			    e.preventDefault();
+			    var i = $(this);
+
+			    if (i.hasClass("added-wishlist")) {
+			        i.removeClass("added-wishlist");
+			        i.find("span").text("加入收藏");
+			        e.stopImmediatePropagation();
+			        
+			        // 移除收藏req
+			        $.ajax({
+			            url: 'courtSaveListAjax.do', 
+			            type: 'POST',
+			            contentType: 'application/json',
+			            data: JSON.stringify({
+			                action: "delete",
+			                mbrNo: $("#hiddenDivForMember").html(),	
+			                courtNo: $("#hiddenDivForCourt").html()
+			            }),
+			            success: function(response) {
+			                console.log('Server response:', response);
+			            },
+			            error: function() {
+			                console.log('Error in AJAX request');
+			            }
+			        });
+			        
+			    } else {
+			        i.addClass("load-more-overlay loading");
+			        setTimeout((function() {
+			            i.removeClass("load-more-overlay loading");
+			            i.addClass("added-wishlist");
+			            "" !== i.find("span").text() && i.find("span").text("已加入收藏！");
+			            i.attr("title", "Go to Wishlist");
+			            $(".wishlist-popup").removeClass("active");
+			        }), 1e3);
+
+			     	// 加入收藏req
+			        $.ajax({
+			            url: 'courtSaveListAjax.do', 
+			            type: 'POST',
+			            contentType: 'application/json',
+			            data: JSON.stringify({
+			                action: "add",
+			                mbrNo: $("#hiddenDivForMember").html(),	
+			                courtNo: $("#hiddenDivForCourt").html()
+			            }),
+			            success: function(response) {
+			                console.log('Server response:', response);
+			            },
+			            error: function() {
+			                console.log('Error in AJAX request');
+			            }
+			        });
+			    }
+			});
+
+
 		})
+		
+	
+        
 	</script>
 </body>
 

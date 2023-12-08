@@ -29,13 +29,13 @@ public class CourtSaveListDAO implements CourtSaveListDAO_interface{
 			courtSaveListVO.toString();
 			return (Integer) getSession().save(courtSaveListVO);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return -1;
 		}
 	}
 
 	@Override
-	public int delete(Integer courtSaveNo) {
-		CourtSaveListVO courtSaveListVO = getSession().get(CourtSaveListVO.class, courtSaveNo);
+	public int delete(CourtSaveListVO courtSaveListVO) {
 		// 刪除成功回傳 1，刪除失敗回傳 -1
 		if (courtSaveListVO != null) {
 			getSession().delete(courtSaveListVO);
@@ -80,6 +80,23 @@ public class CourtSaveListDAO implements CourtSaveListDAO_interface{
 			return null;
 		}
 	}
+
+	@Override
+	public CourtSaveListVO findByMemberAndCourtNo(String mbrNo, Integer courtNo) {
+		try {
+			String hql = "from CourtSaveListVO csl where csl.memberVO.mbrNo = :mbrNo AND csl.courtVO.courtNo = :courtNo";
+			Query<CourtSaveListVO> query = getSession().createQuery(hql, CourtSaveListVO.class);
+			query.setParameter("mbrNo", mbrNo);
+			query.setParameter("courtNo", courtNo);
+			CourtSaveListVO result = query.uniqueResult();
+			return result;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
 
 	
 	

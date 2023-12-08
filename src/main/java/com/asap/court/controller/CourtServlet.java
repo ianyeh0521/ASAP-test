@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -201,8 +202,9 @@ public class CourtServlet extends HttpServlet {
 	// 刪除
 	private String deleteCourt(HttpServletRequest req, HttpServletResponse res) {
 		Integer courtNo = Integer.valueOf(req.getParameter("courtNo"));
+		System.out.println(courtNo);
 		courtService_interface.delete(courtNo);			
-		return "/court/listAllCourt.jsp";
+		return "/court/listAllCourts_datatable_Ajax.html";
 	}
 
 	// 新增
@@ -299,6 +301,26 @@ public class CourtServlet extends HttpServlet {
 		}  else{
 			System.out.println("請上傳照片");
 		}
+		// 照片3
+		InputStream in3 = req.getPart("upFiles3").getInputStream();
+		byte[] upFiles3 = null;
+		if(in3.available()!=0){
+			upFiles3 = new byte[in3.available()];
+			in3.read(upFiles3);
+			in3.close();
+		}  else{
+			System.out.println("請上傳照片");
+		}
+		// 照片4
+		InputStream in4 = req.getPart("upFiles4").getInputStream();
+		byte[] upFiles4 = null;
+		if(in4.available()!=0){
+			upFiles4 = new byte[in4.available()];
+			in4.read(upFiles4);
+			in4.close();
+		}  else{
+			System.out.println("請上傳照片");
+		}
    
         CourtTypeVO courtTypeVO = new CourtTypeVO(type);	
         SiteVO siteVO = new SiteVO(site);					
@@ -315,6 +337,10 @@ public class CourtServlet extends HttpServlet {
 			courtImgService_interface.insert(courtImgVO1);
 			CourtImgVO courtImgVO2 = new CourtImgVO(courtVOnew, upFiles2);
 			courtImgService_interface.insert(courtImgVO2);
+			CourtImgVO courtImgVO3 = new CourtImgVO(courtVOnew, upFiles3);
+			courtImgService_interface.insert(courtImgVO3);
+			CourtImgVO courtImgVO4 = new CourtImgVO(courtVOnew, upFiles4);
+			courtImgService_interface.insert(courtImgVO4);
 			req.setAttribute("courtNoPass", courtNO);
 			return "/court/listOneCourt.jsp";
 		}
@@ -340,7 +366,7 @@ public class CourtServlet extends HttpServlet {
 	}
 	
 	// 複合查詢
-	private String getCompositeCourtsQuery(HttpServletRequest req, HttpServletResponse res) {
+	private String getCompositeCourtsQuery(HttpServletRequest req, HttpServletResponse res){
 		Map<String, String[]> map = req.getParameterMap();
 		// 搜尋條件顯示
 		String searchCon = "";
@@ -377,15 +403,21 @@ public class CourtServlet extends HttpServlet {
 		
 		
 		if (map != null) {
+			// 將courtVO 和相對應的 courtImgVO List 放入一個 Map
+			Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
 			List<CourtVO> courSearchList = courtService_interface.getCourtsByCompositeQuery(map);
+			for(CourtVO courtVO:courSearchList) {
+				cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
+			}
 			
 			req.setAttribute("searchCon", searchCon);
-			req.setAttribute("courSearchList", courSearchList);
+			req.setAttribute("cobineMap", cobineMap);
 			
-		} else {
-			return "court_main.jsp";	
+			return "/court/court_main_search.jsp";
+		} else {	
+			return "/court/court_main.jsp";	
 		}
-		return "/court/court_main_search.jsp";		
+				
 	}
 	
 	// 用名稱找場地
