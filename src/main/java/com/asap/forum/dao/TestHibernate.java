@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import com.asap.forum.entity.ForumReportVO;
 import com.asap.forum.entity.PostVO;
@@ -21,8 +22,11 @@ public class TestHibernate {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			
-			List<PostVO> frvo= session.createQuery("from PostVO order by postCrtTime", PostVO.class).list();
+//			String posttitle="一";
+			String hql = "from PostVO where postTitle like :posttitle";
+			Query query = session.createQuery(hql);
+			query.setParameter("posttitle", "%1%");
+			List<PostVO> frvo= query.list();
 			
 			System.out.println(frvo);
 			

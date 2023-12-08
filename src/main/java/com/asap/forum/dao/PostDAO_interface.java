@@ -8,17 +8,18 @@ import com.asap.forum.entity.PostVO;
 
 public interface PostDAO_interface {
 	
-	//新增貼文
+
 	public Integer addPost (PostVO post);
 	
 	public PostVO findbyPK(Integer postNo);
 	
-	//刪除貼文(更改poststatus)
 	public Integer delete (Integer postNo);
 	
 	public Integer update (PostVO post);
 
 	public List<PostVO> getAllbyDate();
+	
+	public List<PostVO> getAlltoShow();
 	
 	public List<PostVO> getbyCategory(Integer posttypeno);
 	

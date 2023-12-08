@@ -12,4 +12,6 @@ public interface SavePostDAO_interface {
 	public Integer delete (Integer sPNo);
 	
 	public List<SavePostVO> getbyMbrNo(String mbrNo);
+	
+	public List<SavePostVO> getAll();
 }

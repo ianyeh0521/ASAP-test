@@ -46,6 +46,11 @@ public class SavePostDAO implements SavePostDAO_interface{
 				.setParameter("mbrno", mbrNo)
 				.list();
 	}
+
+	@Override
+	public List<SavePostVO> getAll() {
+		return getSession().createQuery("from SavePostVO", SavePostVO.class).list();
+	}
 	
 	
 

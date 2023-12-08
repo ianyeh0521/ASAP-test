@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.regexp.recompile;
+
 import com.asap.forum.dao.PostDAO;
 import com.asap.forum.dao.PostDAO_interface;
 import com.asap.forum.entity.PostVO;
@@ -42,9 +44,21 @@ public class PostVOServiceImpl implements PostVOService {
 		return dao.getAll();
 	}
 
-
+	
+	
+	@Override
+	public List<PostVO> getbyPostTitle(String posttitle) {
+		return dao.getbyPostTitle(posttitle);
+	}
 
 	@Override
+	public List<PostVO> getAlltoShow() {
+		return dao.getAlltoShow();
+	}
+
+
+
+
 //	public List<PostVO> getPostsByCompositeQuery(Map<String, String[]> map) {
 //		// TODO Auto-generated method stub
 //		Map<String, String> query = new HashMap<>();
@@ -69,10 +83,6 @@ public class PostVOServiceImpl implements PostVOService {
 //		return dao.getByCompositeQuery(query);
 //	}
 
-	@Override
-	public int getPageTotal() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 
 }

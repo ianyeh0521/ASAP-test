@@ -13,7 +13,7 @@
 <meta name="author" content="SW-THEMES" />
 
 <!-- Favicon -->
-<link rel="icon" type="image/png" href="assets/images/icons/favicon.png" />
+<link rel="icon" type="image/png" href="/ASAP/assets/images/icons/favicon.png" />
 <link rel="stylesheet"
 	href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
 	integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5"
@@ -32,7 +32,7 @@
       (function (d) {
         var wf = d.createElement("script"),
           s = d.scripts[0];
-        wf.src = "assets/js/webfont.js";
+        wf.src = "/ASAP/assets/js/webfont.js";
         wf.async = true;
         s.parentNode.insertBefore(wf, s);
       })(document);
@@ -40,13 +40,13 @@
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" type="text/css"
-	href="assets/css/bootstrap.min.css" />
+	href="/ASAP/assets/css/bootstrap.min.css" />
 
 <!-- Main CSS File -->
-<link rel="stylesheet" type="text/css" href="assets/css/style.min.css" />
+<link rel="stylesheet" type="text/css" href="/ASAP/assets/css/style.min.css" />
 <link rel="stylesheet" type="text/css"
-	href="assets/vendor/fontawesome-free/css/all.min.css" />
-<script src="assets/js/jquery.min.js"></script>
+	href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css" />
+<script src="/ASAP/assets/js/jquery.min.js"></script>
 <!--這裡把jquery往上提-->
 <!-- datatable用 -->
 <link rel="stylesheet" type="text/css"
@@ -57,7 +57,7 @@
 $(document).ready(function () {
     $.ajax({
       type: "post",
-      url: "forum/savepost.do",
+      url: "savepost.do",
       contnentType: "application/json",
       success: function (result) {
     	  console.log(result);
@@ -166,7 +166,7 @@ $(document).ready(function () {
 							<i class="fas fa-bars"></i>
 						</button>
 						<a href="#" width="222" height="88"> <img
-							src="newImg/logo2.png" alt="Logo" />
+							src="/ASAP/newImg/logo2.png" alt="Logo" />
 						</a>
 					</div>
 					<!-- End .header-left -->
@@ -289,11 +289,11 @@ $(document).ready(function () {
 
 	<!-- Plugins JS File -->
 
-	<script src="assets/js/bootstrap.bundle.min.js"></script>
-	<script src="assets/js/plugins.min.js"></script>
+	<script src="/ASAP/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="/ASAP/assets/js/plugins.min.js"></script>
 
 	<!-- Main JS File -->
-	<script src="assets/js/main.min.js"></script>
+	<script src="/ASAP/assets/js/main.min.js"></script>
 
 	<script>
       //$("header").load("header.html");
