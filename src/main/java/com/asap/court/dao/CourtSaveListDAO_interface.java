@@ -5,15 +5,18 @@ import java.util.List;
 import com.asap.court.entity.CourtSaveListVO;
 
 public interface CourtSaveListDAO_interface {
-
-	void updateSaveList(CourtSaveListVO courtSaveListVO);
-	void insertSaveList(CourtSaveListVO courtSaveListVO);
-	void deleteSaveList(Integer courtSaveNo);
+	
+	int insert(CourtSaveListVO courtSaveListVO);
+	int delete(CourtSaveListVO courtSaveListVO);
 	
 	// Find savelist by PK
 	CourtSaveListVO findByPK(Integer courtSaveNo);
 	
 	// Find savelist by member 
-	CourtSaveListVO findByMember(String mbrNo);
+	List<CourtSaveListVO> findByMember(String mbrNo);
+	
+	// Find By MemberNo And CourtNo to verify if it's in saveList
+	CourtSaveListVO findByMemberAndCourtNo(String mbrNo, Integer courtNo);
+	
 	List<CourtSaveListVO> getAll();
 }

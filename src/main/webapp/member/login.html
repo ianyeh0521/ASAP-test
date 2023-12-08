@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>ASAP</title>
+
+    <meta name="keywords" content="HTML5 Template" />
+    <meta name="description" content="Porto - Bootstrap eCommerce Template" />
+    <meta name="author" content="SW-THEMES" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="assets/images/icons/favicon.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
+      integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5"
+      crossorigin="anonymous"
+    />
+
+    <script>
+      WebFontConfig = {
+        google: {
+          families: [
+            "Open+Sans:300,400,600,700,800",
+            "Poppins:300,400,500,600,700",
+            "Shadows+Into+Light:400",
+          ],
+        },
+      };
+      (function (d) {
+        var wf = d.createElement("script"),
+          s = d.scripts[0];
+        wf.src = "assets/js/webfont.js";
+        wf.async = true;
+        s.parentNode.insertBefore(wf, s);
+      })(document);
+    </script>
+
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="assets/css/style.min.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="assets/vendor/fontawesome-free/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <header class="header"></header>
+      <!-- End .header -->
+
+      <main class="main">
+        <div class="page-header">
+          <div class="container d-flex flex-column align-items-center">
+            <h1>會員登入</h1>
+          </div>
+        </div>
+
+        <div class="container login-container">
+          <div class="row">
+            <div class="col-lg-10 mx-auto">
+              <div class="row" style="justify-content: center">
+                <div
+                  class="col-md-6"
+                  style="
+                    margin: 30px;
+                    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+                      rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+                  "
+                >
+                  <!-- <div class="heading mb-1">
+                    <h2 class="title">登入</h2>
+                  </div> -->
+
+                  <form action="#" method="post">
+                    <label for="login-email" style="margin-top: 20px">
+                      會員帳號
+                    </label>
+                    <input
+                      type="email"
+                      class="form-input form-wide"
+                      id="login-email"
+                      required
+                      name="MbrEmail"
+                      placeholder="email"
+                    />
+
+                    <label for="login-password"> 會員密碼 </label>
+                    <input
+                      type="password"
+                      class="form-input form-wide"
+                      id="login-password"
+                      required
+                      name="MbrPwd"
+                      placeholder="password"
+                    />
+                    <label for="input_vad"> 驗證碼 </label>
+                    <input
+                      class="form-input form-wide"
+                      id="input_vad"
+                      type="text"
+                      required
+                    />
+
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        margin: 5px 0;
+                      "
+                    >
+                      <canvas
+                        id="mycanvas"
+                        width="150"
+                        height="40"
+                        style="border: 2px black solid; margin-right: 15px"
+                      ></canvas>
+                      <button
+                        type="button"
+                        style="
+                          border: 0;
+                          border-radius: 5px;
+                          margin: 0 6px 0 2px;
+                          background-color: lightgray;
+                        "
+                        id="change_vad"
+                      >
+                        更換
+                      </button>
+                    </div>
+
+                    <div class="form-footer" style="margin: 5px 0 15px 0">
+                      <a
+                        href="forgot-password.html"
+                        class="forget-password text-dark form-footer-right"
+                        style="text-decoration: underline"
+                        >忘記密碼</a
+                      >
+                    </div>
+                    <button
+                      type="submit"
+                      class="btn btn-dark btn-md w-100"
+                      id="btn_login"
+                    >
+                      登入
+                      <input type="hidden" name="action" value="login">
+                    </button>
+                    <hr style="margin: 15px 0" />
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-ellipse btn-md w-100"
+                      style="border-radius: 50px"
+                      id="btn_google"
+                    >
+                      使用Google帳號登入
+                    </button>
+                  </form>
+                </div>
+                <!-- <div class="col-md-6">
+                  <div class="heading mb-1">
+                    <h2 class="title">Register</h2>
+                  </div>
+
+                  <form action="#">
+                    <label for="register-email">
+                      Email address
+                      <span class="required">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      class="form-input form-wide"
+                      id="register-email"
+                      required
+                    />
+
+                    <label for="register-password">
+                      Password
+                      <span class="required">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      class="form-input form-wide"
+                      id="register-password"
+                      required
+                    />
+
+                    <div class="form-footer mb-2">
+                      <button
+                        type="submit"
+                        class="btn btn-dark btn-md w-100 mr-0"
+                      >
+                        Register
+                      </button>
+                    </div>
+                  </form>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- End .main -->
+
+      <footer class="footer bg-dark"></footer>
+      <!-- End .footer -->
+    </div>
+    <!-- End .page-wrapper -->
+
+    <div class="loading-overlay">
+      <div class="bounce-loader">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
+    </div>
+
+    <div class="mobile-menu-overlay"></div>
+    <!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container"></div>
+    <!-- End .mobile-menu-container -->
+
+    <div class="sticky-navbar"></div>
+
+    <a id="scroll-top" href="#top" title="Top" role="button"
+      ><i class="icon-angle-up"></i
+    ></a>
+
+    <!-- Plugins JS File -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.min.js"></script>
+
+    <script>
+      $("header").load("header.html");
+      $("div.sticky-navbar").load("sticky-navbar.html");
+      $("div.mobile-menu-container").load("mobile-menu-container.html");
+      $("footer").load("footer.html");
+
+      window.addEventListener("load", function () {
+        var mycanvas = document.getElementById("mycanvas");
+        var cxt = mycanvas.getContext("2d"); //canvas getContext 渲染環境
+        var validate = "";
+
+        var sColor = ["#B22222", "#F9F900", "#82D900", "#FFAF60"]; //干擾點顏色
+        var fColor = ["#000079", "#006030", "#820041", "#4B0091"]; //文字顏色
+        var indexColor = ""; //顏色組序號
+        var img = new Image();
+        img.src = "newImg/vad_back.jpg";
+
+        /*生成隨機顏色組合序號*/
+        function randColor() {
+          indexColor = "";
+          indexColor = Math.floor(Math.random() * sColor.length); //亂數取得 0~顏色陣列長度
+          return indexColor;
+        }
+
+        /*生成6位隨機數*/
+        function rand() {
+          validate = "";
+          // 大小寫英文 數字 排除 I l o O 0  ,並重複數字 增加出現機率
+          var str =
+            "123456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789";
+          var arr = str.split("");
+          var ranNum;
+          for (var i = 0; i < 6; i++) {
+            ranNum = Math.floor(Math.random() * 66); //隨機數在[0,65]之間
+            validate += arr[ranNum];
+          }
+          //alert("rand() "+validate);
+          //alert("rand() "+typeof(validate));
+          return validate;
+        }
+
+        /*干擾線的隨機x坐標值*/
+        function lineX() {
+          var ranLineX = Math.floor(Math.random() * 150);
+          return ranLineX;
+        }
+
+        /*干擾線的隨機y坐標值*/
+        function lineY() {
+          var ranLineY = Math.floor(Math.random() * 40);
+          return ranLineY;
+        }
+
+        /*更換內容*/
+        function clickChange() {
+          //重設canvas內容
+          mycanvas.width = mycanvas.width;
+          mycanvas.height = mycanvas.height;
+
+          //var i=randColor(); //執行randColor()取得顏色組序號
+          //alert(i);
+
+          //選取底圖範圍
+          cxt.drawImage(img, lineX(), lineY(), 150, 40, 0, 0, 150, 40);
+
+          /*生成干擾線2條*/
+          for (var j = 0; j < 2; j++) {
+            //產生一個新路徑，產生後再使用繪圖指令來設定路徑
+            //若省略beginPath，則每點擊一次驗證碼會累積干擾線的條數
+            cxt.beginPath();
+            cxt.strokeStyle = sColor[randColor()];
+            cxt.moveTo(0, lineY()); //起始點座標
+            cxt.lineTo(150, lineY()); //從起始點畫一條直線到指定的(x, y)座標點
+            cxt.lineWidth =
+              (Math.floor(Math.random() * (20 - 10 + 1)) + 10) / 10; //亂數 取得介於1~2之間的值
+            cxt.stroke();
+            cxt.closePath();
+          }
+          //
+          //cxt.beginPath();
+          cxt.fillStyle = fColor[randColor()]; //隨機文字顏色
+          cxt.font = "bold 25px Verdana";
+          cxt.fillText(rand(), 10, 30); //把rand()生成的隨機數文本填充到canvas中
+          //cxt.closePath();
+        }
+
+        /*點擊驗證碼更換*/
+        var change_vad_btn = document.getElementById("change_vad");
+        change_vad_btn.onclick = function (e) {
+          e.preventDefault(); //阻止滑鼠點擊發生預設的行為
+          clickChange();
+        };
+
+        /*輸入驗證碼與核對*/
+        var input_vad = document.getElementById("input_vad");
+        input_vad.addEventListener("blur", function (e) {
+          // var vad =
+          console.log(input_vad.value);
+          //alert("myform "+vad.toUpperCase());
+          //alert("myform "+validate.toUpperCase());
+          //將字串利用toUpperCase()將小寫英文轉成大寫英文 進行比較
+          // if (vad.toUpperCase() === validate.toUpperCase()) {
+          //   alert("通過");
+          //   myform.vad.value = "";
+          //   clickChange();
+          // } else {
+          //   alert("請確認");
+          //   myform.vad.value = "請重新輸入驗證碼";
+          // }
+          // e.preventDefault();
+        });
+
+        /*輸入文字框清空*/ //改用placeholder
+        /*var myvad=document.getElementById('myvad');
+myvad.addEventListener("focus",function(e){
+    myform.vad.value="";
+});*/
+        img.onload = function () {
+          clickChange();
+        };
+      });
+    </script>
+  </body>
+</html>

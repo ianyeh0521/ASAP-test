@@ -1,26 +1,27 @@
 package com.asap.court.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asap.court.entity.CourtVO;
 
 public interface CourtDAO_interface {
+	
+	int insert(CourtVO entity);
 
-	void updateCourt(CourtVO courtVO);
-	void insertCourt(CourtVO courtVO);
-	void deleteCourt(Integer courtNo);
+	int update(CourtVO entity);
 	
-	// Find court by PK
-	CourtVO findByPK(Integer courtNo);
-	
-	// Find court by court name
-	CourtVO findByCourtName(String courtName);
-	
-	// Find court by address
-	CourtVO findByAddress(String courtAddress);
-	
-	// Find court by site
-	CourtVO findBySite(Integer siteNo);
+	int delete(Integer id);
+	 
+	CourtVO getById(Integer id);
 	
 	List<CourtVO> getAll();
+	
+	List<CourtVO> getByCompositeQuery(Map<String, String> map);
+	
+	List<CourtVO> getAll(int currentPage);
+	
+	List<CourtVO> getCourtsByName(String name);
+	
+	long getTotal();
 }
