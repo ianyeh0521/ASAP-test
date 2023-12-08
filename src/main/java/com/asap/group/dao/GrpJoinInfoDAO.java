@@ -84,7 +84,7 @@ public class GrpJoinInfoDAO implements GrpJoinInfoDAO_interface {
 	// 	成功回傳VO,失敗不會回傳任何資料;可參考TestGrpJoinInfoVO.java測試
 	//*********************************************************************
 	@Override
-	public List<GrpJoinInfoVO> getQuery(String column, String Keyword) {
+	public List<GrpJoinInfoVO> getGrpJoinQuery(String column, String Keyword) {
 		String hqlQuery;
 		Query query;
 		List<GrpJoinInfoVO> resultList = new ArrayList<>();

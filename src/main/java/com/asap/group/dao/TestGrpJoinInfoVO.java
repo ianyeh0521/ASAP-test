@@ -111,7 +111,7 @@ public class TestGrpJoinInfoVO {
 //		(HQL)用某個欄位來找參與人資訊
 		GrpJoinInfoDAO grpJoinInfoDAO = new GrpJoinInfoDAO();
 		
-      List<GrpJoinInfoVO> resultList = grpJoinInfoDAO.getQuery("OrgMbrNo","M0001");
+      List<GrpJoinInfoVO> resultList = grpJoinInfoDAO.getGrpJoinQuery("OrgMbrNo","M0001");
       for (GrpJoinInfoVO result : resultList) {
           System.out.println("Sport Type No: " + result.getGrpJoinInfoNo());
           System.out.println("Group Date: " + result.getPartiMbrNo());
