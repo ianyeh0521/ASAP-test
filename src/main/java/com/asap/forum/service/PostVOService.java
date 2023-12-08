@@ -13,8 +13,11 @@ public interface PostVOService {
 	
 	public PostVO updatePost(PostVO postVO);
 	
+	public List<PostVO> getbyPostTitle(String posttitle);
+	
 	public void deletePost(Integer postNo);
 	
 	public List<PostVO> getAllPosts();
 	
+	public List<PostVO> getAlltoShow(); 
 }

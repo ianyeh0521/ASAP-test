@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import com.asap.forum.entity.PostVO;
 import com.asap.util.HibernateUtil;
@@ -66,6 +67,7 @@ public class PostDAO implements PostDAO_interface {
 	}
 
 	
+	
 
 	@Override
 	public Integer addPost(PostVO post) {
@@ -114,7 +116,7 @@ public class PostDAO implements PostDAO_interface {
 	
 	@Override
 	public List<PostVO> getbyPostTitle(String posttitle){
-		return getSession().createQuery("from Emp where postTitle= :posttitle", PostVO.class)
+		return getSession().createQuery("from PostVO where postStatus=1 and postTitle like :posttitle", PostVO.class)
 				.setParameter("posttitle", "%" +posttitle+ "%")
 				.list();
 	}
@@ -129,6 +131,11 @@ public class PostDAO implements PostDAO_interface {
 		return getSession().createQuery("from PostVO where mbrNo= :mbrno", PostVO.class)
 				.setParameter("mbrno", mbrNo)
 				.list();
+	}
+
+	@Override
+	public List<PostVO> getAlltoShow() {
+		return getSession().createQuery("from PostVO where postStatus=1", PostVO.class).list();
 	};
 
 }
