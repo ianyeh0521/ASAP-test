@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "news")
@@ -24,6 +25,7 @@ public class NewsVO implements Serializable {
 	private String newsSubj;
 	@Column(name = "NewsText")
 	private String newsText;
+	@CreationTimestamp
 	@Column(name = "NewsTime")
 	private Timestamp newsTime;
 
