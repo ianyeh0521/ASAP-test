@@ -2,7 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List"  %>
 <%@ page import="com.asap.shop.entity.ItemInfoVO" %>
+<%@ page import="com.asap.shop.service.ItemInfoService_interface" %>
+<%@ page import="com.asap.shop.service.ItemInfoService" %>
 <!DOCTYPE html>
+
+<%
+    ItemInfoService_interface ItemSvc = new ItemInfoService();
+ 	List<ItemInfoVO> list = ItemSvc.getAllItemInfo();
+    pageContext.setAttribute("list",list);
+    System.out.println(list);
+%>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -321,12 +331,15 @@
                     <label>排序方式:</label>
 
                     <div class="select-custom">
-                      <select name="orderby" class="form-control">
-                        <option value="menu_order" selected="selected">
-                          預設(最新上架)
-                        </option>
-                        <option value="popularity">價格:高到低</option>
-                        <option value="price-desc">價格:低到高</option>
+                      <select name="orderby" class="form-control orderby">
+                        <option value="menu" >請選擇</option>
+                        
+                        <option value="menu_order" >最新上架</option>
+                        
+                        <option value="true">價格:高到低</option>
+                        
+                        <option value="false">價格:低到高</option>
+                        
                         <option value="date">瀏覽人數</option>
 
                       </select>
@@ -338,7 +351,8 @@
                 <!-- End .toolbox-left -->
               </nav>
 
-              <div class="row">
+              <div class="row"  id="roworder">
+              <c:forEach var="ItemInfoVO" items="${list}">
                 <div class="col-6 col-sm-3">
                   <div class="product-default inner-quickview inner-icon">
                     <figure>
@@ -364,7 +378,7 @@
                     <div class="product-details">
                       <div class="category-wrap">
                         <div class="category-list">
-                          <a href="#">足球</a>, <a href="#">運動用品</a>,
+                          <span>${ItemInfoVO.itemName}</span><span>${ItemInfoVO.itemTypeNo}</span>,
                           <a href="#">狀況尚可</a>
                         </div>
                         <a
@@ -381,466 +395,18 @@
                         <a href="AsapCart.jsp" class="btn-icon-cart" title="加入購物車"><i class="icon-shopping-cart"></i> 加入購物車</a>
                         <a href="AsapCart.jsp"btn-icon-buy" title="直接購買"><i class="icon-credit-card"></i> 直接購買</a>
                     </div>
-                      <!-- End .product-container -->
+                      End .product-container
                       <div class="price-box">
                         <del class="old-price">$400.00</del>
                         <span class="product-price">$200.00</span>
                       </div>
-                      <!-- End .price-box -->
+                      End .price-box
                     </div>
-                    <!-- End .product-details -->
+                    End .product-details
                   </div>
                 </div>
-                <!-- End .col-sm-3 -->
-
-                <div class="col-6 col-sm-3">
-                  <div class="product-default inner-quickview inner-icon">
-                    <figure>
-                      <a href="AsapShopProduct.jsp">
-                        <img
-                          src="../assets/images/asapshop/football.jpg"
-                          width="300"
-                          height="300"
-                          alt="product"
-                        />
-                      </a>
-                      <div class="label-group">
-                        <span class="product-label label-sale">-50%</span>
-                      </div>
-                      <div class="btn-icon-group">
-                        <a
-                          href="#"
-                          class="btn-icon btn-add-cart product-type-simple"
-                          ><i class="icon-shopping-cart"></i
-                        ></a>
-                      </div>
-                      <a
-                        href="ProductQuickView.html"
-                        class="btn-quickview"
-                        title="快速查看"
-                        >快速查看</a
-                      >
-                    </figure>
-                    <div class="product-details">
-                      <div class="category-wrap">
-                        <div class="category-list">
-                          <a href="#">足球</a>, <a href="#">運動用品</a>,
-                          <a href="#">狀況尚可</a>
-                        </div>
-                        <a
-                          href="AsapShopWish.jsp"
-                          class="btn-icon-wish"
-                          title="加入收藏"
-                          ><i class="icon-heart"></i
-                        ></a>
-                      </div>
-                      <h3 class="product-title">
-                        <a href="AsapShopProduct.jsp">足球</a>
-                      </h3>
-                      <div class="ratings-container">
-                        <div class="product-ratings">
-                          <span class="ratings" style="width: 100%"></span>
-                          <!-- End .ratings -->
-                          <span class="tooltiptext tooltip-top"></span>
-                        </div>
-                        <!-- End .product-ratings -->
-                      </div>
-                      <!-- End .product-container -->
-                      <div class="price-box">
-                        <del class="old-price">$400.00</del>
-                        <span class="product-price">$200.00</span>
-                      </div>
-                      <!-- End .price-box -->
-                    </div>
-                    <!-- End .product-details -->
-                  </div>
-                </div>
-                <!-- End .col-sm-3 -->
-
-                <div class="col-6 col-sm-3">
-                  <div class="product-default inner-quickview inner-icon">
-                    <figure>
-                      <a href="AsapShopProduct.jsp">
-                        <img
-                          src="../assets/images/asapshop/football.jpg"
-                          width="300"
-                          height="300"
-                          alt="product"
-                        />
-                      </a>
-                      <div class="label-group">
-                        <span class="product-label label-sale">-50%</span>
-                      </div>
-                      <div class="btn-icon-group">
-                        <a
-                          href="#"
-                          class="btn-icon btn-add-cart product-type-simple"
-                          ><i class="icon-shopping-cart"></i
-                        ></a>
-                      </div>
-                      <a
-                        href="ProductQuickView.html"
-                        class="btn-quickview"
-                        title="快速查看"
-                        >快速查看</a
-                      >
-                    </figure>
-                    <div class="product-details">
-                      <div class="category-wrap">
-                        <div class="category-list">
-                          <a href="#">足球</a>, <a href="#">運動用品</a>,
-                          <a href="#">狀況尚可</a>
-                        </div>
-                        <a
-                          href="AsapShopWish.jsp"
-                          class="btn-icon-wish"
-                          title="加入收藏"
-                          ><i class="icon-heart"></i
-                        ></a>
-                      </div>
-                      <h3 class="product-title">
-                        <a href="AsapShopProduct.jsp">足球</a>
-                      </h3>
-                      <div class="ratings-container">
-                        <div class="product-ratings">
-                          <span class="ratings" style="width: 100%"></span>
-                          <!-- End .ratings -->
-                          <span class="tooltiptext tooltip-top"></span>
-                        </div>
-                        <!-- End .product-ratings -->
-                      </div>
-                      <!-- End .product-container -->
-                      <div class="price-box">
-                        <del class="old-price">$400.00</del>
-                        <span class="product-price">$200.00</span>
-                      </div>
-                      <!-- End .price-box -->
-                    </div>
-                    <!-- End .product-details -->
-                  </div>
-                </div>
-                <!-- End .col-sm-3 -->
-
-                <div class="col-6 col-sm-3">
-                  <div class="product-default inner-quickview inner-icon">
-                    <figure>
-                      <a href="AsapShopProduct.jsp">
-                        <img
-                          src="../assets/images/asapshop/football.jpg"
-                          width="300"
-                          height="300"
-                          alt="product"
-                        />
-                      </a>
-                      <div class="label-group">
-                        <span class="product-label label-sale">-50%</span>
-                      </div>
-                      <div class="btn-icon-group">
-                        <a
-                          href="#"
-                          class="btn-icon btn-add-cart product-type-simple"
-                          ><i class="icon-shopping-cart"></i
-                        ></a>
-                      </div>
-                      <a
-                        href="ProductQuickView.html"
-                        class="btn-quickview"
-                        title="快速查看"
-                        >快速查看</a
-                      >
-                    </figure>
-                    <div class="product-details">
-                      <div class="category-wrap">
-                        <div class="category-list">
-                          <a href="#">足球</a>, <a href="#">運動用品</a>,
-                          <a href="#">狀況尚可</a>
-                        </div>
-                        <a
-                          href="AsapShopWish.jsp"
-                          class="btn-icon-wish"
-                          title="加入收藏"
-                          ><i class="icon-heart"></i
-                        ></a>
-                      </div>
-                      <h3 class="product-title">
-                        <a href="AsapShopProduct.jsp">足球</a>
-                      </h3>
-                      <div class="ratings-container">
-                        <div class="product-ratings">
-                          <span class="ratings" style="width: 100%"></span>
-                          <!-- End .ratings -->
-                          <span class="tooltiptext tooltip-top"></span>
-                        </div>
-                        <!-- End .product-ratings -->
-                      </div>
-                      <!-- End .product-container -->
-                      <div class="price-box">
-                        <del class="old-price">$400.00</del>
-                        <span class="product-price">$200.00</span>
-                      </div>
-                      <!-- End .price-box -->
-                    </div>
-                    <!-- End .product-details -->
-                  </div>
-                </div>
-                <!-- End .col-sm-3 -->
-
-                <div class="col-6 col-sm-3">
-                  <div class="product-default inner-quickview inner-icon">
-                    <figure>
-                      <a href="AsapShopProduct.jsp">
-                        <img
-                          src="../assets/images/asapshop/football.jpg"
-                          width="300"
-                          height="300"
-                          alt="product"
-                        />
-                      </a>
-                      <div class="label-group">
-                        <span class="product-label label-sale">-50%</span>
-                      </div>
-                      <div class="btn-icon-group">
-                        <a
-                          href="#"
-                          class="btn-icon btn-add-cart product-type-simple"
-                          ><i class="icon-shopping-cart"></i
-                        ></a>
-                      </div>
-                      <a
-                        href="ProductQuickView.html"
-                        class="btn-quickview"
-                        title="快速查看"
-                        >快速查看</a
-                      >
-                    </figure>
-                    <div class="product-details">
-                      <div class="category-wrap">
-                        <div class="category-list">
-                          <a href="#">足球</a>, <a href="#">運動用品</a>,
-                          <a href="#">狀況尚可</a>
-                        </div>
-                        <a
-                          href="AsapShopWish.jsp"
-                          class="btn-icon-wish"
-                          title="加入收藏"
-                          ><i class="icon-heart"></i
-                        ></a>
-                      </div>
-                      <h3 class="product-title">
-                        <a href="AsapShopProduct.jsp">足球</a>
-                      </h3>
-                      <div class="ratings-container">
-                        <div class="product-ratings">
-                          <span class="ratings" style="width: 100%"></span>
-                          <!-- End .ratings -->
-                          <span class="tooltiptext tooltip-top"></span>
-                        </div>
-                        <!-- End .product-ratings -->
-                      </div>
-                      <!-- End .product-container -->
-                      <div class="price-box">
-                        <del class="old-price">$400.00</del>
-                        <span class="product-price">$200.00</span>
-                      </div>
-                      <!-- End .price-box -->
-                    </div>
-                    <!-- End .product-details -->
-                  </div>
-                </div>
-                <!-- End .col-sm-3 -->
-
-                <div class="col-6 col-sm-3">
-                  <div class="product-default inner-quickview inner-icon">
-                    <figure>
-                      <a href="AsapShopProduct.jsp">
-                        <img
-                          src="../assets/images/asapshop/football.jpg"
-                          width="300"
-                          height="300"
-                          alt="product"
-                        />
-                      </a>
-                      <div class="label-group">
-                        <span class="product-label label-sale">-50%</span>
-                      </div>
-                      <div class="btn-icon-group">
-                        <a
-                          href="#"
-                          class="btn-icon btn-add-cart product-type-simple"
-                          ><i class="icon-shopping-cart"></i
-                        ></a>
-                      </div>
-                      <a
-                        href="ProductQuickView.html"
-                        class="btn-quickview"
-                        title="快速查看"
-                        >快速查看</a
-                      >
-                    </figure>
-                    <div class="product-details">
-                      <div class="category-wrap">
-                        <div class="category-list">
-                          <a href="#">足球</a>, <a href="#">運動用品</a>,
-                          <a href="#">狀況尚可</a>
-                        </div>
-                        <a
-                          href="AsapShopWish.jsp"
-                          class="btn-icon-wish"
-                          title="加入收藏"
-                          ><i class="icon-heart"></i
-                        ></a>
-                      </div>
-                      <h3 class="product-title">
-                        <a href="AsapShopProduct.jsp">足球</a>
-                      </h3>
-                      <div class="ratings-container">
-                        <div class="product-ratings">
-                          <span class="ratings" style="width: 100%"></span>
-                          <!-- End .ratings -->
-                          <span class="tooltiptext tooltip-top"></span>
-                        </div>
-                        <!-- End .product-ratings -->
-                      </div>
-                      <!-- End .product-container -->
-                      <div class="price-box">
-                        <del class="old-price">$400.00</del>
-                        <span class="product-price">$200.00</span>
-                      </div>
-                      <!-- End .price-box -->
-                    </div>
-                    <!-- End .product-details -->
-                  </div>
-                </div>
-                <!-- End .col-sm-3 -->
-
-                <div class="col-6 col-sm-3">
-                  <div class="product-default inner-quickview inner-icon">
-                    <figure>
-                      <a href="AsapShopProduct.jsp">
-                        <img
-                          src="../assets/images/asapshop/football.jpg"
-                          width="300"
-                          height="300"
-                          alt="product"
-                        />
-                      </a>
-                      <div class="label-group">
-                        <span class="product-label label-sale">-50%</span>
-                      </div>
-                      <div class="btn-icon-group">
-                        <a
-                          href="#"
-                          class="btn-icon btn-add-cart product-type-simple"
-                          ><i class="icon-shopping-cart"></i
-                        ></a>
-                      </div>
-                      <a
-                        href="ProductQuickView.html"
-                        class="btn-quickview"
-                        title="快速查看"
-                        >快速查看</a
-                      >
-                    </figure>
-                    <div class="product-details">
-                      <div class="category-wrap">
-                        <div class="category-list">
-                          <a href="#">足球</a>, <a href="#">運動用品</a>,
-                          <a href="#">狀況尚可</a>
-                        </div>
-                        <a
-                          href="AsapShopWish.jsp"
-                          class="btn-icon-wish"
-                          title="加入收藏"
-                          ><i class="icon-heart"></i
-                        ></a>
-                      </div>
-                      <h3 class="product-title">
-                        <a href="AsapShopProduct.jsp">足球</a>
-                      </h3>
-                      <div class="ratings-container">
-                        <div class="product-ratings">
-                          <span class="ratings" style="width: 100%"></span>
-                          <!-- End .ratings -->
-                          <span class="tooltiptext tooltip-top"></span>
-                        </div>
-                        <!-- End .product-ratings -->
-                      </div>
-                      <!-- End .product-container -->
-                      <div class="price-box">
-                        <del class="old-price">$400.00</del>
-                        <span class="product-price">$200.00</span>
-                      </div>
-                      <!-- End .price-box -->
-                    </div>
-                    <!-- End .product-details -->
-                  </div>
-                </div>
-                <!-- End .col-sm-3 -->
-
-                <div class="col-6 col-sm-3">
-                  <div class="product-default inner-quickview inner-icon">
-                    <figure>
-                      <a href="AsapShopProduct.jsp">
-                        <img
-                          src="../assets/images/asapshop/football.jpg"
-                          width="300"
-                          height="300"
-                          alt="product"
-                        />
-                      </a>
-                      <div class="label-group">
-                        <span class="product-label label-sale">-50%</span>
-                      </div>
-                      <div class="btn-icon-group">
-                        <a
-                          href="#"
-                          class="btn-icon btn-add-cart product-type-simple"
-                          ><i class="icon-shopping-cart"></i
-                        ></a>
-                      </div>
-                      <a
-                        href="ProductQuickView.html"
-                        class="btn-quickview"
-                        title="快速查看"
-                        >快速查看</a
-                      >
-                    </figure>
-                    <div class="product-details">
-                      <div class="category-wrap">
-                        <div class="category-list">
-                          <a href="#">足球</a>, <a href="#">運動用品</a>,
-                          <a href="#">狀況尚可</a>
-                        </div>
-                        <a
-                          href="AsapShopWish.jsp"
-                          class="btn-icon-wish"
-                          title="加入收藏"
-                          ><i class="icon-heart"></i
-                        ></a>
-                      </div>
-                      <h3 class="product-title">
-                        <a href="AsapShopProduct.jsp">足球</a>
-                      </h3>
-                      <div class="ratings-container">
-                        <div class="product-ratings">
-                          <span class="ratings" style="width: 100%"></span>
-                          <!-- End .ratings -->
-                          <span class="tooltiptext tooltip-top"></span>
-                        </div>
-                        <!-- End .product-ratings -->
-                      </div>
-                      <!-- End .product-container -->
-                      <div class="price-box">
-                        <del class="old-price">$400.00</del>
-                        <span class="product-price">$200.00</span>
-                      </div>
-                      <!-- End .price-box -->
-                    </div>
-                    <!-- End .product-details -->
-                  </div>
-                </div>
-                <!-- End .col-sm-3 -->
-
+				</c:forEach>
+				
               </div>
               <!-- End .row -->
 
@@ -1377,6 +943,87 @@
       $("footer").load("footer.html");
       $("div.sticky-navbar").load("sticky-navbar.html");
       $("div.mobile-menu-container").load("mobile-menu-container.html");
+      
+      $("select.orderby").on("change", function() {
+    	  var orderby=$(".orderby").val();
+    	  var form_data = {
+    			  "action": "orderby",
+    			  "Itemsort": orderby
+    	  }
+    	  $.ajax({
+    		  url : "ItemInfoServlet",
+    		  type : "POST",
+    		  data : form_data,
+    		  dataType: "json",
+    		  success : function(data) {
+        		  $("div#roworder").children("div").animate({
+                      "opacity": 0
+                    }, 0, "swing", function(){
+                      $(this).remove();
+                    });
+        		  var itemsorthtml = "";
+        		  for (let item in data) {
+        			  itemsorthtml=`<div class="col-6 col-sm-3">
+                          <div class="product-default inner-quickview inner-icon">
+                          <figure>
+                            <a href="AsapShopProduct.jsp">
+                              <img
+                                src="../assets/images/asapshop/football.jpg"
+                                width="300"
+                                height="300"
+                                alt="product"
+                              />
+                            </a>
+                            <div class="label-group">
+                              <span class="product-label label-sale">-50%</span>
+                            </div>
+
+                            <a
+                              href="ProductQuickView.html"
+                              class="btn-quickview"
+                              title="快速查看"
+                              >快速查看</a
+                            >
+                          </figure>
+                          <div class="product-details">
+                            <div class="category-wrap">
+                              <div class="category-list">
+                                <span>${data[item]["itemName"]}</span><span>${data[item]["itemTypeNo"]}</span>,
+                                <a href="#">狀況尚可</a>
+                                
+                              </div>
+                              <a
+                                href="AsapShopWish.jsp"
+                                class="btn-icon-wish"
+                                title="加入收藏"
+                                ><i class="icon-heart"></i
+                              ></a>
+                            </div>
+                            <h3 class="product-title">
+                              <a href="AsapShopProduct.jsp">足球</a>
+                            </h3>
+                            <div class="product-buttons">
+                              <a href="AsapCart.jsp" class="btn-icon-cart" title="加入購物車"><i class="icon-shopping-cart"></i> 加入購物車</a>
+                              <a href="AsapCart.jsp"btn-icon-buy" title="直接購買"><i class="icon-credit-card"></i> 直接購買</a>
+                          </div>
+                            End .product-container
+                            <div class="price-box">
+                              <del class="old-price">$400.00</del>
+                              <span class="product-price">$200.00</span>
+                            </div>
+                            End .price-box
+                          </div>
+                          End .product-details
+                        </div>
+                      </div>`     
+                      $("div#roworder").append(itemsorthtml)
+        		  }
+    		  },
+    	  });
+      })
+   
+//       <select name="orderby" class="form-control orderby">
+      
     </script>
   </body>
 </html>

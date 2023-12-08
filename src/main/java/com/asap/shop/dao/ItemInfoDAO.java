@@ -155,18 +155,18 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 	
 	@Override
 	public List<ItemInfoVO> getALL() {
-		Transaction transaction = null;
-		try {
-			Session session = getSession();
-			transaction = session.beginTransaction();
-			List<ItemInfoVO> list = session.createQuery("from ItemInfoVO", ItemInfoVO.class).list();
+//		Transaction transaction = null;
+//		try {
+//			Session session = getSession();
+//			transaction = session.beginTransaction();
+			List<ItemInfoVO> list = getSession().createQuery("from ItemInfoVO", ItemInfoVO.class).list();
 
 			return list;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	}
-	
 	
 }
