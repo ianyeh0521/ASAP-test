@@ -17,7 +17,7 @@ public class ItemInfoService implements ItemInfoService_interface {
         dao = new ItemInfoDAO();
     }
 
-    @Override
+	@Override
     public int insertItemInfo(ItemInfoVO itemInfo) {
         // 呼叫 DAO 的插入方法
         return dao.insert(itemInfo);
