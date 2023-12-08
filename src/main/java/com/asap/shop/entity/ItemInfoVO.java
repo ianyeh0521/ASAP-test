@@ -1,22 +1,60 @@
-package com.asap.shop;
+package com.asap.shop.entity;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ItemInfoVO implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Iteminfo")
+public class ItemInfoVO  {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ItemNo", updatable = false )
 	private Integer itemNo;
+
+	@Column(name = "ItemName")
 	private String itemName;
-	private String mbrNo;
+
+    @Column(name = "MbrNo")
+    private String mbrNo;
+
+	@Column(name = "ItemTypeNo")
 	private Integer itemTypeNo;
+
+	@Column(name = "ItemStatNo")
 	private Integer itemStatNo;
+
+	@Column(name = "ItemText")
 	private String itemText;
+
+	@Column(name = "ItemStockQty")
 	private Integer itemStockQty;
+
+	@Column(name = "ItemPrice")
 	private Integer itemPrice;
+
+	@Column(name = "PreItemPrice")
 	private Integer preItemPrice;
+
+	@Column(name = "ItemSizeNo")
 	private Integer itemSizeNo;
+
+	@Column(name = "ItemView")
 	private Integer itemView;
-	private Boolean itemAddStat;
+
+	@Column(name = "ItemAddStat")
+	private Integer itemAddStat;
+
+	@Column(name = "ItemAddTime")
 	private Timestamp itemAddTime;
+
+	@Column(name = "ItemUpdTime")
 	private Timestamp itemUpdTime;
 
 	public ItemInfoVO() {
@@ -24,12 +62,12 @@ public class ItemInfoVO implements Serializable {
 
 	public ItemInfoVO(Integer itemNo, String itemName, String mbrNo, Integer itemTypeNo, Integer itemStatNo,
 			String itemText, Integer itemStockQty, Integer itemPrice, Integer preItemPrice, Integer itemSizeNo,
-			Integer itemView, Boolean itemAddStat, Timestamp itemAddTime, Timestamp itemUpdTime) {
+			Integer itemView, Integer itemAddStat, Timestamp itemAddTime, Timestamp itemUpdTime) {
 		super();
 		this.itemNo = itemNo;
 		this.itemName = itemName;
 		this.mbrNo = mbrNo;
-		this.itemTypeNo = itemTypeNo;
+		this.itemTypeNo =itemTypeNo;
 		this.itemStatNo = itemStatNo;
 		this.itemText = itemText;
 		this.itemStockQty = itemStockQty;
@@ -40,6 +78,7 @@ public class ItemInfoVO implements Serializable {
 		this.itemAddStat = itemAddStat;
 		this.itemAddTime = itemAddTime;
 		this.itemUpdTime = itemUpdTime;
+		
 	}
 
 	public Integer getItemNo() {
@@ -69,7 +108,7 @@ public class ItemInfoVO implements Serializable {
 	public Integer getItemTypeNo() {
 		return itemTypeNo;
 	}
-
+	
 	public void setItemTypeNo(Integer itemTypeNo) {
 		this.itemTypeNo = itemTypeNo;
 	}
@@ -77,7 +116,7 @@ public class ItemInfoVO implements Serializable {
 	public Integer getItemStatNo() {
 		return itemStatNo;
 	}
-
+	
 	public void setItemStatNo(Integer itemStatNo) {
 		this.itemStatNo = itemStatNo;
 	}
@@ -117,9 +156,9 @@ public class ItemInfoVO implements Serializable {
 	public Integer getItemSizeNo() {
 		return itemSizeNo;
 	}
-
+	
 	public void setItemSizeNo(Integer itemSizeNo) {
-		this.itemSizeNo = itemSizeNo;
+	    this.itemSizeNo = itemSizeNo;
 	}
 
 	public Integer getItemView() {
@@ -130,11 +169,11 @@ public class ItemInfoVO implements Serializable {
 		this.itemView = itemView;
 	}
 
-	public Boolean getItemAddStat() {
+	public Integer getItemAddStat() {
 		return itemAddStat;
 	}
 
-	public void setItemAddStat(Boolean itemAddStat) {
+	public void setItemAddStat(Integer itemAddStat) {
 		this.itemAddStat = itemAddStat;
 	}
 
@@ -153,4 +192,14 @@ public class ItemInfoVO implements Serializable {
 	public void setItemUpdTime(Timestamp itemUpdTime) {
 		this.itemUpdTime = itemUpdTime;
 	}
+
+	@Override
+	public String toString() {
+		return "ItemInfoVO [itemNo=" + itemNo + ", itemName=" + itemName + ", itemTypeNo=" + itemTypeNo
+				+ ", itemStatNo=" + itemStatNo + ", itemText=" + itemText + ", itemStockQty=" + itemStockQty
+				+ ", itemPrice=" + itemPrice + ", preItemPrice=" + preItemPrice + ", itemSizeNo=" + itemSizeNo
+				+ ", itemView=" + itemView + ", itemAddStat=" + itemAddStat + ", itemAddTime=" + itemAddTime
+				+ ", itemUpdTime=" +itemUpdTime + "]";
+	}
+
 }

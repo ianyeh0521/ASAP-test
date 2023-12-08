@@ -1,34 +1,50 @@
-package com.asap.shop;
+package com.asap.shop.entity;
 
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class ItemSizeVO implements Serializable {
-	private Integer itemTypeNo;
-	private String itemTypeName;
+@Entity
+@Table(name = "ItemSize")
+public class ItemSizeVO {
+
+	@Id
+	@Column(name = "ItemSizeNo", updatable = false)
+	private Integer itemSizeNo;
+
+	@Column(name = "ItemSizeText")
+	private String itemSizeText;
 
 	public ItemSizeVO() {
+
 	}
 
-	public ItemSizeVO(Integer itemTypeNo, String itemTypeName) {
+	public ItemSizeVO(Integer itemSizeNo, String itemSizeText) {
 		super();
-		this.itemTypeNo = itemTypeNo;
-		this.itemTypeName = itemTypeName;
+		this.itemSizeNo = itemSizeNo;
+		this.itemSizeText = itemSizeText;
 	}
 
-	public Integer getItemTypeNo() {
-		return itemTypeNo;
+	public Integer getItemSizeNo() {
+		return itemSizeNo;
 	}
 
-	public void setItemTypeNo(Integer itemTypeNo) {
-		this.itemTypeNo = itemTypeNo;
+	public void setItemSizeNo(Integer itemSizeNo) {
+		this.itemSizeNo = itemSizeNo;
 	}
 
-	public String getItemTypeName() {
-		return itemTypeName;
+	public String getItemSizeText() {
+		return itemSizeText;
 	}
 
-	public void setItemTypeName(String itemTypeName) {
-		this.itemTypeName = itemTypeName;
+	public void setItemSizeText(String itemSizeText) {
+		this.itemSizeText = itemSizeText;
+	}
+
+	@Override
+	public String toString() {
+		return "ItemSizeVO [itemSizeNo=" + itemSizeNo + ", itemSizeText=" + itemSizeText + "]";
 	}
 
 }

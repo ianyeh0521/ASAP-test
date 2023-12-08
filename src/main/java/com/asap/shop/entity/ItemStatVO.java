@@ -1,12 +1,23 @@
-package com.asap.shop;
+package com.asap.shop.entity;
 
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class ItemStatVO implements Serializable {
+@Entity
+@Table(name = "ItemStat")
+public class ItemStatVO {
+
+	@Id
+	@Column(name = "ItemStatNo", updatable = false)
 	private Integer itemStatNo;
+
+	@Column(name = "ItemStatText")
 	private String itemStatText;
 
 	public ItemStatVO() {
+
 	}
 
 	public ItemStatVO(Integer itemStatNo, String itemStatText) {
@@ -29,6 +40,11 @@ public class ItemStatVO implements Serializable {
 
 	public void setItemStatText(String itemStatText) {
 		this.itemStatText = itemStatText;
+	}
+
+	@Override
+	public String toString() {
+		return "ItemStatVO [itemStatNo=" + itemStatNo + ", itemStatText=" + itemStatText + "]";
 	}
 
 }
