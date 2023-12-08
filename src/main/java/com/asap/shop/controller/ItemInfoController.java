@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.asap.shop.service.ItemInfoService;
 import com.asap.shop.service.ItemInfoService_interface;
 
-import com.asap.shop.service.ItemInfoService_interface;
-
 @WebServlet("/ItemInfoController")
 public class ItemInfoController extends HttpServlet {
 	
