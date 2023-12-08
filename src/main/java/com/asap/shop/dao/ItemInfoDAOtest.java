@@ -12,36 +12,36 @@ import com.asap.util.HibernateUtil;
 public class ItemInfoDAOtest {
 	public static void main(String[] args) {
 //		新增資料
-//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//		try {
-//			session.beginTransaction();
-//			
-//			ItemInfoVO ItemT = new ItemInfoVO();
-//			
-//			ItemT.setItemName("梅西的褲子");
-//			ItemT.setMbrNo("M1"); 
-//			ItemT.setItemTypeNo(2);
-//			ItemT.setItemStatNo(3);
-//			ItemT.setItemText("CCCCC");
-//			ItemT.setItemStockQty(1);
-//			ItemT.setItemPrice(500);
-//			ItemT.setPreItemPrice(250);
-//			ItemT.setItemSizeNo(3);
-//			ItemT.setItemView(1000);
-//			ItemT.setItemAddStat(1);
-//			ItemT.setItemAddTime(java.sql.Timestamp.valueOf("2023-10-01 09:00:00"));
-//			ItemT.setItemUpdTime(java.sql.Timestamp.valueOf("2023-10-29 09:00:00"));
-//
-//			session.save(ItemT);
-//			
-//			session.getTransaction().commit();
-//			
-//		} catch (Exception e) {
-//			session.getTransaction().rollback();
-//			e.printStackTrace();
-//		} finally {
-//			HibernateUtil.shutdown();
-//		}
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			
+			ItemInfoVO ItemT = new ItemInfoVO();
+			
+			ItemT.setItemName("梅西的褲子");
+			ItemT.setMbrNo("M1"); 
+			ItemT.setItemTypeNo(2);
+			ItemT.setItemStatNo(3);
+			ItemT.setItemText("CCCCC");
+			ItemT.setItemStockQty(1);
+			ItemT.setItemPrice(500);
+			ItemT.setPreItemPrice(250);
+			ItemT.setItemSizeNo(3);
+			ItemT.setItemView(1000);
+			ItemT.setItemAddStat(1);
+			ItemT.setItemAddTime(java.sql.Timestamp.valueOf("2023-10-01 09:00:00"));
+			ItemT.setItemUpdTime(java.sql.Timestamp.valueOf("2023-10-29 09:00:00"));
+
+			session.save(ItemT);
+			
+			session.getTransaction().commit();
+			
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			HibernateUtil.shutdown();
+		}
 			
 //		修改資料
 //		SessionFactory factory = HibernateUtil.getSessionFactory();
@@ -192,40 +192,40 @@ public class ItemInfoDAOtest {
 //        }
 		
 		
-		try {
-            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-
-            ItemInfoDAO itemInfoDAO = new ItemInfoDAO();
-
-            // 從高到低排序
-            List<ItemInfoVO> resultListDesc = itemInfoDAO.orderByItemPrice(true);
-
-            System.out.println("Items ordered by price (descending):");
-            for (ItemInfoVO result : resultListDesc) {
-                System.out.println("Item Name: " + result.getItemName());
-                System.out.println("Item Price: " + result.getItemPrice());
-                // ... (其他字段)
-                System.out.println("===========================================");
-            }
+//		try {
+//            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//            session.beginTransaction();
+//
+//            ItemInfoDAO itemInfoDAO = new ItemInfoDAO();
+//
+//            // 從高到低排序
+//            List<ItemInfoVO> resultListDesc = itemInfoDAO.orderByItemPrice(true);
+//
+//            System.out.println("Items ordered by price (descending):");
+//            for (ItemInfoVO result : resultListDesc) {
+//                System.out.println("Item Name: " + result.getItemName());
+//                System.out.println("Item Price: " + result.getItemPrice());
+//                // ... (其他字段)
+//                System.out.println("===========================================");
+//            }
 
             // 從低到高排序ˋ
-            List<ItemInfoVO> resultListAsc = itemInfoDAO.orderByItemPrice(false);
-
-            System.out.println("Items ordered by price (ascending):");
-            for (ItemInfoVO result : resultListAsc) {
-                System.out.println("Item Name: " + result.getItemName());
-                System.out.println("Item Price: " + result.getItemPrice());
-                // ... (其他字段)
-                System.out.println("===========================================");
-            }
-
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            HibernateUtil.shutdown();
-        }
+//            List<ItemInfoVO> resultListAsc = itemInfoDAO.orderByItemPrice(false);
+//
+//            System.out.println("Items ordered by price (ascending):");
+//            for (ItemInfoVO result : resultListAsc) {
+//                System.out.println("Item Name: " + result.getItemName());
+//                System.out.println("Item Price: " + result.getItemPrice());
+//                // ... (其他字段)
+//                System.out.println("===========================================");
+//            }
+//
+//            session.getTransaction().commit();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            HibernateUtil.shutdown();
+//        }
 		
 		//按造瀏覽人數排名
 //		 try {

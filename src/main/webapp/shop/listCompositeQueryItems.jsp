@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/main/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/shop/main.css">
 <title>List iteminfos</title>
 </head>
 <body>

@@ -1,25 +1,28 @@
 package com.asap.shop.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.asap.shop.entity.ItemInfoVO;
 
 public interface ItemInfoService_interface {
 
-	ItemInfoVO addItem(ItemInfoVO ItemInfo);
+    int insertItemInfo(ItemInfoVO itemInfo);
 
-	ItemInfoVO updateItem(ItemInfoVO ItemInfo);
+    int updateItemInfo(ItemInfoVO itemInfo);
 
-	void deleteItem(Integer ItemNo);
+    int deleteItemInfo(Integer id);
 
-	ItemInfoVO getItemInfoByItemNo(Integer ItemNo);
-	
-	List<ItemInfoVO> getAllItemInfos(int currentPage);
-	
-	List<ItemInfoVO> getItemInfosByCompositeQuery(Map<String, String[]> map);
+    ItemInfoVO getItemInfoById(Integer id);
 
-	int getPageTotal();
+    List<ItemInfoVO> searchItemInfoByKeyword(String keyword);
 
+    List<ItemInfoVO> getItemInfoByCategory(String category);
 
+    List<ItemInfoVO> getItemInfoByPriceRange(Integer minPrice, Integer maxPrice);
+
+    List<ItemInfoVO> getItemInfoByPriceOrder(boolean descending);
+
+    List<ItemInfoVO> getItemInfoByViewOrder(boolean descending);
+
+    List<ItemInfoVO> getAllItemInfo();
 }
