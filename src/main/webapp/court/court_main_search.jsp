@@ -1,3 +1,4 @@
+<%@page import="com.asap.court.entity.CourtImgVO"%>
 <%@page import="com.asap.court.entity.CourtVO"%>
 <%@page import="com.asap.court.service.CourtService_interface"%>
 <%@page import="com.asap.court.service.CourtService"%>
@@ -9,7 +10,7 @@
 <%@ page import="java.util.Base64" %>
 
 <%
-	
+
 
 %>
 <head>
@@ -24,7 +25,7 @@
 	<meta name="author" content="SW-THEMES">
 
 	<!-- Favicon -->
-	<link rel="icon" type="image/x-icon" href="/ASAP/assets/images/icons/favicon.png">
+	<link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
 
 	<script>
 		WebFontConfig = {
@@ -39,16 +40,16 @@
 	</script>
 
 	<!-- Plugins CSS File -->
-	<link rel="stylesheet" href="/ASAP/assets/css/bootstrap.min.css">
-	<link rel="preload" href="/ASAP/assets/fonts/porto.woff2?64334846" as="font" type="font/ttf" crossorigin>
-	<link rel="preload" href="/ASAP/assets/vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
+	<link rel="preload" href="${pageContext.request.contextPath}/assets/fonts/porto.woff2?64334846" as="font" type="font/ttf" crossorigin>
+	<link rel="preload" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
 		crossorigin>
-	<link rel="preload" href="/ASAP/assets/vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
+	<link rel="preload" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
 		crossorigin>
 
 	<!-- Main CSS File -->
-	<link rel="stylesheet" href="/ASAP/assets/css/style.min.css">
-	<link rel="stylesheet" type="text/css" href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 
 	
 </head>
@@ -148,7 +149,6 @@
 				
 				
 				<div class="row mb-8" id="divTest">
-
 					<!-- court list -->
 					<div class="col-lg-9">
 						<h4 class="text-uppercase heading-bottom-border mt-4" style="margin-top: 30px !important;">搜尋「 ${searchCon} 」的結果：</h4>
@@ -203,33 +203,32 @@
 						<!-- 場地資訊 -->
 						
 						<div class="row" >
-							<c:forEach var="courtVO" items="${courSearchList}">
+							<c:forEach var="entry" items="${cobineMap}">
 							<div class="col-sm-12 col-6 product-default left-details product-list mb-2">
 								
 								
-								<figure>								
-										<img src="data:image/jpeg;base64" width="250" height="250"
-											alt="圖片" />							
+								
+								<figure>	
+										<c:forEach var="entryValue" items="${entry.value}" begin="0" end="1">							
+										<img src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(entryValue.courtImg)}"  width="250" height="250"
+											alt="圖片" loading="lazy"/>	
+										</c:forEach>						
 								</figure>
 								
 								
 								<div class="product-details" >
 									<div class="category-list">
-										<a href="category.html" class="type">${courtVO.courtTypeVO.courtType}</a>
+										<a href="category.html" class="type">${entry.key.courtTypeVO.courtType}</a>
 									</div>
-									<h3 class="product-title" class="name"> <a href="product.html">${courtVO.courtName}</a></h3>
-									<p class="product-description" class="text">${courtVO.courtText}</p>
+									<h3 class="product-title" class="name">${entry.key.courtName}</h3>
+									<p class="product-description" class="text">${entry.key.courtText}</p>
 									<div class="price-box">
-										<span class="product-price" class="price">${courtVO.courtPrice} / hr</span>
+										<span class="product-price" class="price">${entry.key.courtPrice} / hr</span>
 									</div>
 									<div class="product-action">
-										<a href="#" class="btn-icon btn-add-cart product-type-simple">
-											<i class="icon-shopping-cart"></i>
-											<span>我要預約</span>
-										</a>
-										<a href="wishlist.html" class="btn-icon-wish" title="wishlist">
-											<i class="icon-heart"></i>
-										</a>
+										<a href="/ASAP/court/court_page.jsp?courtNo=${entry.key.courtNo}" class="btn btn-primary btn-rounded btn-md">
+											<span style="color: white;">我要預約</span>
+										</a>					
 									</div>
 								</div>
 							</div>	
@@ -237,17 +236,17 @@
 						</div><!-- 場地資訊結束 -->
 						
 						</div>
-					</div>
+				</div>
 					
 					<!-- current browse history -->
-					<div class="col-lg-3">
+				<div class="col-lg-3">
 						<h4 class="text-uppercase heading-bottom-border mt-6 mt-lg-4" style="margin-top: 30px !important;">近期瀏覽</h4>
 						<div class="product-default left-details product-widget">
 							<figure>
-								<a href="product.html">
-									<img src="#" width="84" height="84"
+								<a href="">
+									<img src="" width="84" height="84"
 										alt="product">
-									<img src="#" width="84" height="84"
+									<img src="" width="84" height="84"
 										alt="product">
 								</a>
 							</figure>
@@ -262,7 +261,8 @@
 						</div>
 					</div>
 
-				</div>
+					
+				
 			</div>
 
 		</main><!-- End .main -->
@@ -284,31 +284,25 @@
 	<div class="sticky-navbar">	</div>
 
 	<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
-
-	<!-- import Vue 3.0 -->
-	<script src="https://unpkg.com/vue@next"></script>
-
-	<!-- CDN import Axios -->
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	
 	<!-- Plugins JS File -->
-	<script src="/ASAP/assets/js/jquery.min.js"></script>
-	<script src="/ASAP/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="/ASAP/assets/js/plugins.min.js"></script>
-	<script src="/ASAP/assets/js/nouislider.min.js"></script>
-	<script src="/ASAP/assets/js/optional/isotope.pkgd.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/nouislider.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/optional/isotope.pkgd.min.js"></script>
 
 	<!-- Main JS File -->
-	<script src="/ASAP/assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<!-- datepicker -->
-	<script>
-		import AirDatepicker from 'air-datepicker';
-		import 'air-datepicker/air-datepicker.css';
+<!-- 	<script> -->
+<!-- 		import AirDatepicker from 'air-datepicker'; -->
+<!-- 		import 'air-datepicker/air-datepicker.css'; -->
 
-		let dp = new AirDatepicker('#el');
-		dp.show();
-	</script>
+<!-- 		let dp = new AirDatepicker('#el'); -->
+<!-- 		dp.show(); -->
+<!-- 	</script> -->
 
 	<!-- header and footer template -->
 	<script>

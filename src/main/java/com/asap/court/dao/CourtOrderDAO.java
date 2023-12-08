@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.asap.court.entity.CourtOrderVO;
-import com.asap.member.MemberVO;
+import com.asap.member.entity.MemberVO;
 import com.asap.util.HibernateUtil;
 
 public class CourtOrderDAO implements CourtOrderDAO_interface{

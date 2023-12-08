@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.asap.member.MemberVO;
+import com.asap.member.entity.MemberVO;
 
 @Entity
 @Table(name="CourtOrder")

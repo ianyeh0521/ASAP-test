@@ -124,19 +124,17 @@ public class CourtDAO implements CourtDAO_interface {
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
 			// 用名稱模糊比對查詢
-			if ("searchCourt".equals(row.getKey())) {
+			if ("searchCourt".equals(row.getKey()) && !(row.getValue().equals(""))) {
 				predicates.add(builder.like(root.get("courtName"), "%" + row.getValue() + "%"));
 			}
-			// 用地址模糊比對查詢
-//			if ("searchCourt".equals(row.getKey())) {
-//				predicates.add(builder.like(root.get("courtAddress"), "%" + row.getValue() + "%"));
-//			}
 			// 用場地類別查詢
-			if ("courtType".equals(row.getKey())) {
+			if ("courtType".equals(row.getKey()) && !(row.getValue().equals(""))) {
+				System.out.println(row.getValue());
 				predicates.add(builder.equal(root.get("courtTypeVO").get("courtTypeNo"), row.getValue()));
 			}
 			// 用地點編號（地區）查詢
-			if ("regions".equals(row.getKey())) {
+			if ("regions".equals(row.getKey()) && !(row.getValue().equals(""))) {
+				System.out.println(row.getValue());
 				predicates.add(builder.equal(root.get("siteVO").get("siteNo"), row.getValue()));
 			}
 		}

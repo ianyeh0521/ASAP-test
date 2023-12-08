@@ -79,7 +79,7 @@
 						<div class="container">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">場地管理</a></li>
-								<li class="breadcrumb-item"><a href="#">所有場地</a></li>
+								<li class="breadcrumb-item"><a href="listAllCourts_datatable_Ajax.html">所有場地</a></li>
 								<li class="breadcrumb-item active" aria-current="page">新增</li>
 							</ol>
 						</div>
@@ -209,11 +209,22 @@
 										<input id ="upFiles2" name="upFiles2" type="file" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles2.errors');" />
 										<div class="blob_holder"></div>
 									</div>
+									
+									<div>
+										<label for="upFiles3">照片3:</label>
+										<input id ="upFiles3" name="upFiles3" type="file" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles3.errors');" />
+										<div class="blob_holder"></div>
+									</div>
+									
+									<div>
+										<label for="upFiles4">照片4:</label>
+										<input id ="upFiles4" name="upFiles4" type="file" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles4.errors');" />
+										<div class="blob_holder"></div>
+									</div>
 
 									<div class="form-footer mb-0">
-										<div class="form-footer-right">
-											<input type="hidden" name="action" value="add"> <input
-												type="hidden" name="courtNo" value="">
+											<div class="form-footer-right">
+											<input type="hidden" name="action" value="add">
 											<input type="submit" class="btn btn-dark py-4" value="新增">
 										</div>
 									</div>

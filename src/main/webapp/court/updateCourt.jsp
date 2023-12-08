@@ -94,7 +94,7 @@
 			</div>
 			
 			 <div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: left !important;">
-				<a href="/ASAP/court/listAllCourt.jsp">
+				<a href="/ASAP/court/listAllCourts_datatable_Ajax.html">
 				<button class="btn btn-primary btn-rounded btn-md">返回所有場地</button>
 				</a>
 			</div>
@@ -219,8 +219,8 @@
 
 									<div class="form-footer mb-0">
 										<div class="form-footer-right">
-											<input type="hidden" name="action" value="update"> <input
-												type="hidden" name="courtNo" value="<%=courtVO.getCourtNo()%>">
+											<input type="hidden" name="action" value="update"> 
+											<input type="hidden" name="courtNo" value="<%=courtVO.getCourtNo()%>">
 											<input type="submit" class="btn btn-dark py-4" value="完成修改">
 										</div>
 									</div>

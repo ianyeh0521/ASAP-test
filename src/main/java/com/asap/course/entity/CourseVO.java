@@ -13,8 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.asap.coach.CoachVO;
-import com.asap.coach.SportTypeVO;
+import com.asap.coach.entity.CoachVO;
+import com.asap.coach.entity.SportTypeVO;
 
 @Entity
 @Table(name="Course")

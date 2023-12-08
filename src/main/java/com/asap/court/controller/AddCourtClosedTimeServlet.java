@@ -45,7 +45,7 @@ public class AddCourtClosedTimeServlet extends HttpServlet{
 				forwardPath = deleteTime(req, res);
 				break;
 			default:
-				forwardPath = "/court/UploadPicAddDeleteTime.jsp";
+				forwardPath = "/court/listClosedTime.jsp";
 		}
 		res.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
@@ -81,7 +81,7 @@ public class AddCourtClosedTimeServlet extends HttpServlet{
 				
 			}
 		}
-		return "/court/UploadPicAddDeleteTime.jsp";
+		return "/court/listClosedTime.jsp";
 	}
 
 	private String addTime(HttpServletRequest req, HttpServletResponse res) {

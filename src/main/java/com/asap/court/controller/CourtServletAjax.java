@@ -36,9 +36,6 @@ public class CourtServletAjax extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setContentType("application/json;charset=UTF-8");
 
-		
-		
-		
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
 		

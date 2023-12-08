@@ -54,7 +54,7 @@ public class CourtClosedTimeDAO implements CourtClosedTimeDAO_interface{
 	public List<CourtClosedTimeVO> findByCourtNo(Integer courtNo) {
 		// 以 courtNo 尋找 CourtClosedTimeVO，成功回傳 CourtClosedTimeVO List，失敗回傳 null
 		try {
-			String hql = "from CourtClosedTimeVO cctv  where cctv.courtVO.courtNo = :courtNo";
+			String hql = "from CourtClosedTimeVO cctv where cctv.courtVO.courtNo = :courtNo";
 			Query query = getSession().createQuery(hql);
 			query.setParameter("courtNo", courtNo);
 			return query.list();

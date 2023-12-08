@@ -11,8 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.asap.coach.CoachVO;
-import com.asap.member.MemberVO;
+import com.asap.coach.entity.CoachVO;
+import com.asap.member.entity.MemberVO;
 
 @Entity
 @Table(name="MbrCourse")

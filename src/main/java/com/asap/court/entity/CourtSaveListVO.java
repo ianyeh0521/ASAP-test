@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.asap.member.MemberVO;
+import com.asap.member.entity.MemberVO;
 
 @Entity
 @Table(name="CourtSaveList")
@@ -21,11 +21,11 @@ public class CourtSaveListVO{
 	@Column(name = "CourtSaveNo", updatable = false)
 	private Integer courtSaveNo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MemberVO", referencedColumnName = "MbrNo")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="MbrNo", referencedColumnName = "MbrNo")
 	private MemberVO memberVO;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="CourtNo", referencedColumnName = "CourtNo")
 	private CourtVO courtVO;
 	
@@ -35,6 +35,11 @@ public class CourtSaveListVO{
 	public CourtSaveListVO(Integer courtSaveNo, MemberVO memberVO, CourtVO courtVO) {
 		super();
 		this.courtSaveNo = courtSaveNo;
+		this.memberVO = memberVO;
+		this.courtVO = courtVO;
+	}
+
+	public CourtSaveListVO(MemberVO memberVO, CourtVO courtVO) {
 		this.memberVO = memberVO;
 		this.courtVO = courtVO;
 	}
