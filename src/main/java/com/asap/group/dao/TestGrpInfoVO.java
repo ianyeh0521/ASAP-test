@@ -115,36 +115,36 @@ public class TestGrpInfoVO {
 //			HibernateUtil.shutdown();
 //		}
 //		查詢全部
-//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//		try {
-//			session.beginTransaction();
-//
-//			List<GrpInfoVO> getALL = session.createQuery("from GrpInfoVO",GrpInfoVO.class).list();
-//			System.out.println(getALL);
-//			
-//			session.getTransaction().commit();
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			session.getTransaction().rollback();
-//		} finally {
-//			HibernateUtil.shutdown();
-//		}
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+
+			List<GrpInfoVO> getALL = session.createQuery("from GrpInfoVO",GrpInfoVO.class).list();
+			System.out.println(getALL);
+			
+			session.getTransaction().commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			HibernateUtil.shutdown();
+		}
 		
 		
 //		(HQL)用某個欄位來找揪團資訊
-		GrpInfoDAO grpInfoDAO = new GrpInfoDAO();
-
-      List<GrpInfoVO> resultList = grpInfoDAO.getQuery("OrgMbrNo","M0005");
-      for (GrpInfoVO result : resultList) {
-          System.out.println("Group Name: " + result.getGrpName());
-          System.out.println("Sport Type No: " + result.getSportTypeNo());
-          System.out.println("Group Date: " + result.getGrpDate());
-          System.out.println("Group Start Time: " + result.getGrpStartTime());
-          System.out.println("Group End Time: " + result.getGrpEndTime());
-          System.out.println("Group Address: " + result.getGrpAddress());
-          System.out.println("===========================================");
-      }
+//		GrpInfoDAO grpInfoDAO = new GrpInfoDAO();
+//
+//      List<GrpInfoVO> resultList = grpInfoDAO.getQuery("OrgMbrNo","M0005");
+//      for (GrpInfoVO result : resultList) {
+//          System.out.println("Group Name: " + result.getGrpName());
+//          System.out.println("Sport Type No: " + result.getSportTypeNo());
+//          System.out.println("Group Date: " + result.getGrpDate());
+//          System.out.println("Group Start Time: " + result.getGrpStartTime());
+//          System.out.println("Group End Time: " + result.getGrpEndTime());
+//          System.out.println("Group Address: " + result.getGrpAddress());
+//          System.out.println("===========================================");
+//      }
 		
 	}
 }

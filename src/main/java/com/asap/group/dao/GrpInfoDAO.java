@@ -57,19 +57,50 @@ public class GrpInfoDAO implements GrpInfoDAO_interface {
 	@Override
 //	 揪團編號查找單筆揪團資訊
 	public List<GrpInfoVO> findByGrpNo(Integer id) {
-		return (List<GrpInfoVO>) getSession().get(GrpInfoVO.class, id);
+//		System.out.println("----------TEST---------  findByGrpNo");
+//		List<GrpInfoVO> List = (List<GrpInfoVO>) getSession().get(GrpInfoVO.class, id);
+//		System.out.println("----------TEST---------  List");
+//		return List;
+		System.out.println("----------TEST---------  findByGrpNo");
+		String hqlQuery;
+		Query query;
+		Transaction transaction = null;
+		List<GrpInfoVO> resultList = new ArrayList<>();
+		try (Session session = getSession()){
+			//Session session = getSession();
+			transaction = session.beginTransaction();
+
+				hqlQuery = "FROM GrpInfoVO WHERE GrpNo= :id ";
+				query = session.createQuery(hqlQuery);
+				query.setParameter("id", id);
+
+			resultList = query.getResultList();
+			return resultList;
+		} catch (Exception e) {
+			if (transaction != null) {
+	            transaction.rollback();
+	        }
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 
 	@Override
 	public List<GrpInfoVO> getALL() {
 		Transaction transaction = null;
-		try {
-			Session session = getSession();
+		try (Session session = getSession()){
+			//Session session = getSession();
 			transaction = session.beginTransaction();
 			List<GrpInfoVO> list = session.createQuery("from GrpInfoVO", GrpInfoVO.class).list();
 
+			
+			transaction.commit();
 			return list;
 		} catch (Exception e) {
+			if (transaction != null) {
+	            transaction.rollback();
+	        }
 			e.printStackTrace();
 		}
 		return null;
@@ -82,8 +113,8 @@ public class GrpInfoDAO implements GrpInfoDAO_interface {
 		Query query;
 		List<GrpInfoVO> resultList = new ArrayList<>();
 		Transaction transaction = null;
-		try {
-			Session session = getSession();
+		try (Session session = getSession()) {
+			//Session session = getSession();
 			transaction = session.beginTransaction();
 			if (grpInfoKeyword == null || grpInfoKeyword.isEmpty()) {
 				hqlQuery = "FROM GrpInfoVO";
@@ -96,7 +127,11 @@ public class GrpInfoDAO implements GrpInfoDAO_interface {
 				query.setParameter("keyword", "%" + grpInfoKeyword + "%");
 			}
 			resultList = query.getResultList();
+			transaction.commit();
 		} catch (Exception e) {
+			if (transaction != null) {
+	            transaction.rollback();
+	        }
 			e.printStackTrace();
 		}
 		return resultList;
@@ -113,8 +148,8 @@ public class GrpInfoDAO implements GrpInfoDAO_interface {
 		Query query;
 		List<GrpInfoVO> resultList = new ArrayList<>();
 		Transaction transaction = null;
-		try {
-			Session session = getSession();
+		try (Session session = getSession()){
+			//Session session = getSession();
 			transaction = session.beginTransaction();
 			if (column == null || column.isEmpty() || Keyword == null || Keyword.isEmpty()) {
 
@@ -127,7 +162,11 @@ public class GrpInfoDAO implements GrpInfoDAO_interface {
 			}
 
 			resultList = query.getResultList();
+			transaction.commit();
 		} catch (Exception e) {
+			if (transaction != null) {
+	            transaction.rollback();
+	        }
 			e.printStackTrace();
 		}
 		return resultList;

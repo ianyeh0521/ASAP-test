@@ -1,0 +1,292 @@
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl, dd {
+  margin: 0;
+  padding: 0;
+}
+/* 背景色為灰色 */
+body {
+  background-color:  	#F2E6E6;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+}
+/* 標題 */
+h2.creategrptitle{
+  position: relative;
+  margin-top: 20px;
+  text-align: center;
+  font-Weight:"900";
+}
+
+
+
+/* 表單 */
+.createform {
+  width: 50%;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 20px solid;
+  border-image: linear-gradient(to bottom, #F5F5DC, #ADD8E6);
+  border-image-slice: 1;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  max-height: 600px;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); 
+}
+
+
+span.form_textbox input,
+span.form_textbox label {
+  margin-bottom: 10px;
+}
+
+
+/* 活動資訊 */
+input#GrpName{
+width:462px;
+margin-top: 10px;
+margin-bottom: 5px;
+}
+
+select#SportTypeName{
+width: 90px;
+height: 28.4px;
+text-align: center;
+}
+
+input#GrpPplMin{
+  width:80px;
+}
+input#GrpPplLimit{
+  width:80px;
+  margin-bottom: 5px;
+
+}
+label[for="GrpPplLimit"] {
+ margin-left: 20px;
+}
+
+
+input#GrpAddress1{
+  width:115px;
+  margin-bottom: 5px;
+}
+input#GrpAddress2{
+  width:345px;
+}
+label[for="GrpDate"] {
+  margin-bottom: 5px;
+  margin-left:4px;
+}
+input#GrpDate{
+  width: 118px;
+  margin-bottom: 5px;
+  /* width: 198px; */
+  text-align: center;
+}
+
+.inputField {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#drop_zone{
+  border: 1px dashed #ccc;
+  height: 50px;
+  position: relative;
+}
+#drop_zone span.text{
+  position: absolute;
+  display: inline-block;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  color: lightgray;
+}
+#drop_zone.-on{
+  border: 1px dashed lightblue;
+  box-shadow: 3px 3px 5px lightblue inset, -3px -3px 5px lightblue inset;
+}
+
+input#GrpStartTime,input#GrpEndTime{
+width: 90px;
+text-align: center;
+}
+
+input#GrpSignStrTime2,input#GrpSignEndTime2{
+  width: 90px;
+  text-align: center;
+  margin-bottom: 5px;
+  }
+
+  input#GrpSignStrTime1,input#GrpSignEndTime1{
+    width: 118px;
+    text-align: center;
+    margin-bottom: 5px;
+    }
+
+a.an{
+  margin-left: 5.5px;
+  margin-right: 5.5px;
+}
+
+#preview{
+  border: 1px solid lightgray;
+  display: inline-block;
+  width:100%;
+  min-height: 200px;
+  position: relative;
+}
+#preview span.text{
+  position: absolute;
+  display: inline-block;
+  left: 40%;
+  top: 45%;
+  color: rgb(184, 182, 182);
+}
+#preview img.preview_img{
+  width: 30%;
+  position: relative;
+  left: 203.2px;
+}
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* 送出按鈕樣式 */
+input[type="submit"] {
+  background-color: #0066CC;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* 返回按鈕 */
+.return-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0066CC;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.return-link:hover {
+  background-color: #0056b3;
+}
+
+/* 清空按鈕 */
+button[type="reset"] {
+  background-color: #FF6347;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="reset"]:hover {
+  background-color: #FF5733;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+div.Grp_Btnsrr{
+  position: relative;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 20px; 
+}
+
+.button-container input,
+.button-container a,
+.button-container button {
+  margin: 0 5px; 
+}
+
+a.x {
+  color: red !important;
+  margin-right: 5px;
+}
+
+hr{
+  border: none; 
+  border-top: 1px solid  #E0E0E0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* 表單畫面 */
+
+@media(max-width:1280px){
+  .createform {
+    width:640px;
+ }
+}
+
+@media(min-width:769px)and(max-width:1279px){
+  .createform {
+    width:640px;
+ }
+}
+
+
+/* @media (max-width: 768px) {
+  .createform {
+      width: 83.3%;
+  }
+  input#GrpName{
+    width:240px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    }
+    label[for="Grp_Date"] {
+      margin-left: 0px;
+    }
+    input#GrpDate{
+      margin-bottom: 5px;
+      width: 85px;
+      text-align: center;
+
+    }
+}
+
+@media (max-width: 680px) {
+  span.form_textbox input,
+  span.form_textbox label {
+    display: block;
+  }
+  input#MbrPhone {
+    margin-bottom: -10px;
+  }
+} */
+
+
+

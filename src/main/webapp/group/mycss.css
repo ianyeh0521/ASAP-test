@@ -1,0 +1,289 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+}
+
+/* 導覽列字放大 */
+.header-bottom .menu>li>a {
+	font-size: 15px;
+}
+
+/* 揪團首頁標題 */
+nav>span.titlegroup1 {
+	color: black;
+	font-size: 30px;
+	font-Weight: "900";
+}
+
+/* 揪團首頁位置 */
+.breadcrumb-nav {
+	position: relative;
+	left: 150px;
+	padding: 10px;
+}
+
+/* 按鈕功能列 */
+nav.toolbox-sticky-header {
+	width: 1140px;
+	height: 50px;
+}
+
+div.func_bar.d-flex.justify-content-between.align-items-center {
+	width: 100%;
+}
+
+#searchBtn {
+	background: #0066CC;
+	color: #fffefe;
+	cursor: pointer;
+	font-size: 14px;
+	padding: 5px;
+	border-radius: 3px;
+	margin-right: 5px;
+}
+
+#searchBtn:hover {
+	background-color: #0066cc4a;
+}
+
+.search {
+	background-color: #ffffff;
+	border: 1px solid #08C;
+	border-radius: 5px;
+	font-size: 14px;
+	cursor: pointer;
+	height: 30px;
+	margin-right: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+div.row_products-group {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	/* margin: 0 -10px;  */
+}
+
+div.row_products-group>div.col-6_col-sm-4 {
+	width: 285px;
+	box-sizing: border-box;
+	border-radius: 8px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8);
+	margin: 5px;
+	left: 25px;
+	height: 450px;
+	position: relative;
+}
+
+div.row_products-group>div.col-6_col-sm-4:nth-child(4n+1) {
+	margin-left: 0;
+}
+
+button.Btn_mygroup, button.Btn_creategroup {
+	margin-right: 5px;
+}
+
+.toolbox-right {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: end;
+	height: 100%;
+	width: 97%;
+}
+
+#area_s_id, #time_s_id, #sportstype_s_id {
+	font-size: 16px;
+}
+
+form.area_f_c, .time_f_c, .sportstype_f_c, .search_c {
+	margin-bottom: 0px;
+}
+
+div.product-details {
+	position: relative;
+	bottom: 10px;
+	width: 250px;
+	height: 125px;
+}
+
+h3.product-title>a {
+	font-size: 20px;
+	text-align: center;
+	margin-left: 5px;
+	width: 263.533;
+	height: 40.05;
+}
+
+div.ratings-container {
+	margin-top: 10px;
+	width: 247px;
+	height: 80px;
+	margin: 0px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+div.ratings-container>a {
+	display: inline-block;
+	border: 2px solid rgba(95, 95, 95, 0);
+}
+
+figure.img-effect>a {
+	position: relative;
+	border-radius: 8px;
+	border: 1px solid rgb(158, 144, 144);
+	margin-top: 10px;
+	width: 263.533;
+	height: 263.533;
+}
+
+/* 報名參加按鈕 */
+button.Btn_Join {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
+button.Btn_resort {
+	position: absolute;
+	right: 75px;
+	bottom: 0;
+}
+
+div.toolbox-item_toolbox-show {
+	align-items: center;
+	bottom: 7px;
+	color: #ea1717;
+	position: relative;
+	font-size: 18px;
+	justify-content: center;
+}
+
+div.toolbox.toolbox-pagination {
+	position: relative;
+	left: 480px;
+}
+
+input:disabled {
+	color: #999;
+	background-color: #1b19191a;
+	border: 1px solid #ccc;
+	height: 28.4px;
+	width: 176px;
+}
+
+@media ( max-width :1280px) {
+	.row_products-group {
+		width: 1140px;
+	}
+	div.row_products-group>div.col-6_col-sm-4 {
+		width: 265px;
+		height: 450px;
+	}
+	figure.img-effect {
+		width: 263.533;
+		height: 263.533;
+	}
+}
+
+@media ( min-width :769px)and(max-width:1280px) {
+	.row_products-group {
+		width: 1140px;
+	}
+	div.row_products-group>div.col-6_col-sm-4 {
+		width: 265px;
+		height: 450px;
+	}
+	figure.img-effect {
+		width: 263.533;
+		height: 263.533;
+	}
+}
+
+input.Btn_allgrpJoin {
+	background-color: #0066CC;
+	color: #fff;
+	padding: 10px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	position: relative;
+	bottom: 10px;
+	width: 245px;
+}
+
+input.Btn_allgrpXJoin {
+	background-color: #FF5733;
+	color: #fff;
+	padding: 10px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	position: relative;
+	bottom: 10px;
+	width: 245px;
+}
+
+.orgmbr_grp {
+	position: absolute;
+	top: 8px;
+	left: -3px;
+	background-color: #D9FFFF;
+	padding: 10px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	height: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.Btn_mygroup, .Btn_creategroup, .Btn_allgrpJoin, .Btn_allgrpXJoin {
+	background-color: #08C;
+	color: #f7f6f6;
+	padding: 5px 5px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	position: relative;
+	width: 80px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.Btn_mygroup:hover, .Btn_creategroup:hover, .Btn_allgrpJoin:hover,
+	.Btn_allgrpXJoin:hover {
+	background-color: #004B97;
+	color: #F0F0F0;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-select, .time_filter, .sportstype_filter {
+	background-color: #ffffff;
+	border: 1px solid #08C;
+	border-radius: 5px;
+	font-size: 14px;
+	cursor: pointer;
+	height: 30px;
+	margin-right: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-select:hover, .time_filter:hover, .sportstype_filter:hover {
+	border-color: #aaa;
+}
+
+.custom-select:focus, .time_filter:focus, .sportstype_filter:focus {
+	outline: none;
+	border-color: #0066CC;
+	box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+}
