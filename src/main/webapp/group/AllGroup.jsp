@@ -7,10 +7,13 @@
 <%@ page import="java.util.*"%>
 
 <%
- GrpInfoService grpInfoSvc = new GrpInfoService_interface();
- List<GrpInfoVO> list = grpInfoSvc.getALL(); 
- pageContext.setAttribute("grpVOList",list);
- 
+	Boolean bIsSkip = (Boolean) request.getAttribute("Skip");
+	if(bIsSkip == null || !bIsSkip)
+ 	{
+		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
+	 	List<GrpInfoVO> list = grpInfoSvc.getALL(); 
+	 	pageContext.setAttribute("grpVOList",list);
+ 	}
  
 %>
 
@@ -78,8 +81,7 @@
                 transform: translateY(-50%);
                 z-index: 999;
                 left: 20px; /* Adjust distance from the left */
-              "
-            >
+              ">
               <button class="mobile-menu-toggler text-primary mr-2" type="button">
                 <i class="fas fa-bars"></i>
               </button>
@@ -165,18 +167,14 @@
 				data-sticky-options="{'mobile': true}">
 				<div class="toolbox-right">
 					<div class="search_bar d-flex justify-content-between align-items-center">
-						
 						<button class="Btn_mygroup" id="mygroup_Btn">我的揪團</button>
-						<a href="${pageContext.request.contextPath}/Grpinfo.do?action=insertgrpInfo" class="Btn_creategroup" id="creategroup_Btn">發起揪團</a>
+						<a href="${pageContext.request.contextPath}/Grpinfo.do?action=creategroup" class="Btn_creategroup" id="creategroup_Btn">發起揪團</a>
 
-						
 						<form id="search_formid" class="search_c" action="<%=request.getContextPath()%>/Grpinfo.do" method="post">
 						<input type="text" name="grpInfoKeyword" id="search" class="search" placeholder="搜尋" value="${param.grpInfoKeyword}" > 
 						<input type="hidden" name="action" value="FuzzySearch">
 						<input type="submit" id="searchBtn" value="搜尋">	
 						</form>
-						
-
 					</div>
 					<!-- End  .search_bar-->
 				</div>
@@ -185,7 +183,6 @@
 
 			<div class="row_products-group">
 				<!-- 活動列表 -->
-
 				<c:forEach var="grpInfoVO" items="${grpVOList}">
 				
 				<div class="col-6_col-sm-4">
@@ -221,10 +218,7 @@
 						    <input type="hidden" name="#" value="${grpInfoVO.grpNo}">
 						    <input type="hidden" name="action" value="entergrpno">
 						</FORM>
-						
-						
-						
-						
+				
 					</div>
 					<!-- End .product-details -->
 				</div>

@@ -1,8 +1,8 @@
 package com.asap.group.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import com.asap.group.entity.SportTypeVO;
 import com.asap.util.HibernateUtil;
@@ -84,6 +84,22 @@ public class TestSportType {
 //		} finally {
 //			HibernateUtil.shutdown();
 //		}
+//		查詢全部
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+
+			List<SportTypeVO> getALL = session.createQuery("from SportTypeVO",SportTypeVO.class).list();
+			System.out.println(getALL);
+			
+			session.getTransaction().commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			HibernateUtil.shutdown();
+		}
 
 	}
 

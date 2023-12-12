@@ -11,7 +11,7 @@ public interface GrpInfoService {
 
 	void delete(Integer grpNo);
 
-	List<GrpInfoVO> getGrpInfoVOBygrpNo(Integer grpNo);
+	GrpInfoVO getGrpInfoVOBygrpNo(Integer grpNo);
 	
 	List<GrpInfoVO> getByServiceFuzzySearch(String grpInfoKeyword);
 	

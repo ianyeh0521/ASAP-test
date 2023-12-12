@@ -43,15 +43,12 @@ public class SportTypeDAO implements SportTypeDAO_interface {
 
 	@Override
 	public List<SportTypeVO> getALL() {
-		Transaction transaction = null;
 		try {
-			Session session = getSession();
-			transaction = session.beginTransaction();
-			List<SportTypeVO> list = session.createQuery("from SportTypeVO", SportTypeVO.class).list();
-			return list;
+			return getSession().createQuery("from SportTypeVO", SportTypeVO.class).list();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
+
 	}
 }
