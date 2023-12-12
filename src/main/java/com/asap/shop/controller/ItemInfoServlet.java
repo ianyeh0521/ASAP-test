@@ -1,5 +1,6 @@
 package com.asap.shop.controller;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -27,14 +28,32 @@ public class ItemInfoServlet extends HttpServlet {
 
     	@Override
     	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-    		req.setCharacterEncoding("UTF-8");
-    		String action = req.getParameter("action");
-//    		String forwardPath = "";
+    	    req.setCharacterEncoding("UTF-8");
+    	    String action = req.getParameter("action");
+
+    	    // 检查action是否为null
+    	    if (action == null) {
+    	        // 如果 action 为空，尝试获取 'q' 参数以启用模糊搜索
+    	        String searchQuery = req.getParameter("q");
+    	        if (searchQuery != null) {
+    	            getByFuzzySearch(req, res);
+    	            return;
+    	        }
+    	        action = ""; // 如果没有 'action' 和 'q'，选择其他默认值
+    	    }
     		switch (action) {
     			case "orderby":
     				getItemInfoByPriceOrder(req, res);
 //    				forwardPath = getAllEmps(req, res);
-    				break;
+    				break;		
+    				
+    			 case "view_order": 
+    			        getItemInfoByViewOrder(req, res);
+    			        break;
+    				
+    			case "search":
+    				getByFuzzySearch(req, res);
+                    break;
 //    			case "compositeQuery":
 //    				forwardPath = getCompositeEmpsQuery(req, res);
 //    				break;
@@ -46,7 +65,7 @@ public class ItemInfoServlet extends HttpServlet {
 //    		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 //    		dispatcher.forward(req, res);
     	}
-
+    	
     	private void getItemInfoByPriceOrder(HttpServletRequest req, HttpServletResponse res) throws IOException {
     		
     		Boolean Itemsort = Boolean.valueOf(req.getParameter("Itemsort"));
@@ -56,37 +75,31 @@ public class ItemInfoServlet extends HttpServlet {
     		PrintWriter out = res.getWriter();
             out.write(jsonString);
             out.close();
-    	
+            System.out.println(jsonString);
 		}
 
-//		private String getAllEmps(HttpServletRequest req, HttpServletResponse res) {
-//    		String page = req.getParameter("page");
-//    		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-//    		
-//    		List<Emp> empList = empService.getAllEmps(currentPage);
-//
-//    		if (req.getSession().getAttribute("empPageQty") == null) {
-//    			int empPageQty = empService.getPageTotal();
-//    			req.getSession().setAttribute("empPageQty", empPageQty);
-//    		}
-//    		
-//    		req.setAttribute("empList", empList);
-//    		req.setAttribute("currentPage", currentPage);
-//    		
-//    		return "/emp/listAllEmps.jsp";
-//    	}
+    	private void getItemInfoByViewOrder(HttpServletRequest req, HttpServletResponse res) throws IOException {
+
+    	    List<ItemInfoVO> itemInfo = itemInfoService.getItemInfoByViewOrder();
+    	    Gson gson = new Gson();
+    	    String jsonString = gson.toJson(itemInfo);
+    	    PrintWriter out = res.getWriter();
+    	    out.write(jsonString);
+    	    out.close();
+    	    System.out.println(jsonString);
+    	}
     	
-//    	private String getCompositeEmpsQuery(HttpServletRequest req, HttpServletResponse res) {
-//    		Map<String, String[]> map = req.getParameterMap();
-//    		
-//    		if (map != null) {
-//    			List<Emp> empList = empService.getEmpsByCompositeQuery(map);
-//    			req.setAttribute("empList", empList);
-//    		} else {
-//    			return "/index.jsp";
-//    		}
-//    		return "/emp/listCompositeQueryEmps.jsp";
-//    	}
+    	
+    	private void getByFuzzySearch(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    	    String searchQuery = req.getParameter("q");
+    	    List<ItemInfoVO> searchResults = itemInfoService.getByFuzzySearch(searchQuery);
+    	    Gson gson = new Gson();
+    	    String json = gson.toJson(searchResults);
+    	    res.setContentType("application/json; charset=UTF-8");
+    	    PrintWriter out = res.getWriter();
+    	    out.write(json);
+    	    out.close();
+    	}
     	
     	
     	@Override

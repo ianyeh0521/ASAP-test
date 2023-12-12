@@ -64,13 +64,14 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 	@Override
 	// 使用HQL模糊查詢(搜尋商品欄位)
 	public List<ItemInfoVO> getByFuzzySearch(String itemInfoKeyword) {
-	    String hqlQuery;
-	    Query query;
 	    List<ItemInfoVO> resultList = new ArrayList<>();
-	    Transaction transaction = null;
-	    try {
-	        Session session = getSession();
-	        transaction = session.beginTransaction();
+	    Session session = getSession(); 
+	    String hqlQuery;
+	    Query<ItemInfoVO> query; 
+//	    Transaction transaction = null;
+//	    try {
+//	        Session session = getSession();
+//	        transaction = session.beginTransaction();
 	        if (itemInfoKeyword == null || itemInfoKeyword.isEmpty()) {
 	            hqlQuery = "FROM ItemInfoVO";
 	            query = session.createQuery(hqlQuery);
@@ -86,9 +87,9 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 	            query.setParameter("keyword", "%" + itemInfoKeyword + "%");
 	        }
 	        resultList = query.getResultList();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	    }
 	    return resultList;
 	}
 
@@ -144,14 +145,13 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
         return query.getResultList();
     }
 	
-	//按造瀏覽人數排名
 	@Override
-    public List<ItemInfoVO> orderByItemView(boolean descending) {
-        String hqlQuery = "FROM ItemInfoVO ORDER BY itemView " + (descending ? "DESC" : "ASC");
-        Query<ItemInfoVO> query = getSession().createQuery(hqlQuery, ItemInfoVO.class);
+	public List<ItemInfoVO> orderByItemView() {
+	    String hqlQuery = "FROM ItemInfoVO ORDER BY itemView DESC";
+	    Query<ItemInfoVO> query = getSession().createQuery(hqlQuery, ItemInfoVO.class);
 
-        return query.getResultList();
-    }
+	    return query.getResultList();
+	}
 	
 	@Override
 	public List<ItemInfoVO> getALL() {
