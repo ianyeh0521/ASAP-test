@@ -3,11 +3,8 @@ package com.asap.group.dao;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import com.asap.group.entity.GrpInfoVO;
-import com.asap.group.entity.GrpJoinInfoVO;
 import com.asap.util.HibernateUtil;
 
 public class TestGrpInfoVO {
@@ -17,10 +14,10 @@ public class TestGrpInfoVO {
 //		try {
 //			session.beginTransaction();
 //			
-//			GrpInfoVO GJ = new GrpInfoVO();
+//		GrpInfoVO GJ = new GrpInfoVO();
 //			
 //			
-//			GJ.setOrgMbrNo("M00066");
+//			GJ.setOrgMbrNo("M00068");
 //			GJ.setSportTypeNo(8);
 //			GJ.setGrpName("羽球,男女不限喔");
 //			GJ.setGrpDate(java.sql.Date.valueOf("2023-10-30"));
@@ -46,11 +43,13 @@ public class TestGrpInfoVO {
 //		} finally {
 //			HibernateUtil.shutdown();
 //		}
+//		
+		
 //		修改資料
 //		SessionFactory factory = HibernateUtil.getSessionFactory();
 //		try {
 //			Session session1 = factory.openSession();
-//			GrpInfoVO GJ = session1.get(GrpInfoVO.class, 2);
+//			GrpInfoVO GJ = session1.get(GrpInfoVO.class, 34);
 //			session1.close();
 //
 //			GJ.setOrgMbrNo("M0002");
@@ -85,11 +84,10 @@ public class TestGrpInfoVO {
 //		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 //		try {
 //			session.beginTransaction();
-//			
-//			GrpInfoVO grpInfo = session.get(GrpInfoVO.class,6);
+//			GrpInfoVO grpInfo = session.get(GrpInfoVO.class,40);
 //			if (grpInfo != null)
 //				session.delete(grpInfo);
-//			
+//
 //			session.getTransaction().commit();
 //			
 //		} catch (Exception e) {
@@ -102,10 +100,9 @@ public class TestGrpInfoVO {
 //		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 //		try {
 //			session.beginTransaction();
-//
-//			GrpInfoVO grpInfo = session.get(GrpInfoVO.class, 1);
+//			
+//			GrpInfoVO grpInfo = session.get(GrpInfoVO.class, 34);
 //			System.out.println(grpInfo);
-//
 //			session.getTransaction().commit();
 //
 //		} catch (Exception e) {
@@ -115,36 +112,50 @@ public class TestGrpInfoVO {
 //			HibernateUtil.shutdown();
 //		}
 //		查詢全部
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-
-			List<GrpInfoVO> getALL = session.createQuery("from GrpInfoVO",GrpInfoVO.class).list();
-			System.out.println(getALL);
-			
-			session.getTransaction().commit();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		} finally {
-			HibernateUtil.shutdown();
-		}
-		
-		
-//		(HQL)用某個欄位來找揪團資訊
-//		GrpInfoDAO grpInfoDAO = new GrpInfoDAO();
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
 //
-//      List<GrpInfoVO> resultList = grpInfoDAO.getQuery("OrgMbrNo","M0005");
-//      for (GrpInfoVO result : resultList) {
-//          System.out.println("Group Name: " + result.getGrpName());
-//          System.out.println("Sport Type No: " + result.getSportTypeNo());
-//          System.out.println("Group Date: " + result.getGrpDate());
-//          System.out.println("Group Start Time: " + result.getGrpStartTime());
-//          System.out.println("Group End Time: " + result.getGrpEndTime());
-//          System.out.println("Group Address: " + result.getGrpAddress());
-//          System.out.println("===========================================");
-//      }
+//			List<GrpInfoVO> getALL = session.createQuery("from GrpInfoVO",GrpInfoVO.class).list();
+//			System.out.println(getALL);
+//			
+//			session.getTransaction().commit();
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			session.getTransaction().rollback();
+//		} finally {
+//			HibernateUtil.shutdown();
+//		}
+		
+//		
+//		(HQL)用某個欄位來找揪團資訊
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		  GrpInfoDAO grpInfoDAO = new GrpInfoDAO();
+//
+//		    try {
+//		    	session.beginTransaction();
+//		        List<GrpInfoVO> resultList = grpInfoDAO.getQuery("OrgMbrNo","M00066");
+//		        for (GrpInfoVO result : resultList) {
+//		            System.out.println("Group Name: " + result.getGrpName());
+//		            System.out.println("Sport Type No: " + result.getSportTypeNo());
+//		            System.out.println("Group Date: " + result.getGrpDate());
+//		            System.out.println("Group Start Time: " + result.getGrpStartTime());
+//		            System.out.println("Group End Time: " + result.getGrpEndTime());
+//		            System.out.println("Group Address: " + result.getGrpAddress());
+//		            System.out.println("===========================================");
+//		          
+//		        }
+//		      session.getTransaction().commit(); 
+//		        
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        session.getTransaction().rollback();
+//		    } finally {
+//				HibernateUtil.shutdown();
+//			}
+//
+//		
 		
 	}
 }

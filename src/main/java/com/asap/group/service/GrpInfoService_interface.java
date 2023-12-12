@@ -31,18 +31,23 @@ public class GrpInfoService_interface implements GrpInfoService {
 	}
 
 	@Override
-	public List<GrpInfoVO> getGrpInfoVOBygrpNo(Integer grpNo) {
+	public GrpInfoVO getGrpInfoVOBygrpNo(Integer grpNo) {
 		System.out.println("----------TEST---------  getGrpInfoVOBygrpNo");
 		return dao.findByGrpNo(grpNo);
 	}
 
 	@Override
 	public List<GrpInfoVO> getByServiceFuzzySearch(String grpInfoKeyword) {
-		return dao.getByFuzzySearch(grpInfoKeyword);
+		List<GrpInfoVO> List = dao.getByFuzzySearch(grpInfoKeyword);
+		System.out.println("---------TEST-------------getByServiceFuzzySearch: "+List);
+		
+		return List;
+		
 	}
 
 	@Override
 	public List<GrpInfoVO> getALL() {
+		System.out.println("---------getALL-------------");
 		return dao.getALL();
 	}
 

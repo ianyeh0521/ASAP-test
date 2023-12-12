@@ -164,7 +164,7 @@ textarea {
 }
 
 /* 送出按鈕樣式 */
-input[type="submit"] {
+.Btn_creategrp_sm {
   background-color: #0066CC;
   color: #fff;
   padding: 10px 20px;
@@ -175,7 +175,7 @@ input[type="submit"] {
   margin-right: 10px;
 }
 
-input[type="submit"]:hover {
+.Btn_creategrp_sm:hover {
   background-color: #0056b3;
 }
 

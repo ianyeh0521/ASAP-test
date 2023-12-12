@@ -77,7 +77,7 @@ public class TestGrpJoinInfoVO {
 //		try {
 //			session.beginTransaction();
 //
-//			GrpJoinInfoVO grpJoinInfo = session.get(GrpJoinInfoVO.class, 2);
+//			GrpJoinInfoVO grpJoinInfo = session.get(GrpJoinInfoVO.class, 1);
 //			System.out.println(grpJoinInfo);
 //
 //			session.getTransaction().commit();
@@ -109,8 +109,10 @@ public class TestGrpJoinInfoVO {
 		
 		
 //		(HQL)用某個欄位來找參與人資訊
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		GrpJoinInfoDAO grpJoinInfoDAO = new GrpJoinInfoDAO();
-		
+		 try {
+		    	session.beginTransaction();
       List<GrpJoinInfoVO> resultList = grpJoinInfoDAO.getGrpJoinQuery("OrgMbrNo","M0001");
       for (GrpJoinInfoVO result : resultList) {
           System.out.println("Sport Type No: " + result.getGrpJoinInfoNo());
@@ -118,7 +120,15 @@ public class TestGrpJoinInfoVO {
           System.out.println("Group Start Time: " + result.getGrpNo());
           System.out.println("Group End Time: " + result.getGrpJoinStat());
           System.out.println("===========================================");
-
       }
+      session.getTransaction().commit(); 
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        session.getTransaction().rollback();
+    } finally {
+		HibernateUtil.shutdown();
+	}
+
 	}
 }

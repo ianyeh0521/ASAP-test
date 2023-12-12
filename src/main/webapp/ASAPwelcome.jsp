@@ -12,17 +12,13 @@
       <meta name="keywords" content="HTML5 Template" />
       <meta name="description" content="Porto - Bootstrap eCommerce Template" />
       <meta name="author" content="SW-THEMES" />
-      
-      <!-- Favicon -->
-      <link rel="icon" type="image/x-icon" href="<%=request.getContextPath()%>/imgtest/asapLOGO.png" />
-
-      
+ 
       <!-- Plugins CSS File -->
-      <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assetstest/bootstrap.min.css"rel="stylesheet" media="all" />
+      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet" media="all" />
       
       <!-- Main CSS File -->
-      <link rel="stylesheet" href="<%=request.getContextPath()%>/assetstest/style.min.css" rel="stylesheet" media="all"/>
-      <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assetstest/all.min.css" rel="stylesheet" media="all"/>
+      <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.min.css" rel="stylesheet" media="all"/>
+      <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" media="all"/>
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
       <style>
       * {
@@ -221,27 +217,27 @@
                   針對不知道該從何開始運動的初學者、找不到夥伴一起運動的人，這裡提供了一個無壓力、充滿支援的地方。</p>
                 <div class="welcome_box_bg">
                   <div class="welcome_box">
-                    <img src="newImg/forum.png" alt="project"
+                    <img src="<%=request.getContextPath()%>/newImg/forum.png" alt="project"
                       style="width: 90px; height: 90px; position: relative; left: 5px; top: 5px;" />
                   </div>
                   <div class="welcome_box">
-                    <img src="newImg/coach.png" alt="project"
+                    <img src="<%=request.getContextPath()%>/newImg/coach.png" alt="project"
                       style="width: 90px; height: 90px; position: relative; left: 5px;" />
                   </div>
                   <div class="welcome_box">
-                    <img src="newImg/networking.png" alt="project"
+                    <img src="<%=request.getContextPath()%>/newImg/networking.png" alt="project"
                       style="width: 90px; height: 90px; position: relative; left: 5px; top: 5px;" />
                   </div>
                   <div class="welcome_box">
-                    <img src="newImg/basketball.png" alt="project"
+                    <img src="<%=request.getContextPath()%>/newImg/basketball.png" alt="project"
                       style="width: 90px; height: 90px; position: relative; left: 5px;" />
                   </div>
                   <div class="welcome_box">
-                    <img src="newImg/store.png" alt="project"
+                    <img src="<%=request.getContextPath()%>/newImg/store.png" alt="project"
                       style="width: 90px; height: 90px; position: relative; left: 5px; top: 5px;" />
                   </div>
                   <div class="welcome_box">
-                    <img src="newImg/shop.png" alt="project"
+                    <img src="<%=request.getContextPath()%>/newImg/shop.png" alt="project"
                       style="width: 90px; height: 90px; position: relative; left: 5px; top: 5px;" />
                   </div>
                 </div>
@@ -250,7 +246,7 @@
                   <i class="fas fa-arrow-right"></i>若需要更專業的引導，我們提供了專業教練的媒合服務，找到最適合的教練，一步步建立運動的習慣。<br />
                   <i class="fas fa-arrow-right"></i>可隨時隨地，發起揪團，尋找同領域的運動夥伴，相互交流，共同進步。<br />
                   <i class="fas fa-arrow-right"></i>透過平台上的即時搜尋功能，協助尋找、租借適合的場地，並提供專屬優惠。<br />
-                  <i class="fas fa-arrow-right"></i>可以在市集找到二手的運動商品，節省開支，為初學者打造的運動社群，提供了豐富的功能，輕鬆開啟運動。
+                  <i class="fas fa-arrow-right"></i>可以在商城找到二手的運動商品，節省開支，為初學者打造的運動社群，提供了豐富的功能，輕鬆開啟運動。
                 </p>
               </div>
               <!-- End .container -->
@@ -454,12 +450,12 @@
           class="icon-angle-up"></i></a>
       
         <!-- Plugins JS File -->
-        <script type="text/javascript" src="<%=request.getContextPath()%>/assetstest/jstest/jquery.min.js"></script>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/assetstest/jstest/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/assetstest/jstest/jquery.countTo.js"></script>
-      
+        <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/jquery.min.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/plugins.min.js"></script>
+      	<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/plugins/jquery.countTo.js"></script>
         <!-- Main JS File -->
-        <script type="text/javascript" src="<%=request.getContextPath()%>/assetstest/jstest/main.min.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/main.min.js"></script>
         <script>
           // $("header").load("header.html");
           // $("div.sticky-navbar").load("sticky-navbar.html");

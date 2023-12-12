@@ -16,8 +16,8 @@
 <meta name="author" content="SW-THEMES" />
 
 <!-- Favicon 網站圖示 -->
-<link rel="icon" type="image/x-icon"
-	href="assets/images/icons/asapLOGO.png" />
+<!-- <link rel="icon" type="image/x-icon" -->
+<!-- 	href="assets/images/icons/asapLOGO.png" /> -->
 
 <script>
 	WebFontConfig = {
@@ -152,7 +152,7 @@
 			<h2 class="creategrptitle">發起揪團</h2>
 			<div class="createform">
 				<div class="createform_main">
-					<form action="<%=request.getContextPath()%>/Grpinfo.do" method="post">
+					<form action="<%=request.getContextPath()%>/Grpinfo.do?action=insertgrpInfo" method="post">
 						<div class="import" style="font-size: 10px; color: red">*必填
 						</div>
 						<!-- 發起人資訊 -->
@@ -162,26 +162,23 @@
 						<br/> <span class="form_textbox"> 
 						<label class="create_member">
 						<a class="x">*</a>發起人：</label> 
-						<input class="MbrName" type="text" id="MbrName" name="MbrName" required
-							placeholder="請輸入姓名" disabled />
+<!--可串資料時再加disabled -->
+						<input class="MbrName" type="text" id="MbrName" name="OrgMbrNo" required  />
 						</span> 
 						<span class="form_textbox"> 
 						<label for="create_phonenum">
+<!--可串資料時再加disabled -->
 						<a class="x">*</a>連絡電話：</label> <input class="MbrPhone" type="tel"
-							id="MbrPhone" name="MbrPhone" required placeholder="請輸入連絡電話"
-							disabled />
-						</span> <br /> <span class="form_textbox"> <label
-							for="create_email">電子信箱：</label> <input class="MbrEmail"
-							type="email" id="MbrEmail" name="MbrEmail" placeholder="請輸入電子信箱"
-							disabled />
+							id="MbrPhone" name="MbrPhone" required  />
+						</span> <br /> <span class="form_textbox"> 
+<!--可串資料時再加disabled -->
+						<label for="create_email">電子信箱：</label> <input class="MbrEmail"
+							type="email" id="MbrEmail" name="MbrEmail"  />
 						</span>
-
 						<hr/>
 						<!-- 活動資訊 -->
 						<h3 style="color: #5a5aad">
-							<i class="fas fa-user-circle"></i> 活動資訊
-						</h3>
-
+							<i class="fas fa-user-circle"></i> 活動資訊</h3>
 						<span class="form_GrpNametxt"> 
 						<label for="Grp_Name">
 						<a class="x">*</a>活動名稱：</label> 
@@ -216,22 +213,25 @@
 					    <a class="x">*</a>最高人數：</label>
 						<input type="number" id="GrpPplLimit" name="GrpPplLimit" required
 							value="2" /> <a>人</a> <br /> 
-							<label for="GrpAddress">
-							<a class="x">*</a>活動地點：</label> 
-							<input type="text" id="GrpAddress1"
-							name="Grpplace" required placeholder="例：台北體育館" required />
-						<input type="text" id="GrpAddress2" name="GrpAddress" required
-							placeholder="地址" required /> <br /> 
-							<label for="GrpSignStrTime"><a class="x">*</a>報名期間：</label> <input
-							type="date" id="GrpSignStrTime1" name="GrpSignStrTime" required />
-						<input type="time" id="GrpSignStrTime2" name="GrpSignStrTime"
-							required /> <a class="an">至</a> <input
-							type="date" id="GrpSignEndTime1" name="GrpSignEndTime" required />
-						<input type="time" id="GrpSignEndTime2" name="GrpSignEndTime"
-							required />
+						<label for="GrpAddress"><a class="x">*</a>活動地點：</label> 
+<!-- 						<input type="text" id="GrpAddress1" name="Grpplace" required placeholder="例：台北體育館" required /> -->
+						<input type="text" id="GrpAddress2" name="GrpAddress" required placeholder="例：台北體育館，台北市松山區南京東路四段10號" required /> <br /> 
+							
+							
+							
+							<label for="GrpSignStrTime"><a class="x">*</a>報名期間：</label> 
+							<input type="date" id="GrpSignStrTime1" name="GrpSignStrDate" required />
+							<input type="time" id="GrpSignStrTime2" name="GrpSignStrTime" required /> 
+							<a class="an">至</a> 
+							<input type="date" id="GrpSignEndTime1" name="GrpSignEndDate" required />
+							<input type="time" id="GrpSignEndTime2" name="GrpSignEndTime" required />
+						
+						
+						
+						
 						<div>
-							<label for="GrpImg">圖片上傳：</label> <input id="GrpImg"
-								name="GrpImg" type="file" multiple="multiple">
+							<label for="GrpImg">圖片上傳：</label> 
+							<input id="GrpImg" name="GrpImg" type="file" multiple="multiple">
 						</div>
 						<div id="preview">
 							<span class="text">預覽圖</span>
@@ -242,12 +242,12 @@
 						<textarea id="GrpNote" name="GrpNote" rows="5" cols="33"></textarea>
 						<br />
 						<div class="Grp_Btnsrr">
-							<input type="submit" value="送出" /> <a href="#"
-								class="return-link" id="return_link">返回</a>
+							<input type="submit" class="Btn_creategrp_sm" id="InsertBtn" value="送出">
+						    <input type="hidden" name="action" value="grpInfoinsert">
+							<a href="${pageContext.request.contextPath}/group/AllGroup.jsp" class="return-link" id="return_link">返回</a>						
 							<button type="reset">清空</button>
 						</div>
 					</form>
-					<!-- End .createform_main -->
 				</div>
 			</div>
 		</main>
@@ -462,8 +462,7 @@
 <!-- 	</script> -->
 
 	<script>
-		document
-				.addEventListener(
+		document.addEventListener(
 						"DOMContentLoaded",
 						function() {
 							var form = document.querySelector("form");
@@ -485,19 +484,15 @@
 								}
 							});
 
-							MbrPhone
-									.addEventListener(
-											"input",
-											function() {
-												var regex = /^09\d{8}$/;
-												if (!regex.test(MbrPhone.value)) {
-													MbrPhone
-															.setCustomValidity("必須以09開頭並為10位數字");
-												} else {
-													MbrPhone
-															.setCustomValidity("");
-												}
-											});
+							MbrPhone.addEventListener("input", function() {
+							    var regex = /^(09|02)\d{8}$/;
+
+							    if (!regex.test(MbrPhone.value)) {
+							        MbrPhone.setCustomValidity("必須以09或02開頭並為10位數字");
+							    } else {
+							        MbrPhone.setCustomValidity("");
+							    }
+							});
 
 							GrpPplMin
 									.addEventListener(
@@ -527,65 +522,65 @@
 															.setCustomValidity("");
 												}
 											});
-							//開始日期
-							var GrpSignStrTime1 = document
-									.getElementById("GrpSignStrTime1");
-							//結束日期
-							var GrpSignEndTime1 = document
-									.getElementById("GrpSignEndTime1");
-							//開始時間
-							var GrpSignStrTime2 = document
-									.getElementById("GrpSignStrTime2");
-							//結束時間
-							var GrpSignEndTime2 = document
-									.getElementById("GrpSignEndTime2");
-							var GrpDate = document.getElementById("GrpDate");
+// 							//開始日期
+// 							var GrpSignStrTime1 = document
+// 									.getElementById("GrpSignStrTime1");
+// 							//結束日期
+// 							var GrpSignEndTime1 = document
+// 									.getElementById("GrpSignEndTime1");
+// 							//開始時間
+// 							var GrpSignStrTime2 = document
+// 									.getElementById("GrpSignStrTime2");
+// 							//結束時間
+// 							var GrpSignEndTime2 = document
+// 									.getElementById("GrpSignEndTime2");
+// 							var GrpDate = document.getElementById("GrpDate");
 
-							GrpSignStrTime1.addEventListener("input",
-									function() {
-										validateSignUpPeriod();
-									});
+// 							GrpSignStrTime1.addEventListener("input",
+// 									function() {
+// 										validateSignUpPeriod();
+// 									});
 
-							GrpSignEndTime1.addEventListener("input",
-									function() {
-										validateSignUpPeriod();
-									});
+// 							GrpSignEndTime1.addEventListener("input",
+// 									function() {
+// 										validateSignUpPeriod();
+// 									});
 
-							GrpDate.addEventListener("input", function() {
-								validateSignUpPeriod();
-							});
+// 							GrpDate.addEventListener("input", function() {
+// 								validateSignUpPeriod();
+// 							});
 
-							function validateSignUpPeriod() {
-								var startDate = new Date(
-										`${GrpSignStrTime1.value}T${GrpSignStrTime2.value}`);
-								var endDate = new Date(
-										`${GrpSignEndTime1.value}T${GrpSignEndTime2.value}`);
-								var eventDate = new Date(GrpDate.value);
+// 							function validateSignUpPeriod() {
+// 								var startDate = new Date(
+// 										`${GrpSignStrTime1.value}T${GrpSignStrTime2.value}`);
+// 								var endDate = new Date(
+// 										`${GrpSignEndTime1.value}T${GrpSignEndTime2.value}`);
+// 								var eventDate = new Date(GrpDate.value);
 
-								//報名結束日期小於報名開始日期 ->報名結束日期需晚於或等於起始日期
-								if (endDate <= startDate) {
-									GrpSignEndTime1
-											.setCustomValidity("報名結束日期需晚於或等於起始日期");
+// 								//報名結束日期小於報名開始日期 ->報名結束日期需晚於或等於起始日期
+// 								if (endDate <= startDate) {
+// 									GrpSignEndTime1
+// 											.setCustomValidity("報名結束日期需晚於或等於起始日期");
 
-								} else if (endDate.getTime() === startDate
-										.getTime()
-										&& GrpSignEndTime2.value < GrpSignStrTime2.value) {
-									GrpSignStrTime2
-											.setCustomValidity("日期若相同，結束時間需晚於起始時間");
-									GrpSignEndTime2
-											.setCustomValidity("日期若相同，結束時間需晚於起始時間");
+// 								} else if (endDate.getTime() === startDate
+// 										.getTime()
+// 										&& GrpSignEndTime2.value < GrpSignStrTime2.value) {
+// 									GrpSignStrTime2
+// 											.setCustomValidity("日期若相同，結束時間需晚於起始時間");
+// 									GrpSignEndTime2
+// 											.setCustomValidity("日期若相同，結束時間需晚於起始時間");
 
-								} else if (endDate > eventDate
-										|| startDate > eventDate) {
-									GrpSignEndTime1
-											.setCustomValidity("報名日期不可大於活動日期");
-									GrpSignEndTime2
-											.setCustomValidity("報名日期不可大於活動日期");
-								} else {
-									GrpSignEndTime1.setCustomValidity("");
-									GrpSignEndTime2.setCustomValidity("");
-								}
-							}
+// 								} else if (endDate > eventDate
+// 										|| startDate > eventDate) {
+// 									GrpSignEndTime1
+// 											.setCustomValidity("報名日期不可大於活動日期");
+// 									GrpSignEndTime2
+// 											.setCustomValidity("報名日期不可大於活動日期");
+// 								} else {
+// 									GrpSignEndTime1.setCustomValidity("");
+// 									GrpSignEndTime2.setCustomValidity("");
+// 								}
+// 							}
 
 							// 透過 File 取得預覽圖
 							var preview_img = function(file) {
@@ -611,10 +606,10 @@
 												}
 											});
 
-							form.addEventListener('submit', function(event) {
-								event.preventDefault();
-								alert('活動資訊新增成功！');
-							});
+// 							form.addEventListener('submit', function(event) {
+// 								event.preventDefault();
+// 								alert('活動資訊新增成功！');
+// 							});
 							var return_link_el = document
 									.getElementById("return_link");
 
