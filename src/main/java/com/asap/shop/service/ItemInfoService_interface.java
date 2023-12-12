@@ -14,7 +14,7 @@ public interface ItemInfoService_interface {
 
     ItemInfoVO getItemInfoById(Integer id);
 
-    List<ItemInfoVO> searchItemInfoByKeyword(String keyword);
+    List<ItemInfoVO> getByFuzzySearch(String keyword);
 
     List<ItemInfoVO> getItemInfoByCategory(String category);
 
@@ -22,7 +22,7 @@ public interface ItemInfoService_interface {
 
     List<ItemInfoVO> getItemInfoByPriceOrder(boolean descending);
 
-    List<ItemInfoVO> getItemInfoByViewOrder(boolean descending);
+    List<ItemInfoVO> getItemInfoByViewOrder();
 
     List<ItemInfoVO> getAllItemInfo();
 }

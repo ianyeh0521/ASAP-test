@@ -17,7 +17,7 @@ public class ItemInfoService implements ItemInfoService_interface {
         dao = new ItemInfoDAO();
     }
 
-	@Override
+    @Override
     public int insertItemInfo(ItemInfoVO itemInfo) {
         // 呼叫 DAO 的插入方法
         return dao.insert(itemInfo);
@@ -43,7 +43,7 @@ public class ItemInfoService implements ItemInfoService_interface {
     }
 
     @Override
-    public List<ItemInfoVO> searchItemInfoByKeyword(String keyword) {
+    public List<ItemInfoVO> getByFuzzySearch(String keyword) {
         // 呼叫 DAO 的模糊搜尋方法
         return dao.getByFuzzySearch(keyword);
     }
@@ -68,9 +68,9 @@ public class ItemInfoService implements ItemInfoService_interface {
     }
 
     @Override
-    public List<ItemInfoVO> getItemInfoByViewOrder(boolean descending) {
+    public List<ItemInfoVO> getItemInfoByViewOrder() {
         // 呼叫 DAO 的依瀏覽次數排序方法
-        return dao.orderByItemView(descending);
+        return dao.orderByItemView();
     }
 
     @Override

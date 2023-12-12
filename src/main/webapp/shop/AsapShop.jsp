@@ -169,24 +169,24 @@
               <a href="#" class="search-toggle" role="button"
                 ><i class="icon-magnifier"></i
               ></a>
-              <form action="#" method="get">
-                <div class="header-search-wrapper">
-                  <input
-                    type="search"
-                    class="form-control"
-                    name="q"
-                    id="q"
-                    placeholder="尋找想要的商品吧!"
-                    required=""
-                  />
-                  <button
-                    class="btn icon-magnifier p-0"
-                    title="搜尋"
-                    type="submit"
-                  ></button>
-                </div>
-                <!-- End .header-search-wrapper -->
-              </form>
+				              <form action="ItemInfoServlet" method="get">
+				    <div class="header-search-wrapper">
+				        <input
+				            type="search"
+				            class="form-control"
+				            name="q"
+				            id="q"
+				            placeholder="尋找想要的商品吧!"
+				            required=""
+				        />
+				        <button
+				            class="btn icon-magnifier p-0"
+				            title="搜尋"
+				            type="submit"
+				        ></button>
+				    </div>
+				    <!-- End .header-search-wrapper -->
+				</form>
             </div>
 
             <a
@@ -340,7 +340,7 @@
                         
                         <option value="false">價格:低到高</option>
                         
-                        <option value="date">瀏覽人數</option>
+                        <option value="view_order">瀏覽人數</option>
 
                       </select>
                     </div>
@@ -378,8 +378,7 @@
                     <div class="product-details">
                       <div class="category-wrap">
                         <div class="category-list">
-                          <span>${ItemInfoVO.itemName}</span><span>${ItemInfoVO.itemTypeNo}</span>,
-                          <a href="#">狀況尚可</a>
+                          <span>${ItemInfoVO.itemName}</span>、<span>${ItemInfoVO.itemTypeNo}</span>、<span>${ItemInfoVO.itemStatNo}</span>
                         </div>
                         <a
                           href="AsapShopWish.jsp"
@@ -389,20 +388,22 @@
                         ></a>
                       </div>
                       <h3 class="product-title">
-                        <a href="AsapShopProduct.jsp">足球</a>
+                        <a href="AsapShopProduct.jsp" ><span>${ItemInfoVO.itemName}</span></a>
+                        瀏覽人數:<span>${ItemInfoVO.itemView}</span>
                       </h3>
                       <div class="product-buttons">
                         <a href="AsapCart.jsp" class="btn-icon-cart" title="加入購物車"><i class="icon-shopping-cart"></i> 加入購物車</a>
-                        <a href="AsapCart.jsp"btn-icon-buy" title="直接購買"><i class="icon-credit-card"></i> 直接購買</a>
                     </div>
-                      End .product-container
-                      <div class="price-box">
-                        <del class="old-price">$400.00</del>
-                        <span class="product-price">$200.00</span>
-                      </div>
-                      End .price-box
+       
+						<div class="price-box">
+						    <c:if test="${ItemInfoVO.preItemPrice != 0}">
+						        <del class="old-price">${ItemInfoVO.preItemPrice}</del>
+						    </c:if>
+						    <span class="product-price">${ItemInfoVO.itemPrice}</span>
+						</div>
+
                     </div>
-                    End .product-details
+               
                   </div>
                 </div>
 				</c:forEach>
@@ -945,24 +946,36 @@
       $("div.mobile-menu-container").load("mobile-menu-container.html");
       
       $("select.orderby").on("change", function() {
-    	  var orderby=$(".orderby").val();
-    	  var form_data = {
-    			  "action": "orderby",
-    			  "Itemsort": orderby
-    	  }
+    	    var orderby = $(".orderby").val();
+    	    var form_data = {};
+
+    	    if (orderby === "view_order") {
+    	        form_data.action = "view_order";
+    	    } else if (orderby === "true") {
+    	        form_data.action = "orderby";
+    	        form_data.Itemsort = true;
+    	    } else if (orderby === "false") {
+    	        form_data.action = "orderby";
+    	        form_data.Itemsort = false;
+    	    } else {
+
+    	        form_data.action = "other_action"; 
+    	    }	    
+    	    
     	  $.ajax({
     		  url : "ItemInfoServlet",
     		  type : "POST",
     		  data : form_data,
     		  dataType: "json",
     		  success : function(data) {
+    			  console.log(data);
         		  $("div#roworder").children("div").animate({
                       "opacity": 0
                     }, 0, "swing", function(){
                       $(this).remove();
                     });
         		  var itemsorthtml = "";
-        		  for (let item in data) {
+        		  for(let itemabc in data){
         			  itemsorthtml=`<div class="col-6 col-sm-3">
                           <div class="product-default inner-quickview inner-icon">
                           <figure>
@@ -988,7 +1001,7 @@
                           <div class="product-details">
                             <div class="category-wrap">
                               <div class="category-list">
-                                <span>${data[item]["itemName"]}</span><span>${data[item]["itemTypeNo"]}</span>,
+                                <span>\${data[itemabc]["itemName"]}</span><span>\${data[itemabc]["itemTypeNo"]}</span>,
                                 <a href="#">狀況尚可</a>
                                 
                               </div>
@@ -1000,29 +1013,87 @@
                               ></a>
                             </div>
                             <h3 class="product-title">
-                              <a href="AsapShopProduct.jsp">足球</a>
+                            <span>\${data[itemabc]["itemName"]}</span><br>
+                            瀏覽人數: <span>\${data[itemabc]["itemView"]}</span>
                             </h3>
                             <div class="product-buttons">
                               <a href="AsapCart.jsp" class="btn-icon-cart" title="加入購物車"><i class="icon-shopping-cart"></i> 加入購物車</a>
-                              <a href="AsapCart.jsp"btn-icon-buy" title="直接購買"><i class="icon-credit-card"></i> 直接購買</a>
+                          
                           </div>
-                            End .product-container
+
                             <div class="price-box">
                               <del class="old-price">$400.00</del>
-                              <span class="product-price">$200.00</span>
+                              <span class="product-price">\${data[itemabc]["itemPrice"]}</span>
                             </div>
-                            End .price-box
+         
                           </div>
-                          End .product-details
+                  
                         </div>
                       </div>`     
                       $("div#roworder").append(itemsorthtml)
+        		  
         		  }
     		  },
     	  });
       })
+      
+      
+      //搜尋功能
+      (document).ready(function() {
+    $("form").on("submit", function(event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+        var searchQuery = $("#q").val(); // 获取搜索关键词
+        $.ajax({
+            url: "ItemInfoServlet", // Servlet URL
+            type: "GET", // 使用GET方法
+            data: { q: searchQuery }, // 传递搜索参数
+            dataType: "json",
+            success: function(data) {
+                $("div#roworder").empty(); // 清空当前商品列表
+                var itemsHtml = "";
+                $.each(data, function(index, item) {
+                    // 根据返回的数据构建商品HTML
+                    // 此处需要根据您的数据结构和HTML结构进行调整
+                    itemsHtml += `<div class="col-6 col-sm-3">
+                        <div class="product-default inner-quickview inner-icon">
+                        <figure>
+                            <a href="AsapShopProduct.jsp">
+                                <img src="${item.imagePath}" width="300" height="300" alt="product"/>
+                            </a>
+                            <div class="label-group">
+                                <span class="product-label label-sale">-50%</span>
+                            </div>
+                            <a href="ProductQuickView.html" class="btn-quickview" title="快速查看">快速查看</a>
+                        </figure>
+                        <div class="product-details">
+                            <div class="category-wrap">
+                                <div class="category-list">
+                                    <span>${item.itemName}</span>, <span>${item.itemTypeNo}</span>, <a href="#">狀況尚可</a>
+                                </div>
+                                <a href="AsapShopWish.jsp" class="btn-icon-wish" title="加入收藏"><i class="icon-heart"></i></a>
+                            </div>
+                            <h3 class="product-title">
+                                <span>${item.itemName}</span><br>
+                                瀏覽人數: <span>${item.itemView}</span>
+                            </h3>
+                            <div class="product-buttons">
+                                <a href="AsapCart.jsp" class="btn-icon-cart" title="加入購物車"><i class="icon-shopping-cart"></i> 加入購物車</a>
+                            </div>
+                            <div class="price-box">
+                                <del class="old-price">$${item.preItemPrice}</del>
+                                <span class="product-price">$${item.itemPrice}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                });
+                $("div#roworder").html(itemsHtml); // 更新页面内容
+            }
+        });
+    });
+});
    
-//       <select name="orderby" class="form-control orderby">
+
       
     </script>
   </body>

@@ -30,7 +30,7 @@ public interface ItemInfoDAO_interface {
     List<ItemInfoVO> orderByItemPrice(boolean descending);
 	
 	//按造瀏覽人數排名
-	List<ItemInfoVO> orderByItemView(boolean descending);
+	List<ItemInfoVO> orderByItemView();
 
 	// 查詢所有商品資訊
 	List<ItemInfoVO> getALL();
