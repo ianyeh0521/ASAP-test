@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.ListModel;
 
 import com.asap.court.entity.CourtClosedTimeVO;
 import com.asap.court.entity.CourtImgVO;
@@ -20,10 +21,13 @@ import com.asap.court.service.CourtClosedTimeService;
 import com.asap.court.service.CourtClosedTimeService_interface;
 import com.asap.court.service.CourtImgService;
 import com.asap.court.service.CourtImgService_interface;
+import com.asap.util.HibernateProxyTypeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @MultipartConfig(fileSizeThreshold = 0 * 1024 * 1024, maxFileSize = 1 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
 @WebServlet("/court/courtClosedTime.do")
-public class AddCourtClosedTimeServlet extends HttpServlet{
+public class CourtClosedTimeServlet extends HttpServlet{
 
 	private CourtClosedTimeService_interface courtClosedTimeService_interface;
 	
@@ -56,6 +60,8 @@ public class AddCourtClosedTimeServlet extends HttpServlet{
 	
 	
 	
+
+
 	private String deleteTime(HttpServletRequest req, HttpServletResponse res) {
 		
 		// 接收 courtNo、courtClosedTime、courtClosedDate
@@ -81,7 +87,7 @@ public class AddCourtClosedTimeServlet extends HttpServlet{
 				
 			}
 		}
-		return "/court/listClosedTime.jsp";
+		return "/court/listClosedTime.jsp?courtNo=" + courtNo;
 	}
 
 	private String addTime(HttpServletRequest req, HttpServletResponse res) {
@@ -99,7 +105,7 @@ public class AddCourtClosedTimeServlet extends HttpServlet{
 		CourtVO courtVO = new CourtVO(courtNo);
 		CourtClosedTimeVO courtClosedTimeVO = new CourtClosedTimeVO(courtVO, closedDateS, closedTime);	
 		courtClosedTimeService_interface.insert(courtClosedTimeVO);
-		return  "/court/UploadPicAddDeleteTime.jsp";
+		return  "/court/listClosedTime.jsp?courtNo=" + courtNo;
 	}
 
 	@Override

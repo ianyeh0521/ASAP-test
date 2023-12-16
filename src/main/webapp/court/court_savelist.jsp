@@ -162,6 +162,10 @@
       th.dt-center, td.dt-center {
          text-align: center; 
       }
+      
+      #table_id tbody tr:hover {
+	    cursor: pointer;
+	  }
     </style>
 </head>
 
@@ -180,19 +184,16 @@
                   </ol>
                 </nav>
                 <button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
-                <button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的預約</button>                         
+                <a href="${pageContext.request.contextPath}/court/court_orderlist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的預約</button></a>                         
             </div>  
             
               <!-- 彈窗 -->
               <div id="fs_alert1">
                 <div class="fs_alert_bg"></div>
-                <div class="fs_alert_show">
-                  <!-- <form action="" method="post"> -->
+                <div class="fs_alert_show"> 
                   <div class="fs_alert_title">確定要移除此收藏？</div>
                   <!-- <div class="fs_alert_txt"></div> -->
                   <div class="btn_s" id="alert_ok1">確認</div>
-                  <!-- <input type="hidden" name="" value=""/> -->
-                <!-- </form> -->
                 </div>
               </div>
 
@@ -221,7 +222,7 @@
                         <th >地址</th>
                         <th >場地類型</th>
                         <th >價格</th>
-                        <th >查看地點</th>
+<!--                         <th >查看地點</th> -->
                         <th >移除收藏</th>
                       </tr>
                     </thead>
@@ -318,17 +319,17 @@
                                  }
                              },
                           	
-                             {"data": "courtVO.courtName"},
+                            {"data": "courtVO.courtName"},
                           	{"data": "courtVO.courtAddress"},
                           	{"data": "courtVO.courtTypeVO.courtType"},
                           	{"data": "courtVO.courtPrice"},
                                    	
-                          	{
-                                 "data": "courtVO.courtNo",
-                                 "render": function(data, type, row) {
-                                     return '<a href="/ASAP/court/court_page.jsp?courtNo=' + data + '" class="btn btn-primary btn-sm" style="border-radius:5px">查看</a>';
-                                 }
-                             },
+//                           	{
+//                                  "data": "courtVO.courtNo",
+//                                  "render": function(data, type, row) {
+//                                      return '<a href="/ASAP/court/court_page.jsp?courtNo=' + data + '" class="btn btn-primary btn-sm" style="border-radius:5px">查看</a>';
+//                                  }
+//                              },
                  
                              {
                                  "data": "courtVO.courtNo",
@@ -340,6 +341,28 @@
                           
                           "createdRow": function(row, data, dataIndex) {
                               $(row).attr('id', data.courtVO.courtNo);
+                           		
+                              // Add a click event to the entire row
+                              $(row).on('click', function() {
+                                  // Extract the courtNo from the clicked row
+                                  var courtNo = data.courtVO.courtNo;
+                                  
+                                  // Navigate to the specific page using courtNo
+                                  window.location.href = '/ASAP/court/court_page.jsp?courtNo=' + courtNo;
+                              });
+                              
+                              // Add click event to the "移除" button
+                              $(row).find('.lookup').on('click', function(event) {
+                                  // Prevent the row click event from firing
+                                  event.stopPropagation();
+                              
+	                            	var clickedId = $(this).data('id');
+	                            	handleClickedId(clickedId);
+	                            	$("#fs_alert1").css("display", "block")
+                            	
+                              });
+                          
+                          
                           }
                  	 });
                  	 
@@ -354,13 +377,14 @@
              
             
         })
-        $(document).on("click", ".lookup", function(e){
-        	e.preventDefault();
-        	var clickedId = $(this).data('id');
-        	handleClickedId(clickedId);
-        	$("#fs_alert1").css("display", "block")
-        	
-        });
+        $(document).mouseup(function(e) {
+		    var fsAlert1 = $("#fs_alert1");
+		    var fsAlertShow = $(".fs_alert_show");
+		
+		    if (!fsAlertShow.is(e.target) && fsAlertShow.has(e.target).length === 0) {
+		        fsAlert1.css("display", "none");
+		    }
+		});
         
         function handleClickedId(clickedId){
         	var clickedId = clickedId.toString();
@@ -400,12 +424,26 @@
             function openDelete(){
                 $("#fs_alert2").css("display", "block");
             }
-       }
-            
-        $(".fs_alert_bg").click(function(){
-          $("#fs_alert1").css("display", "none");
+        	
+        	
+       	}
+        
+        
+     	// 儲存現在的頁面位置
+        var scrollPosition = window.scrollY || document.documentElement.scrollTop;
+        history.replaceState({ scrollPosition: scrollPosition }, document.title, window.location.href);
+
+
+        // court_page.jsp 載入後保存之前的位置
+        document.addEventListener('DOMContentLoaded', function() {
+            var savedState = history.state;
+            if (savedState && typeof savedState.scrollPosition !== 'undefined') {
+                window.scrollTo(0, savedState.scrollPosition);
+            }
         });
 
+            
+    
         
 	</script>
 </body>

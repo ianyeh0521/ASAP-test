@@ -28,6 +28,8 @@ public class CourtClosedTimeService implements CourtClosedTimeService_interface{
 
 	@Override
 	public List<CourtClosedTimeVO> findByCourtNo(Integer courtNo) {
+		// 把今天以前的不開放資料刪除
+		dao.deleteBeforeNow();
 		return dao.findByCourtNo(courtNo);
 	}
 
@@ -38,8 +40,16 @@ public class CourtClosedTimeService implements CourtClosedTimeService_interface{
 
 	@Override
 	public List<CourtClosedTimeVO> getAll() {
+		dao.deleteBeforeNow();
 		return dao.getAll();
 	}
+
+	@Override
+	public List<CourtClosedTimeVO> findByDate(Integer courtNo, Date courtClosedDate) {
+		return dao.findByDate(courtNo, courtClosedDate);
+	}
+	
+	
 	
 	
 }

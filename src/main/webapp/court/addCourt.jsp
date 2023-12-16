@@ -99,7 +99,7 @@
 			</c:if>
 
 			<div class="container account-container custom-account-container">
-				<div class="row">
+				<div class="row justify-content-center align-items-center">
 					<div class="col-lg-9 order-lg-last order-1 tab-content">
 						<!-- modify HERE -->
 						<div class="" id="shipping" role="tabpanel">
@@ -197,31 +197,36 @@
 											<option value="false">暫停營運</option>
 										</select>
 									</div>
-									
-									<div>
-										<label for="upFiles1">照片1:</label>
-										<input id ="upFiles1" name="upFiles1" type="file" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles1.errors');" />
-										<div class="blob_holder"></div>
-									</div>
-									
-									<div>
-										<label for="upFiles2">照片2:</label>
-										<input id ="upFiles2" name="upFiles2" type="file" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles2.errors');" />
-										<div class="blob_holder"></div>
-									</div>
-									
-									<div>
-										<label for="upFiles3">照片3:</label>
-										<input id ="upFiles3" name="upFiles3" type="file" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles3.errors');" />
-										<div class="blob_holder"></div>
-									</div>
-									
-									<div>
-										<label for="upFiles4">照片4:</label>
-										<input id ="upFiles4" name="upFiles4" type="file" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles4.errors');" />
-										<div class="blob_holder"></div>
-									</div>
 
+									<div class="mb-3">
+									    <div class="row">
+									        <div class="col-md-3">
+									            <label for="upFiles1" class="form-label">照片1:</label>
+									            <input id="upFiles1" name="upFiles1" class="form-control" type="file" 
+									            	onchange="previewImage('upFiles1', 'blob_holder1')">
+									            <div class="blob_holder" id="blob_holder1"></div>
+									        </div>
+									        <div class="col-md-3">
+									            <label for="upFiles2" class="form-label">照片2:</label>
+									            <input id="upFiles2" name="upFiles2" class="form-control" type="file"
+									            	onchange="previewImage('upFiles2', 'blob_holder2')">
+									            <div class="blob_holder" id="blob_holder2"></div>
+									        </div>
+									        <div class="col-md-3">
+									            <label for="upFiles3" class="form-label">照片3:</label>
+									            <input id="upFiles3" name="upFiles3" class="form-control" type="file"
+									            	onchange="previewImage('upFiles3', 'blob_holder3')">
+									            <div class="blob_holder" id="blob_holder3"></div>
+									        </div>
+									        <div class="col-md-3">
+									            <label for="upFiles4" class="form-label">照片4:</label>
+									            <input id="upFiles4" name="upFiles4" class="form-control" type="file"
+									            	onchange="previewImage('upFiles4', 'blob_holder4')">
+									            <div class="blob_holder" id="blob_holder4"></div>
+									        </div>
+									    </div>
+									</div>
+								
 									<div class="form-footer mb-0">
 											<div class="form-footer-right">
 											<input type="hidden" name="action" value="add">
@@ -288,25 +293,43 @@
 		
 		 function ShowLngLati(){
 	            
-            var userData = "https://maps.googleapis.com/maps/api/geocode/json?address=" + $('#getAddress').val() +"&key=AIzaSyAnAshx89XCdT3mcu8Aru0-uD7tBTH9cUs";
-            console.log($('#getAddress').val());
-            $.ajax({
-                type:'GET',
-                url: userData,
-                success: function(data){
-                    let lng = data.results[0].geometry.location.lng;
-                    if(lng.length > 12){
-                        lng = lng.substring(0, 13)
-                    }
-                    let lati = data.results[0].geometry.location.lat;
-                    if(lati.length > 11){
-                        lati = lati.substring(0, 12)
-                    }
-                    $('#getLng').val(lng);
-                    $('#getLati').val(lati);
-                    
-                }
-            })       
+			 if($('#getAddress').val()!=''){
+				 	var userData = "https://maps.googleapis.com/maps/api/geocode/json?address=" + $('#getAddress').val() +"&key=AIzaSyAnAshx89XCdT3mcu8Aru0-uD7tBTH9cUs";
+		            console.log($('#getAddress').val());
+		            
+		         	// 自動抓經緯度 
+		            $.ajax({
+		                type:'GET',
+		                url: userData,
+		                success: function(data){
+		                    let lng = data.results[0].geometry.location.lng;
+		                    if(lng.length > 12){
+		                        lng = lng.substring(0, 13)
+		                    }
+		                    let lati = data.results[0].geometry.location.lat;
+		                    if(lati.length > 11){
+		                        lati = lati.substring(0, 12)
+		                    }
+		                    $('#getLng').val(lng);
+		                    $('#getLati').val(lati);
+		                    
+		                }
+		            })  
+		            
+		            // 自動選擇地區
+		            const inputAddress = document.getElementById('getAddress').value;
+
+				    const selectElement = document.querySelector('select[name="site"]');
+		 
+				    for (let option of selectElement.options) {
+				        if (inputAddress.includes(option.text)) {
+				        	console.log(option.text)
+				            option.selected = true;
+				            break; 
+				        }
+				    } 
+			 }
+           
         }
 		 
 		function courtTextAlert(){
@@ -315,6 +338,33 @@
 			}
 			
 		}
+		
+	
+		function previewImage(inputId, blobHolderId) {
+		    const input = document.getElementById(inputId);
+		    const blobHolder = document.getElementById(blobHolderId);
+
+		    if (input.files && input.files[0]) {
+		        const reader = new FileReader();
+
+		        reader.onload = function (e) {
+		            
+		            const img = document.createElement('img');
+		            img.src = e.target.result;
+		            img.alt = '照片預覽';
+		            img.style.maxWidth = '100%';
+
+		            blobHolder.innerHTML = '';
+
+		            blobHolder.appendChild(img);
+		        };
+
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+	
+		
+		
 	</script>
 </body>
 

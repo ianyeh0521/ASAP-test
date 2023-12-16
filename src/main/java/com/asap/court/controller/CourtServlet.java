@@ -3,6 +3,8 @@ package com.asap.court.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -23,22 +25,26 @@ import com.asap.court.entity.CourtImgVO;
 import com.asap.court.entity.CourtTypeVO;
 import com.asap.court.entity.CourtVO;
 import com.asap.court.entity.SiteVO;
+import com.asap.court.service.CourtClosedTimeService;
+import com.asap.court.service.CourtClosedTimeService_interface;
 import com.asap.court.service.CourtImgService;
 import com.asap.court.service.CourtImgService_interface;
 import com.asap.court.service.CourtService;
 import com.asap.court.service.CourtService_interface;
 
-@MultipartConfig(fileSizeThreshold = 0 * 1024 * 1024, maxFileSize = 1 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 10 * 1024 * 1024, maxRequestSize = 30 * 1024 * 1024)
 @WebServlet("/court/court.do")
 public class CourtServlet extends HttpServlet {
 	// 一個 servlet 實體對應一個 service 實體
 	private CourtService_interface courtService_interface;
 	private CourtImgService_interface courtImgService_interface;
+	private CourtClosedTimeService_interface courtClosedTimeService_interface;
 
 	@Override
 	public void init() throws ServletException {
 		courtService_interface = new CourtService();
 		courtImgService_interface = new CourtImgService();
+		courtClosedTimeService_interface = new CourtClosedTimeService();
 	}
 
 	@Override
@@ -203,7 +209,13 @@ public class CourtServlet extends HttpServlet {
 	private String deleteCourt(HttpServletRequest req, HttpServletResponse res) {
 		Integer courtNo = Integer.valueOf(req.getParameter("courtNo"));
 		System.out.println(courtNo);
-		courtService_interface.delete(courtNo);			
+		
+		List<CourtImgVO> courtImgVOs = courtImgService_interface.findByCourtNo(courtNo);
+		for (CourtImgVO courtImgVO : courtImgVOs) {
+			courtImgService_interface.delete(courtImgVO.getCourtImgNo());
+		}
+		courtService_interface.delete(courtNo);
+		
 		return "/court/listAllCourts_datatable_Ajax.html";
 	}
 
@@ -401,23 +413,76 @@ public class CourtServlet extends HttpServlet {
 	
 		searchCon = searchCon.concat(regions).concat(name).concat(type);
 		
+		System.out.println(map.values().toString());
+		
 		
 		if (map != null) {
-			// 將courtVO 和相對應的 courtImgVO List 放入一個 Map
-			Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
-			List<CourtVO> courSearchList = courtService_interface.getCourtsByCompositeQuery(map);
-			for(CourtVO courtVO:courSearchList) {
-				cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
-			}
 			
-			req.setAttribute("searchCon", searchCon);
-			req.setAttribute("cobineMap", cobineMap);
+			if(!("".equals(String.join(", ", map.get("chooseDate"))))
+				&& String.join(", ", map.get("searchCourt")).equals("") 
+				&& String.join(", ",map.get("courtType")).equals("") 
+				&& String.join(", ",map.get("regions")).equals("")) {		// 只有接到時間資訊，找全部再用時間去篩
+				Date chooseDate = java.sql.Date.valueOf(String.join(", ", map.get("chooseDate")) );
+				Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
+				List<CourtVO> courtAllList = courtService_interface.getAllCourts();
+				List<CourtVO> courSearchList = new ArrayList<>();
+				
+				for(CourtVO courtVO: courtAllList) {
+					if(courtClosedTimeService_interface.findByDate(courtVO.getCourtNo(), chooseDate).size() != 10) {
+						courSearchList.add(courtVO);
+					}
+				}
+				for(CourtVO courtVO:courSearchList) {
+					cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
+				}
+				req.setAttribute("searchCon", searchCon);
+				req.setAttribute("cobineMap", cobineMap);
+				System.out.println("1");
+				
+				
+			}else if(!("".equals(String.join(", ", map.get("chooseDate"))))){		// 有填時間，其他隨意
+				// 將courtVO 和相對應的 courtImgVO List 放入一個 Map
+				Date chooseDate = java.sql.Date.valueOf(String.join(", ", map.get("chooseDate")) );
+				Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
+				List<CourtVO> courtCompositeList = courtService_interface.getCourtsByCompositeQuery(map);
+				List<CourtVO> courtSearchList = new ArrayList<>();
+				
+				for(CourtVO courtVO:courtCompositeList) {
+					if(courtClosedTimeService_interface.findByDate(courtVO.getCourtNo(), chooseDate).size() != 10) {
+						courtSearchList.add(courtVO);
+					}
+				}
+				for(CourtVO courtVO:courtSearchList) {
+					cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
+				}
+				req.setAttribute("searchCon", searchCon);
+				req.setAttribute("cobineMap", cobineMap);
+				System.out.println("2");
+	
+				
+			}else if("".equals(String.join(", ", map.get("chooseDate")))
+				&& (!String.join(", ", map.get("searchCourt")).equals("") 
+				|| !String.join(", ",map.get("courtType")).equals("") 
+				|| !String.join(", ",map.get("regions")).equals(""))){ 			// 時間沒填，其他隨意
+				// 將courtVO 和相對應的 courtImgVO List 放入一個 Map
+				Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
+				List<CourtVO> courSearchList = courtService_interface.getCourtsByCompositeQuery(map);
+				for(CourtVO courtVO:courSearchList) {
+					cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
+				}
+				req.setAttribute("searchCon", searchCon);
+				req.setAttribute("cobineMap", cobineMap);
+				System.out.println("3");
+	
+			}else {	// 全部沒填
+				System.out.println("4");
+				return "/court/court_main.jsp";	
+			}	
 			
-			return "/court/court_main_search.jsp";
-		} else {	
+		}else {	
 			return "/court/court_main.jsp";	
 		}
-				
+		return "/court/court_main_search.jsp";	
 	}
 	
 	// 用名稱找場地

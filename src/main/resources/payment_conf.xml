@@ -1,0 +1,33 @@
+<?xml  version="1.0" encoding="utf-8"?>
+<Conf>
+    <!--決定 SDK 中 method 串接時連結的 API URL，僅可設定為 Test or Production-->
+    <OperatingMode>Test</OperatingMode> 
+    <!-- 依 OperatingMode 定義，設定 SDK 中串接要使用的 MID[會員編號]，名稱須對應到下方 MerchantInfo中MInfo name屬性-->
+    <MercProfile>Stage_Account</MercProfile>
+    <!-- 指定是否為專案平台商，設定為 Y 會將目前設定的 MID 帶入 API 的 PlatformID 參數中，設為 N 帶入空字串 -->	
+    <IsProjectContractor>N</IsProjectContractor>
+    
+    <!-- MInfo 可依照上方 OperatingMode 分別定義一組 MID、Hashkey 和 HashIV。
+    至少要有一組 name 屬性對應到上方的 MercProfile 設定值 -->
+    <MerchantInfo>
+        <MInfo name="Production_Account">
+            <MerchantID></MerchantID>
+            <HashKey></HashKey>
+            <HashIV></HashIV>
+        </MInfo>
+        <MInfo name="Stage_Account">
+            <MerchantID>2000132</MerchantID>
+            <HashKey>5294y06JbISpM5x9</HashKey>
+            <HashIV>v77hoKGq4kWxNNIS</HashIV>
+        </MInfo>
+    </MerchantInfo>
+    
+   <IgnorePayment>
+   <!-- <Method>Credit</Method>
+        <Method>WebATM</Method>
+        <Method>ATM</Method>
+        <Method>CVS</Method>
+        <Method>BARCODE</Method>-->
+    </IgnorePayment>
+
+</Conf>

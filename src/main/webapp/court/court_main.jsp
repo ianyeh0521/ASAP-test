@@ -6,6 +6,23 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.asap.court.*"%>
 <%@ page import="com.asap.util.*"%>
+
+<%
+	//datetime picker
+	java.sql.Date closedDate = null;
+	try {
+		 closedDate = java.sql.Date.valueOf(request.getParameter("closedDate").trim());
+	} catch (Exception e) {
+		 closedDate = new java.sql.Date(System.currentTimeMillis());
+	}
+	
+	// 會員編號
+	/*
+	String memberNo = session.getAttribute("memberVO").getMbrNo();
+	pageContext.setAttribute("memberNo",memberNo);
+	*/
+%>
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +43,7 @@
 		};
 		(function (d) {
 			var wf = d.createElement('script'), s = d.scripts[0];
-			wf.src = '/ASAP/assets/js/webfont.js';
+			wf.src = '${pageContext.request.contextPath}/assets/js/webfont.js';
 			wf.async = true;
 			s.parentNode.insertBefore(wf, s);
 		})(document);
@@ -43,6 +60,20 @@
 	<!-- Main CSS File -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
+	
+	<!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
+	<link   rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.css" />
+	<script src="${pageContext.request.contextPath}/court/datetimepicker/jquery.js"></script>
+	<script src="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.full.js"></script>
+
+	<style>
+	  .xdsoft_datetimepicker .xdsoft_datepicker {
+	           width:  300px;   /* width:  300px; */
+	  }
+	  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+	           height: 151px;   /* height:  151px; */
+	  }
+	</style>
 
 	
 </head>
@@ -68,9 +99,10 @@
 							<input type="search" class="form-control" name="searchCourt" placeholder="尋找場地...">
 							
 							<!--日期選擇-->
-<!-- 						<div class="select-custom" style="display:flex;justify-content:center;align-items:center"> -->
-<!-- 							<input type="date" id="choose-date"> -->
-<!-- 						</div> -->
+							<div class="select-custom" style="display:flex;justify-content:center;align-items:center">
+								<input name="chooseDate" id="f_date1" type="text" style="width: 100%; box-sizing: border-box;">
+							</div>
+								
 							
 							<!-- 場地種類選擇 -->
 							<div class="select-custom">
@@ -117,7 +149,7 @@
 			<div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
 				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
 				<a href="${pageContext.request.contextPath}/court/court_savelist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的收藏</button></a>
-				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的預約</button>
+				<a href="${pageContext.request.contextPath}/court/court_orderlist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的預約</button></a>
 			</div>
 			
 			
@@ -162,9 +194,9 @@
 									<label>排序方式:</label>
 
 									<div class="select-custom">
-										<select name="orderby" class="form-control">
-											<option value="menu_order" selected="selected">預設</option>
-											<option value="priceHL">價格高➪低</option>
+										<select name="orderby" class="form-control" v-model="selectedSortOption" @change="fetchSortedData">
+											<option value="menu_order" selected="selected" disabled>預設</option>
+											<option value="priceHL" >價格高➪低</option>
 											<option value="priceLH">價格低➪高</option>
 											<option value="distanceFN">距離遠➪近</option>
 											<option value="distanceNF">距離近➪遠</option>
@@ -214,11 +246,11 @@
 						<h4 class="text-uppercase heading-bottom-border mt-6 mt-lg-4" style="margin-top: 30px !important;">近期瀏覽</h4>
 						<div class="product-default left-details product-widget">
 							<figure>
-								<a href="product.html">
+								<a href="">
 									<img src="#" width="84" height="84"
-										alt="product">
+										alt="還不會redis">
 									<img src="#" width="84" height="84"
-										alt="product">
+										alt="還不會redis">
 								</a>
 							</figure>
 							<div class="product-details">
@@ -256,7 +288,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	
 	<!-- Plugins JS File -->
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+<%-- 	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script> --%>
 	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/js/nouislider.min.js"></script>
@@ -283,59 +315,191 @@
 	
 	<script>
 		window.onload=function(){
-			const request1 = { url: 'courtAjax.do', method:'get'};
-			const request2 = { url: 'courtImgAjax.do', method:'get'};
+			
+			// vue 初始化
 			Vue.createApp({
 	            data: function(){
 	                return{
-	                    datas: []
+	                    datas: [],
+	                    selectedSortOption: 'menu_order',
+	                    userlatitude: null,
+	                    userlongitude: null,
 	                }
 	            },
 	            methods:{
+	            	successCallback: function (position) {
+	                    this.userlatitude = position.coords.latitude;
+	                    this.userlongitude = position.coords.longitude;
+	                    
+	                    // 先存在 sessionStorage 裡，forward 到其他頁可以用
+	                    sessionStorage.setItem('userlatitude', this.userlatitude);
+	                    sessionStorage.setItem('userlongitude', this.userlongitude);
 
+	                    console.log("緯度: " + this.userlatitude);
+	                    console.log("經度: " + this.userlongitude);
+	                },
+	                
+	                errorCallback: function (error) {
+	                    // Handle errors when obtaining geolocation
+	                    switch (error.code) {
+	                        case error.PERMISSION_DENIED:
+	                            console.log("使用者拒絕位置存取");
+	                            break;
+	                        case error.POSITION_UNAVAILABLE:
+	                            console.log("無法取得位置資訊");
+	                            break;
+	                        case error.TIMEOUT:
+	                            console.log("取得位置資訊請求超時");
+	                            break;
+	                        case error.UNKNOWN_ERROR:
+	                            console.log("未知的錯誤發生");
+	                            break;
+	                    }
+	                },
+	                
+	                // 場地資料初始化
+	            	fetchInitialData: function () {
+	                    const request1 = { url: 'courtAjax.do', method: 'get' };
+	                    const request2 = { url: 'courtImgAjax.do', method: 'get' };
+
+	                    axios.all([axios(request1), axios(request2)])
+	                        .then(axios.spread((response1, response2) => {
+	                            var result1 = response1.data;
+	                            var result2 = response2.data;
+
+	                            for (let i = 0; i < result1.length; i++) {
+	                                let imgCount = 0;
+	                                for (let j = 0; j < result2.length; j++) {
+	                                    if (result1[i].courtNo == result2[j][0]) {
+	                                        imgCount += 1;
+
+	                                        let courtImg = "courtImg";
+	                                        courtImg = courtImg + imgCount;
+	                                        result1[i][courtImg] = 'data:image/jpg;base64,' + result2[j][1];
+
+	                                        if (imgCount == 4) {
+	                                            break;
+	                                        }
+	                                    }
+	                                }
+	                            }
+
+	                            this.datas = result1;
+	                        }))
+	                        .catch(function (reason) {
+	                            console.log(reason);
+	                        });
+	            	},
+	            	
+	            	// 排序查詢
+	            	fetchSortedData: function () {
+	                    const sortingOption = this.selectedSortOption;
+
+	                 	// Map the selected sort option to the corresponding server-side parameter
+	                    const sortParams = {
+	                        'menu_order': 'menu_order',
+	                        'priceHL': 'courtPrice desc',
+	                        'priceLH': 'courtPrice asc',
+	                        'distanceFN': 'desc',
+	                        'distanceNF': 'asc',
+	                    };
+	                 	
+	                 	// Check if the sorting option requires location parameters
+	                    const requiresLocation = sortingOption === 'distanceFN' || sortingOption === 'distanceNF';
+
+	                    const params = {
+	                        sortBy: sortParams[sortingOption],
+	                    };
+
+	                    // Include location parameters if required
+	                    if (requiresLocation) {
+	                        params.userLatitude = this.userlatitude;
+	                        params.userLongitude = this.userlongitude;
+	                    }
+
+	                    axios.all([
+	                        axios.get('courtSorting.do', {
+	                            params: params,
+	                        }),
+	                        axios.get('courtImgAjax.do'),
+	                    ])
+	                    .then(axios.spread((sortedResponse, imgResponse) => {
+// 	                    	console.log(sortedResponse);
+// 	                        console.log(imgResponse);
+	                        // Process image data and update datas
+	                        var sortedResult = sortedResponse.data;
+	                        var imgResult = imgResponse.data;
+	                        for (let i = 0; i < sortedResult.length; i++) {
+	                        	let imgCount = 0;
+	                            for (let j = 0; j < imgResult.length; j++) {
+	                                if (sortedResult[i].courtNo == imgResult[j][0]) {
+                                	 	imgCount += 1;
+                                        let courtImg = "courtImg";
+                                        courtImg = courtImg + imgCount;
+	                                    sortedResult[i][courtImg] = 'data:image/jpg;base64,' + imgResult[j][1];
+	                                }
+	                            }
+	                        }
+	                        this.datas = sortedResult;
+	                    }))
+                        .catch(error => {
+                            console.error('Error fetching sorted data:', error);
+                        });
+	                },
+	            	
 	            },
 	            mounted: function(){
-	                axios.all([axios(request1), axios(request2)])
-	                    .then(axios.spread((response1, response2) => {
-	                        console.log(response1);
-	                        console.log(response2);
-	                        var result1 = response1.data;
-	                        var result2 = response2.data;
-	                        
-	                        for(let i = 0; i < result1.length; i++){
-	                        	let imgCount = 0;
-	                        	for(let j = 0; j < result2.length; j++){
-	                        		if(result1[i].courtNo == result2[j][0]){
-	                        			imgCount += 1;
-	                        			
-	                        			let courtImg = "courtImg";
-	                        			courtImg = courtImg + imgCount;
-	                        			result1[i][courtImg] = 'data:image/jpg;base64,' + result2[j][1];
-// 										console.log(courtImg);
-	                        			
-	                        			if(imgCount == 4){
-	                        				break;
-	                        			}
-	                        		}
-	                        	}
-	                        }
-// 	                        console.log(response1);
-	                        this.datas = response1.data;
-	                    }))
-	                    .catch(function (reason){
-	                    	console.log(reason)
-	                    })
-	            }
+	            	// geolocation
+	                if (navigator.geolocation) {
+	                    // Browser supports Geolocation API
+	                    navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback);
+	                } else {
+	                    // Browser does not support Geolocation API
+	                    console.log("瀏覽器不支援定位");
+	                }
+
+	                this.fetchInitialData();
+	                
+	            },
+            	
+	            
 	        }).mount('#divTest');
 			
-			
-			
-			
-			
-			
-			
 		}
+		
+		// 日期選擇
+		$(document).ready(function() {
+			var somedate1 = new Date('<%=closedDate%>');
+			$.datetimepicker.setLocale('zh'); 
+	        $('#f_date1').datetimepicker({
+	           theme: '',          
+	           timepicker: false,   //timepicker: false,
+	           step: 60,            
+		       format: 'Y-m-d',
+// 		       value: somedate1,
+		       beforeShowDay: function(date) {
+	           	  if (  date.getYear() <  somedate1.getYear() || 
+	    		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+	    		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+	                 ) {
+	                      return [false, ""]
+	                 }
+	                 return [true, ""];
+	           }
+	           //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
+	           //startDate:	        '2022/07/10',  // 起始日
+	           //minDate:           '-1970-01-01', // 去除今日(不含)之前
+	           //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+	        });
+	        $('#f_date1').attr("placeholder", "請選擇日期");
+		})
+		
+		console.log()
+		
 	</script>
+	
+	
+
 	
 </body>
 

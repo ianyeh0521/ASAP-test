@@ -8,10 +8,14 @@
 <%@ page import="com.asap.court.*"%>
 <%@ page import="com.asap.util.*"%>
 <%@ page import="java.util.Base64" %>
-
 <%
-
-
+	//datetime picker
+	java.sql.Date closedDate = null;
+	try {
+		 closedDate = java.sql.Date.valueOf(request.getParameter("closedDate").trim());
+	} catch (Exception e) {
+		 closedDate = new java.sql.Date(System.currentTimeMillis());
+	}
 %>
 <head>
 	<meta charset="UTF-8">
@@ -33,7 +37,7 @@
 		};
 		(function (d) {
 			var wf = d.createElement('script'), s = d.scripts[0];
-			wf.src = '/ASAP/assets/js/webfont.js';
+			wf.src = '${pageContext.request.contextPath}/assets/js/webfont.js';
 			wf.async = true;
 			s.parentNode.insertBefore(wf, s);
 		})(document);
@@ -51,7 +55,19 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 
+	<!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
+	<link   rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.css" />
+	<script src="${pageContext.request.contextPath}/court/datetimepicker/jquery.js"></script>
+	<script src="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.full.js"></script>
 	
+	<style>
+	  .xdsoft_datetimepicker .xdsoft_datepicker {
+	           width:  300px;   /* width:  300px; */
+	  }
+	  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+	           height: 151px;   /* height:  151px; */
+	  }
+	</style>
 </head>
 
 <body>
@@ -62,21 +78,6 @@
 		</header><!-- header -->
 
 		<main class="main">
-			<!-- banner in main -->
-			<!-- <div class="category-banner-container bg-gray">
-				<div class="category-banner banner text-uppercase"
-					style="background: no-repeat 60%/cover url('assets/images/elements/page-header.jpg');">
-					<div class="container position-relative">
-						<nav aria-label="breadcrumb" class="breadcrumb-nav text-white">
-							<ol class="breadcrumb justify-content-center">
-								<li class="breadcrumb-item"><a href="demo4.html">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">找場地！</li>
-							</ol>
-						</nav>
-						<h1 class="page-title text-center text-white">找場地！</h1>
-					</div>
-				</div>
-			</div> -->
 
 			<!-- 搜尋列 -->
 			<div class="container" style="margin-top: 20px !important;">
@@ -90,9 +91,9 @@
 							<input type="search" class="form-control" name="searchCourt" placeholder="尋找場地...">
 							
 							<!--日期選擇-->
-<!-- 						<div class="select-custom" style="display:flex;justify-content:center;align-items:center"> -->
-<!-- 							<input type="date" id="choose-date"> -->
-<!-- 						</div> -->
+							<div class="select-custom" style="display:flex;justify-content:center;align-items:center">
+								<input name="chooseDate" id="f_date1" type="text" style="width: 100%; box-sizing: border-box;">
+							</div>
 							
 							<!-- 場地種類選擇 -->
 							<div class="select-custom">
@@ -138,8 +139,8 @@
 			<!-- 功能按鈕 -->
 			<div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
 				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
-				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的收藏</button>
-				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的預約</button>
+				<a href="${pageContext.request.contextPath}/court/court_savelist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的收藏</button></a>
+				<a href="${pageContext.request.contextPath}/court/court_orderlist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的預約</button></a>
 			</div>
 			
 			
@@ -183,8 +184,8 @@
 									<label>排序方式:</label>
 
 									<div class="select-custom">
-										<select name="orderby" class="form-control">
-											<option value="menu_order" selected="selected">預設</option>
+										<select name="orderby" id="orderby"class="form-control" onchange="sortProducts()">
+											<option value="" selected="selected">預設</option>
 											<option value="priceHL">價格高➪低</option>
 											<option value="priceLH">價格低➪高</option>
 											<option value="distanceFN">距離遠➪近</option>
@@ -202,7 +203,7 @@
 					
 						<!-- 場地資訊 -->
 						
-						<div class="row" >
+						<div class="row" id="courtContainer">
 							<c:forEach var="entry" items="${cobineMap}">
 							<div class="col-sm-12 col-6 product-default left-details product-list mb-2">
 								
@@ -220,23 +221,25 @@
 									<div class="category-list">
 										<a href="category.html" class="type">${entry.key.courtTypeVO.courtType}</a>
 									</div>
-									<h3 class="product-title" class="name">${entry.key.courtName}</h3>
-									<p class="product-description" class="text">${entry.key.courtText}</p>
+									<h3 class="product-title name" >${entry.key.courtName}</h3>
+									<p class="product-description text" >${entry.key.courtText}</p>
 									<div class="price-box">
-										<span class="product-price" class="price">${entry.key.courtPrice} / hr</span>
+										<span class="product-price price" >${entry.key.courtPrice} / hr</span>
 									</div>
 									<div class="product-action">
 										<a href="/ASAP/court/court_page.jsp?courtNo=${entry.key.courtNo}" class="btn btn-primary btn-rounded btn-md">
 											<span style="color: white;">我要預約</span>
 										</a>					
 									</div>
+									<div style="display:none" class="long">${entry.key.courtLong}</div>
+									<div style="display:none" class="lat">${entry.key.courtLat}</div>
 								</div>
 							</div>	
 							</c:forEach>
 						</div><!-- 場地資訊結束 -->
 						
 						</div>
-				</div>
+				
 					
 					<!-- current browse history -->
 				<div class="col-lg-3">
@@ -262,7 +265,7 @@
 					</div>
 
 					
-				
+				</div>
 			</div>
 
 		</main><!-- End .main -->
@@ -286,7 +289,7 @@
 	<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
 	
 	<!-- Plugins JS File -->
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+<%-- 	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script> --%>
 	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/js/nouislider.min.js"></script>
@@ -295,21 +298,128 @@
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
-	<!-- datepicker -->
-<!-- 	<script> -->
-<!-- 		import AirDatepicker from 'air-datepicker'; -->
-<!-- 		import 'air-datepicker/air-datepicker.css'; -->
-
-<!-- 		let dp = new AirDatepicker('#el'); -->
-<!-- 		dp.show(); -->
-<!-- 	</script> -->
-
 	<!-- header and footer template -->
 	<script>
 		$("header").load("header.html");
 		$("footer").load("footer.html");
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
+		$(document).ready(function() {
+			var somedate1 = new Date('<%=closedDate%>');
+			$.datetimepicker.setLocale('zh'); 
+	        $('#f_date1').datetimepicker({
+	           theme: '',          
+	           timepicker: false,   //timepicker: false,
+	           step: 60,            
+		       format: 'Y-m-d',
+// 		       value: '',
+		       beforeShowDay: function(date) {
+	           	  if (  date.getYear() <  somedate1.getYear() || 
+	    		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+	    		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+	                 ) {
+	                      return [false, ""]
+	                 }
+	                 return [true, ""];
+	           }
+	           //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
+	           //startDate:	        '2022/07/10',  // 起始日
+	           //minDate:           '-1970-01-01', // 去除今日(不含)之前
+	           //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+	        });
+	        $('#f_date1').attr("placeholder", "請選擇日期");
+	        
+	        window.sortProducts = sortProducts;
+	        const userlatitude = JSON.parse(sessionStorage.getItem('userlatitude'));
+	        const userlongitude = JSON.parse(sessionStorage.getItem('userlongitude'));
+		})
+		
+		// 前端排序
+		
+			function sortProducts() {
+		        // 綁定排序
+		        const selectedOption = document.getElementById('orderby').value;
+		
+		        // 綁定整個 court row
+		        const courtContainer = document.getElementById('courtContainer');
+		        const courtEntries = courtContainer.querySelectorAll('.product-default');
+		
+		        // 節點轉為 array
+		        const courtsArray = Array.from(courtEntries);
+		
+		        // 排序 courtsArray
+		        switch (selectedOption) {
+		            case 'priceHL':
+		            	courtsArray.sort((a, b) => getNumericPrice(b) - getNumericPrice(a));
+		                break;
+		            case 'priceLH':
+		            	courtsArray.sort((a, b) => getNumericPrice(a) - getNumericPrice(b));
+		                break;
+ 	          		case 'distanceFN':
+		                courtsArray.sort((a, b) => getDistance(a) - getDistance(b));
+		                break;
+		            case 'distanceNF':
+		                courtsArray.sort((a, b) => getDistance(b) - getDistance(a));
+		                break;
+		            default:
+		                break;
+		                
+		        }
+		
+		        // 新增 container
+		        const sortedContainer = document.createElement('div');
+		        sortedContainer.className = 'row';
+		        sortedContainer.setAttribute("id", "courtContainer");
+		
+		        // 將排序好的加入 container
+		        courtsArray.forEach(product => {
+		            sortedContainer.appendChild(product);
+		        });
+		
+		        // Replace the original container with the sorted one
+		        courtContainer.parentNode.replaceChild(sortedContainer, courtContainer);
+		    }
+		
+		    function getNumericPrice(product) {
+		        return parseFloat(product.querySelector('.product-price').innerText.replace(/[^0-9.-]+/g, ''));
+		    }
+		    
+		    function getDistance(product) {
+		        const userLatitude = parseFloat(sessionStorage.getItem('userLatitude'));
+		        const userLongitude = parseFloat(sessionStorage.getItem('userLongitude'));
+
+		        const productLatitude = parseFloat(product.querySelector('.lat').innerText);
+		        const productLongitude = parseFloat(product.querySelector('.long').innerText);
+
+		        return calculateDistance(userLatitude, userLongitude, productLatitude, productLongitude);
+		    }
+
+		    function calculateDistance(lat1, lon1, lat2, lon2) {
+		        const R = 6371; // 地球半徑
+		        const dLat = deg2rad(lat2 - lat1);
+		        const dLon = deg2rad(lon2 - lon1);
+
+		        const a =
+		            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+		            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+		        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+		        const distance = R * c; 
+
+		        return distance;
+		    }
+
+		    function deg2rad(deg) {
+		        return deg * (Math.PI / 180);
+		    }
+		    
+		   	
+		
+		
+		
+		
 	</script>
 	
 </body>

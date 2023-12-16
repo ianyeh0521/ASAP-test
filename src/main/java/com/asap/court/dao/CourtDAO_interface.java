@@ -17,6 +17,8 @@ public interface CourtDAO_interface {
 	
 	List<CourtVO> getAll();
 	
+	List<CourtVO> getAllSorting(String orderBy);
+	
 	List<CourtVO> getByCompositeQuery(Map<String, String> map);
 	
 	List<CourtVO> getAll(int currentPage);

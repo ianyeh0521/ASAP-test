@@ -1,5 +1,6 @@
 package com.asap.court.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,10 @@ public interface CourtService_interface {
 	List<CourtVO> getAllCourts(int currentPage);
 	
 	List<CourtVO> getAllCourts();
+	
+	List<CourtVO> getAllCourtsSortingDis(BigDecimal userLatitude, BigDecimal userLongitude, String sortBy);
+	
+	List<CourtVO> getAllSorting(String orderBy);
 	
 	List<CourtVO> getCourtsByCourtName(String name);
 	

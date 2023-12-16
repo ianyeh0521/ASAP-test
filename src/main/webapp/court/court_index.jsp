@@ -93,7 +93,7 @@
 								<div class="col-6 col-md-4">
 									<div class="feature-box text-center pb-4">
 										<a
-											href="${pageContext.request.contextPath}/court/listAllCourt_datatable.jsp"><i
+											href="${pageContext.request.contextPath}/court/listAllCourts_datatable_Ajax.html"><i
 											class="sicon-location-pin"></i></a>
 										<div class="feature-box-content">
 											<h3>所有場地</h3>
