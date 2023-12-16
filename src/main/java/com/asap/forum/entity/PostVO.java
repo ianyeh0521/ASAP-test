@@ -37,8 +37,12 @@ public class PostVO {
 	private Timestamp postCrtTime;
 	
 	
-	@Column(name="PostTypeNo")
-	private Integer postTypeNo;
+//	@Column(name="PostTypeNo")
+//	private Integer postTypeNo;
+//	
+	@ManyToOne
+	@JoinColumn(name = "postTypeNo", referencedColumnName = "postTypeNo")
+	private PostTypeVO postTypeVO;
 	
 	@Column(name="PostViews")
 	private Integer postViews;
@@ -47,13 +51,14 @@ public class PostVO {
 	private Integer postStatus;
 	
 	 
-	 @Override
-	public String toString() {
-		return "PostVO [postNo=" + postNo + ", mbrNo=" + mbrNo + ", postTitle=" + postTitle + ", postText=" + postText
-				+ ", postCrtTime=" + postCrtTime + ", postTypeNo=" + postTypeNo + ", postViews=" + postViews
-				+ ", postStatus=" + postStatus + "]";
-	}
+//	 @Override
+//	public String toString() {
+//		return "PostVO [postNo=" + postNo + ", mbrNo=" + mbrNo + ", postTitle=" + postTitle + ", postText=" + postText
+//				+ ", postCrtTime=" + postCrtTime + ", postTypeNo=" + postTypeNo + ", postViews=" + postViews
+//				+ ", postStatus=" + postStatus + "]";
+//	}
 
+	
 
 	public PostVO() {
 		super();
@@ -61,23 +66,45 @@ public class PostVO {
 	}
 
 
-	public PostVO(Integer postNo, String mbrNo, String postTitle, String postText, Timestamp postCrtTime,
-			Integer postTypeNo, Integer postViews, Integer postStatus) {
-		super();
-		this.postNo = postNo;
-		this.mbrNo = mbrNo;
-		this.postTitle = postTitle;
-		this.postText = postText;
-		this.postCrtTime = postCrtTime;
-		this.postTypeNo = postTypeNo;
-		this.postViews = postViews;
-		this.postStatus = postStatus;
-	}
+//	public PostVO(Integer postNo, String mbrNo, String postTitle, String postText, Timestamp postCrtTime,
+//			Integer postTypeNo, Integer postViews, Integer postStatus) {
+//		super();
+//		this.postNo = postNo;
+//		this.mbrNo = mbrNo;
+//		this.postTitle = postTitle;
+//		this.postText = postText;
+//		this.postCrtTime = postCrtTime;
+//		this.postTypeNo = postTypeNo;
+//		this.postViews = postViews;
+//		this.postStatus = postStatus;
+//	}
 
 
 	public Integer getPostNo() {
 		return postNo;
 	}
+
+
+	@Override
+	public String toString() {
+		return "PostVO [postNo=" + postNo + ", mbrNo=" + mbrNo + ", postTitle=" + postTitle + ", postText=" + postText
+				+ ", postCrtTime=" + postCrtTime + ", postTypeVO=" + postTypeVO + ", postViews=" + postViews
+				+ ", postStatus=" + postStatus + "]";
+	}
+
+
+	public PostVO(Integer postNo, String mbrNo, String postTitle, String postText, Timestamp postCrtTime,
+		PostTypeVO postTypeVO, Integer postViews, Integer postStatus) {
+	super();
+	this.postNo = postNo;
+	this.mbrNo = mbrNo;
+	this.postTitle = postTitle;
+	this.postText = postText;
+	this.postCrtTime = postCrtTime;
+	this.postTypeVO = postTypeVO;
+	this.postViews = postViews;
+	this.postStatus = postStatus;
+}
 
 
 	public void setPostNo(Integer postNo) {
@@ -125,18 +152,28 @@ public class PostVO {
 	}
 
 
-	public Integer getPostTypeNo() {
-		return postTypeNo;
-	}
-
-
-	public void setPostTypeNo(Integer postTypeNo) {
-		this.postTypeNo = postTypeNo;
-	}
+//	public Integer getPostTypeNo() {
+//		return postTypeNo;
+//	}
+//
+//
+//	public void setPostTypeNo(Integer postTypeNo) {
+//		this.postTypeNo = postTypeNo;
+//	}
 
 
 	public Integer getPostViews() {
 		return postViews;
+	}
+
+
+	public PostTypeVO getPostTypeVO() {
+		return postTypeVO;
+	}
+
+
+	public void setPostTypeVO(PostTypeVO postTypeVO) {
+		this.postTypeVO = postTypeVO;
 	}
 
 

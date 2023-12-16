@@ -18,4 +18,16 @@ public class SavePostVOServiceImpl implements SavePostVOService{
 		// TODO Auto-generated method stub
 		return dao.getAll();
 	}
+
+	@Override
+	public List<SavePostVO> getbyMbrNo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer delete() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -99,19 +99,19 @@ public class PostDAO implements PostDAO_interface {
 
 	@Override
 	public List<PostVO> getAllbyDate() {
-		return getSession().createQuery("from PostVO order by postCrtTime", PostVO.class).list();
+		return getSession().createQuery("from PostVO where postStatus=1 order by postCrtTime", PostVO.class).list();
 	}
 
 	@Override
 	public List<PostVO> getbyCategory(Integer posttypeno) {
-		return getSession().createQuery("from PostVO where postTypeNo= :posttypeno", PostVO.class)
+		return getSession().createQuery("from PostVO where postTypeNo= :posttypeno and postStatus=1", PostVO.class)
 		.setParameter("posttypeno", posttypeno)
 		.list();
 	}
 
 	@Override
 	public List<PostVO> getAllbyViews() {
-		return getSession().createQuery("from PostVO order by postViews", PostVO.class).list();
+		return getSession().createQuery("from PostVO where postStatus=1 order by postViews", PostVO.class).list();
 	}
 	
 	@Override

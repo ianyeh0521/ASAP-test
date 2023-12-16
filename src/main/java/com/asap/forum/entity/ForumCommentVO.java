@@ -15,6 +15,11 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name="ForumComment")
 public class ForumCommentVO {
 	
+	@Override
+	public String toString() {
+		return "ForumCommentVO [cmtNo=" + cmtNo + ", postNo=" + postNo + ", mbrNo=" + mbrNo + ", cmtText=" + cmtText
+				+ ", cmtCrtTime=" + cmtCrtTime + ", cmtStatus=" + cmtStatus + "]";
+	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="CmtNo")

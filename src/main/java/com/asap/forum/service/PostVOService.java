@@ -11,7 +11,9 @@ public interface PostVOService {
 
 	public Integer addPost(PostVO postVO);
 	
-	public PostVO updatePost(PostVO postVO);
+	public Integer updatePost(PostVO postVO);
+	
+	public PostVO findbyPK(Integer postNo);
 	
 	public List<PostVO> getbyPostTitle(String posttitle);
 	
@@ -19,5 +21,11 @@ public interface PostVOService {
 	
 	public List<PostVO> getAllPosts();
 	
-	public List<PostVO> getAlltoShow(); 
+	public List<PostVO> getAlltoShow();
+
+	public List<PostVO> getbyPostCategory(Integer postType); 
+	
+	public List<PostVO> getAllbyDate();
+	
+	public List<PostVO> getAllbyViews();
 }

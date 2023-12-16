@@ -28,8 +28,8 @@ public class PostVOServiceImpl implements PostVOService {
 	}
 
 	@Override
-	public PostVO updatePost(PostVO postVO) {
-		return null;
+	public Integer updatePost(PostVO postVO) {
+		return dao.update(postVO);
 	}
 
 	@Override
@@ -45,6 +45,11 @@ public class PostVOServiceImpl implements PostVOService {
 	}
 
 	
+	@Override
+	public List<PostVO> getbyPostCategory(Integer postType) {
+		return dao.getbyCategory(postType);
+	}
+	
 	
 	@Override
 	public List<PostVO> getbyPostTitle(String posttitle) {
@@ -54,6 +59,21 @@ public class PostVOServiceImpl implements PostVOService {
 	@Override
 	public List<PostVO> getAlltoShow() {
 		return dao.getAlltoShow();
+	}
+
+	@Override
+	public PostVO findbyPK(Integer postNo) {
+		return dao.findbyPK(postNo);
+	}
+
+	@Override
+	public List<PostVO> getAllbyDate() {
+		return dao.getAllbyDate();
+	}
+
+	@Override
+	public List<PostVO> getAllbyViews() {
+		return dao.getAllbyViews();
 	}
 
 
