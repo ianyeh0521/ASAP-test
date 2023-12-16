@@ -22,13 +22,15 @@ public class BackStageVO implements Serializable {
 	private String backEmail;
 	@Column(name = "BackPwd")
 	private String backPwd;
-	@Column(name = "BackName")
+	@Column(name = "BackName", updatable = false)
 	private String backName;
-	@Column(name = "BackPhone")
+	@Column(name = "BackPhone", updatable = false)
 	private String backPhone;
+
 	@CreationTimestamp
 	@Column(name = "BackSetTime", updatable = false)
 	private Timestamp backSetTime;
+
 	@UpdateTimestamp
 	@Column(name = "BackUpdTime")
 	private Timestamp backUpdTime;
