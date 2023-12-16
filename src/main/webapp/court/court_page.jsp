@@ -32,6 +32,13 @@
 		courtImgBase64.add(Base64.getEncoder().encodeToString(courtImgVO.getCourtImg()));
 	}
 	
+	// datetime picker
+	java.sql.Date closedDate = null;
+	try {
+		 closedDate = java.sql.Date.valueOf(request.getParameter("closedDate").trim());
+	} catch (Exception e) {
+		 closedDate = new java.sql.Date(System.currentTimeMillis());
+	}
 	
 	
 	pageContext.setAttribute("getCourtPage",getCourtPage);
@@ -39,9 +46,11 @@
    	pageContext.setAttribute("getCourtTypePage",getCourtTypePage);
    	pageContext.setAttribute("courtImgBase64", courtImgBase64);
    	
-	// 先設一個 member，記得改
+	// 先設一個 member，之後會是 session.getAttribute 得到 memberVO
 	String mbrNo = "M1206202300001";
 	pageContext.setAttribute("mbrNo",mbrNo);
+	
+ 	
 %>
 <!DOCTYPE html>
 <html>
@@ -63,7 +72,7 @@
 	<meta name="author" content="SW-THEMES">
 
 	<!-- Favicon -->
-	<link rel="icon" type="image/x-icon" href="/ASAP/assets/images/icons/favicon.png">
+	<link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
 
 	<script>
 		WebFontConfig = {
@@ -71,22 +80,38 @@
 		};
 		(function (d) {
 			var wf = d.createElement('script'), s = d.scripts[0];
-			wf.src = '/ASAP/assets/js/webfont.js';
+			wf.src = '${pageContext.request.contextPath}/assets/js/webfont.js';
 			wf.async = true;
 			s.parentNode.insertBefore(wf, s);
 		})(document);
 	</script>
+	
+	<script src="/ASAP/assets/js/jquery.min.js"></script>
+	
+	<!-- dateTime Picker -->
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/court/datetimepicker/jquery.datetimepicker.css" />
+	<script src="<%=request.getContextPath()%>/court/datetimepicker/jquery.js"></script>
+	<script src="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.full.js"></script>
 
 	<!-- Plugins CSS File -->
-	<link rel="stylesheet" href="/ASAP/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 
 	<!-- Main CSS File -->
-	<link rel="stylesheet" href="/ASAP/assets/css/style.min.css">
-	<link rel="stylesheet" type="text/css" href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 
 	<!-- 彈窗 -->
 	<style>
         #fs_alert {
+        width: 100%;
+        height: 200vh;
+        position: fixed;
+        top: 0;
+        /* display: block; */
+        display: none;
+        z-index: 999;
+      }
+        #fs_alert2 {
         width: 100%;
         height: 200vh;
         position: fixed;
@@ -137,6 +162,9 @@
       #alert_ok {
         margin: 20px auto 45px auto;
       }
+      #alert_ok2 {
+        margin: 20px auto 45px auto;
+      }
       .btn_s {
         width: 100px;
         border-radius: 8px;
@@ -156,6 +184,41 @@
       .icon-wishlist-2 span::after{
       	content: "查看我的收藏" !important; 
       }
+      
+     .custom-select {
+	    position: relative;
+	    display: inline-block;
+	}
+	
+	.scrollable-select {
+	    max-height: 120px;
+	    overflow-y: auto;
+	    width: 150px;
+	    position: absolute;
+	    z-index: 1;
+	}
+	
+	.custom-select select {
+	    width: 100%;
+	    padding: 5px;
+	    border: 1px solid #ccc;
+	    border-radius: 4px;
+	    box-sizing: border-box;
+	    cursor: pointer;
+	}
+	
+	/* 	datetimepicker */
+	.xdsoft_datetimepicker .xdsoft_datepicker {
+           width:  300px;   /* width:  300px; */
+  	}
+  	.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+           height: 151px;   /* height:  151px; */
+  	}
+	
+	
+      
+      
+    
     </style>
     
    
@@ -175,7 +238,6 @@
 		<div id="fs_alert">
 			<div class="fs_alert_bg"></div>
 			<div class="fs_alert_show">
-			  <!-- <form action="" method="post"> -->
 			  <div class="fs_alert_title">預約須知</div>
 			  <div class="fs_alert_txt">
 			  	1. 請提前進行場地預約程序，以確保場地的可用性。可通過網站、手機應用程式進行預約。
@@ -193,8 +255,16 @@
 				7. 明確預約方和場地管理方之間的責任歸屬，包括任何損壞或意外事件的處理。
 			  </div>
 			  <div class="btn_s" id="alert_ok">已詳細閱讀</div>
-			  <!-- <input type="hidden" name="" value=""/> -->
-			<!-- </form> -->
+			</div>
+		</div>
+		
+		<div id="fs_alert2">
+			<div class="fs_alert_bg"></div>
+			<div class="fs_alert_show">
+			  <div class="fs_alert_title">請選擇預約日期</div>
+			  <div class="fs_alert_txt">
+			  </div>
+			  <div class="btn_s" id="alert_ok2">確定</div>
 			</div>
 		</div>
 		
@@ -212,7 +282,7 @@
 				<div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
 					<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
 					<a href="${pageContext.request.contextPath}/court/court_savelist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的收藏</button></a>
-					<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的預約</button>
+					<a href="${pageContext.request.contextPath}/court/court_orderlist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的預約</button></a>
 				</div>
 
 
@@ -281,66 +351,33 @@
 							
 							<hr class="divider mb-0 mt-0">
 							
+							
 							<div style="display: flex; flex-direction: row; align-items: center;">
 								<div style="margin: 10px 10px 10px 0;">
-									請選擇日期：<input type="date" id="choose-date">
+								<label for="f_date1">請選擇日期：</label>
+									<input name="chooseDate" id="f_date1" type="text" >
 								</div>
-								<div style="margin: 10px 10px; display: flex;">
-									<div style="margin: 10px 10px">
-										開始時間：
-										<select>
-											<option value="6">06:00</option>
-											<option value="7">07:00</option>
-											<option value="8">08:00</option>
-											<option value="9">09:00</option>
-											<option value="10">10:00</option>
-											<option value="11">11:00</option>
-											<option value="12">12:00</option>
-											<option value="13">13:00</option>
-											<option value="14">14:00</option>
-											<option value="15">15:00</option>
-											<option value="16">16:00</option>
-											<option value="17">17:00</option>
-											<option value="18">18:00</option>
-											<option value="19">19:00</option>
-											<option value="20">20:00</option>
-											<option value="21">21:00</option>
-											<option value="22">22:00</option>
-											<option value="23">23:00</option>
-										 </select>
-									</div>
-									
-									<div style="margin: 10px 10px">
-										結束時間：
-										<select>
-											<option value="6">06:00</option>
-											<option value="7">07:00</option>
-											<option value="8">08:00</option>
-											<option value="9">09:00</option>
-											<option value="10">10:00</option>
-											<option value="11">11:00</option>
-											<option value="12">12:00</option>
-											<option value="13">13:00</option>
-											<option value="14">14:00</option>
-											<option value="15">15:00</option>
-											<option value="16">16:00</option>
-											<option value="17">17:00</option>
-											<option value="18">18:00</option>
-											<option value="19">19:00</option>
-											<option value="20">20:00</option>
-											<option value="21">21:00</option>
-											<option value="22">22:00</option>
-											<option value="23">23:00</option>
-									  	</select>
-									</div>
-								</div>
+							<div id="unavailable">預約已滿!</div>
+							</div>
+		
+                             <div class="form-row">
+							    <div class="form-group col-md-6">
+							        <label for="timeSlot1">請選擇起始時間：</label>
+							        <select id="timeSlot1" class="form-control-sm scrollable-select" name="startTime">
+							        </select>
+							    </div>
+							
+							    <div class="form-group col-md-6" id="timeSlot2Container" style="display:none;">
+							        <label for="timeSlot2">請選擇結束時間：</label>
+							        <select id="timeSlot2" class="form-control-sm scrollable-select" name="endTime">
+							        </select>
+							    </div>
 							</div>
 							
 							<div class="product-filters-container custom-product-filters">
 								<div class="product-single-filter">
 									<ul class="config-size-list">
-										<li><a href="javascript:;"
-												class="d-flex align-items-center justify-content-center" id="lookup">預約須知</a>
+										<li><a href="#" class="d-flex align-items-center justify-content-center" id="lookup">預約須知</a>
 										</li>
 									</ul>
 								</div>
@@ -349,11 +386,13 @@
 							</div>
 
 							<div class="product-action">
-								<p>總金額：</p>
-								<a href="court_checkout.html"
-									class="btn btn-dark disabled add-cart icon-shopping-cart mr-2"
-									title="Add to Cart">預約</a>
+								<p id="totalPrice">總金額：</p>
+								<a href="#" id="reservationLink" class="btn btn-dark disabled add-cart icon-shopping-cart mr-2" title="Add to Cart">
+								預約
+								</a>
 							</div><!-- End .product-action -->
+							
+							
 
 							<hr class="divider mb-0 mt-0">
 
@@ -409,9 +448,10 @@
 	<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
 
 	<!-- Plugins JS File -->
-	<script src="/ASAP/assets/js/jquery.min.js"></script>
-	<script src="/ASAP/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="/ASAP/assets/js/plugins.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	
+	
 
 	<!-- Main JS File -->
 	<script src="/ASAP/assets/js/main.min.js"></script>
@@ -422,16 +462,42 @@
 		$("footer").load("footer.html");
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
+		
 		$(window).on("load", function(){
+			// datetimepicker 
+			var somedate1 = new Date('<%=closedDate%>');
+	        $.datetimepicker.setLocale('zh');
+	        $('#f_date1').datetimepicker({
+	 	       theme: '',              //theme: 'dark',
+		       timepicker:false,       //timepicker:true,
+		       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+		       format:'Y-m-d',         //format:'Y-m-d H:i:s',
+			   value: '', 				// value:   new Date(),
+			   beforeShowDay: function(date) {
+	           	  if (  date.getYear() <  somedate1.getYear() || 
+	    		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+	    		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+	                 ) {
+	                      return [false, ""]
+	                 }
+	                 return [true, ""];
+	           }
+	           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+	           //startDate:	            '2017/07/10',  // 起始日
+	           //minDate:               '-1970-01-01', // 去除今日(不含)之前
+	           //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+	        });
+	        
 			$("#lookup").on("click", function(){
 				$("#fs_alert").css("display", "block");
 			});
 			
 			$("#alert_ok").on("click", function(){
 				$("#fs_alert").css("display", "none");
+				$("#reservationLink").removeClass('disabled');
 			});
 			
-			// 待新增：會員進來頁面自動判斷場地是否有在 savelist 中，依此調整 save icon
+			// 待新增：Session 查找會員進來頁面自動判斷場地是否有在 savelist 中，依此調整 save icon
 			$.ajax({
 	            url: 'courtSaveListAjax.do', // Servlet URL
 	            type: 'POST',
@@ -512,13 +578,231 @@
 			        });
 			    }
 			});
+			
+			// 預約進入確認預約頁面
+			$("#reservationLink").on('click', function (e) {
+			    if ($(this).hasClass('disabled')) {
+			        e.preventDefault();
+			    } else {
+			        var chooseDate = $("#f_date1").val();
+			        var startTime = $("#timeSlot1").val();
+			        var endTime = $("#timeSlot2").val();
+			        var courtNo = ${getCourtPage.courtNo};
+			        var totalPriceText = $("#totalPrice").text();
+			        
+			        if (!startTime || !endTime || totalPriceText == "總金額：") {
+			        	showCustomAlert();
+			            return;
+			        }
+			        
+			        var totalPrice = parseInt((totalPriceText.match(/\d+/) || [])[0], 10);
 
+			        
+			        var url = 'court_checkout.jsp?chooseDate=' + encodeURIComponent(chooseDate) 
+			        		+ '&startTime=' + encodeURIComponent(startTime) 
+			        		+ '&endTime=' + encodeURIComponent(endTime) 
+			        		+ '&courtNo=' + encodeURIComponent(courtNo)
+			        		+ '&totalPrice=' + encodeURIComponent(totalPrice);
+
+			        
+			        window.location.href = url;
+			    }
+			});
+			        
+	        function showCustomAlert() {
+	            $("#fs_alert2 .fs_alert_txt");
+	            $("#fs_alert2").fadeIn();
+	        }
+
+	        
+	        $("#alert_ok2").on('click', function () {
+	            $("#fs_alert2").fadeOut();
+	        });
+			
+			// 預約日期、起始結束時間關聯選單（選完日期點擊空白處發兩次req還沒解決）
+			var cList = [];
+			var unavailable = $("#unavailable");	
+			unavailable.hide();	//
+			$("#f_date1").on("change", function (e) {
+				var selectedDate = $(this).val();
+				console.log(selectedDate);
+				
+				 $.ajax({
+			        url: 'courtClosedTimeAjax.do', 
+			        method: 'GET',
+			        dataType: 'json',
+			        data: {
+			            courtNo: $("#hiddenDivForCourt").html(),
+			            getDate: selectedDate
+			        },
+			        success: function (data) {
+			            cList = []; 
+			            
+			            for(let i = 0; i < data.length; i++){
+			            	cList.push(data[i]["courtClosedTime"]); 	
+			            }
+			            
+			            populateTimeSlot1(cList);
+			            updateUnavailableLabel(); 
+			        },
+			        error: function (error) {
+			            console.error('Error fetching closed times:', error);
+			        }
+			    });
+			});
+			
+			// 生成第一個 select-option
+			function populateTimeSlot1(cList) {
+			    var timeSlot1 = $("#timeSlot1");
+			    
+			    timeSlot1.empty();
+			    
+			   
+			    for (var i = 8; i <= 17; i++) {
+			        if (cList.indexOf(i) === -1) {
+			            timeSlot1.append('<option value="' + i + '">' + i + '</option>');
+			        }
+			    }
+			    
+			    timeSlot1.trigger("change");
+			    updateUnavailableLabel();
+			    
+			}
+			
+			$(document).on("change", "#timeSlot1", function () {
+			    var selectedValue = parseInt($(this).val());
+			    updateEndTimeOptions(selectedValue, cList);
+			    updateUnavailableLabel(); 
+			});
+			
+			
+			function updateEndTimeOptions(selectedValue, cList) {
+				var timeSlot2Container = $("#timeSlot2Container");
+    			var timeSlot2 = $("#timeSlot2");
+    			
+    			timeSlot2Container.show(); 
+				
+			
+			    var setEnd = 0;
+			
+			    for (var i = 0; i < cList.length; i++) {
+			        if (selectedValue < cList[i]) {
+			            setEnd = cList[i];
+			            break;
+			        }
+			    }
+			
+			    if (setEnd === 0) {
+			        setEnd = 18;
+			    }
+			    
+			  
+			    
+			 	// 生成第二個 select-option
+			    if ($("#timeSlot1").val() !== ''){
+			    	timeSlot2.prop("disabled", false).empty();	
+			    	 
+			    	for (var j = selectedValue + 1; j <= setEnd; j++) {
+				        timeSlot2.append('<option value="' + j + '">' + j + '</option>');
+				    }
+			    	
+
+			    }
+			    
+			    timeSlot2.trigger("change");
+			    updateUnavailableLabel();	
+				
+			}
+			
+			// 已滿顯示
+			function updateUnavailableLabel() {
+			    if ($("#f_date1").val() && cList.length === 10 && $("#timeSlot1 option").length === 0) {
+			        unavailable.show();
+			    } else {
+			        unavailable.hide();
+			    }
+			}
+		    
+		    
+		    // 計算總金額
+		    var courtPrice =${getCourtPage.courtPrice};
+		    
+		    $("#timeSlot1, #timeSlot2").on("change", function() {
+	            calculatePrice();
+	        });
+		    
+		    function calculatePrice() {
+		        var startTime = parseInt($("#timeSlot1").val());
+		        var endTime = parseInt($("#timeSlot2").val());
+
+
+		        if (!isNaN(startTime) && !isNaN(endTime) && !isNaN(courtPrice)) {
+		            var hours = endTime - startTime;
+		            var totalPrice = hours * courtPrice;
+		            console.log(totalPrice);
+		            $("#totalPrice").text("總金額： $ " + Math.floor(totalPrice));
+		        }
+		    }
 
 		})
-		
 	
         
 	</script>
 </body>
+
+	
+	<script>
+		 	
+	        
+	   
+	        // ----------------------------------------------------------以下用來排定無法選擇的日期-----------------------------------------------------------
+	
+	        //      1.以下為某一天之前的日期無法選擇
+<%-- 	             var somedate1 = new Date('<%=closedDate%>'); --%>
+// 	             $('#f_date1').datetimepicker({
+// 	                 beforeShowDay: function(date) {
+// 	               	  if (  date.getYear() <  somedate1.getYear() || 
+// 	        		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+// 	        		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+// 	                     ) {
+// 	                          return [false, ""]
+// 	                     }
+// 	                     return [true, ""];
+// 	             }});
+	
+	        
+	        //      2.以下為某一天之後的日期無法選擇
+	        //      var somedate2 = new Date('2017-06-15');
+	        //      $('#f_date1').datetimepicker({
+	        //          beforeShowDay: function(date) {
+	        //        	  if (  date.getYear() >  somedate2.getYear() || 
+	        //		           (date.getYear() == somedate2.getYear() && date.getMonth() >  somedate2.getMonth()) || 
+	        //		           (date.getYear() == somedate2.getYear() && date.getMonth() == somedate2.getMonth() && date.getDate() > somedate2.getDate())
+	        //              ) {
+	        //                   return [false, ""]
+	        //              }
+	        //              return [true, ""];
+	        //      }});
+	
+	
+	        //      3.以下為兩個日期之外的日期無法選擇 (也可按需要換成其他日期)
+	        //      var somedate1 = new Date('2017-06-15');
+	        //      var somedate2 = new Date('2017-06-25');
+			//	     $('#f_date1').datetimepicker({
+	        //          beforeShowDay: function(date) {
+	        //        	  if (  date.getYear() <  somedate1.getYear() || 
+	        //		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+	        //		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+	        //		             ||
+	        //		            date.getYear() >  somedate2.getYear() || 
+	        //		           (date.getYear() == somedate2.getYear() && date.getMonth() >  somedate2.getMonth()) || 
+	        //		           (date.getYear() == somedate2.getYear() && date.getMonth() == somedate2.getMonth() && date.getDate() > somedate2.getDate())
+	        //              ) {
+	        //                   return [false, ""]
+	        //              }
+	        //              return [true, ""];
+	        //      }});
+	        
+	</script>
 
 </html>

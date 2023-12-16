@@ -21,6 +21,8 @@ import com.asap.util.HibernateProxyTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
+
 @WebServlet("/court/courtAjax.do")
 public class CourtServletAjax extends HttpServlet{
 
@@ -35,21 +37,30 @@ public class CourtServletAjax extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setContentType("application/json;charset=UTF-8");
-
+		
+		
+		
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
 		
 		Gson gson = builder.create();
+		
 		// 取得 CourtVO List
 		List<CourtVO> courtList = courtService_interface.getAllCourts();
 		System.out.println(courtList);
 			
 		String jsonCourtVO = gson.toJson(courtList);
 		System.out.println(jsonCourtVO);
-		
-		
-		
+
 		res.getWriter().write(jsonCourtVO);
+	
+//			List<CourtVO> courtListSorting = courtService_interface.getAllSorting(action);
+//			System.out.println(courtListSorting);
+//			
+//			String jsonCourtSorting = gson.toJson(courtListSorting);
+//			res.getWriter().write(jsonCourtSorting);
+		
+		
 	}
 	
 	@Override

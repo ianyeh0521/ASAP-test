@@ -1,6 +1,7 @@
 package com.asap.court.dao;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.event.ListDataListener;
@@ -81,7 +82,7 @@ public class CourtClosedTimeDAO implements CourtClosedTimeDAO_interface{
 	public Boolean existsDeter(Integer courtNo, Date courtClosedDate, Integer courtClosedTime) {
 		// 新增時判斷是否有存在 courtNo, courtClosedDate, courtClosedTime 都相同的資料，有則回傳 true，無則回傳 false，若查詢失敗也回傳 true 避免程式繼續執行
 		try {
-			String hql = "from CourtClosedTimeVO cctv where cctv..courtVO.courtNo = :courtNo "
+			String hql = "from CourtClosedTimeVO cctv where cctv.courtVO.courtNo = :courtNo "
 					+ "AND cctv.courtClosedDate = :courtClosedDate "
 					+ "AND cctv.courtClosedTime = :courtClosedTime";
 			Query query = getSession().createQuery(hql);
@@ -102,6 +103,43 @@ public class CourtClosedTimeDAO implements CourtClosedTimeDAO_interface{
 		
 	
 	}
+
+	@Override
+	public int deleteBeforeNow() {
+		LocalDate today = LocalDate.now();
+		try {
+			String hql = "DELETE FROM CourtClosedTimeVO c WHERE c.courtClosedDate < :today";
+			Query query = getSession().createQuery(hql);
+			query.setParameter("today", java.sql.Date.valueOf(today));
+			query.executeUpdate();
+			System.out.println("刪除了" + today + "（今天）以前的所有資料");
+			return 1;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		
+		
+	}
+
+	@Override
+	public List<CourtClosedTimeVO> findByDate(Integer courtNo, Date courtClosedDate) {
+		try {
+			String hql = "from CourtClosedTimeVO cctv where cctv.courtVO.courtNo = :courtNo "
+						+ "AND cctv.courtClosedDate = :courtClosedDate ";
+			Query query = getSession().createQuery(hql);
+			query.setParameter("courtNo", courtNo);
+			query.setParameter("courtClosedDate", courtClosedDate);
+			return query.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	
+	
 	
 	
 	

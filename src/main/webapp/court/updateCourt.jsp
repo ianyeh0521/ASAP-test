@@ -1,3 +1,6 @@
+<%@page import="com.asap.court.entity.CourtImgVO"%>
+<%@page import="com.asap.court.service.CourtImgService"%>
+<%@page import="com.asap.court.service.CourtImgService_interface"%>
 <%@page import="com.asap.court.entity.CourtTypeVO"%>
 <%@page import="com.asap.court.service.CourtTypeService"%>
 <%@page import="com.asap.court.service.SiteService"%>
@@ -25,6 +28,21 @@
 	CourtTypeService courtTypeSvc = new CourtTypeService();
 	List<CourtTypeVO> list2 = courtTypeSvc.getAllTypes();
 	pageContext.setAttribute("typelist", list2);
+	
+	CourtImgService_interface courtImgSvc = new CourtImgService();
+	List<CourtImgVO> courtImgList = courtImgSvc.findByCourtNo(courtVO.getCourtNo());
+	List<String> imgBase64 = new ArrayList<>(); 
+	for(CourtImgVO courtImgVO:courtImgList){
+		imgBase64.add(Base64.getEncoder().encodeToString(courtImgVO.getCourtImg()));
+	}
+	
+	int i = 1;
+	String pic = "pic";
+	for(String ele: imgBase64){
+		pageContext.setAttribute(pic+i , ele);
+		i++;
+	}
+	
 %>
 
 
@@ -93,7 +111,7 @@
 				</div>
 			</div>
 			
-			 <div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: left !important;">
+			 <div class="container" style="margin-top: 20px; margin-bottom: 10px !important; text-align: left !important;">
 				<a href="/ASAP/court/listAllCourts_datatable_Ajax.html">
 				<button class="btn btn-primary btn-rounded btn-md">返回所有場地</button>
 				</a>
@@ -110,15 +128,15 @@
 			</c:if>
 
 			<div class="container account-container custom-account-container">
-				<div class="row">
+				<div class="row justify-content-center align-items-center">
 					<div class="col-lg-9 order-lg-last order-1 tab-content">
 						<!-- modify HERE -->
 						<div class="" id="shipping" role="tabpanel">
-							<div class="address account-content mt-0 pt-2">
+							<div class="address account-content mt-0 pt-2" style="margin-bottom: 0px">
 								<h4 class="title mb-3"></h4>
 
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/court/court.do" class="mb-2">
-									<div class="form-group">
+								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/court/court.do" class="mb-2" enctype="multipart/form-data">
+									<div class="form-group" style="dispaly:none; margin-bottom:0px !important">
 										<label></label> <input type="hidden" class="form-control"
 											name="courtNo" value="<%=courtVO.getCourtNo()%>">
 									</div>
@@ -156,7 +174,6 @@
 									<div class="select-custom">
 										<label>區域<span></span></label> 
 										<select name="site" class="form-control">
-											<!-- 											<option value="" selected="selected">--請選行政區域--</option> -->
 											<c:forEach var="siteVO" items="${sitelist}">
 												<option value="${siteVO.siteNo}"
 													${(courtVO.siteVO.siteNo==siteVO.siteNo)?'selected':'' }>${siteVO.regions}
@@ -214,8 +231,8 @@
 											<option value="false">暫停營運</option>
 										</select>
 									</div>
-
-
+									
+	
 
 									<div class="form-footer mb-0">
 										<div class="form-footer-right">
@@ -284,25 +301,43 @@
 		
 		 function ShowLngLati(){
 	            
-	            var userData = "https://maps.googleapis.com/maps/api/geocode/json?address=" + $('#getAddress').val() +"&key=AIzaSyAnAshx89XCdT3mcu8Aru0-uD7tBTH9cUs";
-	            console.log($('#getAddress').val());
-	            $.ajax({
-	                type:'GET',
-	                url: userData,
-	                success: function(data){
-	                    let lng = data.results[0].geometry.location.lng;
-	                    if(lng.length > 12){
-	                        lng = lng.substring(0, 13)
-	                    }
-	                    let lati = data.results[0].geometry.location.lat;
-	                    if(lati.length > 11){
-	                        lati = lati.substring(0, 12)
-	                    }
-	                    $('#getLng').val(lng);
-	                    $('#getLati').val(lati);
-	                    
-	                }
-	            })       
+			 if($('#getAddress').val()!=''){  
+			 		var userData = "https://maps.googleapis.com/maps/api/geocode/json?address=" + $('#getAddress').val() +"&key=AIzaSyAnAshx89XCdT3mcu8Aru0-uD7tBTH9cUs";
+	            	console.log($('#getAddress').val());
+	            
+	            	// 自動抓經緯度 
+	            	$.ajax({
+	 	                type:'GET',
+	 	                url: userData,
+	 	                success: function(data){
+	 	                    let lng = data.results[0].geometry.location.lng;
+	 	                    if(lng.length > 12){
+	 	                        lng = lng.substring(0, 13)
+	 	                    }
+	 	                    let lati = data.results[0].geometry.location.lat;
+	 	                    if(lati.length > 11){
+	 	                        lati = lati.substring(0, 12)
+	 	                    }
+	 	                    $('#getLng').val(lng);
+	 	                    $('#getLati').val(lati);
+	 	                    
+	 	                }
+	 	            })
+	 	            
+	 	            // 自動選擇地區
+	 	            const inputAddress = document.getElementById('getAddress').value;
+
+	 			    const selectElement = document.querySelector('select[name="site"]');
+	   
+	 			    for (let option of selectElement.options) {
+	 			        if (inputAddress.includes(option.text)) {
+	 			        	console.log(option.text)
+	 			            option.selected = true;
+	 			            break; 
+	 			        }
+	 			    }
+	            }
+	           
 	        }
 			 
 		function courtTextAlert(){
@@ -311,6 +346,7 @@
 			}
 			
 		}
+		
 	</script>
 </body>
 

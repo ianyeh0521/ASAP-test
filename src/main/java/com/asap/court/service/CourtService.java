@@ -2,7 +2,10 @@ package com.asap.court.service;
 
 import static com.asap.util.Constants.PAGE_MAX_RESULT;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +54,55 @@ public class CourtService implements CourtService_interface {
 	public List<CourtVO> getAllCourts() {
 		return dao.getAll();
 	}
+	
+
+	@Override
+	public List<CourtVO> getAllSorting(String orderBy) {
+		return dao.getAllSorting(orderBy);
+	}
+	
+
+	@Override
+	public List<CourtVO> getAllCourtsSortingDis(BigDecimal userLatitude, BigDecimal userLongitude, String sortBy) {
+		List<CourtVO> allCourts = dao.getAll();
+		Map<Integer, Double> allCourtsDistanceMap = new HashMap<>();
+		Double userLat = userLatitude.doubleValue();
+		Double userLongi = userLongitude.doubleValue();
+		for(CourtVO courtVO: allCourts) {
+			Double lat = courtVO.getCourtLat().doubleValue();
+			Double longi = courtVO.getCourtLong().doubleValue();
+			allCourtsDistanceMap.put(courtVO.getCourtNo(), calculateHaversineDistance(userLat, userLongi, lat, longi));
+		}
+		
+		List<Map.Entry<Integer, Double>> entryList = new ArrayList<>(allCourtsDistanceMap.entrySet());		
+		
+		if(sortBy.equals("asc")) {
+			// 將 value(距離)由小到大排序
+			entryList.sort(Map.Entry.comparingByValue());
+			
+		}else {
+			// 將 value(距離)由大到小排序
+			entryList.sort(Map.Entry.<Integer, Double>comparingByValue().reversed());
+		}
+		
+		Map<Integer, Double> sortedMap = new LinkedHashMap<>();
+		
+		for (Map.Entry<Integer, Double> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+		
+		List<CourtVO> sortedCourtVOList = new ArrayList<>();
+		for(Map.Entry<Integer, Double> entry: sortedMap.entrySet()) {
+			Integer courtNo = entry.getKey();
+			CourtVO courtVO = allCourts.stream().filter(vo -> vo.getCourtNo().equals(courtNo)).findFirst().orElse(null);
+			if(courtVO != null) {
+				sortedCourtVOList.add(courtVO);
+			}
+		}
+		
+		return sortedCourtVOList;	
+      
+	}
 
 	@Override
 	public List<CourtVO> getCourtsByCompositeQuery(Map<String, String[]> map) {
@@ -90,6 +142,33 @@ public class CourtService implements CourtService_interface {
 		return dao.getCourtsByName(name);
 	}
 
+	
+	// 經緯度計算距離
+	public double calculateHaversineDistance(double userLat, double userLong, double lat, double longi) {
+		// Radius of the Earth in kilometers
+        double earthRadius = 6371;
+
+        // Convert latitude and longitude from degrees to radians
+        double userLati = Math.toRadians(userLat);
+        double userLongi = Math.toRadians(userLong);
+        double lati = Math.toRadians(lat);
+        double longitude = Math.toRadians(longi);
+
+        // Calculate differences
+        double latDiff = userLati - lati;
+        double lonDiff = userLongi - longitude;
+
+        // Haversine formula
+        double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+                   Math.cos(userLati) * Math.cos(lati) *
+                   Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // Calculate distance
+        double distance = earthRadius * c;
+
+        return distance;
+    }
 	
 	
 	

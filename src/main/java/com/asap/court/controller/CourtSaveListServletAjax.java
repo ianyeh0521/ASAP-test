@@ -58,7 +58,7 @@ public class CourtSaveListServletAjax extends HttpServlet{
             }
 
             JSONObject jsonData = new JSONObject(jsonPayload.toString());
-            // 前端由先嘗試由前端取得 mbrNo，再由 Ajax 轉送後端
+            
             String action = jsonData.getString("action");
     		String mbrNo = jsonData.getString("mbrNo");
     		Integer courtNo = null;
@@ -69,13 +69,13 @@ public class CourtSaveListServletAjax extends HttpServlet{
 			}
     		
             
-            if(action.equals("add")) {
+            if("add".equals(action)) {
             	addToSaveList(mbrNo, courtNo);
-            }else if(action.equals("delete")){
+            }else if("delete".equals(action)){
             	deleteFromSaveList(mbrNo, courtNo);
-            }else if(action.equals("check")){
+            }else if("check".equals(action)){
             	checkSaveList(res, req, mbrNo, courtNo);
-            }else if (action.equals("getByMember")) {
+            }else if ("getByMember".equals(action)) {
 				getByMember(res, req, mbrNo);
 			}
          

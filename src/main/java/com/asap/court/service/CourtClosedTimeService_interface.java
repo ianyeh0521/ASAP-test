@@ -14,6 +14,8 @@ public interface CourtClosedTimeService_interface {
 	// Find by courtNo
 	List<CourtClosedTimeVO> findByCourtNo(Integer courtNo);
 	
+	List<CourtClosedTimeVO> findByDate(Integer courtNo, Date courtClosedDate);
+	
 	Boolean existsDeter(Integer courtNo,  Date courtClosedDate, Integer courtClosedTime);
 	
 	List<CourtClosedTimeVO> getAll();

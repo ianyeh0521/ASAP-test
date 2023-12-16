@@ -26,11 +26,11 @@ public class CourtOrderVO{
 	@Column(name = "CourtOrdNo", updatable = false)
 	private Integer courtOrdNo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MemberVO", referencedColumnName = "MbrNo")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="MbrNo", referencedColumnName = "MbrNo")
 	private MemberVO memberVO;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="CourtNo", referencedColumnName = "CourtNo")
 	private CourtVO courtVO;
 	
@@ -47,16 +47,18 @@ public class CourtOrderVO{
 	@Column(name = "CourtOrdTime")
 	private Integer courtOrdTime;
 	
+	@Column(name = "CourtOrdTimeEnd")
+	private Integer courtOrdTimeEnd;
+	
 	@Column(name = "TotalPrice")
 	private Integer totalPrice;
 	
 	public CourtOrderVO() {
 	}
 
-
-
 	public CourtOrderVO(Integer courtOrdNo, MemberVO memberVO, CourtVO courtVO, Boolean courtOrdStat,
-			Timestamp courtOrdCrtTime, Date courtOrdDate, Integer courtOrdTime, Integer totalPrice) {
+			Timestamp courtOrdCrtTime, Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd,
+			Integer totalPrice) {
 		super();
 		this.courtOrdNo = courtOrdNo;
 		this.memberVO = memberVO;
@@ -65,10 +67,30 @@ public class CourtOrderVO{
 		this.courtOrdCrtTime = courtOrdCrtTime;
 		this.courtOrdDate = courtOrdDate;
 		this.courtOrdTime = courtOrdTime;
+		this.courtOrdTimeEnd = courtOrdTimeEnd;
 		this.totalPrice = totalPrice;
 	}
 
+	public CourtOrderVO(MemberVO memberVO, CourtVO courtVO, Boolean courtOrdStat, Date courtOrdDate,
+			Integer courtOrdTime, Integer courtOrdTimeEnd, Integer totalPrice) {
+		super();
+		this.memberVO = memberVO;
+		this.courtVO = courtVO;
+		this.courtOrdStat = courtOrdStat;
+		this.courtOrdDate = courtOrdDate;
+		this.courtOrdTime = courtOrdTime;
+		this.courtOrdTimeEnd = courtOrdTimeEnd;
+		this.totalPrice = totalPrice;
+	}
+	
 
+	public CourtOrderVO(CourtVO courtVO, Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd) {
+		super();
+		this.courtVO = courtVO;
+		this.courtOrdDate = courtOrdDate;
+		this.courtOrdTime = courtOrdTime;
+		this.courtOrdTimeEnd = courtOrdTimeEnd;
+	}
 
 	public Integer getCourtOrdNo() {
 		return courtOrdNo;
@@ -135,6 +157,15 @@ public class CourtOrderVO{
 	public void setCourtOrdTime(Integer courtOrdTime) {
 		this.courtOrdTime = courtOrdTime;
 	}
+	
+
+	public Integer getCourtOrdTimeEnd() {
+		return courtOrdTimeEnd;
+	}
+
+	public void setCourtOrdTimeEnd(Integer courtOrdTimeEnd) {
+		this.courtOrdTimeEnd = courtOrdTimeEnd;
+	}
 
 	public Integer getTotalPrice() {
 		return totalPrice;
@@ -145,12 +176,12 @@ public class CourtOrderVO{
 	}
 
 
-
 	@Override
 	public String toString() {
 		return "CourtOrderVO [courtOrdNo=" + courtOrdNo + ", memberVO=" + memberVO + ", courtVO=" + courtVO
 				+ ", courtOrdStat=" + courtOrdStat + ", courtOrdCrtTime=" + courtOrdCrtTime + ", courtOrdDate="
-				+ courtOrdDate + ", courtOrdTime=" + courtOrdTime + ", totalPrice=" + totalPrice + "]";
+				+ courtOrdDate + ", courtOrdTime=" + courtOrdTime + ", courtOrdTimeEnd=" + courtOrdTimeEnd
+				+ ", totalPrice=" + totalPrice + "]";
 	}
 
 

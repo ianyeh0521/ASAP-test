@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%
+	Integer courtNoToSetTime = Integer.valueOf(request.getParameter("courtNoToSetTime"));
+	pageContext.setAttribute("courtNoToSetTime", courtNoToSetTime);
+
+%>
+
 <html>
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -8,31 +15,13 @@
 </head>
 <body>
 
-	<form action="<%=request.getContextPath()%>/court/courtImgUp.do" method="post" enctype="multipart/form-data">
-		<div>
-			<label for="courtNo">場地編號:</label>
-			<input id ="courtNo" name="courtNo" type="text" value=""/>
-			</div>
-		<div>
-			<label for="upFiles">照片:</label>
-			<input id ="upFiles" name="upFiles" type="file" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles.errors');" />
-			<span  id ="upFiles.errors" class="error">${errorMsgs.upFiles}</span>
-			<div id="blob_holder"></div>
-		</div>
-		<div>
-			<div></div>
-			<input  type="hidden" name="action" value="insert">
-			<button type="submit" id="submit"> 送出新增 </button>
-			<div></div>
-		</div>
-	</form>
-	<hr>
 	
 	<!-- 新增不開放日期時間 -->
+	<h1>新增</h1>
 	<form action="<%=request.getContextPath()%>/court/courtClosedTime.do" method="post">
 		<div>
 				<label for="courtNo">場地編號:</label>
-				<input id ="courtNo" name="courtNo" type="text" value=""/>
+				<input id ="courtNo" name="courtNo" type="text" value="${courtNoToSetTime}" readonly/>
 		</div>
 		
 		<table>
@@ -66,10 +55,11 @@
 	<hr>
 	
 	<!-- 刪除不開放日期時間 -->
+	<h1>刪除</h1>
 	<form action="<%=request.getContextPath()%>/court/courtClosedTime.do" method="post">
 		<div>
 				<label for="courtNo">場地編號:</label>
-				<input id ="courtNo" name="courtNo" type="text" value=""/>
+				<input id ="courtNo" name="courtNo" type="text" value="${courtNoToSetTime}" readonly />
 		</div>
 		
 		<table>

@@ -111,6 +111,19 @@ public class CourtDAO implements CourtDAO_interface {
 	}
 
 	@Override
+	public List<CourtVO> getAllSorting(String orderBy) {
+		 try {
+			String queryString = "from CourtVO order by " + orderBy;
+	        Query query = getSession().createQuery(queryString);
+	        System.out.println("orderBy"+orderBy);
+	        return query.list();
+	    } catch (HibernateException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+
+	@Override
 	public List<CourtVO> getByCompositeQuery(Map<String, String> map) {
 		if (map.size() == 0)
 			return getAll();

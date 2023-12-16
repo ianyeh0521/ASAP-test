@@ -28,8 +28,11 @@ public class CourseVO{
 	@Column(name = "CourseName")
 	private String courseName;
 	
-	@Column(name = "CourseTime")
-	private Timestamp courseTime;
+	@Column(name = "CourseStartTime")
+	private Timestamp courseStartTime;
+	
+	@Column(name = "CourseEndTime")
+	private Timestamp courseEndTime;
 	
 	@Column(name = "CoursePplLimit")
 	private Integer coursePplLimit;
@@ -97,12 +100,20 @@ public class CourseVO{
 		this.courseName = courseName;
 	}
 
-	public Timestamp getCourseTime() {
-		return courseTime;
+	public Timestamp getCourseStartTime() {
+		return courseStartTime;
 	}
 
-	public void setCourseTime(Timestamp courseTime) {
-		this.courseTime = courseTime;
+	public void setCourseStartTime(Timestamp courseStartTime) {
+		this.courseStartTime = courseStartTime;
+	}
+
+	public Timestamp getCourseEndTime() {
+		return courseEndTime;
+	}
+
+	public void setCourseEndTime(Timestamp courseEndTime) {
+		this.courseEndTime = courseEndTime;
 	}
 
 	public Integer getCoursePplLimit() {
