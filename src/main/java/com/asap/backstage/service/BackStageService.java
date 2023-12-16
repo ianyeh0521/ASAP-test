@@ -35,8 +35,8 @@ public class BackStageService implements BackStageService_interface {
 		// 密碼加密
 		backstage.setBackPwd(hashPassword(backstage.getBackPwd()));
 		// 設定時間及更新時間預設為現在
-		backstage.setBackSetTime(Timestamp.valueOf(LocalDateTime.now()));
-		backstage.setBackUpdTime(Timestamp.valueOf(LocalDateTime.now()));
+//		backstage.setBackSetTime(Timestamp.valueOf(LocalDateTime.now()));
+//		backstage.setBackUpdTime(Timestamp.valueOf(LocalDateTime.now()));
 		// 預設狀態為啟用
 		backstage.setBackStat(true);
 		String backNo = dao.add(backstage);
@@ -53,7 +53,7 @@ public class BackStageService implements BackStageService_interface {
 	@Override
 	public String suspendBack(BackStageVO backstage) {
 		// 設定更新時間為現在
-		backstage.setBackUpdTime(Timestamp.valueOf(LocalDateTime.now()));
+//		backstage.setBackUpdTime(Timestamp.valueOf(LocalDateTime.now()));
 		// 預設狀態為停用
 		backstage.setBackStat(false);
 		return dao.update(backstage);
@@ -74,7 +74,7 @@ public class BackStageService implements BackStageService_interface {
 	@Override
 	public BackStageVO findByBackEmail(String backEmail) {
 
-		return findByBackEmail(backEmail);
+		return dao.findByBackEmail(backEmail);
 	}
 
 	@Override

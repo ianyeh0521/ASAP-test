@@ -15,7 +15,7 @@
 <meta name="author" content="SW-THEMES" />
 
 <!-- Favicon -->
-<link rel="icon" type="image/png"
+<link rel="icon" type="image/x-icon"
 	href="${pageContext.request.contextPath}assets/images/icons/favicon.png" />
 <link rel="stylesheet"
 	href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
@@ -38,6 +38,9 @@
 <!-- datatable用 -->
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/backStage/dataTable.css" />	
 
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 <script>
@@ -54,8 +57,9 @@
 												url : "${pageContext.request.contextPath}/BackStageController", //要抓哪個地方的資料
 												type : "GET", //使用什麼方式抓
 												data : {
-													"action" : "load"
+													"action" : "loadBack"
 												},
+												cache : false,
 												dataType : "json", //回傳資料的類型
 												// 												success : function(data) {
 												// 													console.log("你是右邊!!");
@@ -66,6 +70,7 @@
 															.log("資料取得失敗 回去檢討檢討");//失敗事件
 												},
 											},
+											 "rowId": 'BackNo',
 
 											//列標題
 											"columns" : [ {
@@ -345,62 +350,63 @@
 					<div class="fs_alert_title">新增人員</div>
 
 					<div class="fs_alert_txts">
-					<form action="" method="post" style="margin-bottom: 15px" id="fs_alert1_form">
-						<div class="input_div">
-							<label for="BackEmail" class="input_label">後台人員帳戶</label><input
-								type="text" id="BackEmail" name="BackEmail" class="input_place"
-								placeholder="Email" required />
-						</div>
+						<form action="" method="post" style="margin-bottom: 15px"
+							id="fs_alert1_form">
+							<div class="input_div">
+								<label for="BackEmail" class="input_label">後台人員帳戶</label><input
+									type="text" id="BackEmail" name="BackEmail" class="input_place"
+									placeholder="Email" required />
+							</div>
 
-						<div class="input_div">
-							<label for="BackName" class="input_label">後台人員姓名</label><input
-								type="text" id="BackName" name="BackName" class="input_place"
-								required placeholder="Name" />
-						</div>
+							<div class="input_div">
+								<label for="BackName" class="input_label">後台人員姓名</label><input
+									type="text" id="BackName" name="BackName" class="input_place"
+									required placeholder="Name" />
+							</div>
 
-						<div class="input_div">
-							<label for="BackPhone" class="input_label">後台人員電話</label><input
-								type="tel" id="BackPhone" name="BackPhone" class="input_place"
-								required placeholder="Phone" />
-						</div>
+							<div class="input_div">
+								<label for="BackPhone" class="input_label">後台人員電話</label><input
+									type="tel" id="BackPhone" name="BackPhone" class="input_place"
+									required placeholder="Phone" />
+							</div>
 
-						<div
-							style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-							<div>
-								<input type="checkbox" id="BackAceType1" name="BackAceType"
-									style="margin-right: 5px" value="1" /> <label
-									for="BackAceType1" class="input_label">購物平台管理</label>
+							<div
+								style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+								<div>
+									<input type="checkbox" id="BackAceType1" name="BackAceType"
+										style="margin-right: 5px" value="1" /> <label
+										for="BackAceType1" class="input_label">購物平台管理</label>
+								</div>
+								<div>
+									<input type="checkbox" id="BackAceType2" name="BackAceType"
+										style="margin-right: 5px" value="2" /> <label
+										for="BackAceType2" class="input_label">教練會員資料管理</label>
+								</div>
+								<div>
+									<input type="checkbox" id="BackAceType3" name="BackAceType"
+										style="margin-right: 5px" value="3" /> <label
+										for="BackAceType3" class="input_label">場地管理</label>
+								</div>
+								<div>
+									<input type="checkbox" id="BackAceType4" name="BackAceType"
+										class="input_place" value="4" /> <label for="BackAceType4"
+										class="input_label">論壇管理</label>
+								</div>
+								<div>
+									<input type="checkbox" id="BackAceType5" name="BackAceType"
+										class="input_place" value="5" /> <label for="BackAceType5"
+										class="input_label">客服管理</label>
+								</div>
 							</div>
-							<div>
-								<input type="checkbox" id="BackAceType2" name="BackAceType"
-									style="margin-right: 5px" value="2" /> <label
-									for="BackAceType2" class="input_label">教練會員資料管理</label>
-							</div>
-							<div>
-								<input type="checkbox" id="BackAceType3" name="BackAceType"
-									style="margin-right: 5px" value="3" /> <label
-									for="BackAceType3" class="input_label">場地管理</label>
-							</div>
-							<div>
-								<input type="checkbox" id="BackAceType4" name="BackAceType"
-									class="input_place" value="4" /> <label for="BackAceType4"
-									class="input_label">論壇管理</label>
-							</div>
-							<div>
-								<input type="checkbox" id="BackAceType5" name="BackAceType"
-									class="input_place" value="5" /> <label for="BackAceType5"
-									class="input_label">客服管理</label>
-							</div>
-						</div>
 
-<!-- 						<input type="hidden" name="action" value="AddBack" /> -->
+							<!-- 						<input type="hidden" name="action" value="AddBack" /> -->
 						</form>
 					</div>
 					<div
 						style="display: flex; justify-content: space-around; margin: 10px auto 20px auto;">
 						<div class="btn_s" id="fs_alert1_add">新增</div>
 						<div class="btn_c" id="fs_alert1_cancel">取消</div>
-						
+
 					</div>
 				</div>
 			</div>
@@ -409,7 +415,7 @@
 			<div id="fs_alert2">
 				<div class="fs_alert_bg"></div>
 				<div class="fs_alert_show">
-					<div class="fs_alert_title">編輯人員</div>
+					<div class="fs_alert_title">編輯權限</div>
 
 					<div class="fs_alert_txts">
 						<form action="" method="post" style="margin-bottom: 15px"
@@ -428,13 +434,13 @@
 							<div class="input_div">
 								<label for="BackName2" class="input_label">後台人員姓名</label><input
 									type="text" id="BackName2" name="BackName" class="input_place"
-									required placeholder="Name" />
+									required placeholder="Name" disabled />
 							</div>
 
 							<div class="input_div">
 								<label for="BackPhone2" class="input_label">後台人員電話</label><input
 									type="tel" id="BackPhone2" name="BackPhone" class="input_place"
-									required placeholder="Phone" />
+									required placeholder="Phone" disabled />
 							</div>
 
 							<div
@@ -466,7 +472,7 @@
 								</div>
 							</div>
 
-<!-- 							<input type="hidden" name="action" value="UpdateCourse" /> -->
+							<!-- 							<input type="hidden" name="action" value="UpdateCourse" /> -->
 						</form>
 					</div>
 					<div
@@ -487,9 +493,9 @@
 							style="border-radius: 5px" id="add_Backage">新增人員</button>
 						<button type="button" id="update_Backage"
 							class="btn btn-danger btn-sm"
-							style="border-radius: 5px; margin-left: 10px;">編輯人員</button>
+							style="border-radius: 5px; margin-left: 10px;">編輯權限</button>
 						<button type="button" id="unfocus" class="btn btn-success btn-sm"
-                            style="border-radius: 5px; margin-left: 10px">取消選取 </button>
+							style="border-radius: 5px; margin-left: 10px">取消選取</button>
 					</div>
 					<table id="table_id" class="display compact hover stripe">
 						<!-- <thead>
@@ -647,348 +653,291 @@
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
-	<!--datepicker-->
-	<!-- <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js"
-      integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script> -->
+	
 
 	<script>
-		//       $("header").load("header.html");
-		//       $("div.sticky-navbar").load("sticky-navbar.html");
-		//       $("div.mobile-menu-container").load("mobile-menu-container.html");
-		//       $("footer").load("footer.html");
+		
 
-		//datatable
-
-		$(window)
-				.on(
-						"load",
-						function() {
+		$(window).on("load",function() {
 							var dataTable = $("#table_id").DataTable(); //抓到table
 
-							function getDate() {
-								var d = new Date();
-								var day = d.getDate();
-								var month = d.getMonth() + 1;
-								var year = d.getFullYear();
-								year = year.toString().slice(2, 4);
-								if (day < 10) {
-									day = "0" + day;
-								}
-								if (month < 10) {
-									month = "0" + month;
-								}
-
-								var date = day.toString() + month.toString()
-										+ year;
-
-								return date;
-							}
-
-							function getNow() {
-								var datetime = new Date();
-								var now = datetime.toLocaleString("en-US", {
-									hour12 : false
-								});
-								return now;
-							}
-
-							function getRowCount() {
-								var num = dataTable.rows().count() + 1;
-								if (num < 10) {
-									num = "0000" + num;
-									return num;
-								}
-								if (10 <= num < 100) {
-									num = "000" + num;
-									return num;
-								}
-
-								if (100 <= num < 1000) {
-									num = "00" + num;
-									return num;
-								}
-
-								if (1000 <= num < 10000) {
-									num = "0" + num;
-									return num;
-								}
-
-								if (10000 <= num) {
-									num = num.toString();
-									return num;
-								}
-							}
 							//新增
 							$("#add_Backage").on("click", function() {
 								$("#fs_alert1").css("display", "block");
 							});
 
 							//新增取消
-							$("#fs_alert1_cancel")
-									.on(
-											"click",
-											function() {
-												if (($("#BackEmail").val() != "")
-														| ($("#BackName").val() != "")
-														| ($("#BackPhone")
-																.val() != "")) {
-													var yes = confirm("確定要取消嗎?");
-													if (yes) {
-														$("#fs_alert1_form")[0]
-																.reset();
-														$("#fs_alert1").css(
-																"display",
-																"none");
-													}
-												} else {
-													$("#fs_alert1_form")[0]
-															.reset();
-													$("#fs_alert1").css(
-															"display", "none");
-												}
-											});
+						      $("#fs_alert1_cancel").on("click", function () {
+						        if (
+						          ($("#BackEmail").val() != "") |
+						          ($("#BackName").val() != "") |
+						          ($("#BackPhone").val() != "")
+						        ) {
+						          var yes = confirm("確定要取消嗎?");
+						          if (yes) {
+						            $("#fs_alert1_form")[0].reset();
+						            $("#fs_alert1").css("display", "none");
+						          }
+						        } else {
+						          $("#fs_alert1_form")[0].reset();
+						          $("#fs_alert1").css("display", "none");
+						        }
+						      });
 
-							//新增確定
-							$("#fs_alert1_add")
-									.on("click",function() {
-												var boxcheck = $("#BackAceType1").prop("checked")
-														| $("#BackAceType2").prop("checked")
-														| $("#BackAceType3").prop("checked")
-														| $("#BackAceType4").prop("checked")
-														| $("#BackAceType5 ").prop("checked");
+						      //新增確定
+						      $("#fs_alert1_add").on("click", function () {
+						        var boxcheck =
+						          $("#BackAceType1").prop("checked") ||
+						          $("#BackAceType2").prop("checked") ||
+						          $("#BackAceType3").prop("checked") ||
+						          $("#BackAceType4").prop("checked") ||
+						          $("#BackAceType5 ").prop("checked");
 
-												if (($("#BackEmail").val() != "")
-														& ($("#BackName").val() != "")
-														& ($("#BackPhone").val() != "")
-														& boxcheck) {
+						        if (
+						          $("#BackEmail").val() != "" &&
+						          $("#BackName").val() != "" &&
+						          $("#BackPhone").val() != "" &&
+						          boxcheck
+						        ) {
+						          //準備傳送到後端的資料
+						          var backEmail = $("#BackEmail").val().trim();
+						          var backName = $("#BackName").val().trim();
+						          var backPhone = $("#BackPhone").val().trim();
+						          var backAceType1 = $("#BackAceType1").prop("checked");
+						          var backAceType2 = $("#BackAceType2").prop("checked");
+						          var backAceType3 = $("#BackAceType3").prop("checked");
+						          var backAceType4 = $("#BackAceType4").prop("checked");
+						          var backAceType5 = $("#BackAceType5").prop("checked");
 
-													//準備傳送到後端的資料
-													var backEmail = $("#BackEmail").val().trim();
-													var backName = $("#BackName").val().trim();
-													var backPhone = $("#BackPhone").val().trim();
-													var backAceType1 = $("#BackAceType1").prop("checked");
-													var backAceType2 = $("#BackAceType2").prop("checked");
-													var backAceType3 = $("#BackAceType3").prop("checked");
-													var backAceType4 = $("#BackAceType4").prop("checked");
-													var backAceType5 = $("#BackAceType5").prop("checked");
+						          //傳送到後端
+						          $.ajax({
+						            url: "${pageContext.request.contextPath}/BackStageController", // 資料請求的網址
+						            type: "POST",
+						            data: {
+						              action: "add",
+						              backEmail: backEmail,
+						              backName: backName,
+						              backPhone: backPhone,
+						              backAceType1: backAceType1,
+						              backAceType2: backAceType2,
+						              backAceType3: backAceType3,
+						              backAceType4: backAceType4,
+						              backAceType5: backAceType5,
+						            },
+						            dataType: "json", // 預期會接收到回傳資料的格式： json | xml | html
+						            success: function (data) { // request 成功取得回應後執行
+						            	 console.log(data);
+						            	if(data.result == "fail"){
+						            		alert(data.errorMsgs);
+						            	}else{
+						            	  dataTable.row.add(data).draw();
+						            	  alert("新增成功!")
+						            	 
+						            	}
+						            },
+						          });
+						          $("#fs_alert1_form")[0].reset();
+						          $("#fs_alert1").css("display", "none");
+						        } else {
+						          alert("請確認所有欄位皆以填寫。");
+						        }
+						      });
+						      
+							//選取某一列
+						      $("#table_id tbody").on("click", "tr", function () {
+						        if ($(this).hasClass("selected")) {
+						          $(this).removeClass("selected");
+						        } else {
+						          dataTable.$("tr.selected").removeClass("selected");
+						          $(this).addClass("selected");
+						        }
+						      });
 
-													//傳送到後端
-													$.ajax({
-																url : "${pageContext.request.contextPath}/BackStageController", // 資料請求的網址
-																type : "POST",
-																data : {
-																	"action" : "add",
-																	"backEmail" : backEmail,
-																	"backName" : backName,
-																	"backPhone" : backPhone,
-																	"backAceType1" : backAceType1,
-																	"backAceType2" : backAceType2,
-																	"backAceType3" : backAceType3,
-																	"backAceType4" : backAceType4,
-																	"backAceType5" : backAceType5
-																},
-																dataType : "json", // 預期會接收到回傳資料的格式： json | xml | html
-																success : function(
-																		data) { // request 成功取得回應後執行
-																	console.log(data);
-																	dataTable.row.add(data).draw();
-																	}
-															});
-													       $("#fs_alert1_form")[0].reset();
-													       $("#fs_alert1").css("display","none");
+							//取消選取
+							$("#unfocus").on("click",function() {
+								dataTable.$("tr.selected").removeClass("selected");
+									});
 
-													// 									var data = {
-													// 										BackNo : backNo,
-													// 										BackEmail : backEmail,
-													// 										BackName : backName,
-													// 										BackPhone : backPhone,
-													// 										BackStat : backStat,
-													// 										BackSetTime : backSetTime,
-													// 										BackUpdTime : backUpdTime,
-													// 										BackAceType1 : backAceType1,
-													// 										BackAceType2 : backAceType2,
-													// 										BackAceType3 : backAceType3,
-													// 										BackAceType4 : backAceType4,
-													// 										BackAceType5 : backAceType5,
-													// 									};
+							//更新事件
+							 $("#update_Backage").on("click", function () {
+							        //確認有選取
+							        var num = -1;
+							        $("tbody tr").each(function (i, ele) {
+							          if ($(ele).hasClass("selected")) {
+							            num = i;
+							          }
+							        });
+							
+							        //跳彈窗
+							        if (num != -1) {
+							          var rowData = dataTable.row(".selected").data();
+							          var rowId = dataTable.row(".selected").id();
+							          console.log("原始資料id:");
+							          console.log(rowId);
+							          console.log("#" + rowId);
+							          console.log("原始資料列數:");
+							          console.log(num);
+							          console.log("原始資料:");
+							          console.log(rowData);
+							          if (rowData.BackStat != "停用") {
+							            $("#fs_alert2").css("display", "block");
+							
+							            $("#BackNo2").val(rowData.BackNo);
+							            $("#BackEmail2").val(rowData.BackEmail);
+							            $("#BackName2").val(rowData.BackName);
+							            $("#BackPhone2").val(rowData.BackPhone);
+							            
+							            if (rowData.BackAceType1 == "V") {
+							              $("#BackAceType2_1").prop("checked", true);
+							            } else {
+							              $("#BackAceType2_1").prop("checked", false);
+							            }
+							            if (rowData.BackAceType2 == "V") {
+							              $("#BackAceType2_2").prop("checked", true);
+							            } else {
+							              $("#BackAceType2_2").prop("checked", false);
+							            }
+							            if (rowData.BackAceType3 == "V") {
+							              $("#BackAceType2_3").prop("checked", true);
+							            } else {
+							              $("#BackAceType2_3").prop("checked", false);
+							            }
+							            if (rowData.BackAceType4 == "V") {
+							              $("#BackAceType2_4").prop("checked", true);
+							            } else {
+							              $("#BackAceType2_4").prop("checked", false);
+							            }
+							            if (rowData.BackAceType5 == "V") {
+							              $("#BackAceType2_5").prop("checked", true);
+							            } else {
+							              $("#BackAceType2_5").prop("checked", false);
+							            }
 
-													// 									dataTable.row.add(data).draw();
-													// 									$("#fs_alert1_form")[0].reset();
-													// 									$("#fs_alert1").css("display", "none");
-													// $("#fs_alert1_form").submit();
-												} else {
-													alert("請確認所有欄位皆以填寫。");
-												}
-												
-												
-											});
-							//選取
-					        $("#table_id tbody").on("click", "tr", function () {
-					          if ($(this).hasClass("selected")) {
-					            $(this).removeClass("selected");
-					          } else {
-					            dataTable.$("tr.selected").removeClass("selected");
-					            $(this).addClass("selected");
-					          }
-					        });
+							            //更新
+							
+							            $("#fs_alert2_update").off("click").on("click", function (e) {
+							                e.stopPropagation();
+							
+							                if (
+							                  $("#BackAceType2_1").prop("checked") ||
+							                  $("#BackAceType2_2").prop("checked") ||
+							                  $("#BackAceType2_3").prop("checked") ||
+							                  $("#BackAceType2_4").prop("checked") ||
+							                  $("#BackAceType2_5").prop("checked")
+							                ) {
+							                  var backAceType2_1 = $("#BackAceType2_1").prop("checked")
+							                    ? "V"
+							                    : "X";
+							                  var backAceType2_2 = $("#BackAceType2_2").prop("checked")
+							                    ? "V"
+							                    : "X";
+							                  var backAceType2_3 = $("#BackAceType2_3").prop("checked")
+							                    ? "V"
+							                    : "X";
+							                  var backAceType2_4 = $("#BackAceType2_4").prop("checked")
+							                    ? "V"
+							                    : "X";
+							                  var backAceType2_5 = $("#BackAceType2_5").prop("checked")
+							                    ? "V"
+							                    : "X";
+							
+							                  if (
+							                    (backAceType2_1 != rowData.BackAceType1) |
+							                    (backAceType2_2 != rowData.BackAceType2) |
+							                    (backAceType2_3 != rowData.BackAceType3) |
+							                    (backAceType2_4 != rowData.BackAceType4) |
+							                    (backAceType2_5 != rowData.BackAceType5)
+							                  ) {
+							                    //傳送到後端
+							                    $.ajax({
+							                      url: "${pageContext.request.contextPath}/BackStageController", // 資料請求的網址
+							                      type: "POST",
+							                      data: {
+							                        action: "update",
+							                        backNo: rowData.BackNo,
+							                        backAceType1: backAceType2_1,
+							                        backAceType2: backAceType2_2,
+							                        backAceType3: backAceType2_3,
+							                        backAceType4: backAceType2_4,
+							                        backAceType5: backAceType2_5,
+							                      },
+							                      dataType: "json", // 預期會接收到回傳資料的格式： json | xml | html
+							                      success: function (newdata) {
+							                    	  
+							                    	  console.log("新的資料:");
+								                      console.log(newdata);
+								                        
+							                    	  if(newdata.result == "fail"){
+										            		alert(newdata.errorMsgs);
+										            	}else{
+										            		dataTable.row("#" + rowId).data(newdata).draw();
+										            		alert("資料已修改");
+										            		
+										            	}
+							                      
+							                      },
+							                    });
+							
+							                    $("#fs_alert2_form")[0].reset();
+							                    dataTable.$("tr.selected").removeClass("selected");
+							                    $("#fs_alert2").css("display", "none");
+							                  } else {
+							                    alert("資料無修改");
+							                    $("#fs_alert2_form")[0].reset();
+							                    dataTable.$("tr.selected").removeClass("selected");
+							                    $("#fs_alert2").css("display", "none");
+							                  }
+							                } else {
+							                  alert("請確認所有欄位皆以填寫。");
+							                }
+							              });
+							
+							            // 停用
+							            $("#fs_alert2_delete").off("click").on("click", function (e) {
+							                e.stopPropagation();
+							
+							                var yes = confirm("確定要停用該帳號嗎？");
+							
+							                if (yes) {
+							                  $.ajax({
+							                    url: "${pageContext.request.contextPath}/BackStageController", // 資料請求的網址
+							                    type: "POST",
+							                    data: {
+							                      action: "delete",
+							                      backNo: rowData.BackNo,
+							                    },
+							                    dataType: "json", // 預期會接收到回傳資料的格式： json | xml | html
+							                    success: function (newdata) {
+							                      // request 成功取得回應後執行
+							                      console.log("新的資料:");
+							                      console.log(newdata);
+							                      dataTable.row("#" + rowId).data(newdata).draw();
+							                      alert("該後台人員已停權。");
+							                      
+							                    },
+							                  });
+							                }
+							
+							                $("#fs_alert2_form")[0].reset();
+							                dataTable.$("tr.selected").removeClass("selected");
+							                $("#fs_alert2").css("display", "none");
+							              });
+							          } else {
+							            alert("該後台人員已停權。");
+							          }
+							        } else {
+							          alert("請先選擇資料。");
+							        }
+							      });
+    
+								 //取消更新
+								 $("#fs_alert2_cancel").on("click", function () {
+								   $("#fs_alert2_form")[0].reset();
+								   dataTable.$("tr.selected").removeClass("selected");
+								   $("#fs_alert2").css("display", "none");
+								 });
+							
 
-					        //取消選取
-					        $("#unfocus").on("click", function () {
-					          dataTable.$("tr.selected").removeClass("selected");
-					        });
-					        
-					        //更新事件
-					        $("#update_Backage").on("click", function () {
-					          //確認有選取
-					          var num = -1;
-					          $("tbody tr").each(function (i, ele) {
-					            if ($(ele).hasClass("selected")) {
-					              num = i;
-					            }
-					          });
-                              //跳彈窗
-					          if (num != -1) {
-					            $("#fs_alert2").css("display", "block");
-					            var rowData = dataTable.row(".selected").data();
-					            console.log(rowData);
-
-					            $("#BackNo2").val(rowData.BackNo);
-					            $("#BackEmail2").val(rowData.BackEmail);
-					            $("#BackName2").val(rowData.BackName);
-					            $("#BackPhone2").val(rowData.BackPhone);
-					            if (rowData.BackAceType1 == "V") {
-					              $("#BackAceType2_1").prop("checked", true);
-					            }
-					            if (rowData.BackAceType2 == "V") {
-					              $("#BackAceType2_2").prop("checked", true);
-					            }
-					            if (rowData.BackAceType3 == "V") {
-					              $("#BackAceType2_3").prop("checked", true);
-					            }
-					            if (rowData.BackAceType4 == "V") {
-					              $("#BackAceType2_4").prop("checked", true);
-					            }
-					            if (rowData.BackAceType5 == "V") {
-					              $("#BackAceType2_5").prop("checked", true);
-					            }
-
-					            //更新
-
-					            $("#fs_alert2_update").on("click", function (e) {
-					              e.stopPropagation();
-					              var boxcheck =
-					                $("#BackAceType2_1").prop("checked")|
-					                $("#BackAceType2_2").prop("checked") |
-					                $("#BackAceType2_3").prop("checked") |
-					                $("#BackAceType2_4").prop("checked") |
-					                $("#BackAceType2_5").prop("checked");
-					              if (
-					                ($("#BackName2").val() != "") &
-					                ($("#BackPhone2").val() != "") &
-					                boxcheck
-					              ) {
-					                var backName2 = $("#BackName2").val().trim();
-					                var backPhone2 = $("#BackPhone2").val().trim();
-					                var backAceType2_1 = $("#BackAceType2_1").prop("checked")
-					                  ? "V"
-					                  : "X";
-					                var backAceType2_2 = $("#BackAceType2_2").prop("checked")
-					                  ? "V"
-					                  : "X";
-					                var backAceType2_3 = $("#BackAceType2_3").prop("checked")
-					                  ? "V"
-					                  : "X";
-					                var backAceType2_4 = $("#BackAceType2_4").prop("checked")
-					                  ? "V"
-					                  : "X";
-					                var backAceType2_5 = $("#BackAceType2_5").prop("checked")
-					                  ? "V"
-					                  : "X";
-					                console.log(backAceType2_1)
-					                if (
-					                  (backName2 != rowData.BackName) |
-					                  (backPhone2 != rowData.BackPhone) |
-					                  (backAceType2_1 != rowData.BackAceType1) |
-					                  (backAceType2_2 != rowData.BackAceType2) |
-					                  (backAceType2_3 != rowData.BackAceType3) |
-					                  (backAceType2_4 != rowData.BackAceType4) |
-					                  (backAceType2_5 != rowData.BackAceType5)
-					                ) {
-					                  
-					                //傳送到後端
-									$.ajax({
-											url : "${pageContext.request.contextPath}/BackStageController", // 資料請求的網址
-											type : "POST",
-											data : {
-												"action" : "update",
-												"backNo" : rowData.BackNo,
-												"backName" : backName2,
-												"backPhone" : backPhone2,
-												"backAceType1" : backAceType2_1,
-												"backAceType2" : backAceType2_2,
-												"backAceType3" : backAceType2_3,
-												"backAceType4" : backAceType2_4,
-												"backAceType5" : backAceType2_5
-											},
-											dataType : "json", // 預期會接收到回傳資料的格式： json | xml | html
-											success : function(newdata) { // request 成功取得回應後執行
-												console.log(newdata);
-												dataTable.row("tr.selected").data(newdata).draw();
-												
-												}
-										});
-					                  
-					                  alert("資料已修改");
-					                  $("#fs_alert2_form")[0].reset();
-					                  dataTable.$("tr.selected").removeClass("selected");
-					                  $("#fs_alert2").css("display", "none");
-					                } else {
-					                  alert("資料無修改");
-					                  $("#fs_alert2_form")[0].reset();
-					                  dataTable.$("tr.selected").removeClass("selected");
-					                  $("#fs_alert2").css("display", "none");
-					                }
-
-					                // var data = {
-					                //   BackNo: backNo,
-					                //   BackEmail: backEmail,
-					                //   BackName: backName,
-					                //   BackPhone: backPhone,
-					                //   BackStat: backStat,
-					                //   BackSetTime: backSetTime,
-					                //   BackUpdTime: backUpdTime,
-					                //   BackAceType1: backAceType1,
-					                //   BackAceType2: backAceType2,
-					                //   BackAceType3: backAceType3,
-					                //   BackAceType4: backAceType4,
-					                //   BackAceType5: backAceType5,
-					                // };
-
-					                // dataTable.row(data).draw();
-					                // $("#fs_alert1_form")[0].reset();
-					                // $("#fs_alert1").css("display", "none");
-					                // $("#fs_alert2_form").submit();
-					              } else {
-					                alert("請確認所有欄位皆以填寫。");
-					              }
-					            });
-					          } else {
-					            alert("請先選擇資料。");
-					          }
-					        });
-
-					        //取消更新
-					        $("#fs_alert2_cancel").on("click", function () {
-					          $("#fs_alert2_form")[0].reset();
-					          dataTable.$("tr.selected").removeClass("selected");
-					          $("#fs_alert2").css("display", "none");
-					        });
-
-						
 						});
 	</script>
 </body>

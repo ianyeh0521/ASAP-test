@@ -23,35 +23,32 @@ public class CoachVO implements Serializable {
 	private String coachName;
 	@Column(name = "CoachPhone")
 	private String coachPhone;
-	@Column(name = "BankNo", columnDefinition = "char" )
-	private String bankNo;
-	@Column(name = "BankBr")
-	private String bankBr;
-	@Column(name = "BankAcct")
-	private String bankAcct;
-	@Column(name = "CoachImg",columnDefinition = "longblob")
+	@Column(name = "CoachImg", columnDefinition = "longblob")
 	private byte[] coachImg;
 	@Column(name = "CoachExp")
 	private Integer coachExp;
 	@Column(name = "CoachStat")
 	private Boolean coachStat;
+	@Column(name = "EmailStat")
+	private Boolean emailStat;
+	@Column(name = "CoachIntro")
+	private String coachIntro;
 
 	public CoachVO() {
 	}
 
 	public CoachVO(String coachNo, String coachEmail, String coachPwd, String coachName, String coachPhone,
-			String bankNo, String bankBr, String bankAcct, byte[] coachImg, Integer coachExp, Boolean coachStat) {
+			byte[] coachImg, Integer coachExp, Boolean coachStat, Boolean emailStat, String coachIntro) {
 		this.coachNo = coachNo;
 		this.coachEmail = coachEmail;
 		this.coachPwd = coachPwd;
 		this.coachName = coachName;
 		this.coachPhone = coachPhone;
-		this.bankNo = bankNo;
-		this.bankBr = bankBr;
-		this.bankAcct = bankAcct;
 		this.coachImg = coachImg;
 		this.coachExp = coachExp;
 		this.coachStat = coachStat;
+		this.emailStat = emailStat;
+		this.coachIntro = coachIntro;
 	}
 
 	public String getCoachNo() {
@@ -74,18 +71,6 @@ public class CoachVO implements Serializable {
 		return coachPhone;
 	}
 
-	public String getBankNo() {
-		return bankNo;
-	}
-
-	public String getBankBr() {
-		return bankBr;
-	}
-
-	public String getBankAcct() {
-		return bankAcct;
-	}
-
 	public byte[] getCoachImg() {
 		return coachImg;
 	}
@@ -96,6 +81,14 @@ public class CoachVO implements Serializable {
 
 	public Boolean getCoachStat() {
 		return coachStat;
+	}
+
+	public Boolean getEmailStat() {
+		return emailStat;
+	}
+
+	public String getCoachIntro() {
+		return coachIntro;
 	}
 
 	public void setCoachNo(String coachNo) {
@@ -118,18 +111,6 @@ public class CoachVO implements Serializable {
 		this.coachPhone = coachPhone;
 	}
 
-	public void setBankNo(String bankNo) {
-		this.bankNo = bankNo;
-	}
-
-	public void setBankBr(String bankBr) {
-		this.bankBr = bankBr;
-	}
-
-	public void setBankAcct(String bankAcct) {
-		this.bankAcct = bankAcct;
-	}
-
 	public void setCoachImg(byte[] coachImg) {
 		this.coachImg = coachImg;
 	}
@@ -142,12 +123,20 @@ public class CoachVO implements Serializable {
 		this.coachStat = coachStat;
 	}
 
+	public void setEmailStat(Boolean emailStat) {
+		this.emailStat = emailStat;
+	}
+
+	public void setCoachIntro(String coachIntro) {
+		this.coachIntro = coachIntro;
+	}
+
 	@Override
 	public String toString() {
 		return "CoachVO [coachNo=" + coachNo + ", coachEmail=" + coachEmail + ", coachPwd=" + coachPwd + ", coachName="
-				+ coachName + ", coachPhone=" + coachPhone + ", bankNo=" + bankNo + ", bankBr=" + bankBr + ", bankAcct="
-				+ bankAcct + ", coachImg=" + Arrays.toString(coachImg) + ", coachExp=" + coachExp + ", coachStat="
-				+ coachStat + "]";
+				+ coachName + ", coachPhone=" + coachPhone + ", coachImg=" + Arrays.toString(coachImg) + ", coachExp="
+				+ coachExp + ", coachStat=" + coachStat + ", emailStat=" + emailStat + ", coachIntro=" + coachIntro
+				+ "]";
 	}
 
 }

@@ -17,34 +17,63 @@ import org.json.JSONObject;
 import com.asap.backstage.entity.BackAccessVO;
 import com.asap.backstage.entity.BackStageVO;
 import com.asap.backstage.service.BackAccessService;
+import com.asap.backstage.service.BackAccessService_interface;
 import com.asap.backstage.service.BackAccessTypeService;
+import com.asap.backstage.service.BackAccessTypeService_interface;
 import com.asap.backstage.service.BackStageService;
+import com.asap.backstage.service.BackStageService_interface;
+import com.asap.coach.entity.CoachSportTypeVO;
+import com.asap.coach.entity.CoachVO;
+import com.asap.coach.service.CoachService;
+import com.asap.coach.service.CoachService_interface;
+import com.asap.coach.service.CoachSportTypeService;
+import com.asap.coach.service.CoachSportTypeService_interface;
 
 @WebServlet("/BackStageController")
 public class BackStageController extends HttpServlet {
 
-	private BackStageService bService = new BackStageService();
-	private BackAccessService bAceService = new BackAccessService();
-	private BackAccessTypeService bTypeService = new BackAccessTypeService();
+	private BackStageService_interface bService;
+	private BackAccessService_interface bAceService;
+	private BackAccessTypeService_interface bTypeService;
+	private CoachService_interface cService;
+	private CoachSportTypeService_interface coachSportTypeService;
+	private String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+	private String pwdRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
+	private String phoneRegex = "09[0-9]{8}";
 
+	@Override
+	public void init() throws ServletException {
+		bService = new BackStageService();
+		bAceService = new BackAccessService();
+		bTypeService = new BackAccessTypeService();
+		cService = new CoachService();
+		coachSportTypeService = new CoachSportTypeService();
+	}
+
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
 
+	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
-
 		String action = req.getParameter("action");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		res.setContentType("application/json;charset=UTF-8");
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-
-		if ("load".equals(action)) {
+		/* dataTables 讀資料 */
+		if ("loadBack".equals(action)) {
+			// 返回json
 			List<BackStageVO> backStageVOs = bService.getAllBack();
 			JSONObject json = new JSONObject();
 			JSONArray array = new JSONArray();
 
 			for (BackStageVO bVo : backStageVOs) {
+
+				String backNo = bVo.getBackNo();
+				List<Integer> bAceList = bAceService.findByBackNo(backNo);
 
 				JSONObject item = new JSONObject();
 				item.put("BackNo", bVo.getBackNo());
@@ -53,25 +82,30 @@ public class BackStageController extends HttpServlet {
 				item.put("BackPhone", bVo.getBackPhone());
 				item.put("BackSetTime", sdf.format(bVo.getBackSetTime()));
 				item.put("BackUpdTime", sdf.format(bVo.getBackUpdTime()));
+
 				if (bVo.getBackStat()) {
 					item.put("BackStat", "正常");
+
+					for (Integer i = 1; i <= bTypeService.countAll(); i++) {
+
+						String bString = "BackAceType" + i;
+
+						if (bAceList.contains(i)) {
+							item.put(bString, "V");
+						} else {
+							item.put(bString, "X");
+						}
+					}
+
 				} else {
 					item.put("BackStat", "停用");
-				}
 
-				String backNo = bVo.getBackNo();
+					for (Integer i = 1; i <= bTypeService.countAll(); i++) {
 
-				List<Integer> bAceList = bAceService.findByBackNo(backNo);
+						String bString = "BackAceType" + i;
 
-				for (Integer i = 1; i <= bTypeService.countAll(); i++) {
+						item.put(bString, "-");
 
-					String bString = "BackAceType" + i;
-
-					if (bAceList.contains(i)) {
-
-						item.put(bString, "V");
-					} else {
-						item.put(bString, "X");
 					}
 				}
 
@@ -82,14 +116,15 @@ public class BackStageController extends HttpServlet {
 
 			// 轉換json
 			String output = json.toString();
-//			System.out.println(output);
 
-			res.setContentType("application/json;charset=UTF-8");
+			// 輸出
 			PrintWriter out = res.getWriter();
 			out.print(output);
 			out.flush();
 			return;
 		}
+
+		/* 新增人員 */
 
 		if ("add".equals(action)) {
 			// 返回物件
@@ -104,9 +139,87 @@ public class BackStageController extends HttpServlet {
 			String backAceType3 = req.getParameter("backAceType3");
 			String backAceType4 = req.getParameter("backAceType4");
 			String backAceType5 = req.getParameter("backAceType5");
-//			System.out.println(backAceType1);
-//			System.out.println(backAceType2);
-//			System.out.println(backEmail);
+
+			// 驗證資料
+
+			StringBuffer errorMsgs = new StringBuffer();
+
+			// 驗證名字
+			if (backName.trim().length() == 0) {
+				errorMsgs.append("姓名不得為空值!\n");
+			}
+
+			if (!errorMsgs.toString().equals("")) {
+				json.put("result", "fail");
+				json.put("errorMsgs", errorMsgs);
+				// 轉換json
+				String output = json.toString();
+				PrintWriter out = res.getWriter();
+				out.print(output);
+				out.flush();
+				return;
+				// 程式中斷
+			}
+
+			// 驗證Email
+			if ((backEmail.trim()).length() == 0) {
+				errorMsgs.append("Email不得為空值!\n");
+			}
+
+			if (!(backEmail.trim()).matches(emailRegex)) {
+				errorMsgs.append("Email格式不正確!\n");
+			}
+
+			if (!errorMsgs.toString().equals("")) {
+				json.put("result", "fail");
+				json.put("errorMsgs", errorMsgs);
+				// 轉換json
+				String output = json.toString();
+				PrintWriter out = res.getWriter();
+				out.print(output);
+				out.flush();
+				return;
+				// 程式中斷
+			}
+
+			// 驗證手機
+			if ((backPhone.trim()).length() == 0) {
+				errorMsgs.append("手機號碼不得為空值!\n");
+			}
+
+			if (!(backPhone.trim()).matches(phoneRegex)) {
+				errorMsgs.append("手機號碼格式不正確!\n");
+			}
+
+			if (!errorMsgs.toString().equals("")) {
+				json.put("result", "fail");
+				json.put("errorMsgs", errorMsgs);
+				// 轉換json
+				String output = json.toString();
+				PrintWriter out = res.getWriter();
+				out.print(output);
+				out.flush();
+				return;
+				// 程式中斷
+			}
+
+			// 驗證權限
+			if ("false".equals(backAceType1) && "false".equals(backAceType2) && "false".equals(backAceType3)
+					&& "false".equals(backAceType4) && "false".equals(backAceType5)) {
+				errorMsgs.append("請選擇權限種類!");
+			}
+
+			if (!errorMsgs.toString().equals("")) {
+				json.put("result", "fail");
+				json.put("errorMsgs", errorMsgs);
+				// 轉換json
+				String output = json.toString();
+				PrintWriter out = res.getWriter();
+				out.print(output);
+				out.flush();
+				return;
+				// 程式中斷
+			}
 
 			// 與資料庫溝通
 			// 設定後台人員vo
@@ -172,6 +285,7 @@ public class BackStageController extends HttpServlet {
 			}
 			// 返回資料
 			BackStageVO bStageVO = bService.findByBackNo(backNo);
+			json.put("result", "success");
 			json.put("BackNo", bStageVO.getBackNo());
 			json.put("BackEmail", bStageVO.getBackEmail());
 			json.put("BackName", bStageVO.getBackName());
@@ -186,9 +300,6 @@ public class BackStageController extends HttpServlet {
 
 			// 轉換json
 			String output = json.toString();
-//			System.out.println(output);
-
-			res.setContentType("application/json;charset=UTF-8");
 			PrintWriter out = res.getWriter();
 			out.print(output);
 			out.flush();
@@ -196,119 +307,147 @@ public class BackStageController extends HttpServlet {
 
 		}
 
+		/* 更新權限 */
+
 		if ("update".equals(action)) {
+
 			// 返回物件
 			JSONObject json = new JSONObject();
 
 			// 取資料
 			String backNo = req.getParameter("backNo");
-			String backName = req.getParameter("backName");
-			String backPhone = req.getParameter("backPhone");
 			String backAceType1 = req.getParameter("backAceType1");
 			String backAceType2 = req.getParameter("backAceType2");
 			String backAceType3 = req.getParameter("backAceType3");
 			String backAceType4 = req.getParameter("backAceType4");
 			String backAceType5 = req.getParameter("backAceType5");
+			System.out.println("後台收到的數據: " + backNo);
 
-			// 與資料庫溝通
-			// 取出欲修改的後台人員vo和權限vo
-			BackStageVO bVo = bService.findByBackNo(backNo);
-			List<Integer> bAceList = bAceService.findByBackNo(backNo);
-
-			// 設定後台人員vo
-			if ((!backName.equals(bVo.getBackName())) || (!backPhone.equals(bVo.getBackPhone()))) {
-				bVo.setBackName(backName);
-				bVo.setBackPhone(backPhone);
+			// 驗證資料
+			StringBuffer errorMsgs = new StringBuffer();
+			// 驗證權限
+			if ("X".equals(backAceType1) && "X".equals(backAceType2) && "X".equals(backAceType3)
+					&& "X".equals(backAceType4) && "X".equals(backAceType5)) {
+				errorMsgs.append("請選擇權限種類!");
 			}
 
-			String result = bService.updateBack(bVo);
-			System.out.println(result);
+			if (!errorMsgs.toString().equals("")) {
+				json.put("result", "fail");
+				json.put("errorMsgs", errorMsgs);
+				// 轉換json
+				String output = json.toString();
+				PrintWriter out = res.getWriter();
+				out.print(output);
+				out.flush();
+				return;
+				// 程式中斷
+			}
 
-			// 設定後台人員權限vo
+			// 與資料庫溝通
+			// 取出欲修改的後台人員vo
+			BackStageVO bVo = bService.findByBackNo(backNo);
+			String result = bService.updateBack(bVo);
+			System.out.println("backstage的更新結果: " + result);
+
+			// 取出欲修改的後台人員權限vo
+			bAceService.suspend(backNo);
 
 			// TYPE1
 			if (backAceType1.equals("V")) {
-				if (!bAceList.contains(1)) {
-					BackAccessVO bAceVo = new BackAccessVO();
-					bAceVo.setBackNo(backNo);
-					bAceVo.setBackAceTypeNo(1);
-					bAceService.add(bAceVo);
-				}
-			}
-
-			if (backAceType1.equals("X")) {
-				if (bAceList.contains(1)) {
-					bAceService.delete(bAceService.findVo(backNo, 1));
-				}
+				BackAccessVO bAceVo = new BackAccessVO();
+				bAceVo.setBackNo(backNo);
+				bAceVo.setBackAceTypeNo(1);
+				bAceService.add(bAceVo);
 
 			}
 
 			// TYPE2
 			if (backAceType2.equals("V")) {
-				if (!bAceList.contains(2)) {
-					BackAccessVO bAceVo = new BackAccessVO();
-					bAceVo.setBackNo(backNo);
-					bAceVo.setBackAceTypeNo(2);
-					bAceService.add(bAceVo);
-				}
 
-			}
-			if (backAceType2.equals("X")) {
-				if (bAceList.contains(2)) {
-					bAceService.delete(bAceService.findVo(backNo, 2));
-				}
+				BackAccessVO bAceVo = new BackAccessVO();
+				bAceVo.setBackNo(backNo);
+				bAceVo.setBackAceTypeNo(2);
+				bAceService.add(bAceVo);
 
 			}
 
 			// TYPE3
 			if (backAceType3.equals("V")) {
-				if (!bAceList.contains(3)) {
-					BackAccessVO bAceVo = new BackAccessVO();
-					bAceVo.setBackNo(backNo);
-					bAceVo.setBackAceTypeNo(3);
-					bAceService.add(bAceVo);
-				}
 
-			}
-			if (backAceType3.equals("X")) {
-				if (bAceList.contains(3)) {
-					bAceService.delete(bAceService.findVo(backNo, 3));
-				}
+				BackAccessVO bAceVo = new BackAccessVO();
+				bAceVo.setBackNo(backNo);
+				bAceVo.setBackAceTypeNo(3);
+				bAceService.add(bAceVo);
+
 			}
 
 			// TYPE4
 			if (backAceType4.equals("V")) {
-				if (!bAceList.contains(4)) {
-					BackAccessVO bAceVo = new BackAccessVO();
-					bAceVo.setBackNo(backNo);
-					bAceVo.setBackAceTypeNo(4);
-					bAceService.add(bAceVo);
-				}
 
-			}
-			if (backAceType4.equals("X")) {
-				if (bAceList.contains(4)) {
-					bAceService.delete(bAceService.findVo(backNo, 4));
-				}
+				BackAccessVO bAceVo = new BackAccessVO();
+				bAceVo.setBackNo(backNo);
+				bAceVo.setBackAceTypeNo(4);
+				bAceService.add(bAceVo);
 
 			}
 
 			// TYPE5
 			if (backAceType5.equals("V")) {
-				if (!bAceList.contains(5)) {
-					BackAccessVO bAceVo = new BackAccessVO();
-					bAceVo.setBackNo(backNo);
-					bAceVo.setBackAceTypeNo(5);
-					bAceService.add(bAceVo);
-				}
+
+				BackAccessVO bAceVo = new BackAccessVO();
+				bAceVo.setBackNo(backNo);
+				bAceVo.setBackAceTypeNo(5);
+				bAceService.add(bAceVo);
 
 			}
-			if (backAceType5.equals("X")) {
-				if (bAceList.contains(5)) {
-					bAceService.delete(bAceService.findVo(backNo, 15));
-				}
 
+			// 返回資料
+			BackStageVO bStageVO = bService.findByBackNo(backNo);
+			json.put("result", "success");
+			json.put("BackNo", bStageVO.getBackNo());
+			json.put("BackEmail", bStageVO.getBackEmail());
+			json.put("BackName", bStageVO.getBackName());
+			json.put("BackPhone", bStageVO.getBackPhone());
+			json.put("BackSetTime", sdf.format(bStageVO.getBackSetTime()));
+			json.put("BackUpdTime", sdf.format(bStageVO.getBackUpdTime()));
+			if (bStageVO.getBackStat()) {
+				json.put("BackStat", "正常");
+			} else {
+				json.put("BackStat", "停用");
 			}
+			List<Integer> bAcelist = bAceService.findByBackNo(backNo);
+			json.put("BackAceType1", bAcelist.contains(1) ? "V" : "X");
+			json.put("BackAceType2", bAcelist.contains(2) ? "V" : "X");
+			json.put("BackAceType3", bAcelist.contains(3) ? "V" : "X");
+			json.put("BackAceType4", bAcelist.contains(4) ? "V" : "X");
+			json.put("BackAceType5", bAcelist.contains(5) ? "V" : "X");
+
+			// 轉換json
+			String output = json.toString();
+			System.out.println("傳給前端的結果: " + output);
+
+			PrintWriter out = res.getWriter();
+			out.print(output);
+			out.flush();
+			return;
+
+		}
+
+		if ("delete".equals(action)) {
+			// 返回物件
+			JSONObject json = new JSONObject();
+			// 取資料
+			String backNo = req.getParameter("backNo");
+			System.out.println("後台收到的數據: " + backNo);
+			// 與資料庫溝通
+			// 取出欲修改的後台人員vo
+			BackStageVO bVo = bService.findByBackNo(backNo);
+			bVo.setBackStat(false);
+			String result = bService.updateBack(bVo);
+			System.out.println("backstage的更新結果: " + result);
+
+			// 取出欲修改的後台人員權限vo
+			bAceService.suspend(backNo);
 
 			// 返回資料
 			BackStageVO bStageVO = bService.findByBackNo(backNo);
@@ -323,17 +462,156 @@ public class BackStageController extends HttpServlet {
 			} else {
 				json.put("BackStat", "停用");
 			}
-			json.put("BackAceType1", backAceType1);
-			json.put("BackAceType2", backAceType2);
-			json.put("BackAceType3", backAceType3);
-			json.put("BackAceType4", backAceType4);
-			json.put("BackAceType5", backAceType5);
+			List<Integer> bAcelist = bAceService.findByBackNo(backNo);
+			if (bAcelist.isEmpty()) {
+				json.put("BackAceType1", "-");
+				json.put("BackAceType2", "-");
+				json.put("BackAceType3", "-");
+				json.put("BackAceType4", "-");
+				json.put("BackAceType5", "-");
+
+			} else {
+				System.out.println("backAccess更新錯誤");
+			}
 
 			// 轉換json
 			String output = json.toString();
-			System.out.println(output);
+			System.out.println("傳給前端的結果: " + output);
 
-			res.setContentType("application/json;charset=UTF-8");
+			PrintWriter out = res.getWriter();
+			out.print(output);
+			out.flush();
+			return;
+
+		}
+
+		/* dataTables 讀資料 */
+		if ("loadCoach".equals(action)) {
+			// 返回json
+			List<CoachVO> coachVOs = cService.getAll();
+			JSONObject json = new JSONObject();
+			JSONArray array = new JSONArray();
+
+			for (CoachVO cVo : coachVOs) {
+
+				String coachNo = cVo.getCoachNo();
+				List<CoachSportTypeVO> sportTypeList = coachSportTypeService.findByCoachNo(coachNo);
+
+				JSONObject item = new JSONObject();
+				item.put("CoachNo", cVo.getCoachNo());
+				item.put("CoachEmail", cVo.getCoachEmail());
+				item.put("CoachName", cVo.getCoachName());
+				item.put("CoachPhone", cVo.getCoachPhone());
+				item.put("CoachExp", cVo.getCoachExp());
+				item.put("CoachStat", cVo.getCoachStat() ? "已啟用" : "未啟用");
+				item.put("EmailStat", cVo.getEmailStat() ? "已驗證" : "未驗證");
+//				item.put("CoachImg", );
+
+				StringBuffer sportType = new StringBuffer(" ");
+				if (sportTypeList != null && (!sportTypeList.isEmpty())) {
+
+					for (CoachSportTypeVO vo : sportTypeList) {
+
+						switch (vo.getSportTypeNo()) {
+						case 1: {
+							sportType.append("游泳 ");
+							break;
+						}
+						case 2: {
+							sportType.append("棒球 ");
+							break;
+						}
+						case 3: {
+							sportType.append("網球 ");
+							break;
+						}
+						case 4: {
+							sportType.append("手球 ");
+							break;
+						}
+						case 5: {
+							sportType.append("籃球 ");
+							break;
+						}
+						case 6: {
+							sportType.append("排球 ");
+							break;
+						}
+						case 7: {
+							sportType.append("桌球 ");
+							break;
+						}
+						case 8: {
+							sportType.append("羽球 ");
+							break;
+						}
+						case 9: {
+							sportType.append("跑步 ");
+							break;
+						}
+						case 10: {
+							sportType.append("自行車 ");
+							break;
+						}
+						case 11: {
+							sportType.append("足球 ");
+							break;
+						}
+						case 12: {
+							sportType.append("高爾夫 ");
+							break;
+						}
+						default: {
+							sportType.append(" ");
+							break;
+						}
+						}
+					}
+					item.put("SportType", sportType.toString());
+
+				} else {
+					item.put("SportType", sportType.toString());
+				}
+
+				array.put(item);
+			}
+
+			json.put("data", array);
+
+			// 轉換json
+			String output = json.toString();
+
+			// 輸出
+			PrintWriter out = res.getWriter();
+			out.print(output);
+			out.flush();
+			return;
+		}
+
+		// 更新教練權限
+		/* dataTables 讀資料 */
+		if ("startCoachAcct".equals(action)) {
+			// 設定返回物件
+			JSONObject json = new JSONObject();
+
+			// 更新帳號狀態
+			String coachNo = req.getParameter("CoachNo");
+			CoachVO cVo = cService.findByPK(coachNo);
+			if (cVo != null) {
+				cVo.setCoachStat(true);
+				String result = cService.update(cVo);
+
+				if ("更新失敗".equals(result)) {
+					json.put("result", "fail");
+				} else {
+					json.put("result", "success");
+				}
+			}
+
+			// 轉換json
+			String output = json.toString();
+
+			// 輸出
 			PrintWriter out = res.getWriter();
 			out.print(output);
 			out.flush();

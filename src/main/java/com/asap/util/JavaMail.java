@@ -1,8 +1,9 @@
-package com.asap.member.controller;
+package com.asap.util;
 
 import java.util.Properties;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 //import javax.mail.MailService;
@@ -23,9 +24,9 @@ public class JavaMail {
 	private String to = "";
 	private String subject = "";
 	private String messageText = "";
-	private String imgFile;
+	private DataSource dataSource;
 
-	public JavaMail(String to, String subject, String messageText, String imgFile) {
+	public JavaMail(String to, String subject, String messageText, DataSource dataSource) {
 
 		if ((to.trim()).length() == 0) {
 			System.out.println("請輸入收件者");
@@ -39,7 +40,7 @@ public class JavaMail {
 		this.to = to;
 		this.subject = subject;
 		this.messageText = messageText;
-		this.imgFile = imgFile;
+		this.dataSource = dataSource;
 		System.out.println("信件設置成功");
 	}
 
@@ -57,10 +58,10 @@ public class JavaMail {
 		this.to = to;
 		this.subject = subject;
 		this.messageText = messageText;
-		System.out.println("信件設置成功");
+		System.out.println("JavaMail : 信件設置成功");
 	}
 
-	public void sendMail() {
+	public String sendMail() {
 
 		try {
 			// 設定使用SSL連線至 Gmail smtp Server
@@ -90,7 +91,7 @@ public class JavaMail {
 			// 設定信中的主旨
 			message.setSubject(subject);
 
-			if (imgFile == null) {
+			if (dataSource == null) {
 				message.setContent(messageText, "text/html;charset=UTF-8");
 			} else {
 				// 設定信中的內容 文字
@@ -99,7 +100,7 @@ public class JavaMail {
 
 				// 設定信中的內容 圖片
 				MimeBodyPart image = new MimeBodyPart();
-				DataHandler dh = new DataHandler(new FileDataSource(imgFile));
+				DataHandler dh = new DataHandler(dataSource);// new FileDataSource(imgFile)
 				image.setDataHandler(dh);
 				image.setContentID("abc");
 
@@ -113,11 +114,13 @@ public class JavaMail {
 
 				Transport.send(message);
 			}
-
-			System.out.println("傳送成功!");
+			System.out.println("JavaMail : 傳送成功");
+			return "傳送成功";
 		} catch (MessagingException e) {
-			System.out.println("傳送失敗!");
 			e.printStackTrace();
+			System.out.println("JavaMail : 傳送失敗");
+			return "傳送失敗";
+
 		}
 	}
 

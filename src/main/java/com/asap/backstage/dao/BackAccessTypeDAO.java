@@ -32,6 +32,7 @@ public class BackAccessTypeDAO implements BackAccessTypeDAO_interface {
 			e.printStackTrace();
 			return -1;
 		}
+		
 	}
 
 	@Override
@@ -43,6 +44,7 @@ public class BackAccessTypeDAO implements BackAccessTypeDAO_interface {
 			e.printStackTrace();
 			return "更新失敗";
 		}
+		
 	}
 
 	@Override
@@ -51,8 +53,10 @@ public class BackAccessTypeDAO implements BackAccessTypeDAO_interface {
 			BackAccessTypeVO bTypeVO = getSession().get(BackAccessTypeVO.class, backTypeNo);
 			return bTypeVO;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
+		
 
 	}
 
@@ -63,7 +67,9 @@ public class BackAccessTypeDAO implements BackAccessTypeDAO_interface {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+			
 		}
+		
 	}
 
 	@Override
@@ -79,6 +85,7 @@ public class BackAccessTypeDAO implements BackAccessTypeDAO_interface {
 			e.printStackTrace();
 			return -1;
 		}
+		
 	}
 
 }

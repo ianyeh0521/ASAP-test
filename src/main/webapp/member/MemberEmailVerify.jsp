@@ -1,7 +1,27 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="com.asap.member.service.*" %>
+<%@page import="com.asap.member.entity.*" %>
+<%  
+    MemberService memberSvc = new MemberService();
+    Object memberNo = session.getAttribute("memberNo");
+     
+    if(memberNo == null){
+    	pageContext.setAttribute("msg","您的帳號已驗證。");
+    	
+    } else{
+    	MemberVO mVO = memberSvc.findByMbrNo((String)memberNo) ;
+    	pageContext.setAttribute("memberEmail",mVO.getMbrEmail());
+    	pageContext.setAttribute("memberNo",mVO.getMbrNo());
+    	pageContext.setAttribute("memberName",mVO.getMbrName());
+
+    }
+%>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-tw">
 <head>
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,38 +30,23 @@
 
 <title>ASAP</title>
 
-<meta name="keywords" content="HTML5 Template" />
-<meta name="description" content="Porto - Bootstrap eCommerce Template" />
-<meta name="author" content="SW-THEMES" />
-
 <!-- Favicon -->
-<link rel="icon" type="image/png"
-	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
+<link rel="icon" type="image/x-icon"
+	href="assets/images/icons/favicon.png" />
+<link rel="stylesheet"
+	href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
+	integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5"
+	crossorigin="anonymous" />
 
-<script>
-	WebFontConfig = {
-		google : {
-			families : [ "Open+Sans:300,400,600,700,800",
-					"Poppins:300,400,500,600,700,800",
-					"Oswald:300,400,500,600,700,800", ],
-		},
-	};
-	(function(d) {
-		var wf = d.createElement("script"), s = d.scripts[0];
-		wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
-		wf.async = true;
-		s.parentNode.insertBefore(wf, s);
-	})(document);
-</script>
+
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
 
 <!-- Main CSS File -->
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/assets/css/demo4.min.css" />
+	href="${pageContext.request.contextPath}/assets/css/style.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
 </head>
@@ -118,63 +123,67 @@
 		<!-- End .header -->
 
 		<main class="main">
-			<div
-				class="home-slider slide-animate owl-carousel owl-theme show-nav-hover nav-big mb-2 text-uppercase"
-				data-owl-options="{
-				'loop': false
-			}">
-				<div class="home-slide home-slide1 banner">
-					<img class="slide-bg"
-						src="${pageContext.request.contextPath}/newImg/runner.jpg"
-						width="1903" height="499" alt="slider image" />
-					<div class="container d-flex align-items-center">
-						<div class="banner-layer appear-animate"
-							data-animation-name="fadeInUpShorter">
-							<h4 class="text-transform-none m-b-3">Find the Boundaries.
-								Push Through!</h4>
-							<h2 class="text-transform-none mb-0">Start Exercising with</h2>
-							<h3 class="m-b-3">ASAP</h3>
-							<a href="category.html" class="btn btn-dark btn-lg">Start!</a>
-						</div>
-						<!-- End .banner-layer -->
-					</div>
+			<div class="page-header">
+				<div class="container d-flex flex-column align-items-center">
+					<h1>信箱認證</h1>
 				</div>
-				<!-- End .home-slide -->
-
-				<div class="home-slide home-slide2 banner banner-md-vw">
-					<img class="slide-bg" style="background-color: #ccc" width="1903"
-						height="499"
-						src="${pageContext.request.contextPath}/newImg/tennis.jpg"
-						alt="slider image" />
-					<div class="container d-flex align-items-center">
-						<div
-							class="banner-layer d-flex justify-content-center appear-animate"
-							data-animation-name="fadeInUpShorter">
-							<div class="mx-auto">
-								<h4 class="m-b-1">About US</h4>
-
-								<h3 class="mb-2 heading-border"
-									style="font-size: 18px; color: blanchedalmond; text-shadow: black 0.1em 0.1em 0.2em;">
-									針對不知道該從何開始運動的初學者、找不到夥伴一起運動的人，這裡提供了一個無壓力、充滿支援的地方。<br /> <br />
-
-									新手要開始運動可能讓人感到迷茫，藉由在論壇上輕鬆提出任何運動相關的問題，會員們將樂意分享經驗、提供建議。<br /> <br />
-
-									如果需要更專業的引導，提供了專業教練的媒合服務，找到最適合的教練，一步步建立運動的習慣，也可隨時隨地，發起揪團，尋找同領域的運動夥伴，相互交流，共同進步，並透過平台上的即時搜尋功能，協助尋找、租借適合的場地，並提供專屬優惠。<br />
-									<br /> 另外，也可以在市集找到二手的運動商品，節省開支，為初學者打造的運動社群，提供了豐富的功能，輕鬆開啟運動。<br />
-								</h3>
-								<h2 class="text-transform-none mb-0"
-									style="font-size: 15px; color: white; text-shadow: black 0.1em 0.1em 0.2em;">
-									- Avid Sport Access Platform</h2>
-							</div>
-						</div>
-						<!-- End .banner-layer -->
-					</div>
-				</div>
-				<!-- End .home-slide -->
 			</div>
-			<!-- End .home-slider -->
-		</main>
 
+			<div class="container login-container">
+				<div style="text-align: center;">
+<%-- 					<c:if test="${not empty registerSuccess}"> --%>
+<%-- 						<p style="color: blue; font-size: 12px;">${registerSuccess}</p> --%>
+<%-- 						<% --%>
+<!-- // 						session.removeAttribute("registerSuccess"); -->
+<%-- 						%> --%>
+<%-- 					</c:if> --%>
+                    <c:if test="${not empty msg}">
+							<p style="color: green; font-size: 12px;">${msg}</p>
+							<script>
+							document.getElementById("genVerifyCode").disabled = true;
+							document.getElementById("btn_verify").disabled = true;
+							</script>
+					</c:if>
+					<c:if test="${not empty errorMsg}">
+							<p style="color: red; font-size: 12px;">${errorMsg}</p>
+					</c:if>
+
+				</div>
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<div class="row" style="justify-content: center">
+							<div class="col-md-6"
+								style="margin: 30px; box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
+                                 <div style="margin:15px 0px 10px 0px">您註冊的帳號為 : ${memberEmail}。請點擊下方按鈕取得驗證信。</div>
+                                 <input type="button" id="genVerifyCode"  class="btn btn-primary btn-sm" style="border-radius:5px;margin:5px 0px 10px 0px" value="取得驗證信" />
+<!--   onclick="genCode()"                                <button type="button" id="genVerifyCode" class="btn btn-primary btn-sm" style="border-radius:5px;margin:5px 0px 10px 0px"></button> -->
+								<form
+									action="${pageContext.request.contextPath}/MemberController"
+									method="post"
+									id="verifyForm">
+<%-- 									<p id="sendedMail" style="display:none">系統已發送驗證碼到${coachEmail}，請前往您的信箱查看，並在下方輸入驗證碼，謝謝。如未收到驗證信，請30秒後再試。</p> --%>
+									<%-- <% session.removeAttribute("coachEmail"); %> --%>
+									<label for="emailVerifyCode"> 驗證碼 </label> 
+									<input
+										type="text" class="form-input form-wide"
+										id="emailVerifyCode" required name="emailVerifyCode"
+										placeholder="驗證碼" /> 
+
+									<input type="hidden" name="action" value="emailVerify">
+									<input type="hidden" name="memberNo" value="${memberNo}">
+<%-- 									<input type="hidden" name="coachEmail" value="${coachEmail}"> --%>
+									<button type="submit" class="btn btn-dark btn-md w-100"
+										id="btn_verify">驗證</button>
+									
+								</form>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<!-- End .main -->
 
 		<footer class="footer bg-dark">
 			<div class="footer-middle">
@@ -258,18 +267,81 @@
 		</div>
 	</div>
 
+	<div class="mobile-menu-overlay"></div>
+	<!-- End .mobil-menu-overlay -->
+
+	<div class="mobile-menu-container"></div>
+	<!-- End .mobile-menu-container -->
+
+	<div class="sticky-navbar"></div>
 
 	<a id="scroll-top" href="#top" title="Top" role="button"><i
 		class="icon-angle-up"></i></a>
 
 	<!-- Plugins JS File -->
-	<!-- 				<script src="assets/js/jquery.min.js"></script> -->
-	<!-- 				<script src="assets/js/bootstrap.bundle.min.js"></script> -->
-	<!-- 				<script src="assets/js/optional/isotope.pkgd.min.js"></script> -->
-	<!-- 				<script src="assets/js/plugins.min.js"></script> -->
-	<!-- 				<script src="assets/js/jquery.appear.min.js"></script> -->
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 
-	<!-- 				Main JS File -->
-	<!-- 				<script src="assets/js/main.min.js"></script> -->
+	<!-- Main JS File -->
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
+
+	<script>
+		
+			var time = 30;
+			function genCode(){
+				if(time == 0){
+					$("#genVerifyCode").attr("disabled", false);
+					$("#genVerifyCode").val("取得驗證信");
+					time = 30;
+					return false;
+				}else{
+					$("#genVerifyCode").attr("disabled", true);
+					$("#genVerifyCode").val("重新發送(" + time + ")");
+					time--;
+				}
+				
+				setTimeout(function(){
+					genCode()
+				},1000)
+			}
+			
+			$(window).on("load", function(){
+				
+				$("#genVerifyCode").on("click", function(){
+					
+			
+					$.ajax({
+						  url: "${pageContext.request.contextPath}/MemberSendMail",           // 資料請求的網址
+						  type: "POST",                 
+						  data: {
+		                        action: "verifyEmail",
+		                        memberEmail : "${memberEmail}",
+		                        memberNo : "${memberNo}",
+		                        memberName : "${memberName}",
+		                      },
+						  dataType: "json",             
+						  success: function(data){
+							
+						    if(data.result == "傳送成功"){
+						    	alert("系統驗證碼已發送，請前往您的信箱查看，並在下方輸入驗證碼。\n如未收到驗證信，請30秒後再試。");
+						    	genCode();
+						    }
+						  }
+						});
+					
+				}) 
+				
+				});
+
+			
+		 
+
+	
+	</script>
+
 </body>
 </html>

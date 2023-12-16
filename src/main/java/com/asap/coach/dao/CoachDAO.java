@@ -11,7 +11,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.asap.coach.entity.CoachVO;
-
 import com.asap.util.HibernateUtil;
 
 public class CoachDAO implements CoachDAO_interface {
@@ -29,9 +28,9 @@ public class CoachDAO implements CoachDAO_interface {
 	@Override
 	public String add(CoachVO coach) {
 		try {
-
+			
 			Serializable id = getSession().save(coach);
-
+		
 			return String.valueOf(id);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,10 +65,12 @@ public class CoachDAO implements CoachDAO_interface {
 	@Override
 	public CoachVO findByCoachEmail(String coachEmail) {
 		try {
+//			getSession().beginTransaction();
 			Query<CoachVO> query = getSession().createQuery("from CoachVO where coachEmail = :coachEmail",
 					CoachVO.class);
 			query.setParameter("coachEmail", coachEmail);
 			CoachVO coach = query.uniqueResult();
+//			getSession().getTransaction().commit();
 			return coach;
 			// 沒有該資料會返回null
 		} catch (Exception e) {
@@ -128,9 +129,11 @@ public class CoachDAO implements CoachDAO_interface {
 //		vo.setCoachEmail("ccc@gmail.com");
 //		vo.setCoachPwd("password");
 //		vo.setCoachName("cname");
-//		vo.setCoachStat(true);
+//		vo.setCoachStat(false);
+//		vo.setEmailStat(false);
 //		vo.setCoachPhone("0912345678");
-//		System.out.println(dao.add(vo));
+//		CoachVO vo2 = dao.findByCoachEmail("c@gmail.com");
+//		System.out.println(vo2);
 //	}
 
 }
