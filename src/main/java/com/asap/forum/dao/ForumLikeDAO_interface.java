@@ -14,4 +14,9 @@ public interface ForumLikeDAO_interface {
 	public List<ForumLikeVO> findMyLike (String mbrNo);
 	
 	public Long getLikes(Integer postNo);
+	
+	public ForumLikeVO postisLiked (String mbrNo, Integer postNo);
+	
+	public ForumLikeVO cmtisLiked (String mbrNo, Integer cmtNo);
+	
 }

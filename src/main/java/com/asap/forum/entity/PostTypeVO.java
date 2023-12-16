@@ -32,6 +32,12 @@ public class PostTypeVO {
 		this.postTypeNo = postTypeNo;
 		this.postTypeName = postTypeName;
 	}
+	
+	public PostTypeVO(Integer postTypeNo) {
+		super();
+		this.postTypeNo = postTypeNo;
+		
+	}
 	public Integer getPostTypeNo() {
 		return postTypeNo;
 	}

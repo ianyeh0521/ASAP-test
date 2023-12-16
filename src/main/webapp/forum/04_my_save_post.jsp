@@ -1,3 +1,11 @@
+<%@page import="com.asap.forum.service.PostVOServiceImpl"%>
+<%@page import="com.asap.forum.service.PostVOService"%>
+<%@page import="com.asap.forum.entity.PostVO"%>
+<%@page import="com.asap.util.*"%>
+<%@page import="java.util.*"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

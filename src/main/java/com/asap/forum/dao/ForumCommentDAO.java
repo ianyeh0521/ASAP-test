@@ -40,7 +40,7 @@ public class ForumCommentDAO implements ForumCommentDAO_interface {
 
 	@Override
 	public List<ForumCommentVO> getbyPostNo(Integer postno) {
-		return getSession().createQuery("from ForumCommentVO where postNo= :postno", ForumCommentVO.class)
+		return getSession().createQuery("from ForumCommentVO where postNo= :postno and cmtStatus=true", ForumCommentVO.class)
 				.setParameter("postno", postno)
 				.list();
 	}

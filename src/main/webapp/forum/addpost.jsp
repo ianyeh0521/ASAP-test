@@ -14,7 +14,7 @@
   <meta name="author" content="SW-THEMES" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/ASAP/assets/images/icons/favicon.png" />
+  <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
 
   <script>
     WebFontConfig = {
@@ -29,21 +29,21 @@
     (function (d) {
       var wf = d.createElement("script"),
         s = d.scripts[0];
-      wf.src = "/ASAP/assets/js/webfont.js";
+      wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
       wf.async = true;
       s.parentNode.insertBefore(wf, s);
     })(document);
   </script>
 
   <!-- Plugins CSS File -->
-  <link rel="stylesheet" href="/ASAP/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
   <!-- Main CSS File (style.min.css 10166 style.css 8837)   -->
-   <link rel="stylesheet" href="/ASAP/forum/style1.css" />
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/forum/style1.css" />
 
-  <link rel="stylesheet" href="/ASAP/forum/style1.min.css" /> 
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/forum/style1.min.css" /> 
 
-  <link rel="stylesheet" type="text/css" href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css" />
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
 
 
   <!-- 自定CSS樣式 -->
@@ -129,7 +129,7 @@
               <i class="fas fa-bars"></i>
             </button>
             <a href="#" width="222" height="88">
-              <img src="/ASAP/newImg/logo2.png" alt="Logo" />
+              <img src="${pageContext.request.contextPath}/newImg/logo2.png" alt="Logo" />
             </a>
           </div>
           <!-- End .header-left -->
@@ -223,8 +223,8 @@
         <textarea name="posttext" id="summernote" required></textarea>
       
       <div id="action-buttons">
-        <button type="button" id="draft-button" class="btn btn-default btn-rounded btn-md">儲存草稿</button>
-        <button type="button" id="cancel-button" class="btn btn-default btn-rounded btn-md"><a href="./testing_forum.html"
+        <button type="submit" id="draft-button" class="btn btn-default btn-rounded btn-md" name="action" value="savedraft">儲存草稿</button>
+        <button type="button" id="cancel-button" class="btn btn-default btn-rounded btn-md"><a href="${pageContext.request.contextPath}/forum/forum_home.jsp"
             style="color:black">取消</a></button>
         <button type="submit" id="submit-button" class="btn btn-default btn-rounded btn-md" name="action" value="addnewpost">送出</button>
       <!--	<input type="hidden" name="action" value="addnewpost"> -->
@@ -329,12 +329,12 @@
 
 
     <!-- Plugins JS File -->
-    <script src="/ASAP/assets/js/jquery.min.js"></script>
-    <script src="/ASAP/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="/ASAP/assets/js/plugins.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 
     <!-- Main JS File -->
-    <script src="/ASAP/assets/js/main.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
     <!-- 加載Summernote -->  
     
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
