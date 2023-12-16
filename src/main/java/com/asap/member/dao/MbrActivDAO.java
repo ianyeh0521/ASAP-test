@@ -6,14 +6,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import com.asap.member.entity.MbrNewsVO;
+import com.asap.member.entity.MbrActivVO;
 import com.asap.util.HibernateUtil;
 
-public class MbrNewsDAO implements MbrNewsDAO_interface{
+public class MbrActivDAO implements MbrActivDAO_interface{
 	
 	private SessionFactory factory;
 
-	public MbrNewsDAO() {
+	public MbrActivDAO() {
 		factory = HibernateUtil.getSessionFactory();
 	}
 
@@ -22,9 +22,9 @@ public class MbrNewsDAO implements MbrNewsDAO_interface{
 	}
 
 	@Override
-	public int add(MbrNewsVO mbrNews) {
+	public int add(MbrActivVO mbrActiv) {
 		try {
-			Integer id = (Integer) getSession().save(mbrNews);
+			Integer id = (Integer) getSession().save(mbrActiv);
 
 			return id;
 		} catch (Exception e) {
@@ -34,11 +34,11 @@ public class MbrNewsDAO implements MbrNewsDAO_interface{
 	}
 
 	@Override
-	public String delete(MbrNewsVO mbrNews) {
+	public String delete(MbrActivVO mbrActiv) {
 		try {
 
-			if (mbrNews != null) {
-				getSession().delete(mbrNews);
+			if (mbrActiv != null) {
+				getSession().delete(mbrActiv);
 			}
 			return "成功";
 		} catch (Exception e) {
@@ -48,12 +48,12 @@ public class MbrNewsDAO implements MbrNewsDAO_interface{
 	}
 
 	@Override
-	public List<MbrNewsVO> findByMbrNo(String mbrNo) {
+	public List<MbrActivVO> findByMbrNo(String mbrNo) {
 		try {
-			Query<MbrNewsVO> query = getSession().createQuery("from MbrNewsVO where mbrNo = :mbrNo",
-					MbrNewsVO.class);
+			Query<MbrActivVO> query = getSession().createQuery("from MbrActivVO where mbrNo = :mbrNo",
+					MbrActivVO.class);
 			query.setParameter("mbrNo", mbrNo);
-			List<MbrNewsVO> list = query.list();
+			List<MbrActivVO> list = query.list();
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,12 +62,12 @@ public class MbrNewsDAO implements MbrNewsDAO_interface{
 	}
 
 	@Override
-	public MbrNewsVO findByPK(String mbrNewsNo) {
+	public MbrActivVO findByPK(String mbrActivNo) {
 		try {
-			Query<MbrNewsVO> query = getSession().createQuery("from MbrNewsVO where mbrNewsNo = :mbrNewsNo",
-					MbrNewsVO.class);
-			query.setParameter("mbrNewsNo", mbrNewsNo);
-			MbrNewsVO vo = query.uniqueResult();
+			Query<MbrActivVO> query = getSession().createQuery("from MbrActivVO where mbrActivNo = :mbrActivNo",
+					MbrActivVO.class);
+			query.setParameter("mbrActivNo", mbrActivNo);
+			MbrActivVO vo = query.uniqueResult();
 			return vo;
 		} catch (Exception e) {
 			e.printStackTrace();
