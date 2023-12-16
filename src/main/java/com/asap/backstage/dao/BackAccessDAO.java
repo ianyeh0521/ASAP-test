@@ -32,7 +32,7 @@ public class BackAccessDAO implements BackAccessDAO_interface {
 			e.printStackTrace();
 			return -1;
 		}
-
+		
 	}
 
 	@Override
@@ -47,20 +47,24 @@ public class BackAccessDAO implements BackAccessDAO_interface {
 			e.printStackTrace();
 			return "失敗";
 		}
+		
 	}
 
 	@Override
 	public List<BackAccessVO> findByBackNo(String backNo) {
 		try {
+//			getSession().beginTransaction();
 			Query<BackAccessVO> query = getSession().createQuery("from BackAccessVO where backNo = :backNo",
 					BackAccessVO.class);
 			query.setParameter("backNo", backNo);
 			List<BackAccessVO> list = query.list();
+//			getSession().getTransaction().commit();
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
+		
 
 	}
 
@@ -78,6 +82,7 @@ public class BackAccessDAO implements BackAccessDAO_interface {
 			e.printStackTrace();
 			return null;
 		}
+		
 	}
 
 	@Override
@@ -94,6 +99,16 @@ public class BackAccessDAO implements BackAccessDAO_interface {
 			e.printStackTrace();
 			return null;
 		}
+		
 
 	}
+	
+//	public static void main(String[] args) {
+//		
+//		BackAccessDAO dao = new BackAccessDAO();
+//		for(BackAccessVO v: ) {
+//			System.out.println(dao.findByBackNo("B12032023000"));
+//		}
+		
+//	}
 }

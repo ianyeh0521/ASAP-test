@@ -28,10 +28,10 @@ public interface MbrNewsDAO_interface {
 	 * */ 
 	List<MbrNewsVO> findByMbrNo(String mbrNo);
 	
-	/*尋找某位教練看到的所有會員消息
-	 * 輸入 : 教練編號
+	/*用主鍵尋找會員消息
+	 * 輸入 : 主鍵編號
 	 * 輸出成功 : 會員消息VO表單
 	 * 輸出失敗 : null
 	 * */ 
-	List<MbrNewsVO> findByCoachNo(String coachNo);
+	MbrNewsVO findByPK(String mbrNewsNo);
 }

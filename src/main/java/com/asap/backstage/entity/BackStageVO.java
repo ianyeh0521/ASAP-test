@@ -26,11 +26,11 @@ public class BackStageVO implements Serializable {
 	private String backName;
 	@Column(name = "BackPhone", updatable = false)
 	private String backPhone;
-
+	
 	@CreationTimestamp
 	@Column(name = "BackSetTime", updatable = false)
 	private Timestamp backSetTime;
-
+	
 	@UpdateTimestamp
 	@Column(name = "BackUpdTime")
 	private Timestamp backUpdTime;

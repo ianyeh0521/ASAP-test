@@ -24,9 +24,9 @@ public class BackStageDAO implements BackStageDAO_interface {
 	public String add(BackStageVO back) {
 
 		try {
-
+            
 			Serializable id = getSession().save(back);
-
+			
 			return String.valueOf(id);
 
 		} catch (Exception e) {
@@ -41,9 +41,9 @@ public class BackStageDAO implements BackStageDAO_interface {
 	public String update(BackStageVO back) {
 
 		try {
-
+//			 getSession().beginTransaction();
 			getSession().update(back);
-
+//			getSession().getTransaction().commit();
 			return "更新成功";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,9 +56,11 @@ public class BackStageDAO implements BackStageDAO_interface {
 	public BackStageVO findByPK(String backNo) {
 
 		try {
+//			 getSession().beginTransaction();
 			Query query = getSession().createQuery("from BackStageVO where backNo = :backNo", BackStageVO.class);
 			query.setParameter("backNo", backNo);
 			BackStageVO back = (BackStageVO) query.uniqueResult();
+//			getSession().getTransaction().commit();
 			return back;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,12 +99,12 @@ public class BackStageDAO implements BackStageDAO_interface {
 
 	@Override
 	public List<BackStageVO> getAll() {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
 		try {
 			return getSession().createQuery("from BackStageVO", BackStageVO.class).list();
 		} catch (Exception e) {
 			e.printStackTrace();
-			session.getTransaction().rollback();
+		
 			return null;
 		}
 	}
@@ -121,5 +123,16 @@ public class BackStageDAO implements BackStageDAO_interface {
 			return -1;
 		}
 	}
+	
+//	public static void main(String[] args) {
+//		
+//		BackStageDAO dao = new BackStageDAO();
+//		
+//		BackStageVO vo = dao.findByPK("B1203202300002");
+//		String string = dao.update(vo);
+//		System.out.print(string);
+//	}
+	
+	
 
 }

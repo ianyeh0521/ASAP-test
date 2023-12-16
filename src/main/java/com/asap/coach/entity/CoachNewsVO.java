@@ -1,4 +1,4 @@
-package com.asap.member.entity;
+package com.asap.coach.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -13,15 +13,15 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name = "mbrnews")
-public class MbrNewsVO implements Serializable {
+@Table(name = "couchnews")
+public class CoachNewsVO implements Serializable {
 	
 	@Id
-	@Column(name = "MbrNewsNo", updatable = false)
+	@Column(name = "CoachNewsNo", updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer mbrNewsNo;
-	@Column(name = "MbrNo", updatable = false)
-	private String mbrNo;
+	private Integer coachNewsNo;
+	@Column(name = "CoachNo", updatable = false)
+	private String coachNo;
 	@Column(name = "NewsSubj")
 	private String newsSubj;
 	@Column(name = "NewsText")
@@ -30,23 +30,23 @@ public class MbrNewsVO implements Serializable {
 	@Column(name = "NewsTime")
 	private Timestamp newsTime;
 
-	public MbrNewsVO() {
+	public CoachNewsVO() {
 	}
 
-	public MbrNewsVO(Integer mbrNewsNo, String mbrNo, String newsSubj, String newsText, Timestamp newsTime) {
-		this.mbrNewsNo = mbrNewsNo;
-		this.mbrNo = mbrNo;
+	public CoachNewsVO(Integer coachNewsNo, String coachNo, String newsSubj, String newsText, Timestamp newsTime) {
+		this.coachNewsNo = coachNewsNo;
+		this.coachNo = coachNo;
 		this.newsSubj = newsSubj;
 		this.newsText = newsText;
 		this.newsTime = newsTime;
 	}
 
-	public Integer getMbrNewsNo() {
-		return mbrNewsNo;
+	public Integer getCoachNewsNo() {
+		return coachNewsNo;
 	}
 
-	public String getMbrNo() {
-		return mbrNo;
+	public String getCoachNo() {
+		return coachNo;
 	}
 
 	public String getNewsSubj() {
@@ -61,12 +61,12 @@ public class MbrNewsVO implements Serializable {
 		return newsTime;
 	}
 
-	public void setMbrNewsNo(Integer mbrNewsNo) {
-		this.mbrNewsNo = mbrNewsNo;
+	public void setCoachNewsNo(Integer coachNewsNo) {
+		this.coachNewsNo = coachNewsNo;
 	}
 
-	public void setMbrNo(String mbrNo) {
-		this.mbrNo = mbrNo;
+	public void setCoachNo(String coachNo) {
+		this.coachNo = coachNo;
 	}
 
 	public void setNewsSubj(String newsSubj) {
@@ -83,10 +83,9 @@ public class MbrNewsVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MbrNewsVO [mbrNewsNo=" + mbrNewsNo + ", mbrNo=" + mbrNo + ", newsSubj=" + newsSubj + ", newsText="
-				+ newsText + ", newsTime=" + newsTime + "]";
+		return "CoachNewsVO [coachNewsNo=" + coachNewsNo + ", coachNo=" + coachNo + ", newsSubj=" + newsSubj
+				+ ", newsText=" + newsText + ", newsTime=" + newsTime + "]";
 	}
 
 	
-
 }
