@@ -1,4 +1,3 @@
-<%@page import="org.hibernate.hql.internal.ast.tree.SessionFactoryAwareNode"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
@@ -13,15 +12,14 @@
 
 <title>ASAP</title>
 
-
-
 <!-- Favicon -->
-<link rel="icon" type="image/png"
-	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
+<link rel="icon" type="image/x-icon"
+	href="assets/images/icons/favicon.png" />
 <link rel="stylesheet"
 	href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
 	integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5"
 	crossorigin="anonymous" />
+
 
 
 <!-- Plugins CSS File -->
@@ -109,106 +107,81 @@
 		<main class="main">
 			<div class="page-header">
 				<div class="container d-flex flex-column align-items-center">
-					<h1>會員註冊</h1>
+					<h1>教練會員登入</h1>
 				</div>
 			</div>
 
 			<div class="container login-container">
 				<div style="text-align: center;">
-					<c:if test="${not empty noRegister}">
-
-
-						<p style="color: red; font-size: 12px;">${noRegister}</p>
+					<c:if test="${not empty registerSuccess}">
+						<p style="color: blue; font-size: 12px;">${registerSuccess}</p>
 						<%
-						session.removeAttribute("noRegister");
+						session.removeAttribute("registerSuccess");
 						%>
-
 					</c:if>
 					<c:if test="${not empty errorMsgs}">
-
 						<c:forEach var="message" items="${errorMsgs}">
 							<p style="color: red; font-size: 12px;">${message}</p>
 						</c:forEach>
-
 					</c:if>
+
 				</div>
 				<div class="row">
 					<div class="col-lg-10 mx-auto">
 						<div class="row" style="justify-content: center">
-
 							<div class="col-md-6"
-								style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; margin-bottom: 15px;">
+								style="margin: 30px; box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
 
-								<form
-									action="${pageContext.request.contextPath}/MemberController"
-									method="post">
-									<label for="register-email" style="margin-top: 20px">
-										會員帳號 <span class="required">*</span>
-									</label> <input name="mbrEmail" type="email"
-										class="form-input form-wide" id="register-email" required
-										placeholder="email" value="${mbrEmail}" />
-										<% session.removeAttribute("mbrEmail"); %>
-										 <label
-										for="register-password"> 會員密碼(長度需大於等於8，且包含大小寫字母及數字) <span
-										class="required">*</span>
-									</label> <input name="mbrPwd" type="password"
-										class="form-input form-wide" id="register-password" required
-										placeholder="password" /> <label for="register-password-2">
-										會員密碼確認 <span class="required">*</span>
-									</label> <input name="mbrPwd2" type="password"
-										class="form-input form-wide" id="register-password-2" required
-										placeholder="password" /> <label for="register-name">
-										會員姓名 <span class="required">*</span>
-									</label> <input name="mbrName" type="text" class="form-input form-wide"
-										id="register-name" required placeholder="Name"
-										value="${mbrName}" /> <label for="register-phone">
-										會員手機 <span class="required">*</span>
-									</label> <input name="mbrPhone" type="tel" class="form-input form-wide"
-										id="register-phone" required placeholder="Phone"
-										value="${mbrPhone}" /> <label for="register-bank">
-										銀行帳戶代碼 </label> <select name="bankNo" id="register-bank"
-										class="form-input form-wide">
-										<option value="請選擇" selected>請選擇</option>
-										<option value="臺灣銀行">004 臺灣銀行</option>
-										<option value="土地銀行">005 土地銀行</option>
-										<option value="合作金庫">006 合作金庫</option>
-										<option value="第一銀行">007 第一銀行</option>
-										<option value="華南銀行">008 華南銀行</option>
-										<option value="彰化銀行">009 彰化銀行</option>
-										<option value="上海商銀">011 上海商銀</option>
-										<option value="富邦銀行">012 富邦銀行</option>
-										<option value="國泰世華">013 國泰世華</option>
-										<option value="輸出入銀行">015 輸出入銀行</option>
-										<option value="高雄銀行">016 高雄銀行</option>
-										<option value="兆豐銀行">017 兆豐銀行</option>
-										<option value="渣打銀行">052 渣打銀行</option>
-										<option value="聯邦銀行">803 聯邦銀行</option>
-										<option value="遠東銀行">805 遠東銀行</option>
-										<option value="元大銀行">806 元大銀行</option>
-										<option value="永豐銀行">807 永豐銀行</option>
-										<option value="玉山銀行">808 玉山銀行</option>
-										<option value="凱基銀行">809 凱基銀行</option>
-										<option value="星展銀行">810 星展銀行</option>
-										<option value="台新銀行">812 台新銀行</option>
-										<option value="中國信託">822 中國信託</option>
-									</select> <label for="register-bankbr"> 銀行分行 </label> <input
-										name="bankBr" type="text" class="form-input form-wide"
-										id="register-bankbr" value="${bankBr}" /> <label
-										for="register-bankno"> 銀行帳號 </label> <input name="bankAcct"
-										type="text" class="form-input form-wide" id="register-bankno"
-										value="${bankAcct}" /> <label
-										for="register-sellIntro"> 賣家自我介紹 </label>
 
-									<textarea name="sellIntro" id="register-sellIntro"
-										class="form-input form-wide"
-										style="resize: none; width: 100%; height: 60%">${sellIntro}</textarea>
-									<input type="hidden" name="action" value="register" />
-									<div class="form-footer mb-2">
-										<button type="submit" id="register"
-											class="btn btn-dark btn-md w-100 mr-0">註冊</button>
+								<form action="${pageContext.request.contextPath}/CoachController" method="post">
+									<label for="login-email" style="margin-top: 20px"> 教練會員帳號
+									</label> <input type="email" class="form-input form-wide"
+										id="login-email" required name="coachEmail" placeholder="email" value="${coachEmail}" />
+                     
+									<label for="login-password"> 教練會員密碼 </label> <input
+										type="password" class="form-input form-wide"
+										id="login-password" required name="coachPwd"
+										placeholder="password" /> 
+										<label for="input_ver"> 驗證碼
+									</label> <input class="form-input form-wide" id="input_ver" type="text"
+										name="verifycode" required />
+
+									<div
+										style="display: flex; align-items: center; flex-wrap: wrap; margin: 5px 0;">
+										<img id="verifycode"
+											src="${pageContext.request.contextPath}/AuthCode"
+											style="border: 2px white solid; margin-right: 15px; width: 150px; height: 40px" />
+										<button type="button"
+											style="border: 0; border-radius: 5px; margin: 0 6px 0 2px; background-color: lightgray;"
+											id="change_ver">更換</button>
 									</div>
+
+									<div class="form-footer"
+										style="margin: 5px 0 15px 0; justify-content: flex-end">
+										<div style="margin-right: 15px;">
+											<a
+												href="${pageContext.request.contextPath}/coach/CoachRegister.jsp"
+												class="forget-password text-dark form-footer-right"
+												style="text-decoration: underline;">註冊帳號</a>
+										</div>
+										<div>
+											<a
+												href="${pageContext.request.contextPath}/coach/CoachForgetPassword.jsp"
+												class="forget-password text-dark form-footer-right"
+												style="text-decoration: underline">忘記密碼</a>
+										</div>
+									</div>
+									<input type="hidden" name="action" value="login">
+									<button type="submit" class="btn btn-dark btn-md w-100"
+										id="btn_login">登入</button>
+									<hr style="margin: 15px 0" />
+									<button type="button"
+										class="btn btn-primary btn-ellipse btn-md w-100"
+										style="border-radius: 50px" id="btn_google">
+										使用Google帳號登入</button>
 								</form>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -298,9 +271,8 @@
 		</div>
 	</div>
 
-
-
-	<div class="sticky-navbar"></div>
+	<div class="mobile-menu-overlay"></div>
+	<!-- End .mobil-menu-overlay -->
 
 	<div class="mobile-menu-container"></div>
 	<!-- End .mobile-menu-container -->
@@ -320,26 +292,22 @@
 
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
+
 	<script>
-		$(window)
-				.on(
-						"load",
-						function() {
-							$("input#register-password-2")
-									.on(
-											"blur",
-											function() {
-												if ($("input#register-password")
-														.val().trim() != ""
-														&& ($(
-																"input#register-password")
-																.val() != $(
-																"input#register-password-2")
-																.val())) {
-													alert("兩次密碼需相同");
-												}
-											})
-						})
+		$(window).on(
+				"load",
+				function() {
+
+					$("button#change_ver").on(
+							"click",
+							function() {
+								$("img#verifycode").attr(
+										"src",
+										"${pageContext.request.contextPath}/AuthCode?time="
+												+ new Date().getTime());
+							})
+
+				});
 	</script>
 
 </body>

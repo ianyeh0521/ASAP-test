@@ -45,7 +45,8 @@ public class BackAccessService implements BackAccessService_interface {
 	public List<Integer> findByBackNo(String backNo) {
 		List<BackAccessVO> list = dao.findByBackNo(backNo);
 		List<Integer> backAceTypeList = new ArrayList<>();
-		if (!list.isEmpty()) {
+		
+		if (list != null && (!list.isEmpty())) {
 			for (BackAccessVO vo : list) {
 				backAceTypeList.add(vo.getBackAceTypeNo());
 			}
@@ -57,7 +58,7 @@ public class BackAccessService implements BackAccessService_interface {
 	public List<String> findByBackAceTypeNo(int backAceTypeNo) {
 		List<BackAccessVO> list = dao.findByBackAceTypeNo(backAceTypeNo);
 		List<String> backNoList = new ArrayList<>();
-		if (!list.isEmpty()) {
+		if (list != null && (!list.isEmpty())) {
 			for (BackAccessVO vo : list) {
 				backNoList.add(vo.getBackNo());
 			}
@@ -74,10 +75,9 @@ public class BackAccessService implements BackAccessService_interface {
 
 	@Override
 	public void suspend(String backNo) {
-		List<Integer> backAceTypeList = findByBackNo(backNo);
-		if (!backAceTypeList.isEmpty()) {
-			for (Integer i : backAceTypeList) {
-				BackAccessVO vo = findVo(backNo, i);
+		List<BackAccessVO> backAceTypeList = dao.findByBackNo(backNo);
+		if ( backAceTypeList != null && (!backAceTypeList.isEmpty())) {
+			for (BackAccessVO vo : backAceTypeList) {
 				dao.delete(vo);
 			}
 		}

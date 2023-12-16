@@ -43,4 +43,6 @@ public interface CoachSportTypeDAO_interface {
 	 * 輸出失敗 : null
 	 * */ 
 	List<CoachSportTypeVO> findBySportTypeNo(int sportTypeNo);
+	
+	
 }

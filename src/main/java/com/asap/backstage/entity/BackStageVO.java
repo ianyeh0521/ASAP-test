@@ -2,15 +2,14 @@ package com.asap.backstage.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "backstage")
@@ -23,12 +22,16 @@ public class BackStageVO implements Serializable {
 	private String backEmail;
 	@Column(name = "BackPwd")
 	private String backPwd;
-	@Column(name = "BackName")
+	@Column(name = "BackName", updatable = false)
 	private String backName;
-	@Column(name = "BackPhone")
+	@Column(name = "BackPhone", updatable = false)
 	private String backPhone;
+	
+	@CreationTimestamp
 	@Column(name = "BackSetTime", updatable = false)
 	private Timestamp backSetTime;
+	
+	@UpdateTimestamp
 	@Column(name = "BackUpdTime")
 	private Timestamp backUpdTime;
 	@Column(name = "BackStat")

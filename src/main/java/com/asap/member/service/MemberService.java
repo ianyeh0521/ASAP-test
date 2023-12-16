@@ -36,10 +36,9 @@ public class MemberService implements MemberService_interface {
 		// 評價預設為0
 		member.setCmtReNum(0);
 		member.setCmtReScore(0);
+		member.setEmailStat(false);
 		String mbrNo = dao.add(member);
-		// 返回物件
-//		MemberVO newMbr = dao.findByPK(mbrNo);
-
+	
 		return mbrNo;
 	}
 

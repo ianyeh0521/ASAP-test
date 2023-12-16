@@ -36,11 +36,13 @@ public class CoachSportTypeDAO implements CoachSportTypeDAO_interface {
 	@Override
 	public String delete(CoachSportTypeVO coachSportType) {
 		try {
-			getSession().update(coachSportType);
-			return "更新成功";
+			if (coachSportType != null) {
+				getSession().delete(coachSportType);
+			}
+			return "成功";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "更新失敗";
+			return "失敗";
 		}
 	}
 
@@ -93,4 +95,5 @@ public class CoachSportTypeDAO implements CoachSportTypeDAO_interface {
 		}
 
 	}
+
 }

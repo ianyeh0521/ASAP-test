@@ -1,11 +1,8 @@
+<%@page import="org.hibernate.hql.internal.ast.tree.SessionFactoryAwareNode"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.asap.member.entity.*"%>
-<%
-MemberVO mbrVo = (MemberVO) request.getAttribute("mbrVo");
-%>
-
 <!DOCTYPE html>
 <html lang="zh-tw">
 <head>
@@ -19,7 +16,7 @@ MemberVO mbrVo = (MemberVO) request.getAttribute("mbrVo");
 
 
 <!-- Favicon -->
-<link rel="icon" type="image/png"
+<link rel="icon" type="image/x-icon"
 	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
 <link rel="stylesheet"
 	href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
@@ -99,7 +96,7 @@ MemberVO mbrVo = (MemberVO) request.getAttribute("mbrVo");
 								</ul></li>
 
 							<li><a href="">商城</a></li>
-							<li><a href="login.jsp" style="color: blue">登出</a></li>
+							<li><a href="login.jsp" style="color: red">登入</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -112,12 +109,21 @@ MemberVO mbrVo = (MemberVO) request.getAttribute("mbrVo");
 		<main class="main">
 			<div class="page-header">
 				<div class="container d-flex flex-column align-items-center">
-					<h1>會員資料修改</h1>
+					<h1>會員註冊</h1>
 				</div>
 			</div>
 
 			<div class="container login-container">
 				<div style="text-align: center;">
+					<c:if test="${not empty noRegister}">
+
+
+						<p style="color: red; font-size: 12px;">${noRegister}</p>
+						<%
+						session.removeAttribute("noRegister");
+						%>
+
+					</c:if>
 					<c:if test="${not empty errorMsgs}">
 
 						<c:forEach var="message" items="${errorMsgs}">
@@ -133,61 +139,48 @@ MemberVO mbrVo = (MemberVO) request.getAttribute("mbrVo");
 							<div class="col-md-6"
 								style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; margin-bottom: 15px;">
 
-
-
 								<form
 									action="${pageContext.request.contextPath}/MemberController"
 									method="post">
-                                    <input name="mbrEmail" type="hidden" value="${mbrVo.mbrEmail}"/>
-
-									<label for="register-name" style="margin-top: 20px"> 會員姓名 <span class="required">*</span>
-									</label> <input name="mbrName" type="text" class="form-input form-wide"
+									<label for="register-email" style="margin-top: 20px">
+										會員帳號 <span class="required">*</span>
+									</label> 
+									<input name="mbrEmail" type="email"
+										class="form-input form-wide" id="register-email" required
+										placeholder="email" value="${mbrEmail}" />
+										<% session.removeAttribute("mbrEmail"); %>
+									<label for="register-password"> 會員密碼(長度需大於等於8，且包含大小寫字母及數字) <span
+										class="required">*</span>
+									</label> 
+									<input name="mbrPwd" type="password"
+										class="form-input form-wide" id="register-password" required
+										placeholder="password" /> 
+									<label for="register-password-2">
+										會員密碼確認 <span class="required">*</span>
+									</label> 
+									<input name="mbrPwd2" type="password"
+										class="form-input form-wide" id="register-password-2" required
+										placeholder="password" /> 
+									<label for="register-name">
+										會員姓名(只能是中、英文字母, 且長度必需在2到10之間) <span class="required">*</span>
+									</label> 
+									<input name="mbrName" type="text" class="form-input form-wide"
 										id="register-name" required placeholder="Name"
-										value="${mbrVo.mbrName}" /> <label for="register-phone">
+										value="${mbrName}" /> 
+									<label for="register-phone">
 										會員手機 <span class="required">*</span>
-									</label> <input name="mbrPhone" type="tel" class="form-input form-wide"
+									</label> 
+									<input name="mbrPhone" type="tel" class="form-input form-wide"
 										id="register-phone" required placeholder="Phone"
-										value="${mbrVo.mbrPhone}" /> <label for="register-bank">
-										銀行帳戶代碼 </label> <select name="bankNo" id="register-bank"
-										class="form-input form-wide">
-										<option value="請選擇" selected>請選擇</option>
-										<option value="臺灣銀行">004 臺灣銀行</option>
-										<option value="土地銀行">005 土地銀行</option>
-										<option value="合作金庫">006 合作金庫</option>
-										<option value="第一銀行">007 第一銀行</option>
-										<option value="華南銀行">008 華南銀行</option>
-										<option value="彰化銀行">009 彰化銀行</option>
-										<option value="上海商銀">011 上海商銀</option>
-										<option value="富邦銀行">012 富邦銀行</option>
-										<option value="國泰世華">013 國泰世華</option>
-										<option value="輸出入銀行">015 輸出入銀行</option>
-										<option value="高雄銀行">016 高雄銀行</option>
-										<option value="兆豐銀行">017 兆豐銀行</option>
-										<option value="渣打銀行">052 渣打銀行</option>
-										<option value="聯邦銀行">803 聯邦銀行</option>
-										<option value="遠東銀行">805 遠東銀行</option>
-										<option value="元大銀行">806 元大銀行</option>
-										<option value="永豐銀行">807 永豐銀行</option>
-										<option value="玉山銀行">808 玉山銀行</option>
-										<option value="凱基銀行">809 凱基銀行</option>
-										<option value="星展銀行">810 星展銀行</option>
-										<option value="台新銀行">812 台新銀行</option>
-										<option value="中國信託">822 中國信託</option>
-									</select> <label for="register-bankbr"> 銀行分行 </label> <input
-										name="bankBr" type="text" class="form-input form-wide"
-										id="register-bankbr" value="${mbrVo.bankBr}" /> <label
-										for="register-bankno"> 銀行帳號 </label> <input name="bankAcct"
-										type="text" class="form-input form-wide" id="register-bankno"
-										value="${mbrVo.bankAcct}" /> <label
-										for="register-sellIntro"> 賣家自我介紹 </label>
-
+										value="${mbrPhone}" /> 
+									<label for="register-sellIntro"> 賣家自我介紹 </label>
 									<textarea name="sellIntro" id="register-sellIntro"
 										class="form-input form-wide"
-										style="resize: none; width: 100%; height: 60%">${mbrVo.sellerIntro}</textarea>
-									<input type="hidden" name="action" value="saveUpdatedInfo" />
+										style="resize: none; width: 100%; height: 60%">${sellIntro}</textarea>
+									<input type="hidden" name="action" value="register" />
 									<div class="form-footer mb-2">
 										<button type="submit" id="register"
-											class="btn btn-dark btn-md w-100 mr-0">更新資料</button>
+											class="btn btn-dark btn-md w-100 mr-0">註冊</button>
 									</div>
 								</form>
 							</div>
