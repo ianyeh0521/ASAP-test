@@ -2,9 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.asap.member.entity.*"%>
-<%
-MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
-%>
+
 
 <!DOCTYPE html>
 <html lang="zh-tw">
@@ -141,19 +139,19 @@ MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
 									
 									<label for="register-email" style="margin-top: 20px"> 會員帳號 <span class="required">*</span>
 									</label>
-                                    <input name="mbrEmail" disabled type="text" id="register-email" value="${mbrVo.mbrEmail}"/>
+                                    <input name="mbrEmail" disabled type="text" class="form-input form-wide" id="register-email" value="${memberVo.mbrEmail}"/>
 
 									<label for="register-name" style="margin-top: 20px"> 會員姓名 <span class="required">*</span>
 									</label> 
 									<input name="mbrName" type="text" class="form-input form-wide"
 										id="register-name" required placeholder="Name"
-										value="${mbrVo.mbrName}" /> 
+										value="${memberVo.mbrName}" /> 
 									
 									<label for="register-phone"> 會員手機 <span class="required">*</span>
 									</label> 
 									<input name="mbrPhone" type="tel" class="form-input form-wide"
 										id="register-phone" required placeholder="Phone"
-										value="${mbrVo.mbrPhone}" /> 
+										value="${memberVo.mbrPhone}" /> 
 									
 									<input type="hidden" name="action" value="updateInfo" />
 									<div class="form-footer mb-2">

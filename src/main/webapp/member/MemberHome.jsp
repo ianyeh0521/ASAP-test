@@ -2,9 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.asap.member.entity.*"%>
-<%
-MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
-%>
+
 <!DOCTYPE html>
 <html lang="zh-tw">
 
@@ -22,23 +20,19 @@ MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
 	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
 
 <script>
-      WebFontConfig = {
-        google: {
-          families: [
-            "Open+Sans:300,400,600,700,800",
-            "Poppins:300,400,500,600,700",
-            "Shadows+Into+Light:400",
-          ],
-        },
-      };
-      (function (d) {
-        var wf = d.createElement("script"),
-          s = d.scripts[0];
-        wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
-        wf.async = true;
-        s.parentNode.insertBefore(wf, s);
-      })(document);
-    </script>
+	WebFontConfig = {
+		google : {
+			families : [ "Open+Sans:300,400,600,700,800",
+					"Poppins:300,400,500,600,700", "Shadows+Into+Light:400", ],
+		},
+	};
+	(function(d) {
+		var wf = d.createElement("script"), s = d.scripts[0];
+		wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
+		wf.async = true;
+		s.parentNode.insertBefore(wf, s);
+	})(document);
+</script>
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet"
@@ -52,89 +46,96 @@ MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/simple-line-icons/css/simple-line-icons.min.css" />
 <style>
-      .scrollbar {
-        &::-webkit-scrollbar {
-          width: 10px;
-        }
-        &::-webkit-scrollbar-track {
-          background-color: lightgray;
-          border-radius: 25px;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 25px;
-          background-color: gray;
-        }
-      }
+.scrollbar { &::-webkit-scrollbar { width:10px;
+	
+}
 
-      #fs_alert {
-        width: 100vw;
-        height: 100vh;
-        position: absolute;
-        top: 0;
-        /* display: block; */
-        display: none;
-        z-index: 999;
-      }
-      .fs_alert_bg {
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.671);
-        position: fixed;
-        top: 0;
-      }
-      .fs_alert_show {
-        max-width: 500px;
-        min-width: 400px;
-        
-        background-color: white;
-        position: fixed;
-        top: 30%;
-        left: 0;
-        right: 0;
-        margin: auto;
-        z-index: 2;
-        border-radius: 8px;
-        text-align: center;
-      }
+&
+::-webkit-scrollbar-track {
+	background-color: lightgray;
+	border-radius: 25px;
+}
 
-      .fs_alert_title {
-        font-size: 36px;
-        text-align: center;
-        margin: 35px;
-        font-weight: bold;
-      }
-      .fs_alert_title_suc {
-        color: rgb(85, 184, 201);
-      }
-      .fs_alert_txt {
-       
-        word-wrap: break-word;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        font-size: 16px;
-        padding: 10px;
-        text-align: center;
-        margin: 15px 10%;
-      }
-      #alert_ok {
-        margin: 30px auto;
-      }
-      .btn_s {
-        width: 100px;
-        border-radius: 8px;
-        font-size: 16px;
-        text-align: center;
-        padding: 10px;
-        cursor: pointer;
-        color: rgb(255, 255, 255);
-        background-color: rgb(85, 184, 201);
-        margin: 10px;
-      }
+&
+::-webkit-scrollbar-thumb {
+	border-radius: 25px;
+	background-color: gray;
+}
 
-      .btn_s:hover {
-        background-color: rgb(76, 139, 150);
-      }
-    </style>
+}
+#fs_alert {
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	/* display: block; */
+	display: none;
+	z-index: 999;
+}
+
+.fs_alert_bg {
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.671);
+	position: fixed;
+	top: 0;
+}
+
+.fs_alert_show {
+	max-width: 500px;
+	min-width: 400px;
+	background-color: white;
+	position: fixed;
+	top: 30%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	z-index: 2;
+	border-radius: 8px;
+	text-align: center;
+}
+
+.fs_alert_title {
+	font-size: 36px;
+	text-align: center;
+	margin: 35px;
+	font-weight: bold;
+}
+
+.fs_alert_title_suc {
+	color: rgb(85, 184, 201);
+}
+
+.fs_alert_txt {
+	word-wrap: break-word;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	font-size: 16px;
+	padding: 10px;
+	text-align: center;
+	margin: 15px 10%;
+}
+
+#alert_ok {
+	margin: 30px auto;
+}
+
+.btn_s {
+	width: 100px;
+	border-radius: 8px;
+	font-size: 16px;
+	text-align: center;
+	padding: 10px;
+	cursor: pointer;
+	color: rgb(255, 255, 255);
+	background-color: rgb(85, 184, 201);
+	margin: 10px;
+}
+
+.btn_s:hover {
+	background-color: rgb(76, 139, 150);
+}
+</style>
 <script
 	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
 <script
@@ -146,7 +147,7 @@ MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
 
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			locale : "zh-tw",
-			initialView: "dayGridMonth",
+			initialView : "dayGridMonth",
 			headerToolbar : {
 				left : "prev,next today",
 				center : "title",
@@ -273,6 +274,8 @@ MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
 								</ul></li>
 
 							<li><a href="">商城</a></li>
+							<li><a
+								href="${pageContext.request.contextPath}/member/MemberChat.jsp">客服</a></li>
 							<li><a href="login.jsp" style="color: blue">登出</a></li>
 						</ul>
 					</nav>
@@ -289,230 +292,148 @@ MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
 					<h1>我的帳戶</h1>
 				</div>
 			</div>
-		 <!--這是彈窗 需要傳資料可以把form、input打開 他的css在上面-->
-		
-		        <div id="fs_alert">
-		          <div class="fs_alert_bg"></div>
-		          <div class="fs_alert_show">
-		            <!-- <form action="" method="post"> -->
-		            <!-- <div class="fs_alert_title">成功</div> -->
-		            <div class="fs_alert_txt scrollbar"></div>
-		            <div class="btn_s" id="alert_ok">關閉</div>
-		            <!-- <input type="hidden" name="" value=""/> -->
-		            <!-- </form> -->
-		          </div>
-		        </div>
-		        
-		        
+			<!--這是彈窗 需要傳資料可以把form、input打開 他的css在上面-->
+
+			<div id="fs_alert">
+				<div class="fs_alert_bg"></div>
+				<div class="fs_alert_show">
+
+					<div class="fs_alert_txt scrollbar"></div>
+					<div class="btn_s" id="alert_ok">關閉</div>
+
+				</div>
+			</div>
+
+
 			<div class="container account-container custom-account-container">
-		
-				<p>Welcome, ${mbrVo.mbrName} !</p>
-				<div style="display: flex; padding: 3%; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; border-radius: 15px; flex-wrap: wrap; border-radius: 15px; justify-content: space-between;">
-					<div class="news" style="flex-basis: calc(( 100% - 10px)/2); border-radius: 15px; padding: 3%; height: 400px; max-height: 450px; max-width: calc(( 100% - 10px)/2);">
+
+				<p>Welcome, ${memberVo.mbrName} !</p>
+				<div
+					style="display: flex; padding: 3%; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; border-radius: 15px; flex-wrap: wrap; border-radius: 15px; justify-content: space-between;">
+					<div class="news"
+						style="flex-basis: calc(( 100% - 20px)/2); border-radius: 15px; padding: 3%; height: 400px; max-height: 450px; max-width: calc(( 100% - 20px)/2);">
 						<h3>最新消息</h3>
-					 <div
-                style="
-                  height: 300px;
-                  border: 1px dashed lightgray;
-                  border-radius: 15px;
-                  padding: 10px;
-                "
-              >
-                <div
-                  class="scrollbar"
-                  style="overflow-y: scroll; overflow-x: hidden"
-                  id="newsList"
-                >
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      11111Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      22222Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      333333Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      44444Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      55555Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      666666Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>	
-          </div>
-          
-          
+						<div
+							style="height: 300px; border: 1px dashed lightgray; border-radius: 15px; padding: 10px;">
+							<div class="scrollbar"
+								style="overflow-y: scroll; overflow-x: hidden" id="newsList">
+								<div
+									style="margin-bottom: 5px; font-size: 1.5rem; padding: 2px 0; border-bottom: darkgray 1.5px dashed;">
+									<p
+										style="display: block; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+										class="news">11111Lorem ipsum, dolor
+										sit amet consectetur adipisicing elit. Magni non esse fugit
+										illum eveniet adipisci corrupti libero, quo eius officia!</p>
+								</div>
+
+								<div
+									style="margin-bottom: 5px; font-size: 1.5rem; padding: 2px 0; border-bottom: darkgray 1.5px dashed;">
+									<p
+										style="display: block; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+										class="news">22222Lorem ipsum, dolor
+										sit amet consectetur adipisicing elit. Magni non esse fugit
+										illum eveniet adipisci corrupti libero, quo eius officia!</p>
+								</div>
+
+								<div
+									style="margin-bottom: 5px; font-size: 1.5rem; padding: 2px 0; border-bottom: darkgray 1.5px dashed;">
+									<p
+										style="display: block; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+										class="news">333333Lorem ipsum,
+										dolor sit amet consectetur adipisicing elit. Magni non esse
+										fugit illum eveniet adipisci corrupti libero, quo eius
+										officia!</p>
+								</div>
+
+								<div
+									style="margin-bottom: 5px; font-size: 1.5rem; padding: 2px 0; border-bottom: darkgray 1.5px dashed;">
+									<p
+										style="display: block; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+										class="news">44444Lorem ipsum, dolor
+										sit amet consectetur adipisicing elit. Magni non esse fugit
+										illum eveniet adipisci corrupti libero, quo eius officia!</p>
+								</div>
+
+								<div
+									style="margin-bottom: 5px; font-size: 1.5rem; padding: 2px 0; border-bottom: darkgray 1.5px dashed;">
+									<p
+										style="display: block; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+										class="news">55555Lorem ipsum, dolor
+										sit amet consectetur adipisicing elit. Magni non esse fugit
+										illum eveniet adipisci corrupti libero, quo eius officia!</p>
+								</div>
+
+								<div
+									style="margin-bottom: 5px; font-size: 1.5rem; padding: 2px 0; border-bottom: darkgray 1.5px dashed;">
+									<p
+										style="display: block; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+										class="news">666666Lorem ipsum,
+										dolor sit amet consectetur adipisicing elit. Magni non esse
+										fugit illum eveniet adipisci corrupti libero, quo eius
+										officia!</p>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+
 					<div class="mbrinfo"
-						style="flex-basis: calc(( 100% - 20px)/2); border-radius: 15px; padding: 3%; height: 400px; max-height: 450px; max-width: calc(( 100% - 10px)/2);">
+						style="flex-basis: calc(( 100% - 20px)/2); border-radius: 15px; padding: 3%; height: 400px; max-height: 450px; max-width: calc(( 100% - 20px)/2);">
 						<h3>會員資訊</h3>
 						<div style="height: 300px">
-<!-- 							<form -->
-<%-- 								action="${pageContext.request.contextPath}/MemberController" --%>
-<!-- 								method="post"> -->
-								<div
-									style="margin: 10px; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; height: calc(( 100% -100px)/6);">
-									<label for="MbrEmail" style="margin: 0 10px 0 0; font-size: 1.5rem; height: 30px; display: flex; align-items: center;">會員帳號 :</label>
-									<input type="text" disabled value="${mbrVo.mbrEmail}" id="MbrEmail" 
-									 style="font-size: 1.5rem; border-radius: 5px; width: 80%" />
-								</div>
-								<div
-									style="margin: 10px; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; height: calc(( 100% -100px)/6);">
-									<label for="MbrName" style="margin: 0 10px 0 0; font-size: 1.5rem; height: 30px; display: flex; align-items: center;">會員姓名 :</label>
-									<input type="text" disabled value="${mbrVo.mbrName}" id="MbrName"
-										style="font-size: 1.5rem; border-radius: 5px; width: 80%" />
-								</div>
-								<div
-									style="margin: 10px; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; height: calc(( 100% -100px)/6);">
-									<label for="MbrPhone" style="margin: 0 10px 0 0; font-size: 1.5rem; height: 30px; display: flex; align-items: center;">會員手機 :</label>
-									<input type="text" disabled value="${mbrVo.mbrPhone} " id="MbrPhone"
-										style="font-size: 1.5rem; border-radius: 5px; width: 80%" />
-								</div>
-								
-								<div
-									style="margin: 10px; height: calc(( 100% -100px)/6); text-align: right;">
-<!-- 									<input type="hidden" name="action" value="updateInfo" /> -->
-									<button style="font-size: 1.5rem; border-radius: 5px; margin: 10px; border: 0;">
-										 <a style="display: block;" href="${pageContext.request.contextPath}/member/MemberUpdateInfo.jsp" >更新</a>
-								    </button>
 
-								</div>
-<!-- 							</form> -->
+							<div
+								style="margin: 10px; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; height: calc(( 100% -100px)/6);">
+								<label for="MbrEmail"
+									style="margin: 0 10px 0 0; font-size: 1.5rem; height: 30px; display: flex; align-items: center;">會員帳號
+									:</label> <input type="text" disabled value="${memberVo.mbrEmail}"
+									id="MbrEmail"
+									style="font-size: 1.5rem; border-radius: 5px; width: 80%" />
+							</div>
+							<div
+								style="margin: 10px; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; height: calc(( 100% -100px)/6);">
+								<label for="MbrName"
+									style="margin: 0 10px 0 0; font-size: 1.5rem; height: 30px; display: flex; align-items: center;">會員姓名
+									:</label> <input type="text" disabled value="${memberVo.mbrName}"
+									id="MbrName"
+									style="font-size: 1.5rem; border-radius: 5px; width: 80%" />
+							</div>
+							<div
+								style="margin: 10px; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; height: calc(( 100% -100px)/6);">
+								<label for="MbrPhone"
+									style="margin: 0 10px 0 0; font-size: 1.5rem; height: 30px; display: flex; align-items: center;">會員手機
+									:</label> <input type="text" disabled value="${memberVo.mbrPhone} "
+									id="MbrPhone"
+									style="font-size: 1.5rem; border-radius: 5px; width: 80%" />
+							</div>
+
+							<div
+								style="margin: 10px; height: calc(( 100% -100px)/6); text-align: right;">
+
+								<button
+									style="font-size: 1.5rem; border-radius: 5px; margin: 10px; border: 0;">
+									<a style="display: block;"
+										href="${pageContext.request.contextPath}/member/MemberUpdateInfo.jsp">更新</a>
+								</button>
+
+							</div>
+
 						</div>
 					</div>
 				</div>
-				<!--End Top-->
-				<div
-					style="margin: 40px 0 40px 0; padding: 3%; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 14px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; border-radius: 15px;">
-					<h2>我的行事曆</h2>
-					<div id="calendar" style="max-width: 1100px; margin: 0 auto"></div>
-				</div>
-				<!--End calendar-->
+
+
+
 			</div>
+			<!--End Top-->
+			<div
+				style="margin: 40px 0 40px 0; padding: 3%; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 14px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; border-radius: 15px;">
+				<h2>我的行事曆</h2>
+				<div id="calendar" style="max-width: 1100px; margin: 0 auto"></div>
+			</div>
+			<!--End calendar-->
+
 			<!-- End .container -->
 
 			<div class="mb-5"></div>
@@ -621,19 +542,19 @@ MemberVO mbrVo = (MemberVO) session.getAttribute("memberVo");
 
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
-    
-    <script>
-    $(window).on("load", function () {
-        $("#newsList").on("click","p.news", function () {
-          var p = $(this).text();
-          $("div.fs_alert_txt").text(p);
-          $("#fs_alert").css("display", "block");
-        });
-        $("#alert_ok").on("click", function () {
-          $("#fs_alert").css("display", "none");
-        });
-      });
-    </script>
+
+	<script>
+		$(window).on("load", function() {
+			$("#newsList").on("click", "p.news", function() {
+				var p = $(this).text();
+				$("div.fs_alert_txt").text(p);
+				$("#fs_alert").css("display", "block");
+			});
+			$("#alert_ok").on("click", function() {
+				$("#fs_alert").css("display", "none");
+			});
+		});
+	</script>
 
 </body>
 </html>

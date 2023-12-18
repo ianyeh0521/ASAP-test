@@ -17,8 +17,10 @@ import com.asap.coach.entity.CoachVO;
 import com.asap.member.entity.MemberVO;
 import com.asap.member.service.MemberService;
 import com.asap.member.service.MemberService_interface;
+import com.asap.util.JedisPoolUtil;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/MemberController")
 public class MemberController extends HttpServlet {
@@ -28,7 +30,8 @@ public class MemberController extends HttpServlet {
 	private String phoneRegex = "09[0-9]{8}";
 	private String nameRegex = "^[(\u4e00-\u9fa5)(a-zA-Z)]{2,10}$";
 	private MemberService_interface mService;
-
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
+	
 	@Override
 	public void init() throws ServletException {
 		// 引入service
@@ -316,8 +319,8 @@ public class MemberController extends HttpServlet {
 			String memberNo = req.getParameter("memberNo");
 			String emailVerifyCode = req.getParameter("emailVerifyCode");
 			// 取得redis資料
-			Jedis jedis = new Jedis("localhost", 6379);
-			String tempAuth = jedis.get(memberNo);
+			Jedis jedis = pool.getResource();
+			String tempAuth = jedis.get("MailVerify:"+memberNo);
 			jedis.close();
 
 			// 返回

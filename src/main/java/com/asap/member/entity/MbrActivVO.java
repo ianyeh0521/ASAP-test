@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name = "mbrnews")
+@Table(name = "mbractiv")
 public class MbrActivVO implements Serializable {
 	
 	@Id
