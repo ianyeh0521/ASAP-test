@@ -18,20 +18,16 @@ import com.asap.coach.entity.CoachVO;
 import com.asap.coach.service.CoachService;
 import com.asap.coach.service.CoachService_interface;
 import com.asap.util.JavaMail;
+import com.asap.util.JedisPoolUtil;
 import com.asap.util.MailFormat;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/MemberSendMail")
 public class MemberSendMail extends HttpServlet {
 
-//	private CoachService_interface coachSvc;
-
-//	@Override
-//	public void init() throws ServletException {
-//		coachSvc = new CoachService();
-//
-//	}
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -54,7 +50,7 @@ public class MemberSendMail extends HttpServlet {
 			System.out.println("SendMail收到:" + memberNo);
 			String memberName = req.getParameter("memberName");
 			System.out.println("SendMail收到:" + memberName);
-//			
+		
 
 			// 產生信件內容
 			String code = returnAuthCode();
@@ -65,9 +61,11 @@ public class MemberSendMail extends HttpServlet {
 			InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
 			DataSource dataSource = new ByteArrayDataSource(in, "application/png");
 			// 存入redis
-			Jedis jedis = new Jedis("localhost", 6379);
-			jedis.set(memberNo, code);
-			jedis.expire(memberNo, minute * 60);
+			Jedis jedis = pool.getResource();
+			jedis.set("MailVerify:"+memberNo, code);
+			jedis.expire("MailVerify:"+memberNo, minute * 60);
+			// 關閉redis
+			jedis.close();
 			// 寄出信件
 			JavaMail mail = new JavaMail(memberEmail, title, mailFormat.getMessageTextAndImg(), dataSource);
 			String result = mail.sendMail();
@@ -75,9 +73,6 @@ public class MemberSendMail extends HttpServlet {
 			// 返回物件
 			JSONObject json = new JSONObject();
 			json.put("result", result);
-
-			// 關閉redis
-			jedis.close();
 			// 轉換json
 			String output = json.toString();
 			PrintWriter out = res.getWriter();

@@ -26,9 +26,11 @@ import com.asap.coach.service.CoachSportTypeService_interface;
 import com.asap.coach.service.SportCertService;
 import com.asap.coach.service.SportCertService_interface;
 import com.asap.member.entity.MemberVO;
+import com.asap.util.JedisPoolUtil;
 import com.asap.util.MailFormat;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/CoachController")
 @MultipartConfig(fileSizeThreshold = 2 * 1024 * 1024, maxFileSize = 10 * 1024 * 1024, maxRequestSize = 10 * 5 * 1024
@@ -42,7 +44,8 @@ public class CoachController extends HttpServlet {
 	private String pwdRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
 	private String phoneRegex = "09[0-9]{8}";
 	private String nameRegex = "^[(\u4e00-\u9fa5)(a-zA-Z)]{2,10}$";
-
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
+	
 	@Override
 	public void init() throws ServletException {
 		coachSvc = new CoachService();
@@ -283,8 +286,8 @@ public class CoachController extends HttpServlet {
 //			String coachEmail = req.getParameter("coachEmail");
 			String emailVerifyCode = req.getParameter("emailVerifyCode");
 			// 取得redis資料
-			Jedis jedis = new Jedis("localhost", 6379);
-			String tempAuth = jedis.get(coachNo);
+			Jedis jedis = pool.getResource();
+			String tempAuth = jedis.get("MailVerify:"+coachNo);
 			jedis.close();
 
 			// 返回

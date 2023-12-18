@@ -18,20 +18,16 @@ import com.asap.coach.entity.CoachVO;
 import com.asap.coach.service.CoachService;
 import com.asap.coach.service.CoachService_interface;
 import com.asap.util.JavaMail;
+import com.asap.util.JedisPoolUtil;
 import com.asap.util.MailFormat;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/CoachSendMail")
 public class CoachSendMail extends HttpServlet {
 
-//	private CoachService_interface coachSvc;
-
-//	@Override
-//	public void init() throws ServletException {
-//		coachSvc = new CoachService();
-//
-//	}
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -65,9 +61,11 @@ public class CoachSendMail extends HttpServlet {
 			InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
 			DataSource dataSource = new ByteArrayDataSource(in, "application/png");
 			// 存入redis
-			Jedis jedis = new Jedis("localhost", 6379);
-			jedis.set(coachNo, code);
-			jedis.expire(coachNo, minute * 60);
+			Jedis jedis = pool.getResource();
+			jedis.set("MailVerify:"+coachNo, code);
+			jedis.expire("MailVerify:"+coachNo, minute * 60);
+			// 關閉redis
+			jedis.close();
 			// 寄出信件
 			JavaMail mail = new JavaMail(coachEmail, title, mailFormat.getMessageTextAndImg(), dataSource);
 			String result = mail.sendMail();
@@ -76,8 +74,6 @@ public class CoachSendMail extends HttpServlet {
 			JSONObject json = new JSONObject();
 			json.put("result", result);
 
-			// 關閉redis
-			jedis.close();
 			// 轉換json
 			String output = json.toString();
 			PrintWriter out = res.getWriter();
