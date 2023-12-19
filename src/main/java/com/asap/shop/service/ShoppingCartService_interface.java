@@ -6,17 +6,22 @@ import com.asap.shop.entity.ShoppingCartVO;
 
 public interface ShoppingCartService_interface {
 
-	Integer insert(String mbrNo, int itemNo);
-
+	Integer insert(String mbrNo, int itemNo , int itemShopQty);
+	
 	Integer update(ShoppingCartVO entity);
 
-	String delete(Integer shoppingCartNo);
+	String delete(ShoppingCartVO entity);
 
 	ShoppingCartVO findByPK(Integer shoppingCartNo);
-
+	
 	List<ShoppingCartVO> findByMember(String mbrNo);
+	
+	ShoppingCartVO findByMemberAndItemNo(String mbrNo, Integer itemNo);
 
 	List<ShoppingCartVO> getAll();
 
-	long getTotal();
+	int getTotal();
+	
+	void cleanByMbrNo(String mbrNo);
+	
 }

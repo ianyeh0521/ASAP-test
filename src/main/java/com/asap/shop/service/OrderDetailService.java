@@ -27,33 +27,19 @@ public class OrderDetailService implements OrderDetailService_interface {
 	}
 
 	@Override
-	public String updateCmtText(Integer orderDetailNo, String cmtText, Timestamp cmtTime) {
-		OrderDetailVO vo = dao.findByPK(orderDetailNo);
-		if (vo != null) {
-			vo.setCmtText(cmtText);
-			vo.setCmtTime(Timestamp.from(Instant.now()));
-
-			dao.update(vo);
-
-			return "評論成功";
-		} else {
-			return "評論失敗";
-		}
+	public int delete(OrderDetailVO entity) {
+		return dao.delete(entity);
 	}
 
 	@Override
-	public String updateCmtReText(Integer orderDetailNo, String cmtReText, Timestamp cmtReTime) {
-		OrderDetailVO vo = dao.findByPK(orderDetailNo);
-		if (vo != null) {
-			vo.setCmtReText(cmtReText);
-			vo.setCmtReTime(Timestamp.from(Instant.now()));
+	public String addCmt(OrderDetailVO entity, String cmtText) {
+		entity.setCmtText(cmtText);
+		entity.setCmtTime(new java.sql.Timestamp(System.currentTimeMillis()));
 
-			dao.update(vo);
+		dao.update(entity);
 
-			return "回覆成功";
-		} else {
-			return "回覆失敗";
-		}
+		return "評論成功";
+
 	}
 
 	@Override
@@ -67,8 +53,8 @@ public class OrderDetailService implements OrderDetailService_interface {
 	}
 
 	@Override
-	public List<OrderDetailVO> findByCmtScore(Integer cmtScore) {
-		return dao.findByCmtScore(cmtScore);
+	public List<OrderDetailVO> findByMbrNo(String mbrNo) {
+		return dao.findByMbrNo(mbrNo);
 	}
 
 	@Override
@@ -77,14 +63,19 @@ public class OrderDetailService implements OrderDetailService_interface {
 	}
 
 	@Override
-	public Double getAvgScore() {
-		Integer sum = 0;
-		List<Integer> list = dao.getAllCmtScore();
-		for (Integer i : list) {
-			sum += i;
-		}
-		Integer total = dao.getTotal();
-		return (double) sum / total;
+	public Integer getTotal() {
+		// TODO Auto-generated method stub
+		return dao.getTotal();
+	}
+
+	@Override
+	public String addReCmt(OrderDetailVO entity, String cmtReText) {
+		entity.setCmtReText(cmtReText); 
+		entity.setCmtReTime(new java.sql.Timestamp(System.currentTimeMillis()));
+
+		dao.update(entity);
+
+		return "評論成功";
 	}
 
 }

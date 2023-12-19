@@ -26,19 +26,8 @@ public class ItemStatDAO implements ItemStatDAO_interface {
 	}
 
 	@Override
-	public int update(ItemStatVO itemStat) {
+	public int delete(ItemStatVO itemStat) {
 
-		try {
-			getSession().update(itemStat);
-			return 1;
-		} catch (Exception e) {
-			return -1;
-		}
-	}
-	
-	@Override
-	public int delete(Integer id) {
-		ItemStatVO itemStat = getSession().get(ItemStatVO.class, id);
 		if (itemStat != null) {
 			getSession().delete(itemStat);
 			// 回傳給 service，1代表刪除成功
@@ -56,11 +45,8 @@ public class ItemStatDAO implements ItemStatDAO_interface {
 
 	@Override
 	public List<ItemStatVO> getALL() {
-		Transaction transaction = null;
 		try {
-			Session session = getSession();
-			transaction = session.beginTransaction();
-			List<ItemStatVO> list = session.createQuery("from ItemStatVO", ItemStatVO.class).list();
+			List<ItemStatVO> list = getSession().createQuery("from ItemStatVO", ItemStatVO.class).list();
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();

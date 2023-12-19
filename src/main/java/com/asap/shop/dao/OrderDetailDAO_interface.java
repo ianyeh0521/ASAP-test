@@ -10,17 +10,16 @@ public interface OrderDetailDAO_interface {
 	int insert(OrderDetailVO entity);
 
 	int update(OrderDetailVO entity);
+	
+	int delete(OrderDetailVO entity);
 
 	OrderDetailVO findByPK(Integer orderDetailNo);
 
 	List<OrderDetailVO> findByOrderNo(Integer orderNo);
 
-	List<OrderDetailVO> findByCmtScore(Integer cmtScore);
+	List<OrderDetailVO> findByMbrNo(String  mbrNo);
 
 	List<OrderDetailVO> getAll();
-	
-	// 取得所有評分
-	List<Integer> getAllCmtScore();
 	
 	Integer getTotal();
 

@@ -25,9 +25,9 @@ public class ShoppingCartDAO implements ShoppingCartDAO_interface {
 	@Override
 	public Integer insert(ShoppingCartVO entity) {
 		try {
-			getSession().beginTransaction();
+//			getSession().beginTransaction();
 			Integer id = (Integer) getSession().save(entity);
-			getSession().getTransaction().commit();
+//			getSession().getTransaction().commit();
 			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -49,14 +49,12 @@ public class ShoppingCartDAO implements ShoppingCartDAO_interface {
 	}
 
 	@Override
-	public String delete(Integer shoppingCartNo) {
+	public String delete(ShoppingCartVO entity) {
 		try {
-			getSession().beginTransaction();
-			ShoppingCartVO entity = getSession().get(ShoppingCartVO.class, shoppingCartNo);
 			if (entity != null) {
 				getSession().delete(entity);
 			}
-			getSession().getTransaction().commit();
+
 			return "成功";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,7 +65,6 @@ public class ShoppingCartDAO implements ShoppingCartDAO_interface {
 	@Override
 	public ShoppingCartVO findByPK(Integer shoppingCartNo) {
 		try {
-			getSession().beginTransaction();
 			return getSession().get(ShoppingCartVO.class, shoppingCartNo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,21 +90,21 @@ public class ShoppingCartDAO implements ShoppingCartDAO_interface {
 	@Override
 	public ShoppingCartVO findByMemberAndItemNo(String mbrNo, Integer itemNo) {
 		try {
-			getSession().beginTransaction();
+//			getSession().beginTransaction();
 			Query<ShoppingCartVO> query = getSession()
-					.createQuery("FROM ShoppingCartVO WHERE mbrNo = :mbrNo AND itemNo = :itemNo", ShoppingCartVO.class)
-					.setParameter("mbrNo", mbrNo)
-					.setParameter("itemNo", itemNo)
-					.setMaxResults(1);
+					.createQuery("FROM ShoppingCartVO WHERE mbrNo = :mbrNo AND itemNo = :itemNo", ShoppingCartVO.class);
+			query.setParameter("mbrNo", mbrNo);
+			query.setParameter("itemNo", itemNo);
+
 			ShoppingCartVO vo = query.uniqueResult();
-			getSession().getTransaction().commit();
+//			getSession().getTransaction().commit();
 			return vo;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<ShoppingCartVO> getAll() {
 		try {
@@ -122,7 +119,7 @@ public class ShoppingCartDAO implements ShoppingCartDAO_interface {
 	}
 
 	@Override
-	public long getTotal() {
+	public int getTotal() {
 		try {
 			// getSession().beginTransaction();
 			int num = getSession().createQuery("select count(*) from ShoppingCartVO", Long.class).uniqueResult()
@@ -135,5 +132,4 @@ public class ShoppingCartDAO implements ShoppingCartDAO_interface {
 		}
 	}
 
-	
 }

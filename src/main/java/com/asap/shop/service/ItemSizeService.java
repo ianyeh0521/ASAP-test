@@ -15,27 +15,22 @@ public class ItemSizeService implements ItemSizeService_interface {
     }
 
     @Override
-    public int addSize(ItemSizeVO itemSize) {
+    public int insert(ItemSizeVO itemSize) {
         return dao.insert(itemSize);
     }
 
     @Override
-    public int updateSize(ItemSizeVO itemSize) {
-        return dao.update(itemSize);
+    public int delete(ItemSizeVO itemSize) {
+        return dao.delete(itemSize);
     }
 
     @Override
-    public int deleteSize(Integer itemSizeNo) {
-        return dao.delete(itemSizeNo);
-    }
-
-    @Override
-    public ItemSizeVO findSizeByNo(Integer itemSizeNo) {
+    public ItemSizeVO  findByItemSizeNo(Integer itemSizeNo) {
         return dao.findByItemSizeNo(itemSizeNo);
     }
 
     @Override
-    public List<ItemSizeVO> getAllSizes() {
+    public List<ItemSizeVO> getALL() {
         return dao.getALL();
     }
 }

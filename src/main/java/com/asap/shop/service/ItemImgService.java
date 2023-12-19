@@ -8,34 +8,52 @@ import com.asap.shop.entity.ItemImgVO;
 
 public class ItemImgService implements ItemImgService_interface {
 
-    private ItemImgDAO_interface dao;
+	private ItemImgDAO_interface dao;
 
-    public ItemImgService() {
-        dao = new ItemImgDAO(); // Assuming ItemImgDAO is the implementation of ItemImgDAO_interface
-    }
+	public ItemImgService() {
+		dao = new ItemImgDAO(); // Assuming ItemImgDAO is the implementation of ItemImgDAO_interface
+	}
 
-    @Override
-    public int addImage(ItemImgVO itemImg) {
-        return dao.insert(itemImg);
-    }
+	@Override
+	public int insert(ItemImgVO itemImg) {
+		return dao.insert(itemImg);
+	}
 
-    @Override
-    public int updateImage(ItemImgVO itemImg) {
-        return dao.update(itemImg);
-    }
+	@Override
+	public int delete(ItemImgVO itemImg) {
+		return dao.delete(itemImg);
+	}
 
-    @Override
-    public int deleteImage(Integer itemImgNo) {
-        return dao.delete(itemImgNo);
-    }
+	@Override
+	public ItemImgVO findByPK(Integer itemImgNo) {
+		return dao.findByPK(itemImgNo);
+	}
 
-    @Override
-    public ItemImgVO findImageByNo(Integer itemImgNo) {
-        return dao.findByItemImgNo(itemImgNo);
-    }
+	@Override
+	public List<ItemImgVO> getALL() {
+		return dao.getALL();
+	}
 
-    @Override
-    public List<ItemImgVO> getAllImages() {
-        return dao.getALL();
-    }
+	@Override
+	public List<ItemImgVO> findByItemNo(Integer itemNo) {
+
+		return dao.findByItemNo(itemNo);
+	}
+
+	@Override
+	public int cleanByItemNo(Integer itemNo) {
+		try {
+			List<ItemImgVO> list = dao.findByItemNo(itemNo);
+			if (list != null && list.size() != 0) {
+				for (ItemImgVO vo : list) {
+					dao.delete(vo);
+				}
+			}
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return-1;
+		}
+	
+	}
 }

@@ -1,8 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.List"  %>
+<%@ page import="java.util.*"  %>
+<%@ page import="com.asap.shop.entity.ShoppingCartVO" %>
+<%@ page import="com.asap.shop.service.ShoppingCartService_interface"%>
+<%@ page import="com.asap.shop.service.ShoppingCartService"%>
 <%@ page import="com.asap.shop.entity.ItemInfoVO" %>
+<%@ page import="com.asap.shop.service.ItemInfoService_interface"%>
+<%@ page import="com.asap.shop.service.ItemInfoService"%>
 <!DOCTYPE html>
+<%
+// String shoppingCart = request.getParameter("mbrNo");
+ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
+ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
+List<ShoppingCartVO> list = ShoppingCartSvc.findByMember("M1");
+pageContext.setAttribute("list", list);
+
+System.out.println(list);
+%>
+
+
+
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -82,7 +100,7 @@
                 <i class="fas fa-bars"></i>
               </button>
               <a href="#" width="222" height="88">
-                <img src="newImg/logo2.png" alt="Logo" />
+                <img src="../newImg/logo2.png" alt="Logo" />
               </a>
             </div>
             <!-- End .header-left -->
@@ -167,80 +185,6 @@
             </li>
           </ul>
 
-          <div class="login-form-container">
-            <h4>
-              已經有會員?
-              <button
-                data-toggle="collapse"
-                data-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-                class="btn btn-link btn-toggle"
-              >
-                登入
-              </button>
-            </h4>
-
-            <div id="collapseOne" class="collapse">
-              <div class="login-section feature-box">
-                <div class="feature-box-content">
-                  <form action="#" id="login-form">
-                    <p>
-                      親愛的顧客，
-                      別忘了我們有會員制度，登入即享專屬優惠。還不是會員？立即註冊獲得專屬福利
-                      謝謝您的支持！ ASAP 客服
-                    </p>
-
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="mb-0 pb-1"
-                            >會員信箱 <span class="required">*</span></label
-                          >
-                          <input type="email" class="form-control" required />
-                        </div>
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="mb-0 pb-1"
-                            >密碼 <span class="required">*</span></label
-                          >
-                          <input
-                            type="password"
-                            class="form-control"
-                            required
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <button type="submit" class="btn">登入</button>
-
-                    <div class="form-footer mb-1">
-                      <div class="custom-control custom-checkbox mb-0 mt-0">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="lost-password"
-                        />
-                        <label
-                          class="custom-control-label mb-0"
-                          for="lost-password"
-                          >記住我</label
-                        >
-                      </div>
-
-                      <a href="forgot-password.html" class="forget-password"
-                        >忘記密碼?</a
-                      >
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div class="row">
             <div class="col-lg-7">
               <ul class="checkout-steps">
@@ -252,7 +196,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label
-                            >會員名稱
+                            >收件人名稱
                             <abbr class="required" title="required">*</abbr>
                           </label>
                           <input type="text" class="form-control" required />
@@ -262,7 +206,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label
-                            >會員信箱
+                            >收件人信箱
                             <abbr class="required" title="required"
                               >*</abbr
                             ></label
@@ -271,23 +215,6 @@
                         </div>
                       </div>
                     </div>
-
-                   
-
-                    <div class="select-custom">
-                        <label
-                          >國家 / 地區
-                          <abbr class="required" title="required">*</abbr></label
-                        >
-                        <select name="orderby" class="form-control">
-                          <option value="" selected="selected">台灣</option>
-                          <option value="1">日本</option>
-                          <option value="2">中國</option>
-                          <option value="3">美國</option>
-                          <option value="4">韓國</option>
-
-                        </select>
-                      </div>
 
                     <div class="select-custom">
                       <label
@@ -358,131 +285,16 @@
                       <input type="tel" class="form-control" required />
                     </div>
 
-                    <div class="form-group">
-                      <label>公司名稱 (可選)</label>
-                      <input type="text" class="form-control" />
-                    </div>
-
-                    <div class="select-custom">
-                        <label
-                          >公司所在 國家 / 地區
-                          <abbr class="required" title="required">*</abbr></label
-                        >
-                        <select name="orderby" class="form-control">
-                          <option value="" selected="selected">台灣</option>
-                          <option value="1">日本</option>
-                          <option value="2">中國</option>
-                          <option value="3">美國</option>
-                          <option value="4">韓國</option>
-
-                        </select>
-                      </div>
-
-                      <div class="select-custom">
-                        <label
-                          >公司 選擇縣/市
-                          <abbr class="required" title="required">*</abbr></label
-                        >
-                        <select name="orderby" class="form-control">
-                          <option value="" selected="selected">台北市</option>
-                          <option value="1">新北市</option>
-                          <option value="2">桃園市</option>
-                          <option value="3">臺中市</option>
-                          <option value="4">臺南市</option>
-                          <option value="5">高雄市</option>
-                          <option value="6">基隆市</option>
-                          <option value="7">新竹市</option>
-                          <option value="8">嘉義市</option>
-                          <option value="9">新竹縣</option>
-                          <option value="10">苗栗縣</option>
-                          <option value="11">彰化縣</option>
-                          <option value="12">南投縣</option>
-                          <option value="13">雲林縣</option>
-                          <option value="14">嘉義縣</option>
-                          <option value="15">屏東縣</option>
-                          <option value="16">宜蘭縣</option>
-                          <option value="17">花蓮縣</option>
-                          <option value="18">台東縣</option>
-                          <option value="19">澎湖縣</option>
-                          <option value="20">金門縣</option>
-                          <option value="21">連江縣</option>
-                        </select>
-                      </div>
-
-                    <div class="form-group mb-1 pb-2">
-                      <label
-                        >詳細地址
-                        <abbr class="required" title="required">*</abbr></label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="鄉(鎮市區)、村(里)、鄰："
-                        required
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="大樓, 公寓, 號碼, 等等. (可選)"
-                        required
-                      />
-                    </div>
 
 
-                    <div class="form-group mb-1">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="create-account"
-                        />
-                        <label
-                          class="custom-control-label"
-                          data-toggle="collapse"
-                          data-target="#collapseThree"
-                          aria-controls="collapseThree"
-                          for="create-account"
-                          >同步更新會員資料</label
-                        >
-                      </div>
-                    </div>
 
-                    <div id="collapseThree" class="collapse">
-                      <div class="form-group">
-                        <label
-                          >會員密碼
-                          <abbr class="required" title="required"
-                            >*</abbr
-                          ></label
-                        >
-                        <input
-                          type="password"
-                          placeholder="Password"
-                          class="form-control"
-                          required
-                        />
-                      </div>
-                    </div>
-
-
-                    <div class="form-group">
-                      <label class="order-comments"
-                        >訂單備註 (可選)</label
-                      >
-                      <textarea
-                        class="form-control"
-                        placeholder="請填入有關訂單 / 商品的備註"
-                        required
-                      ></textarea>
-                    </div>
                   </form>
                 </li>
               </ul>
             </div>
             <!-- End .col-lg-8 -->
+
+
 
             <div class="col-lg-5">
               <div class="order-summary">
@@ -490,9 +302,7 @@
 
                 <table class="table table-mini-cart">
                   <thead>
-                    <tr>
-                      <th colspan="2">訂單編號#1234</th>
-                    </tr>
+
                     <tr>
                       <th>商品</th>
                       <th>商品編號</th>
@@ -502,56 +312,29 @@
                     </tr>
                   </thead>
                   <tbody>
+                  <c:forEach items="${list}" var="cartItem" varStatus="status">
                     <tr>
-                      <td class="product-col">
-                        <h3 class="product-title">
-                          棒球帽
-                        </h3>
-                      </td>
-                
-                      <td class="price-col">
-                        <span class="product-id">1001</span>
-                      </td>
-                
-                      <td class="price-col">
-                        <span class="unit-price">$400.00</span>
-                      </td>
-                
-                      <td class="price-col">
-                        <span class="quantity">2</span>
-                      </td>
-                
-                      <td class="price-col">
-                        <span class="subtotal"></span>
-                      </td>
+                    
+<td class="price-col">
+    <a href="AsapShopProduct.jsp?itemNo=${cartItem.itemInfoVO.itemNo}">${cartItem.itemInfoVO.itemName}</a>
+</td>
+                        <td class="price-col">${cartItem.itemInfoVO.itemNo}</td>
+                        <td class="price-col">
+                            <span class="unit-price">${cartItem.itemInfoVO.itemPrice}</span>
+                        </td>
+                        <td class="price-col">
+                            <span class="quantity">${cartItem.itemShopQty}</span>
+                        </td>
+                        <td class="price-col">
+                            <span class="subtotal">$${cartItem.itemInfoVO.itemPrice * cartItem.itemShopQty}</span>
+                        </td>
+                                    
                     </tr>
+    </c:forEach>
                 
-
-                    <tr>
-                      <td class="product-col">
-                        <h3 class="product-title">
-                          足球
-                        </h3>
-                      </td>
-                
-                      <td class="price-col">
-                        <span class="product-id">1002</span>
-                      </td>
-                
-                      <td class="price-col">
-                        <span class="unit-price">$200.00</span>
-                      </td>
-                
-                      <td class="price-col">
-                        <span class="quantity">2</span>
-                      </td>
-                
-                      <td class="price-col">
-                        <span class="subtotal"></span>
-                      </td>
-                    </tr>
                   </tbody>
                   <tfoot>
+
                     <tr class="cart-subtotal">
                       <td>
                         <h4>商品小計</h4>
@@ -565,19 +348,7 @@
                       <td class="text-left" colspan="2">
                         <h4 class="m-b-sm">付款方式</h4>
 
-                        <div class="form-group form-group-custom-control">
-                          <div class="custom-control custom-radio d-flex">
-                            <input
-                              type="radio"
-                              class="custom-control-input"
-                              name="radio"
-                              checked
-                            />
-                            <label class="custom-control-label">貨到付款</label>
-                          </div>
-                          <!-- End .custom-checkbox -->
-                        </div>
-                        <!-- End .form-group -->
+
 
                         <div class="form-group form-group-custom-control mb-0">
                           <div class="custom-control custom-radio d-flex mb-0">
@@ -638,6 +409,9 @@
               <!-- End .cart-summary -->
             </div>
             <!-- End .col-lg-4 -->
+            
+            
+            
           </div>
           <!-- End .row -->
         </div>
@@ -671,40 +445,29 @@
     ></a>
 
     <script>
-      // 获取表格中的所有行
-      var rows = document.querySelectorAll('tbody tr');
-  
-      // 初始化总计和商品小计
-      var total = 0;
-      var subtotal = 0;
-  
-      // 遍历每一行
-      rows.forEach(function(row) {
-        // 获取当前行中的单价、数量和小计元素
-        var unitPriceElement = row.querySelector('.unit-price');
-        var quantityElement = row.querySelector('.quantity');
-        var subtotalElement = row.querySelector('.subtotal');
-  
-        // 从元素中提取数字值
-        var unitPrice = parseFloat(unitPriceElement.textContent.replace('$', ''));
-        var quantity = parseInt(quantityElement.textContent);
-  
-        // 计算小计
-        subtotal = unitPrice * quantity;
-  
-        // 更新小计元素
-        subtotalElement.textContent = '$' + subtotal.toFixed(2);
-  
-        // 累加到总计
-        total += subtotal;
-      });
-  
-      // 更新商品小计
-      document.querySelector('.total-subtotal').textContent = '$' + total.toFixed(2);
-  
-      // 更新總計
-      document.querySelector('.total-price span').textContent = '$' + total.toFixed(2);
-    </script>
+//       获取表格中的所有行
+var rows = document.querySelectorAll('tbody tr');
+
+var total = 0;
+var subtotal = 0;
+
+rows.forEach(function(row) {
+  var unitPriceElement = row.querySelector('.unit-price');
+  var quantityElement = row.querySelector('.quantity');
+  var subtotalElement = row.querySelector('.subtotal');
+
+  var unitPrice = parseFloat(unitPriceElement.textContent.replace('$', ''));
+  var quantity = parseInt(quantityElement.textContent);
+
+  subtotal = unitPrice * quantity;
+  subtotalElement.textContent = '$' + subtotal.toFixed(2);
+
+  total += subtotal;
+});
+
+document.querySelector('.total-subtotal').textContent = '$' + total.toFixed(2);
+document.querySelector('.total-price span').textContent = '$' + total.toFixed(2);
+    </script> 
 
     <!-- Plugins JS File -->
     <script src="../assets/js/jquery.min.js"></script>
@@ -719,5 +482,6 @@
       $("div.sticky-navbar").load("sticky-navbar.html");
       $("div.mobile-menu-container").load("mobile-menu-container.html");
     </script>
+    
   </body>
 </html>

@@ -35,25 +35,12 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 	}
 
 	@Override
-	public Integer update(ItemCollectVO entity) {
+	public String delete(ItemCollectVO entity) {
 		try {
-			getSession().beginTransaction();
-			getSession().update(entity);
-			getSession().getTransaction().commit();
-			return 1;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
-		}
-	}
 
-	@Override
-	public String delete(Integer itemCollectNo) {
-		try {
-			// getSession().beginTransaction();
-			ItemCollectVO vo = getSession().get(ItemCollectVO.class, itemCollectNo);
-			getSession().delete(vo);
-			// getSession().getTransaction().commit();
+			if (entity != null) {
+				getSession().delete(entity);
+			}
 			return "成功";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,9 +51,9 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 	@Override
 	public ItemCollectVO findByPK(Integer itemCollectNo) {
 		try {
-			// getSession().beginTransaction();
+
 			ItemCollectVO vo = getSession().get(ItemCollectVO.class, itemCollectNo);
-			// getSession().getTransaction().commit();
+
 			return vo;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,7 +62,7 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 	}
 
 	@Override
-	public List<ItemCollectVO> findByMember(String mbrNo) {
+	public List<ItemCollectVO> findByMbrNo(String mbrNo) {
 		try {
 			// getSession().beginTransaction();
 			Query<ItemCollectVO> query = getSession().createQuery("FROM ItemCollectVO WHERE mbrNo = :mbrNo",
@@ -89,16 +76,15 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 	}
 
 	@Override
-	public ItemCollectVO findByMemberAndItemNo(String mbrNo, Integer itemNo) {
+	public ItemCollectVO findByMbrNoAndItemNo(String mbrNo, Integer itemNo) {
 		try {
-			getSession().beginTransaction();
+//			getSession().beginTransaction();
 			Query<ItemCollectVO> query = getSession()
-					.createQuery("FROM ItemCollectVO WHERE mbrNo = :mbrNo AND itemNo = :itemNo", ItemCollectVO.class)
-					.setParameter("mbrNo", mbrNo)
-					.setParameter("itemNo", itemNo)
-					.setMaxResults(1);
+					.createQuery("FROM ItemCollectVO WHERE mbrNo = :mbrNo AND itemNo = :itemNo", ItemCollectVO.class);
+			query.setParameter("mbrNo", mbrNo);
+			query.setParameter("itemNo", itemNo);
 			ItemCollectVO vo = query.uniqueResult();
-			getSession().getTransaction().commit();
+//			getSession().getTransaction().commit();
 			return vo;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -115,19 +101,6 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}
-	}
-
-	@Override
-	public Integer getTotal() {
-		try {
-			getSession().beginTransaction();
-			int num = getSession().createQuery("select count(*) from ItemCollectVO", Long.class).uniqueResult()
-					.intValue();
-			return num;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
 		}
 	}
 

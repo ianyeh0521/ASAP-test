@@ -10,9 +10,8 @@ public interface OrderDAO_interface {
 
 	int update(OrderVO entity);
 	
-	// 更新訂單的狀態
-	String updateOrderStatus(Integer orderNo, Integer orderStat);
-
+	int delete(OrderVO entity);
+	
 	OrderVO findByPK(Integer orderNo);
 
 	List<OrderVO> findByMbrNo(String mbrNo);

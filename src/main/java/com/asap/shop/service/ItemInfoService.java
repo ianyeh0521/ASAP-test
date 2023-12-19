@@ -1,6 +1,11 @@
 package com.asap.shop.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.Entity;
 
 import com.asap.shop.dao.ItemInfoDAO;
 import com.asap.shop.dao.ItemInfoDAO_interface;
@@ -11,71 +16,106 @@ import com.asap.shop.entity.ItemInfoVO;
  */
 public class ItemInfoService implements ItemInfoService_interface {
 
-    private ItemInfoDAO_interface dao;
+	private ItemInfoDAO_interface dao;
 
-    public ItemInfoService() {
-        dao = new ItemInfoDAO();
-    }
+	public ItemInfoService() {
+		dao = new ItemInfoDAO();
+	}
 
-    @Override
-    public int insertItemInfo(ItemInfoVO itemInfo) {
-        // 呼叫 DAO 的插入方法
-        return dao.insert(itemInfo);
-    }
+	@Override
+	public int insert(ItemInfoVO itemInfo) {
+		itemInfo.setItemAddTime(new java.sql.Timestamp(System.currentTimeMillis()));
+		return dao.insert(itemInfo);
+	}
 
-    @Override
-    public int updateItemInfo(ItemInfoVO itemInfo) {
-        // 呼叫 DAO 的更新方法
-        return dao.update(itemInfo);
-    }
+	@Override
+	public int update(ItemInfoVO itemInfo) {		
+		itemInfo.setItemUpdTime(new java.sql.Timestamp(System.currentTimeMillis()));
+		return dao.update(itemInfo);
+	}
 
-    @Override
-    public int deleteItemInfo(Integer id) {
-        // 呼叫 DAO 的刪除方法
-        return dao.delete(id);
-    }
+	@Override
+	public int delete(ItemInfoVO itemInfo) {
+		// 呼叫 DAO 的刪除方法
+		return dao.delete(itemInfo);
+	}
 
-    @Override
-    public ItemInfoVO getItemInfoById(Integer id) {
-        // 呼叫 DAO 的根據商品編號查詢方法
-        List<ItemInfoVO> list = dao.findByItemNo(id);
-        return list.isEmpty() ? null : list.get(0);
-    }
+	@Override
+	public void increaseItemView(ItemInfoVO itemInfo) {
+		int view = itemInfo.getItemView();
+		itemInfo.setItemView(view + 1);
+		dao.update(itemInfo);
 
-    @Override
-    public List<ItemInfoVO> getByFuzzySearch(String keyword) {
-        // 呼叫 DAO 的模糊搜尋方法
-        return dao.getByFuzzySearch(keyword);
-    }
+	}
 
-    @Override
-    public List<ItemInfoVO> getItemInfoByCategory(String category) {
-        // 這裡可以根據實際需求呼叫對應的 DAO 方法
-        // 例如：return dao.getQuery("ItemCategory", category);
-        return null;
-    }
+	@Override
+	public ItemInfoVO findByItemNo(Integer id) {
+		// 呼叫 DAO 的根據商品編號查詢方法
+		return dao.findByItemNo(id);
+	}
 
-    @Override
-    public List<ItemInfoVO> getItemInfoByPriceRange(Integer minPrice, Integer maxPrice) {
-        // 呼叫 DAO 的價格範圍查詢方法
-        return dao.findByPriceRange(minPrice, maxPrice);
-    }
+	@Override
+	public List<ItemInfoVO> getByFuzzySearch(String keyword) {
+		// 呼叫 DAO 的模糊搜尋方法
+		return dao.getByFuzzySearch(keyword);
+	}
 
-    @Override
-    public List<ItemInfoVO> getItemInfoByPriceOrder(boolean descending) {
-        // 呼叫 DAO 的依價格排序方法
-        return dao.orderByItemPrice(descending);
-    }
+	@Override
+	public List<ItemInfoVO> orderByItemPrice(boolean descending) {
+		// 呼叫 DAO 的依價格排序方法
+		return dao.orderByItemPrice(descending);
+	}
 
-    @Override
-    public List<ItemInfoVO> getItemInfoByViewOrder() {
-        // 呼叫 DAO 的依瀏覽次數排序方法
-        return dao.orderByItemView();
-    }
+	@Override
+	public List<ItemInfoVO> orderByItemView() {
+		// 呼叫 DAO 的依瀏覽次數排序方法
+		return dao.orderByItemView();
+	}
 
-    @Override
-    public List<ItemInfoVO> getAllItemInfo() {
-        // 呼叫 DAO 的取得所有商品資訊方法
-        return dao.getALL();
-    }
+	@Override
+	public List<ItemInfoVO> orderByItemAddTime() {
+		// TODO Auto-generated method stub
+		return dao.orderByItemAddTime();
+	}
+
+	@Override
+	public List<ItemInfoVO> getByCompositeQuery(Map<String, String[]> map) {
+		
+		Map<String, String> query = new HashMap<>();
+		// Map.Entry即代表一組key-value
+		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+		
+		for (Map.Entry<String, String[]> row : entry) {
+			String key = row.getKey();
+			// 因為請求參數裡包含了action，做個去除動作
+			if ("action".equals(key)) {
+				continue;
+			}
+			// 若是value為空即代表沒有查詢條件，做個去除動作
+			String value = row.getValue()[0];
+			if (value.isEmpty() || value == null) {
+				continue;
+			}
+			query.put(key, value);
+		}
+		return dao.getByCompositeQuery(query);
+	}
+
+	@Override
+	public List<ItemInfoVO> getAll() {
+
+		return dao.getAll();
+	}
+
+	@Override
+	public int getLowestPrice() {
+
+		return dao.getLowestPrice();
+	}
+
+	@Override
+	public int getHighestPrice() {
+
+		return dao.getHighestPrice();
+	}
 }

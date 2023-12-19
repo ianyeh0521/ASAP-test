@@ -39,14 +39,14 @@ public class OrderDetailVO implements Serializable {
 	@Column(name = "CmtText")
 	private String cmtText;
 
-	@CreationTimestamp
+	
 	@Column(name = "CmtTime")
 	private Timestamp cmtTime;
 
 	@Column(name = "CmtReText")
 	private String cmtReText;
 
-	@CreationTimestamp
+
 	@Column(name = "CmtReTime")
 	private Timestamp cmtReTime;
 

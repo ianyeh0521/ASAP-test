@@ -5,13 +5,19 @@ import com.asap.shop.entity.ItemImgVO;
 
 public interface ItemImgService_interface {
 
-    int addImage(ItemImgVO itemImg);
+	// 以編號來進行增刪查改
+	int insert(ItemImgVO itemImg);
 
-    int updateImage(ItemImgVO itemImg);
+	int delete(ItemImgVO itemImg);
 
-    int deleteImage(Integer itemImgNo);
+	// 主鍵查找商品圖片
+	ItemImgVO findByPK(Integer itemImgNo);
 
-    ItemImgVO findImageByNo(Integer itemImgNo);
+	List<ItemImgVO> findByItemNo(Integer itemNo);
 
-    List<ItemImgVO> getAllImages();
+	// 全部的商品的照片
+	List<ItemImgVO> getALL();
+	
+	int cleanByItemNo(Integer itemNo);
+
 }

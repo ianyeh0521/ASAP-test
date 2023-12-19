@@ -15,27 +15,22 @@ public class ItemTypeService implements ItemTypeService_interface {
     }
 
     @Override
-    public int addType(ItemTypeVO itemType) {
+    public int insert(ItemTypeVO itemType) {
         return dao.insert(itemType);
     }
 
     @Override
-    public int updateType(ItemTypeVO itemType) {
-        return dao.update(itemType);
+    public int delete(ItemTypeVO itemType) {
+        return dao.delete(itemType);
     }
 
     @Override
-    public int deleteType(Integer itemTypeNo) {
-        return dao.delete(itemTypeNo);
-    }
-
-    @Override
-    public ItemTypeVO findTypeByNo(Integer itemTypeNo) {
+    public ItemTypeVO findByItemTypeNo(Integer itemTypeNo) {
         return dao.findByItemTypeNo(itemTypeNo);
     }
 
     @Override
-    public List<ItemTypeVO> getAllTypes() {
+    public List<ItemTypeVO> getALL() {
         return dao.getALL();
     }
 }

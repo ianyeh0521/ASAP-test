@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.asap.shop.dao.ShoppingCartDAO;
 import com.asap.shop.dao.ShoppingCartDAO_interface;
-import com.asap.shop.entity.ItemCollectVO;
 import com.asap.shop.entity.ShoppingCartVO;
 
 public class ShoppingCartService implements ShoppingCartService_interface {
@@ -16,23 +15,23 @@ public class ShoppingCartService implements ShoppingCartService_interface {
 	}
 
 	@Override
-	public Integer insert(String mbrNo, int itemNo) {
+	public Integer insert(String mbrNo, int itemNo, int itemShopQty) {
 		// 檢查是否有相同的記錄
 		ShoppingCartVO vo = dao.findByMemberAndItemNo(mbrNo, itemNo);
 		if (vo != null) {
 			// 如果有存在相同的記錄，數量加一
-			vo.setItemShopQty(vo.getItemShopQty() + 1);
+			vo.setItemShopQty(vo.getItemShopQty() + itemShopQty);
 			int result = dao.update(vo);
 			return result;
-		}else {
+		} else {
 			ShoppingCartVO newVo = new ShoppingCartVO();
 			newVo.setMbrNo(mbrNo);
-			newVo.setItemNo(itemNo);
-			newVo.setItemShopQty(1);
-			
+			newVo.getItemInfoVO().setItemNo(itemNo);
+			newVo.setItemShopQty(itemShopQty);
+
 			return dao.insert(newVo);
 		}
-		
+
 	}
 
 	@Override
@@ -41,8 +40,8 @@ public class ShoppingCartService implements ShoppingCartService_interface {
 	}
 
 	@Override
-	public String delete(Integer shoppingCartNo) {
-		return dao.delete(shoppingCartNo);
+	public String delete(ShoppingCartVO entity) {
+		return dao.delete(entity);
 	}
 
 	@Override
@@ -56,13 +55,29 @@ public class ShoppingCartService implements ShoppingCartService_interface {
 	}
 
 	@Override
+	public ShoppingCartVO findByMemberAndItemNo(String mbrNo, Integer itemNo) {
+
+		return dao.findByMemberAndItemNo(mbrNo, itemNo);
+	}
+
+	@Override
 	public List<ShoppingCartVO> getAll() {
 		return dao.getAll();
 	}
 
 	@Override
-	public long getTotal() {
+	public int getTotal() {
 		return dao.getTotal();
 	}
 
+	@Override
+	public void cleanByMbrNo(String mbrNo) {
+
+		List<ShoppingCartVO> list = dao.findByMember(mbrNo);
+		if (list != null && list.size() != 0) {
+			for (ShoppingCartVO shoppingCartVO : list) {
+				dao.delete(shoppingCartVO);
+			}
+		}
+	}
 }

@@ -8,16 +8,16 @@ public interface ItemCollectService_interface {
 
 	Integer insert(ItemCollectVO entity);
 
-	Integer update(ItemCollectVO entity);
-
-	String delete(Integer itemCollectNo);
+	String delete(ItemCollectVO entity);
 
 	ItemCollectVO findByPK(Integer itemCollectNo);
 
-	List<ItemCollectVO> findByMember(String mbrNo);
+	List<ItemCollectVO> findByMbrNo(String mbrNo);
+
+	ItemCollectVO findByMbrNoAndItemNo(String mbrNo, Integer itemNo);
 
 	List<ItemCollectVO> getAll();
-
-	Integer getTotal();
+	
+	void cleanByMbrNo(String mbrNo);
 
 }

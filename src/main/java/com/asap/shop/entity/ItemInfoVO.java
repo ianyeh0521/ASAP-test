@@ -7,28 +7,32 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Iteminfo")
-public class ItemInfoVO  {
+public class ItemInfoVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ItemNo", updatable = false )
+	@Column(name = "ItemNo", updatable = false)
 	private Integer itemNo;
 
 	@Column(name = "ItemName")
 	private String itemName;
 
-    @Column(name = "MbrNo")
-    private String mbrNo;
+	@Column(name = "MbrNo")
+	private String mbrNo;
 
-	@Column(name = "ItemTypeNo")
-	private Integer itemTypeNo;
+	@ManyToOne
+	@JoinColumn(name = "ItemTypeNo", referencedColumnName = "itemTypeNo")
+	private ItemTypeVO itemTypeVO;
 
-	@Column(name = "ItemStatNo")
-	private Integer itemStatNo;
+	@ManyToOne
+	@JoinColumn(name = "ItemStatNo", referencedColumnName = "itemStatNo")
+	private ItemStatVO itemStatVO;
 
 	@Column(name = "ItemText")
 	private String itemText;
@@ -42,8 +46,9 @@ public class ItemInfoVO  {
 	@Column(name = "PreItemPrice")
 	private Integer preItemPrice;
 
-	@Column(name = "ItemSizeNo")
-	private Integer itemSizeNo;
+	@ManyToOne
+	@JoinColumn(name = "ItemSizeNo", referencedColumnName = "itemSizeNo")
+	private ItemSizeVO itemSizeVO;
 
 	@Column(name = "ItemView")
 	private Integer itemView;
@@ -60,25 +65,24 @@ public class ItemInfoVO  {
 	public ItemInfoVO() {
 	}
 
-	public ItemInfoVO(Integer itemNo, String itemName, String mbrNo, Integer itemTypeNo, Integer itemStatNo,
-			String itemText, Integer itemStockQty, Integer itemPrice, Integer preItemPrice, Integer itemSizeNo,
+	public ItemInfoVO(Integer itemNo, String itemName, String mbrNo, ItemTypeVO itemTypeVO, ItemStatVO itemStatVO,
+			String itemText, Integer itemStockQty, Integer itemPrice, Integer preItemPrice, ItemSizeVO itemSizeVO,
 			Integer itemView, Integer itemAddStat, Timestamp itemAddTime, Timestamp itemUpdTime) {
 		super();
 		this.itemNo = itemNo;
 		this.itemName = itemName;
 		this.mbrNo = mbrNo;
-		this.itemTypeNo =itemTypeNo;
-		this.itemStatNo = itemStatNo;
+		this.itemTypeVO = itemTypeVO;
+		this.itemStatVO = itemStatVO;
 		this.itemText = itemText;
 		this.itemStockQty = itemStockQty;
 		this.itemPrice = itemPrice;
 		this.preItemPrice = preItemPrice;
-		this.itemSizeNo = itemSizeNo;
+		this.itemSizeVO = itemSizeVO;
 		this.itemView = itemView;
 		this.itemAddStat = itemAddStat;
 		this.itemAddTime = itemAddTime;
 		this.itemUpdTime = itemUpdTime;
-		
 	}
 
 	public Integer getItemNo() {
@@ -105,20 +109,20 @@ public class ItemInfoVO  {
 		this.mbrNo = mbrNo;
 	}
 
-	public Integer getItemTypeNo() {
-		return itemTypeNo;
-	}
-	
-	public void setItemTypeNo(Integer itemTypeNo) {
-		this.itemTypeNo = itemTypeNo;
+	public ItemTypeVO getItemTypeVO() {
+		return itemTypeVO;
 	}
 
-	public Integer getItemStatNo() {
-		return itemStatNo;
+	public void setItemTypeVO(ItemTypeVO itemTypeVO) {
+		this.itemTypeVO = itemTypeVO;
 	}
-	
-	public void setItemStatNo(Integer itemStatNo) {
-		this.itemStatNo = itemStatNo;
+
+	public ItemStatVO getItemStatVO() {
+		return itemStatVO;
+	}
+
+	public void setItemStatVO(ItemStatVO itemStatVO) {
+		this.itemStatVO = itemStatVO;
 	}
 
 	public String getItemText() {
@@ -153,12 +157,12 @@ public class ItemInfoVO  {
 		this.preItemPrice = preItemPrice;
 	}
 
-	public Integer getItemSizeNo() {
-		return itemSizeNo;
+	public ItemSizeVO getItemSizeVO() {
+		return itemSizeVO;
 	}
-	
-	public void setItemSizeNo(Integer itemSizeNo) {
-	    this.itemSizeNo = itemSizeNo;
+
+	public void setItemSizeVO(ItemSizeVO itemSizeVO) {
+		this.itemSizeVO = itemSizeVO;
 	}
 
 	public Integer getItemView() {
@@ -195,11 +199,11 @@ public class ItemInfoVO  {
 
 	@Override
 	public String toString() {
-		return "ItemInfoVO [itemNo=" + itemNo + ", itemName=" + itemName + ", itemTypeNo=" + itemTypeNo
-				+ ", itemStatNo=" + itemStatNo + ", itemText=" + itemText + ", itemStockQty=" + itemStockQty
-				+ ", itemPrice=" + itemPrice + ", preItemPrice=" + preItemPrice + ", itemSizeNo=" + itemSizeNo
-				+ ", itemView=" + itemView + ", itemAddStat=" + itemAddStat + ", itemAddTime=" + itemAddTime
-				+ ", itemUpdTime=" +itemUpdTime + "]";
+		return "ItemInfoVO [itemNo=" + itemNo + ", itemName=" + itemName + ", mbrNo=" + mbrNo + ", itemTypeVO="
+				+ itemTypeVO + ", itemStatVO=" + itemStatVO + ", itemText=" + itemText + ", itemStockQty="
+				+ itemStockQty + ", itemPrice=" + itemPrice + ", preItemPrice=" + preItemPrice + ", itemSizeVO="
+				+ itemSizeVO + ", itemView=" + itemView + ", itemAddStat=" + itemAddStat + ", itemAddTime="
+				+ itemAddTime + ", itemUpdTime=" + itemUpdTime + "]";
 	}
 
 }

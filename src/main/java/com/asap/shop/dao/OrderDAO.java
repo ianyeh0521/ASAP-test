@@ -46,6 +46,19 @@ public class OrderDAO implements OrderDAO_interface {
 			return -1;
 		}
 	}
+	
+	public int delete(OrderVO entity) {
+		try {
+			if (entity != null) {
+				getSession().delete(entity);
+				// 回傳給 service，1代表刪除成功
+			}
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
 
 	@Override
 	public OrderVO findByPK(Integer orderNo) {
@@ -60,23 +73,6 @@ public class OrderDAO implements OrderDAO_interface {
 		}
 	}
 
-	@Override
-	public String updateOrderStatus(Integer orderNo, Integer orderStat) {
-		try {
-			getSession().beginTransaction();
-			OrderVO vo = getSession().get(OrderVO.class, orderNo);
-			if (vo != null && orderStat < 4) {
-				vo.setOrderStat(orderStat);
-				getSession().getTransaction().commit();
-				return "更改成功";
-			} else {
-				return "更改失敗";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "失敗";
-		}
-	}
 
 	@Override
 	public List<OrderVO> findByMbrNo(String mbrNo) {

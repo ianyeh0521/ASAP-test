@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,8 +23,9 @@ public class ShoppingCartVO implements Serializable {
 	@Column(name = "MbrNo")
 	private String mbrNo;
 
-	@Column(name = "ItemNo")
-	private Integer itemNo;
+	@ManyToOne
+	@JoinColumn(name = "ItemNo", referencedColumnName = "itemNo")
+	private ItemInfoVO itemInfoVO ;
 
 	@Column(name = "ItemShopQty")
 	private Integer itemShopQty;
@@ -31,11 +34,11 @@ public class ShoppingCartVO implements Serializable {
 
 	}
 
-	public ShoppingCartVO(Integer shoppingCartNo, String mbrNo, Integer itemNo, Integer itemShopQty) {
+	public ShoppingCartVO(Integer shoppingCartNo, String mbrNo, ItemInfoVO itemInfoVO, Integer itemShopQty) {
 		super();
 		this.shoppingCartNo = shoppingCartNo;
 		this.mbrNo = mbrNo;
-		this.itemNo = itemNo;
+		this.itemInfoVO = itemInfoVO;
 		this.itemShopQty = itemShopQty;
 	}
 
@@ -55,12 +58,12 @@ public class ShoppingCartVO implements Serializable {
 		this.mbrNo = mbrNo;
 	}
 
-	public Integer getItemNo() {
-		return itemNo;
+	public ItemInfoVO getItemInfoVO() {
+		return itemInfoVO;
 	}
 
-	public void setItemNo(Integer itemNo) {
-		this.itemNo = itemNo;
+	public void setItemInfoVO(ItemInfoVO itemInfoVO) {
+		this.itemInfoVO = itemInfoVO;
 	}
 
 	public Integer getItemShopQty() {
@@ -73,7 +76,7 @@ public class ShoppingCartVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ShoppingCartVO [shoppingCartNo=" + shoppingCartNo + ", mbrNo=" + mbrNo + ", itemNo=" + itemNo
+		return "ShoppingCartVO [shoppingCartNo=" + shoppingCartNo + ", mbrNo=" + mbrNo + ", itemInfoVO=" + itemInfoVO
 				+ ", itemShopQty=" + itemShopQty + "]";
 	}
 
