@@ -13,9 +13,21 @@
 
 <%
 	Boolean bIsSkip = (Boolean) request.getAttribute("Skip");
-	if(bIsSkip == null || !bIsSkip){
+	if(bIsSkip == null || !bIsSkip)
+ 	{
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
 	 	List<GrpInfoVO> list = grpInfoSvc.getALL(); 
+	 	List<GrpInfoVO> grpVOTempList = new ArrayList<>();
+		String sActNo = "M1206202300001";
+		for (GrpInfoVO Vo : list) {
+			String OrgMbrNo = Vo.getOrgMbrNo();
+			
+			if(OrgMbrNo.equals(sActNo)) 
+			{
+				grpVOTempList.add(Vo);
+			}
+		}
+		list = grpVOTempList;
 	 	pageContext.setAttribute("grpVOList",list);
  	}
  
@@ -34,8 +46,6 @@
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
 <meta name="author" content="SW-THEMES" />
-
-
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
@@ -166,7 +176,7 @@
 <main class="main">
 		<div class="page-header">
 			<div class="container d-flex flex-column align-items-center">
-				<h1>揪團</h1>
+				<h1>我發起的揪團</h1>
 			</div>
 		</div>
 	<div class="container">
@@ -175,10 +185,10 @@
 				data-sticky-options="{'mobile': true}">
 				<div class="toolbox-right">
 					<div class="search_bar d-flex justify-content-between align-items-center">
-						<a href="${pageContext.request.contextPath}/group/mygroupchoose.jsp" class="Btn_mygroup" id="mygroup_Btn" style="width:68px;margin-left: 5px;">我的揪團</a>
-						<a href="${pageContext.request.contextPath}/Grpinfo.do?action=creategroup&type=0" class="Btn_creategroup" id="creategroup_Btn" style="width:68px; margin-left: 5px;">發起揪團</a>
+						<button class="Btn_mygroup" id="mygroup_Btn" style=width:68px;>我的揪團</button>
+						
 						<form id="search_formid" class="search_c" action="<%=request.getContextPath()%>/Grpinfo.do" method="post">
-						<input type="text" name="grpInfoKeyword" id="search" class="search"  placeholder="搜尋" value="${param.grpInfoKeyword}" style="margin-left: 5px;"> 
+						<input type="text" name="grpInfoKeyword" id="search" class="search" placeholder="搜尋" value="${param.grpInfoKeyword}" > 
 						<input type="hidden" name="action" value="FuzzySearch">
 						<input type="hidden" name="type" value="1">
 						<input type="submit" id="searchBtn" value="搜尋" style="font-size:10px;border:white;height:29.6px;width:36px;">	
@@ -206,12 +216,6 @@
 								    <input type="hidden" name="action" value="detailsinfo">
 									</FORM>
 								</figure>
-									
-									
-<!-- 								發起人加這個icon,記得發起人頁面也要加/可以跟按鈕一起做 -->
-<!-- 								<div class="orgmbr_grp"> -->
-<!-- 	 							<i class="fas fa-flag" id="fas_fa_flag"></i>我創建的揪團</div> -->
-
 								<div class="product-details">
 
 									<h3 class="product-title">
@@ -240,6 +244,12 @@
 								    <a class="btn-icon-wish" style="font-size: 12px; color: red;">目前參與人數：${partiMbrNoCount}/${grpInfoVO.grpPplLimit}</a>
 									</c:if>
 									</div>
+		<%-- 						<FORM METHOD="post"  class="Btn_allgrpJoin" ACTION="<%=request.getContextPath()%>/Grpinfo.do" style="margin-bottom: 0px;"> --%>
+		<!-- 						    <input type="submit" value="報名參加" style="width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;"> -->
+		<%-- 						    <input type="hidden" name="#" value="${grpInfoVO.grpNo}"> --%>
+		<!-- 						    <input type="hidden" name="action" value="entergrpno"> -->
+		<!-- 						</FORM> -->
+						
 							</div> 
 							<!-- End .product-details -->
 						</div>
@@ -339,13 +349,13 @@
 				</ul>
 			</div>
 			<!-- End .row -->
-		</div>
-		<!-- End .container -->
-</div>
-		<!-- margin -->
+		  </div>
+		  <!-- End .container -->
+		 </div>
+		 <!-- margin -->
 		</main>
 		<!-- End .main -->
-	
+
 	<!-- End .page-wrapper -->
 	<footer class="footer bg-dark position-relative">
 	<div class="footer-middle">
@@ -553,23 +563,7 @@
 <!-- // 		$("div.sticky-navbar").load("sticky-navbar.html"); -->
 <!-- // 		$("div.mobile-menu-container").load("mobile-menu-container.html"); -->
 <!-- 	</script> -->
-		<script>
-		var el_Btn_allgrpJoin = document.getElementsByClassName('Btn_allgrpJoin');
 
-		for (var i = 0; i < el_Btn_allgrpJoin.length; i++) {
-		    el_Btn_allgrpJoin[i].addEventListener('submit', function(e) {
-		        e.preventDefault();
-		        var confirmed = window.confirm('確定要報名嗎？');
-		        
-		        
-		        if (confirmed) {
-		            this.submit();  
-		        }
-		    });
-		}
-
-		
-	</script>
 </body>
 </html>
 

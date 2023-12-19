@@ -1,0 +1,91 @@
+/* 彈窗樣式 */
+	#fs_alert {
+	    width: 100vw;
+	    height: 100vh;
+	    position: absolute;
+	    top: 0;
+	    /* display: block; */
+	    display: none;
+	    z-index: 999;
+	}
+	.fs_alert_bg {
+	    width: 100vw;
+	    height: 100vh;
+	    background-color: rgba(0, 0, 0, 0.671);
+	    position: fixed;
+	    top: 0;
+	    right:0px;
+	    left:0px;
+	    
+	}
+	.fs_alert_show {
+		position: fixed;
+	    max-width: 450px;
+	    min-width: 400px;
+		top: 25%;
+		left: 32.64%;
+	    background-color: white;
+	    margin: auto;
+	    z-index: 2;
+	    border-radius: 8px;
+	    text-align: center;
+	    border-top: 20px solid;
+        border-image: linear-gradient(to right, #F5F5DC, #D1E9E9, #6db1f1);
+        border-image-slice: 1;
+	}
+	
+	.fs_alert_title {
+	    font-size: 30px;
+	    text-align: center;
+	    margin: 35px;
+	    font-weight: bold;
+	}
+	.fs_alert_title_suc {
+	    color:rgb(85, 184, 201);
+	}
+	.fs_alert_txt {
+	    width: 80%;
+	    word-wrap: break-word;
+	    font-size: 16px;
+	    padding: 0 20px;
+	    text-align: center;
+	    margin: 0px auto 15px auto;
+	}
+	#alert_yes {
+	    margin: 20px 2px 45px 2px;
+	}
+	
+	#alert_no {
+	    margin: 20px 2px 45px 2px;
+	}
+	
+	.btn_s {
+	   width: 100px;
+	    border-radius: 8px;
+	    font-size: 16px;
+	    text-align: center;
+	    padding: 10px;
+	    cursor: pointer;
+	    color: rgb(255, 255, 255);
+	    background-color: rgb(85, 184, 201);
+	    margin: 10px;
+	}
+	
+	 .btn_s:hover { 
+	     background-color:rgb(85, 184, 201);
+	}
+	
+	.Btn_yesorno {
+	    text-align: center;
+	}
+	
+	.btn_s {
+	    display: inline-block;
+	    padding: 8px 16px;
+	    margin: 0 5px;
+	}
+	.Btn_creategrp_sm {
+		width:68px;
+		height:42.4px;
+	
+	}

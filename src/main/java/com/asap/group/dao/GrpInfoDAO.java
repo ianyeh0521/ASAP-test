@@ -30,13 +30,21 @@ public class GrpInfoDAO implements GrpInfoDAO_interface {
 
 	@Override
 	public int update(GrpInfoVO grpInfo) {
-
-		try {
-			getSession().update(grpInfo);
-			return 1;
+		Query query;
+		int updatedgrpInfo = 0;
+		try {			
+			String hql = "UPDATE GrpInfoVO SET GrpStat = :newGrpStat WHERE GrpNo = :grpNo";
+			query = getSession().createQuery(hql);
+			query.setParameter("newGrpStat", grpInfo.getGrpStat());
+			System.out.println("-----------TEST-----------"+grpInfo.getGrpStat());
+			query.setParameter("grpNo", grpInfo.getGrpNo());
+			System.out.println("-----------TEST-----------"+grpInfo.getGrpNo());
+			updatedgrpInfo = query.executeUpdate();
+					    
 		} catch (Exception e) {
-			return -1;
+			e.printStackTrace();
 		}
+		return updatedgrpInfo;
 	}
 
 	@Override
@@ -87,14 +95,12 @@ public class GrpInfoDAO implements GrpInfoDAO_interface {
 			if (grpInfoKeyword == null || grpInfoKeyword.isEmpty()) {
 				hqlQuery = "FROM GrpInfoVO";
 				query = getSession().createQuery(hqlQuery, GrpInfoVO.class);
-				System.out.println("---------使用HQL模糊查詢-------------GrpInfoVO:" + resultList);
 			} else {
 				hqlQuery = "FROM GrpInfoVO WHERE " + "GrpName LIKE :keyword OR " + "SportTypeNo LIKE :keyword OR "
 						+ "GrpDate LIKE :keyword OR " + "GrpStartTime LIKE :keyword OR "
 						+ "GrpEndTime LIKE :keyword OR " + "GrpAddress LIKE :keyword";
 				query = getSession().createQuery(hqlQuery, GrpInfoVO.class);
 				query.setParameter("keyword", "%" + grpInfoKeyword + "%");
-				System.out.println("---------使用HQL模糊查詢-------------grpInfoKeyword:" + grpInfoKeyword);
 			}
 			resultList = query.getResultList();
 		} catch (Exception e) {

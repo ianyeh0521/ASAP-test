@@ -204,7 +204,7 @@
                 <h1>
                   <span>ASAP</span> Find the Boundaries. Push Through!
                 </h1>
-                <a href="#" class="btn btn-dark"><strong>START!</strong></a>
+                <a href="${pageContext.request.contextPath}/group/home.jsp" class="btn btn-dark"><strong>START!</strong></a>
               </div>
               <!-- End .container -->
             </div>

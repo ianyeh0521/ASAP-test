@@ -31,14 +31,22 @@ public class GrpJoinInfoDAO implements GrpJoinInfoDAO_interface {
 
 	@Override
 	public int update(GrpJoinInfoVO grpJoinInfo) {
-		try {
-			getSession().update(grpJoinInfo);
-			return 1;
-		} catch (Exception e) {
-			return -1;
-		}
-	}
+		Query query;
+		int updatedEntities = 0;
+		try {			
+			String hql = "UPDATE GrpJoinInfoVO SET GrpJoinStat = :newGrpJoinStat WHERE PartiMbrNo = :partiMbrNo AND GrpNo = :grpNo";
+			query = getSession().createQuery(hql);
+			query.setParameter("newGrpJoinStat", grpJoinInfo.getGrpJoinStat());
+			query.setParameter("partiMbrNo", "M1206202300002");
+			query.setParameter("grpNo", grpJoinInfo.getGrpNo());
 
+			updatedEntities = query.executeUpdate();
+					    
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return updatedEntities;
+	}
 	@Override
 	public int delete(Integer id) {
 		GrpInfoVO grpJoinInfo = getSession().get(GrpInfoVO.class, id);
