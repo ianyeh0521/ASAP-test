@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.asap.member.entity.MemberVO" %>
 <%@ page import="com.asap.group.entity.GrpInfoVO" %>
+<%@ page import="com.asap.group.entity.GrpJoinInfoVO" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +43,6 @@
 
 <!-- Main CSS File -->
 
-
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/demo2.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
@@ -48,41 +50,64 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/group/creategroup.css" />
 
 
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+
+<!-- datatable-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 <script>
-	$(document)
-			.ready(
-					function() {
-						$("#table_id")
-								.DataTable(
-										{
-											language : {
-												url : "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json",
-											},
-										});
-					});
-</script>
-<script>
-	WebFontConfig = {
-		google : {
-			families : [ "Open+Sans:300,400,600,700,800",
-					"Poppins:300,400,500,600,700", "Shadows+Into+Light:400", ],
-		},
-	};
-	(function(d) {
-		var wf = d.createElement("script"), s = d.scripts[0];
-		wf.src = "assets/js/webfont.js";
-		wf.async = true;
-		s.parentNode.insertBefore(wf, s);
-	})(document);
-</script>
+          $(document).ready(function () {
+            $.ajax({
+                type: "POST",
+                url: 'GrpJoinInfoAjax.do',
+                contentType: 'application/json',
+                success: function(result){
+                	console.log(result);
+                	 $("#table_id").DataTable({
+                		 data: result,
+                		 "autoWidth": false,
+//                 		 "scrollX": true,
+                		 "responsive": true,
+                       		language: {
+                         		url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json"},
+                         "columnDefs": [
+                             {"className": "dt-center", "targets": "_all"}
+                         ],
+                         "lengthMenu": [
+                             [5, 10, 25, -1], // 定義每頁顯示筆數選項
+                             ['5', '10', '25', '所有'] // 定義每頁顯示筆數選項文字
+                         ],   
+                		 "columns": [
+                	            {
+                	                data: null,
+                	                render: function (data, type, row, meta) {
+                	                    // 使用 meta.row 來取得行數，然後加 1 作為序號
+                	                    return meta.row + 1;
+                	                }
+                	            },
+                         	{"data":"partiMbrNo", "width": "100px"},
+	                     	{"data": "partiMbrNo", "width": "100px"}, 	//先用現有資料測試
+	                     	{"data": "partiMbrNo", "width": "100px"},	    //先用現有資料測試
+	                     	{"data":"partiMbrNo", "width": "100px"}		//先用現有資料測試
+// 							{"data": "MemberVO.mbrName", "width": "100px"},
+//                             {"data": "MemberVO.mbrPhone", "width": "100px"},
+//                             {"data":"MemberVO.MbrEmail", "width": "100px"}
+                        
 
+]
+                	 });
+                },
+                error:function(xhr){
+                	console.log(xhr);
+                }
+             });
+          });
+          
+        </script>
 <style>
 .createform {
 	width: 70%;
+	overflow-x:hidden;
 }
 
 h3 {
@@ -210,7 +235,7 @@ button:hover, .return-link:hover {
 	background: rgb(250, 247, 247);
 	padding: 20px;
 	z-index: 1000;
-	width: 780px;
+	width: 850px;
 	height: 525px;
 	border-radius: 8px;
 	overflow-y: auto;
@@ -218,22 +243,107 @@ button:hover, .return-link:hover {
 	border-image: linear-gradient(to right, #F5F5DC, #D1E9E9, #6db1f1);
 	border-image-slice: 1;
 }
-
+/* icon */
 #arrow-left {
 	color: rgb(0, 0, 0);
 	top: 20px;
 }
-
-.grpinfoorgmbr_show table {
-	width: 100%;
-	margin: 0 auto;
-	/* text-align: center;  */
-}
-
-.grpinfoorgmbr_show th {
-	padding: 0px;
-	text-align: center;
-}
+ /* 彈窗樣式 */
+	#joingrpalertfs_alert,#Xjoingrpalertfs_alert,#delgrp_alert {
+	    width: 100vw;
+	    height: 100vh;
+	    position: absolute;
+	    top: 0;
+	    /* display: block; */
+	    display: none;
+	    z-index: 999;
+	}
+	.joingrpalertfs_alert_bg,.Xjoingrpalertfs_alert_bg,.delgrp_alert_bg {
+	    width: 100vw;
+	    height: 100vh;
+	    background-color: rgba(0, 0, 0, 0.671);
+	    position: fixed;
+	    top: 0;
+	    right:0px;
+	    left:0px;
+	    
+	}
+	.joingrpalertfs_alert_show,.Xjoingrpalertfs_alert_show,.delgrp_alert_show {
+		position: fixed;
+	    max-width: 450px;
+	    min-width: 400px;
+		top: 25%;
+		left: 32.64%;
+	    background-color: white;
+	    margin: auto;
+	    z-index: 2;
+	    border-radius: 8px;
+	    text-align: center;
+	    border-top: 20px solid;
+        border-image: linear-gradient(to right, #F5F5DC, #D1E9E9, #6db1f1);
+        border-image-slice: 1;
+	}
+	
+	.joingrpalertfs_alert_title,.Xjoingrpalertfs_alert_title,.delgrp_alert_title {
+	    font-size: 30px;
+	    text-align: center;
+	    margin: 35px;
+	    font-weight: bold;
+	}
+	.joingrpalertfs_alert_title_suc,.Xjoingrpalertfs_alert_title_suc,.delgrp_alert_title_suc {
+	    color:rgb(85, 184, 201);
+	}
+	.joingrpalertfs_alert_txt,.Xjoingrpalertfs_alert_txt,.delgrp_alert_txt {
+	    width: 80%;
+	    word-wrap: break-word;
+	    font-size: 16px;
+	    padding: 0 20px;
+	    text-align: center;
+	    margin: 0px auto 15px auto;
+	}
+	#joinalert_yes,#Xjoinalert_yes,#delalert_yes {
+	    margin: 20px 2px 45px 2px;
+	}
+	
+	#joinalert_no,#Xjoinalert_no,#delalert_no {
+	    margin: 20px 2px 45px 2px;
+	}
+	
+	.btn_s {
+	   width: 100px;
+	    border-radius: 8px;
+	    font-size: 16px;
+	    text-align: center;
+	    padding: 10px;
+	    cursor: pointer;
+	    color: rgb(255, 255, 255);
+	    background-color: rgb(85, 184, 201);
+	    margin: 10px;
+	}
+	
+	 .btn_s:hover { 
+	     background-color:rgb(85, 184, 201);
+	}
+	
+	.Btn_yesorno {
+	    text-align: center;
+	}
+	
+	.btn_s {
+	    display: inline-block;
+	    padding: 8px 16px;
+	    margin: 0 5px;
+	}
+	.Btn_creategrp_sm {
+		width:68px;
+		height:42.4px;
+	
+	}
+	.joingrpalertfs_alert_title, .joingrpalertfs_alert_txt,
+	.Xjoingrpalertfs_alert_title, .Xjoingrpalertfs_alert_txt,
+	.delgrp_alert_title, .delgrp_alert_txt {
+    color: black;
+	}
 </style>
 </head>
 <body>
@@ -345,11 +455,18 @@ button:hover, .return-link:hover {
 			<div class="createform">
 				<div class="createform_main">
 					<div>
+
+						<c:if test="${not empty partiMbrNoCount}">
 						<i class="fas fa-chevron-down" id="fas_fa"
-							style="position: relative; left: 690px;"></i><b class="Joinqty">目前參加人數<b>#</b>人
-						</b>
+							style="position: relative; left: 690px;"></i><b class="Joinqty">目前參加人數<b>${partiMbrNoCount}</b>人</b>
+						</c:if>
+						<c:if test="${empty partiMbrNoCount}">
+						<i class="fas fa-chevron-down" id="fas_fa"
+							style="position: relative; left: 690px;"></i><b class="Joinqty">目前參加人數<b>1</b>人</b>
+						</c:if>
+
 					</div>
-					<form action="/submit" method="post">
+					
 						<!-- 發起人資訊 -->
 						<h3 style="color: #5A5AAD;">
 							<i class="fas fa-user-circle"></i> 發起人資訊
@@ -394,7 +511,7 @@ button:hover, .return-link:hover {
 								<th class="grpjoin_tab1" >活動名稱</th>
 								<td class="grpjoin_tab1">${grpVODetail.grpName}</td>
 								<th class="grpjoin_tab1"  rowspan="5">圖片上傳</th>
-								<td class="grpjoin_tab1" rowspan="5"></td>
+								<td class="grpjoin_tab1" rowspan="5"><img src="<%=request.getContextPath()%>/GrpImgReader?grpNo=${grpVODetail.grpNo}" style="width: 210px; height: 210px;" alt="無圖片顯示"/></td>
 							</tr>
 							<tr>
 								<th class="grpjoin_tab1" >運動類別</th>
@@ -404,19 +521,23 @@ button:hover, .return-link:hover {
 							</tr>
 							<tr class="grpjoin_tab1">
 								<th class="grpjoin_tab1" >活動日期</th>
-								<td class="grpjoin_tab1">${grpVODetail.grpDate}</td>
+								<td class="grpjoin_tab1"><fmt:formatDate value="${grpVODetail.grpDate}" pattern="yyyy-MM-dd" var="formattedGrpDate" />
+								<a>${formattedGrpDate}</a></td>
 								<!-- <th>#</th> -->
 								<!-- <td>#</td> -->
+							
 							</tr>
 							<tr class="grpjoin_tab1">
 								<th class="grpjoin_tab1" >開始時間</th>
-								<td class="grpjoin_tab1">${grpVODetail.grpStartTime}</td>
+								<td class="grpjoin_tab1"><fmt:formatDate value="${grpVODetail.grpStartTime}" pattern="HH:mm" var="formattedGrpTime" />
+								<a>${formattedGrpTime}</a></td>
 								<!-- <th>#</th> -->
 								<!-- <td>#</td> -->
 							</tr>
 							<tr class="grpjoin_tab1">
 								<th class="grpjoin_tab1" >結束時間</th>
-								<td class="grpjoin_tab1">${grpVODetail.grpEndTime}</td>
+								<td class="grpjoin_tab1"><fmt:formatDate value="${grpVODetail.grpEndTime}" pattern="HH:mm" var="formattedGrpTime" />
+								<a>${formattedGrpTime}</a></td>
 								<!-- <th>#</th> -->
 								<!-- <td>#</td> -->
 							</tr>
@@ -431,7 +552,9 @@ button:hover, .return-link:hover {
 								<td class="grpjoin_tab1">${grpVODetail.grpAddress}</td>
 								<th class="grpjoin_tab1" data-name1="GrpSignStrTime"
 									data-name2="GrpSignEndTime">報名期間</th>
-								<td class="grpjoin_tab1">${grpVODetail.grpSignStrTime}至${grpVODetail.grpSignEndTime}</td>
+								<td class="grpjoin_tab1"><fmt:formatDate value="${grpVODetail.grpSignStrTime}" pattern="HH:mm" var="formattedGrpTime" />
+								<a>${formattedGrpTime}</a><a>至</a><fmt:formatDate value="${grpVODetail.grpSignEndTime}" pattern="HH:mm" var="formattedGrpTime" />
+								<a>${formattedGrpTime}</a>
 							</tr>
 							<tr class="grpjoin_tab1">
 								<th class="grpjoin_tab1" style="height: 150px;" >注意事項</th>
@@ -442,12 +565,77 @@ button:hover, .return-link:hover {
 						</table>
 						<br>
 						<div class="Grp_Btnsrr">
-							<button class="Btn_resort">編輯</button>
-							<a href="#" class="return-link">返回</a>
-							<button class="Btn_Join" id="Btn_Join">解散揪團</button>
+							<a href="#" class="return-link" id="return-link">返回</a>
+							<FORM METHOD="post" class="Btn_allgrpJoin"   ACTION="<%=request.getContextPath()%>/GrpJoinInfo.do?action=insertGrpJoinInfoNo" style="margin-bottom: 0px;">
+							<div>
+							    <input id="Btn_signup"value="報名參加" style="width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;">
+							</div>    
+						    <!--報名參加-彈窗畫面 -->
+							 <div id="joingrpalertfs_alert">
+					            <div class="joingrpalertfs_alert_bg"></div>
+					            <div class="joingrpalertfs_alert_show"> 
+					                <div class="joingrpalertfs_alert_title">提示</div>
+					                <div class="joingrpalertfs_alert_txt">確定要報名嗎?</div>
+					                <div class="Btn_yesorno">
+					                    <input type="submit" class="btn_s" id="joinalert_yes" value="確定">
+					                    <input type="hidden" name="GrpNo" value="${grpVODetail.grpNo}">
+					                    <input type="hidden" name="OrgMbrNo" value="${grpVODetail.orgMbrNo}">
+					                      <input type="hidden" name="PartiMbrNo" value="M1206202300003">
+					                    <input type="hidden" name="action" value="insertGrpJoinInfoNo">
+					                       <input type="button" class="btn_s" id="joinalert_no" value="取消">
+					                </div> 
+					            </div>
+					        </div>
+							<!--End .div彈窗畫面 -->
+						    </FORM>
+						    <FORM METHOD="post" class="Btn_allgrpJoin"   ACTION="<%=request.getContextPath()%>/GrpJoinInfo.do?action=updateGrpJoinInfoNo" style="margin-bottom: 0px;">
+						    <div>
+						    	<input id="Btn_Xsignup"value="退出報名" style="width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;">
+							</div>
+							 <!--退出報名-彈窗畫面 -->
+							 <div id="Xjoingrpalertfs_alert">
+					            <div class="Xjoingrpalertfs_alert_bg"></div>
+					            <div class="Xjoingrpalertfs_alert_show"> 
+					                <div class="Xjoingrpalertfs_alert_title">提示</div>
+					                <div class="Xjoingrpalertfs_alert_txt">確定要退出報名嗎?</div>
+					                <div class="Btn_yesorno">
+					                    <input type="submit" class="btn_s" id="Xjoinalert_yes" value="確定">
+									    <input type="hidden" name="GrpNo" value="${grpVODetail.grpNo}">
+									  	<input type="hidden" name="PartiMbrNo" value="M1206202300002">
+									    <input type="hidden" name="action" value="updateGrpJoinInfoNo">
+					                    <input type="button" class="btn_s" id="Xjoinalert_no" value="取消">
+					                </div> 
+					            </div>
+					        </div>
+        					<!--End .div彈窗畫面 -->
+							</FORM>
+							<FORM METHOD="post" class="Btn_allgrpJoin"   ACTION="<%=request.getContextPath()%>/Grpinfo.do?action=updatestatGrp" style="margin-bottom: 0px;">
+								<div>
+									<input id="delgroup" value="解散揪團" style="width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;">
+							   </div>
+								<!--解散揪團-彈窗畫面 -->
+								<div id="delgrp_alert">
+								   <div class="delgrp_alert_bg"></div>
+								   <div class="delgrp_alert_show"> 
+									   <div class="delgrp_alert_title">提示</div>
+									   <div class="delgrp_alert_txt">確定要解散嗎?</div>
+									   <div class="Btn_yesorno">
+										   <input type="submit" class="btn_s" id="delalert_yes" value="確定">
+										   <input type="hidden" name="GrpNo" value="${grpVODetail.grpNo}">
+										   <input type="hidden" name="action" value="updatestatGrp">
+										   <input type="button" class="btn_s" id="delalert_no" value="取消">
+									   </div> 
+								   </div>
+							   </div>
+							   <!--End .div彈窗畫面 -->
+							</FORM>
+							<FORM METHOD="post" class="Btn_allgrpJoin"   ACTION="<%=request.getContextPath()%>/Grpinfo.do?action=creategroup" style="margin-bottom: 0px;">
+								<input type="submit" value="編輯" style="width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;">
+								<input type="hidden" name="type" value="1">								
+								<input type="hidden" name="action" value="creategroup">
+							</FORM>
 						</div>
-
-						<!-- 彈窗畫面 -->
+						<!-- 參與人彈窗畫面 datatable -->
 						<div id="All_grpinfoorgmbr" class="All_grpinfoorgmbr">
 							<div class="fs_grpinfoorgmbr_bg"></div>
 							<div class="grpinfoorgmbr_show">
@@ -459,35 +647,28 @@ button:hover, .return-link:hover {
 										<thead>
 											<tr>
 												<!-- 欄位標題 可以調整欄位數量但標題和內容要一起-->
-												<th width="20%">序號</th>
-												<th width="20%">參與人編號</th>
-												<th width="20%">參與人</th>
-												<th width="20%">連絡電話</th>
-												<th width="20%">電子信箱</th>
+												<th width="50px" style="padding-left: 15px; ">序號</th>
+												<th width="100px" style="padding-left: 15px; ">參與人編號</th>
+												<th width="100px" style="padding-left: 15px; ">參與人</th>
+												<th width="100px" style="padding-left: 15px; ">連絡電話</th>
+												<th width="100px" style="padding-left: 15px; ">電子信箱</th>
 											</tr>
 										</thead>
 										<tbody>
-										
 											<tr>
-												<td>00000000000</td>
-												<td>AKA0001</td>
-												<td>林XX</td>
-												<td>0912345678</td>
-												<td>xxLin@yahoo.com.tw</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
 											</tr>
-											<tr>
-												<td>2</td>
-												<td>AKA0087</td>
-												<td>陳OO</td>
-												<td>0912978678</td>
-												<td>OOLin@gmail.com</td>
-											</tr>
-
 										</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
+						
+						
 					</form>
 					<!-- End .createform_main -->
 				</div>
@@ -705,48 +886,64 @@ button:hover, .return-link:hover {
 <!--  		$("div.mobile-menu-container").load("mobile-menu-container.html"); -->
 <!-- 	</script> -->
 
+
 	<script>
-		var chevronDown = document.getElementById('fas_fa');
-		var popup = document.getElementById('All_grpinfoorgmbr');
-		var fs_grpinfoorgmbr_bg = document
-				.querySelector('.fs_grpinfoorgmbr_bg');
-		var arrow_left = document.getElementById('arrow-left');
+	//返回按鈕
+	document.querySelector('#return-link').addEventListener('click', function() {
+	    window.history.back();
+	});
+	</script>
+	<script>
+	//報名參加彈窗
+    function joingrpalertfs_alert(){
+        let joingrpalertfs_alert_el = document.getElementById('joingrpalertfs_alert');
+        joingrpalertfs_alert_el.style.display = 'block';
+    //抓到確認元素,按下確認按鈕即關閉
+    let alert_no_Btn = document.getElementById('joinalert_no');
+        alert_no_Btn.addEventListener('click',function(){
+         joingrpalertfs_alert_el.style.display = 'none';
+        });
+    }
+	//退出報名彈窗
+    function Xjoingrpalertfs_alert(){
+        let Xjoingrpalertfs_alert_el = document.getElementById('Xjoingrpalertfs_alert');
+        Xjoingrpalertfs_alert_el.style.display = 'block';
 
-		chevronDown.addEventListener('click', function() {
-			popup.style.display = 'block';
-		});
+    //抓到確認元素,按下確認按鈕即關閉
+    let Xjoinalert_no_Btn = document.getElementById('Xjoinalert_no');
+	   	   Xjoinalert_no_Btn.addEventListener('click',function(){
+         Xjoingrpalertfs_alert_el.style.display = 'none';
+        });
+    }
+    function delgrp_alert(){
+        let delgrp_alert_el = document.getElementById('delgrp_alert');
+        delgrp_alert_el.style.display = 'block';
 
-		fs_grpinfoorgmbr_bg.addEventListener('click', function() {
-			popup.style.display = 'none';
-		});
+    //抓到確認元素,按下確認按鈕即關閉
+    let delgrp_alert_no_Btn = document.getElementById('delalert_no');
+	   	   delgrp_alert_no_Btn.addEventListener('click',function(){
+         delgrp_alert_el.style.display = 'none';
+        });
+    }
+	
+	
+	
+	
+	
+	
 
-		arrow_left.addEventListener('click', function() {
-			popup.style.display = 'none';
-		});
+	 
 
-		form.addEventListener('submit', function(event) {
-			event.preventDefault();
-			alert('活動資訊新增成功！');
-		});
-		var return_link_el = document.getElementById("return_link");
+    function init() {
+    　　//報名參加彈窗
+       document.querySelector('#Btn_signup').addEventListener('click',joingrpalertfs_alert);
+       document.querySelector('#Btn_Xsignup').addEventListener('click',Xjoingrpalertfs_alert);
+       document.querySelector('#delgroup').addEventListener('click',delgrp_alert);
+    }
 
-		return_link_el.addEventListener("click", function() {
-			var result = window.confirm("未編輯完成確定要返回？");
-			if (result === true) {
-				// 用戶按下了確定return我的揪團頁面
-			}
-		});
-
-		// 編輯按鈕從後端轉頁面
-		// 返回按鈕從後端轉頁面
-
-		var Btn_Join_el = document.getElementById('Btn_Join');
-		Btn_Join_el.addEventListener('click', function() {
-			var result = window.confirm("確定要解散揪團?");
-			if (result === true) {
-				// 揪團狀態改為不成立,並不顯示在我的揪團和揪團首頁頁面,跳轉到我的揪團頁面
-			}
-		});
+    // 程式準備開始
+    window.addEventListener('load', init);
+    
 	</script>
 
 </body>
