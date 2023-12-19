@@ -18,7 +18,7 @@ public class OrderVO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "OrderNo", nullable = false)
+	@Column(name = "OrderNo", updatable = false)
 	private Integer orderNo;
 
 	@Column(name = "MbrNo")
@@ -29,22 +29,44 @@ public class OrderVO implements Serializable {
 
 	@Column(name = "OrderStat")
 	private Integer orderStat;
-	
+
+	@Column(name = "RcvrName")
+	private String rcvrName;
+
+	@Column(name = "RcvrEmail")
+	private String rcvrEmail;
+
+	@Column(name = "RcvrPhone")
+	private String rcvrPhone;
+
+	@Column(name = "RcvrAddr")
+	private String rcvrAddr;
+
 	@CreationTimestamp
 	@Column(name = "OrderCrtTime")
 	private Timestamp orderCrtTime;
+
+
+	@Column(name = "OrderCancelTime")
+	private Timestamp orderCancelTime;
 
 	public OrderVO() {
 
 	}
 
-	public OrderVO(Integer orderNo, String mbrNo, Integer orderPrice, Integer orderStat, Timestamp orderCrtTime) {
+	public OrderVO(Integer orderNo, String mbrNo, Integer orderPrice, Integer orderStat, String rcvrName,
+			String rcvrEmail, String rcvrPhone, String rcvrAddr, Timestamp orderCrtTime, Timestamp orderCancelTime) {
 		super();
 		this.orderNo = orderNo;
 		this.mbrNo = mbrNo;
 		this.orderPrice = orderPrice;
 		this.orderStat = orderStat;
+		this.rcvrName = rcvrName;
+		this.rcvrEmail = rcvrEmail;
+		this.rcvrPhone = rcvrPhone;
+		this.rcvrAddr = rcvrAddr;
 		this.orderCrtTime = orderCrtTime;
+		this.orderCancelTime = orderCancelTime;
 	}
 
 	public Integer getOrderNo() {
@@ -79,6 +101,38 @@ public class OrderVO implements Serializable {
 		this.orderStat = orderStat;
 	}
 
+	public String getRcvrName() {
+		return rcvrName;
+	}
+
+	public void setRcvrName(String rcvrName) {
+		this.rcvrName = rcvrName;
+	}
+
+	public String getRcvrEmail() {
+		return rcvrEmail;
+	}
+
+	public void setRcvrEmail(String rcvrEmail) {
+		this.rcvrEmail = rcvrEmail;
+	}
+
+	public String getRcvrPhone() {
+		return rcvrPhone;
+	}
+
+	public void setRcvrPhone(String rcvrPhone) {
+		this.rcvrPhone = rcvrPhone;
+	}
+
+	public String getRcvrAddr() {
+		return rcvrAddr;
+	}
+
+	public void setRcvrAddr(String rcvrAddr) {
+		this.rcvrAddr = rcvrAddr;
+	}
+
 	public Timestamp getOrderCrtTime() {
 		return orderCrtTime;
 	}
@@ -87,9 +141,20 @@ public class OrderVO implements Serializable {
 		this.orderCrtTime = orderCrtTime;
 	}
 
+	public Timestamp getOrderCancelTime() {
+		return orderCancelTime;
+	}
+
+	public void setOrderCancelTime(Timestamp orderCancelTime) {
+		this.orderCancelTime = orderCancelTime;
+	}
+
 	@Override
 	public String toString() {
 		return "OrderVO [orderNo=" + orderNo + ", mbrNo=" + mbrNo + ", orderPrice=" + orderPrice + ", orderStat="
-				+ orderStat + ", orderCrtTime=" + orderCrtTime + "]";
+				+ orderStat + ", rcvrName=" + rcvrName + ", rcvrEmail=" + rcvrEmail + ", rcvrPhone=" + rcvrPhone
+				+ ", rcvrAddr=" + rcvrAddr + ", orderCrtTime=" + orderCrtTime + ", orderCancelTime=" + orderCancelTime
+				+ "]";
 	}
+
 }

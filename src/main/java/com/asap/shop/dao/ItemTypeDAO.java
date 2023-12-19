@@ -27,19 +27,8 @@ public class ItemTypeDAO implements ItemTypeDAO_interface {
 	}
 
 	@Override
-	public int update(ItemTypeVO itemType) {
+	public int delete(ItemTypeVO itemType) {
 
-		try {
-			getSession().update(itemType);
-			return 1;
-		} catch (Exception e) {
-			return -1;
-		}
-	}
-	
-	@Override
-	public int delete(Integer id) {
-		ItemTypeVO itemType = getSession().get(ItemTypeVO.class, id);
 		if (itemType != null) {
 			getSession().delete(itemType);
 			// 回傳給 service，1代表刪除成功
@@ -57,11 +46,9 @@ public class ItemTypeDAO implements ItemTypeDAO_interface {
 
 	@Override
 	public List<ItemTypeVO> getALL() {
-		Transaction transaction = null;
+
 		try {
-			Session session = getSession();
-			transaction = session.beginTransaction();
-			List<ItemTypeVO> list = session.createQuery("from ItemTypeVO", ItemTypeVO.class).list();
+			List<ItemTypeVO> list = getSession().createQuery("from ItemTypeVO", ItemTypeVO.class).list();
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();

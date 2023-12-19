@@ -6,13 +6,13 @@ import com.asap.shop.entity.ItemTypeVO;
 
 public interface ItemTypeService_interface {
 
-    int addType(ItemTypeVO itemType);
+	// 以編號來進行增刪查改
+	int insert(ItemTypeVO itemType);
 
-    int updateType(ItemTypeVO itemType);
+	int delete(ItemTypeVO itemType);
 
-    int deleteType(Integer itemTypeNo);
+	// 編號查找單筆商品分類名稱(PK)
+	ItemTypeVO findByItemTypeNo(Integer itemTypeNo);
 
-    ItemTypeVO findTypeByNo(Integer itemTypeNo);
-
-    List<ItemTypeVO> getAllTypes();
+	List<ItemTypeVO> getALL();
 }

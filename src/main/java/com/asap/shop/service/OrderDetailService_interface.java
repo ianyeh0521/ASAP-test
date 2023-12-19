@@ -11,21 +11,22 @@ public interface OrderDetailService_interface {
 
 	int update(OrderDetailVO entity);
 
-	// 買家 撰寫評論
-	String updateCmtText(Integer orderDetailNo, String cmtText, Timestamp cmtTime);
+	int delete(OrderDetailVO entity);
 
-	// 賣家 回覆評論
-	String updateCmtReText(Integer orderDetailNo, String cmtReText, Timestamp cmtReTime);
+	String addCmt(OrderDetailVO entity, String cmtText);
+	
+	String addReCmt(OrderDetailVO entity, String cmtReText);
 
 	OrderDetailVO findByPK(Integer orderDetailNo);
 
 	List<OrderDetailVO> findByOrderNo(Integer orderNo);
 
-	List<OrderDetailVO> findByCmtScore(Integer cmtScore);
+	List<OrderDetailVO> findByMbrNo(String mbrNo);
 
 	List<OrderDetailVO> getAll();
+
+	Integer getTotal();
 	
-	// 取得平均評分
-	Double getAvgScore();
+	
 
 }

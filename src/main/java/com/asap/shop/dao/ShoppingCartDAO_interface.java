@@ -11,7 +11,7 @@ public interface ShoppingCartDAO_interface {
 	
 	Integer update(ShoppingCartVO entity);
 
-	String delete(Integer shoppingCartNo);
+	String delete(ShoppingCartVO entity);
 
 	ShoppingCartVO findByPK(Integer shoppingCartNo);
 	
@@ -21,5 +21,5 @@ public interface ShoppingCartDAO_interface {
 
 	List<ShoppingCartVO> getAll();
 
-	long getTotal();
+	int getTotal();
 }

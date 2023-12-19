@@ -8,34 +8,29 @@ import com.asap.shop.entity.ItemStatVO;
 
 public class ItemStatService implements ItemStatService_interface {
 
-    private ItemStatDAO_interface dao;
+	private ItemStatDAO_interface dao;
 
-    public ItemStatService() {
-        dao = new ItemStatDAO(); // Assuming ItemStatDAO is the implementation of ItemStatDAO_interface
-    }
+	public ItemStatService() {
+		dao = new ItemStatDAO(); // Assuming ItemStatDAO is the implementation of ItemStatDAO_interface
+	}
 
-    @Override
-    public int addStat(ItemStatVO itemStat) {
-        return dao.insert(itemStat);
-    }
+	@Override
+	public int insert(ItemStatVO itemStat) {
+		return dao.insert(itemStat);
+	}
 
-    @Override
-    public int updateStat(ItemStatVO itemStat) {
-        return dao.update(itemStat);
-    }
+	@Override
+	public int delete(ItemStatVO itemStat) {
+		return dao.delete(itemStat);
+	}
 
-    @Override
-    public int deleteStat(Integer itemStatNo) {
-        return dao.delete(itemStatNo);
-    }
+	@Override
+	public ItemStatVO findByItemStatNo(Integer itemStatNo) {
+		return dao.findByItemStatNo(itemStatNo);
+	}
 
-    @Override
-    public ItemStatVO findStatByNo(Integer itemStatNo) {
-        return dao.findByItemStatNo(itemStatNo);
-    }
-
-    @Override
-    public List<ItemStatVO> getAllStats() {
-        return dao.getALL();
-    }
+	@Override
+	public List<ItemStatVO> getALL() {
+		return dao.getALL();
+	}
 }

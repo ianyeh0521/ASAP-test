@@ -5,6 +5,7 @@ import java.util.List;
 import com.asap.shop.dao.ItemCollectDAO;
 import com.asap.shop.dao.ItemCollectDAO_interface;
 import com.asap.shop.entity.ItemCollectVO;
+import com.asap.shop.entity.ShoppingCartVO;
 
 public class ItemCollectService implements ItemCollectService_interface {
 
@@ -17,7 +18,7 @@ public class ItemCollectService implements ItemCollectService_interface {
 	@Override
 	public Integer insert(ItemCollectVO entity) {
 		// 檢查是否有存在相同的記錄
-		ItemCollectVO vo = dao.findByMemberAndItemNo(entity.getMbrNo(), entity.getItemNo());
+		ItemCollectVO vo = dao.findByMbrNoAndItemNo(entity.getMbrNo(), entity.getItemNo());
 		if (vo != null) {
 			// 如果有存在相同的記錄，無法新增
 			System.out.println("相同的記錄已存在，無法新增。");
@@ -26,13 +27,8 @@ public class ItemCollectService implements ItemCollectService_interface {
 	}
 
 	@Override
-	public Integer update(ItemCollectVO entity) {
-		return dao.update(entity);
-	}
-
-	@Override
-	public String delete(Integer itemCollectNo) {
-		return dao.delete(itemCollectNo);
+	public String delete(ItemCollectVO entity) {
+		return dao.delete(entity);
 	}
 
 	@Override
@@ -41,8 +37,8 @@ public class ItemCollectService implements ItemCollectService_interface {
 	}
 
 	@Override
-	public List<ItemCollectVO> findByMember(String mbrNo) {
-		return dao.findByMember(mbrNo);
+	public List<ItemCollectVO> findByMbrNo(String mbrNo) {
+		return dao.findByMbrNo(mbrNo);
 	}
 
 	@Override
@@ -51,8 +47,19 @@ public class ItemCollectService implements ItemCollectService_interface {
 	}
 
 	@Override
-	public Integer getTotal() {
-		return dao.getTotal();
+	public ItemCollectVO findByMbrNoAndItemNo(String mbrNo, Integer itemNo) {
+
+		return dao.findByMbrNoAndItemNo(mbrNo, itemNo);
 	}
 
+	@Override
+	public void cleanByMbrNo(String mbrNo) {
+
+		List<ItemCollectVO> list = dao.findByMbrNo(mbrNo);
+		if (list != null && list.size() != 0) {
+			for (ItemCollectVO itemCollectVO : list) {
+				dao.delete(itemCollectVO);
+			}
+		}
+	}
 }

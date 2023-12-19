@@ -25,20 +25,11 @@ public class ItemSizeDAO implements ItemSizeDAO_interface {
 		return (Integer) getSession().save(itemSize);
 	}
 
-	@Override
-	public int update(ItemSizeVO itemSize) {
-
-		try {
-			getSession().update(itemSize);
-			return 1;
-		} catch (Exception e) {
-			return -1;
-		}
-	}
+	
 	
 	@Override
-	public int delete(Integer id) {
-		ItemSizeVO itemSize = getSession().get(ItemSizeVO.class, id);
+	public int delete(ItemSizeVO itemSize) {
+		
 		if (itemSize != null) {
 			getSession().delete(itemSize);
 			// 回傳給 service，1代表刪除成功
@@ -58,9 +49,7 @@ public class ItemSizeDAO implements ItemSizeDAO_interface {
 	public List<ItemSizeVO> getALL() {
 		Transaction transaction = null;
 		try {
-			Session session = getSession();
-			transaction = session.beginTransaction();
-			List<ItemSizeVO> list = session.createQuery("from ItemSizeVO", ItemSizeVO.class).list();
+			List<ItemSizeVO> list = getSession().createQuery("from ItemSizeVO", ItemSizeVO.class).list();
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();

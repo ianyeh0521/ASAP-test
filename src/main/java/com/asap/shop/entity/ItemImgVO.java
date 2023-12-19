@@ -19,14 +19,14 @@ public class ItemImgVO implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "itemImgNo", updatable = false, nullable = false)
+	@Column(name = "ItemImgNo", updatable = false, nullable = false)
 	private Integer itemImgNo;
 	
 	@Column(name = "ItemNo")
     private Integer itemNo; 
 	
-	@Lob
-	@Column(name = "ItemImg")
+	
+	@Column(name = "ItemImg", columnDefinition = "longblob")
 	private byte[] itemImg;
 	
 	@Column(name = "ItemImgfront")

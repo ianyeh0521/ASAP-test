@@ -43,6 +43,19 @@ public class OrderDetailDAO implements OrderDetailDAO_interface {
 	}
 
 	@Override
+	public int delete(OrderDetailVO entity) {
+		try {
+			// getSession().beginTransaction();
+			getSession().delete(entity);
+			// getSession().getTransaction().commit();
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	@Override
 	public OrderDetailVO findByPK(Integer orderDetailNo) {
 		try {
 			// getSession().beginTransaction();
@@ -71,11 +84,11 @@ public class OrderDetailDAO implements OrderDetailDAO_interface {
 	}
 
 	@Override
-	public List<OrderDetailVO> findByCmtScore(Integer cmtScore) {
+	public List<OrderDetailVO> findByMbrNo(String mbrNo) {
 		try {
 			// getSession().beginTransaction();
-			Query<OrderDetailVO> query = getSession().createQuery("FROM OrderDetailVO WHERE cmtScore = :cmtScore");
-			query.setParameter("cmtScore", cmtScore);
+			Query<OrderDetailVO> query = getSession().createQuery("FROM OrderDetailVO WHERE  mbrNo = : mbrNo");
+			query.setParameter(" mbrNo", mbrNo);
 			List<OrderDetailVO> list = query.list();
 			return list;
 		} catch (Exception e) {
@@ -98,21 +111,11 @@ public class OrderDetailDAO implements OrderDetailDAO_interface {
 	}
 
 	@Override
-	public List<Integer> getAllCmtScore() {
-		getSession().beginTransaction();
-		Query<Integer> query = getSession().createQuery("SELECT cmtScore FROM OrderDetailVO", Integer.class);
-		List<Integer> list = query.list();
-		getSession().getTransaction().commit();
-		return list;
-	}
-
-	@Override
 	public Integer getTotal() {
 		try {
-			getSession().beginTransaction();
+
 			int num = getSession().createQuery("select count(*) from OrderDetailVO", Long.class).uniqueResult()
 					.intValue();
-			getSession().getTransaction().commit();
 			return num;
 		} catch (Exception e) {
 			e.printStackTrace();

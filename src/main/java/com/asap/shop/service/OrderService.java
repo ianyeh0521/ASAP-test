@@ -16,6 +16,7 @@ public class OrderService implements OrderService_interface {
 
 	@Override
 	public int insert(OrderVO entity) {
+		entity.setOrderCrtTime(new java.sql.Timestamp(System.currentTimeMillis()));
 		return dao.insert(entity);
 	}
 
@@ -25,10 +26,12 @@ public class OrderService implements OrderService_interface {
 	}
 
 	@Override
-	public String updateOrderStatus(Integer orderId, Integer orderStat) {
-		return dao.updateOrderStatus(orderId, orderStat);
+	public int cancel(OrderVO entity) {
+		entity.setOrderCancelTime(new java.sql.Timestamp(System.currentTimeMillis()));
+		entity.setOrderStat(4);
+		return dao.update(entity);
 	}
-
+	
 	@Override
 	public OrderVO findByPK(Integer orderNo) {
 		return dao.findByPK(orderNo);
