@@ -9,7 +9,7 @@ public interface SavePostDAO_interface {
 	
 	public Integer add (SavePostVO savepost);
 	
-	public Integer delete (Integer sPNo);
+	public Integer delete(String mbrNo, Integer postNo);
 	
 	public List<SavePostVO> getbyMbrNo(String mbrNo);
 	

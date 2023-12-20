@@ -30,8 +30,11 @@ public class SavePostDAO implements SavePostDAO_interface{
 
 
 	@Override
-	public Integer delete(Integer sPNo) {
-		SavePostVO savepost = getSession().get(SavePostVO.class, sPNo);
+	public Integer delete(String mbrNo, Integer postNo) {
+		SavePostVO savepost = getSession().createQuery("from SavePostVO where mbrNo= :mbrNo AND postNo= :postNo", SavePostVO.class)
+								.setParameter("mbrNo", mbrNo)
+								.setParameter("postNo", postNo)			
+								.uniqueResult();
 		if (savepost != null) {
 			getSession().delete(savepost);
 			return 1;

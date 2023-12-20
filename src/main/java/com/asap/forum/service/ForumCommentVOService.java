@@ -12,4 +12,6 @@ public interface ForumCommentVOService {
 	
 	//修改CmtStatus
 	public Integer deleteComment(ForumCommentVO forumComment);
+	
+	public ForumCommentVO getOneComment(Integer cmtno);
 }

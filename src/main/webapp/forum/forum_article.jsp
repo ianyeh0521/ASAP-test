@@ -20,7 +20,6 @@
 	Integer views = post.getPostViews();
 	post.setPostViews(views+1);
 	postSvc.updatePost(post);
-	
     pageContext.setAttribute("post", post);
     
     ForumCommentVOService commentSvc= new ForumCommentVOServiceImpl();
@@ -28,14 +27,16 @@
     pageContext.setAttribute("comments", comments);
 
     List<String> statuslist = new ArrayList<>();
-    ForumLikeVOService cmtLikeSvc= new ForumLikeVOServiceImpl();
+    ForumLikeVOService likeSvc= new ForumLikeVOServiceImpl();
     for (ForumCommentVO comment : comments) {
        Integer cmtNo=comment.getCmtNo();
-       statuslist.add(cmtLikeSvc.cmtLikecheck("M002", cmtNo));
-    }
-   	cmtLikeSvc.
+       statuslist.add(likeSvc.cmtLikecheck("M002", cmtNo));
+    } 	
     pageContext.setAttribute("statuslist", statuslist);
-
+    
+    Long postLikes=likeSvc.likeCounts(postNo);
+    pageContext.setAttribute("postLikes", postLikes);
+    
 %>
 
 
@@ -70,7 +71,7 @@
     (function (d) {
       var wf = d.createElement("script"),
         s = d.scripts[0];
-      wf.src = "assets/js/webfont.js";
+      wf.src = "${pageContext.request.contextPath}assets/js/webfont.js";
       wf.async = true;
       s.parentNode.insertBefore(wf, s);
     })(document);
@@ -326,11 +327,11 @@
 
           <i class="fa-regular fa-clock"></i><span class="post-time"
             style="display: inline-block; margin:0 0.5%">
-           <fmt:formatDate value="${post.postCrtTime}" pattern="yyyy-MM-dd HH:mm:ss" />
+           <fmt:formatDate value="${post.postCrtTime}" pattern="yyyy-MM-dd HH:mm" />
             </span>
 
           <div class="user-feature" style="float:right;">
-            <span class="thumbs-up"><i class="fa-regular fa-thumbs-up fa-lg"></i>2344</span>
+            <span class="thumbs-up"><i class="fa-regular fa-thumbs-up fa-lg"></i><span class="likecounts">${postLikes}</span></span>
             <span class="save"><i class="fa-regular fa-floppy-disk fa-lg"></i>收藏貼文</span>
             <span class="report"><a href="${pageContext.request.contextPath}/forum/forum_report.jsp?postNo=${post.postNo}" style="color:#77837c"><i
                   class="fa-solid fa-flag fa-lg"></i>檢舉</a></span>
@@ -373,7 +374,7 @@
           <div class="comment-info">
             <i class="fas fa-circle-user fa-lg"></i>
             <span class="comment-author">${comment.mbrNo}</span>
-            <span class="comment-time"><i class="fa-regular fa-clock"></i><fmt:formatDate value="${comment.cmtCrtTime}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+            <span class="comment-time"><i class="fa-regular fa-clock"></i><fmt:formatDate value="${comment.cmtCrtTime}" pattern="yyyy-MM-dd HH:mm" /></span>
           </div>
           <p class="comment-content" data-cmtno="${comment.cmtNo}">
             ${comment.cmtText}
@@ -415,7 +416,7 @@
               </div>
               <div class="report-item">
                 <label for="article-time">留言時間：</label>
-                <span id="article-time"><fmt:formatDate value="${comment.cmtCrtTime}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+                <span id="article-time"><fmt:formatDate value="${comment.cmtCrtTime}" pattern="yyyy-MM-dd HH:mm" /></span>
               	<input type="hidden" class="commentNo" value="${comment.cmtNo}">
               </div>
               <div class="report-item report-type">
@@ -497,9 +498,15 @@
     		    if(data.status==1){
 //     		    	$("this").addClass("-up");
     		        $("span.thumbs-up").addClass("-up");
+    		        var likes = parseInt($("span.likecounts").text());
+    		        console.log(likes);
+    		        $("span.likecounts").text(likes+1);
     		    }else if(data.status==0){
 //     		    	$("this").removeClass("-up");
     		        $("span.thumbs-up").removeClass("-up");
+    		        var likes = parseInt($("span.likecounts").text());
+    		        console.log(likes);
+    		        $("span.likecounts").text(likes-1);
     		    }
     		   
     		  }
@@ -510,6 +517,31 @@
       
 //收藏
       $("span.save").on("click", function () {
+    	  let postno=$("h2.post-title").attr("data-postno");
+    	  $.ajax({
+    		  url: "savepost.do",          
+    		  type: "POST",                  
+    		  data: {"action": "savepost",
+    			  	 "postno": postno    },
+    		  dataType:"json",
+    		  success: function(data){      
+    		    if(data.status==1){
+//     		    	$("this").addClass("-up");
+    		        $("span.thumbs-up").addClass("-up");
+    		        var likes = parseInt($("span.likecounts").text());
+    		        console.log(likes);
+    		        $("span.likecounts").text(likes+1);
+    		    }else if(data.status==0){
+//     		    	$("this").removeClass("-up");
+    		        $("span.thumbs-up").removeClass("-up");
+    		        var likes = parseInt($("span.likecounts").text());
+    		        console.log(likes);
+    		        $("span.likecounts").text(likes-1);
+    		    }
+    		   
+    		  }
+    	});
+    	  
         $("i.fa-floppy-disk").toggleClass("-saved");
         $("span.save").toggleClass("-saved")
       });
@@ -590,17 +622,17 @@
 
       });
 
-      $(document).on("click", "button.delete-comment", function () {
-        let del = confirm("確認刪除？");
-        if (del) {
-          //this是span.delete-comment
-          $(this)
-            .closest("div.comment-text")
-            .fadeOut(1000, function () {
-              $(this).remove();
-            });
-        }
-      });
+//       $(document).on("click", "button.delete-comment", function () {
+//         let del = confirm("確認刪除？");
+//         if (del) {
+//           //this是span.delete-comment
+//           $(this)
+//             .closest("div.comment-text")
+//             .fadeOut(1000, function () {
+//               $(this).remove();
+//             });
+//         }
+//       });
 
 
 

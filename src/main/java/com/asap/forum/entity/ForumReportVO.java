@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,8 +33,12 @@ public class ForumReportVO {
 	@Column(name = "MbrNo")
 	private String  mbrNo;
 	
-	@Column(name = "FRptTypeNo")
-	private Integer fRptTypeNo;
+//	@Column(name = "FRptTypeNo")
+//	private Integer fRptTypeNo;
+	
+	@ManyToOne
+	@JoinColumn(name = "fRptTypeNo", referencedColumnName = "fRptTypeNo")
+	private ForumReportTypeVO forumReportTypeVO;	
 	
 	@Column(name = "FRptMsg")
 	private String  fRptMsg;
@@ -47,7 +53,6 @@ public class ForumReportVO {
 	@Column(name = "FRptReply")
 	private String  fRptReply;
 	
-	@UpdateTimestamp
 	@Column(name = "FRptReplyTime")
 	private Timestamp  fRptReplyTime;
 	
@@ -56,21 +61,7 @@ public class ForumReportVO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ForumReportVO(Integer fRptNo, Integer postNo, Integer cmtNo, String mbrNo, Integer fRptTypeNo,
-			String fRptMsg, Timestamp fRptTime, String backNo, String fRptReply, Timestamp fReplyTime) {
-		super();
-		this.fRptNo = fRptNo;
-		this.postNo = postNo;
-		this.cmtNo = cmtNo;
-		this.mbrNo = mbrNo;
-		this.fRptTypeNo = fRptTypeNo;
-		this.fRptMsg = fRptMsg;
-		this.fRptTime = fRptTime;
-		this.backNo = backNo;
-		this.fRptReply = fRptReply;
-		this.fRptReplyTime = fReplyTime;
-	}
-
+	
 	public Integer getfRptNo() {
 		return fRptNo;
 	}
@@ -103,13 +94,40 @@ public class ForumReportVO {
 		this.mbrNo = mbrNo;
 	}
 
-	public Integer getfRptTypeNo() {
-		return fRptTypeNo;
+	public ForumReportTypeVO getForumReportTypeVO() {
+		return forumReportTypeVO;
 	}
 
-	public void setfRptTypeNo(Integer fRptTypeNo) {
-		this.fRptTypeNo = fRptTypeNo;
+
+	public void setForumReportTypeVO(ForumReportTypeVO forumReportTypeVO) {
+		this.forumReportTypeVO = forumReportTypeVO;
 	}
+
+
+	@Override
+	public String toString() {
+		return "ForumReportVO [fRptNo=" + fRptNo + ", postNo=" + postNo + ", cmtNo=" + cmtNo + ", mbrNo=" + mbrNo
+				+ ", forumReportTypeVO=" + forumReportTypeVO + ", fRptMsg=" + fRptMsg + ", fRptTime=" + fRptTime
+				+ ", backNo=" + backNo + ", fRptReply=" + fRptReply + ", fRptReplyTime=" + fRptReplyTime + "]";
+	}
+
+
+	public ForumReportVO(Integer fRptNo, Integer postNo, Integer cmtNo, String mbrNo,
+			ForumReportTypeVO forumReportTypeVO, String fRptMsg, Timestamp fRptTime, String backNo, String fRptReply,
+			Timestamp fRptReplyTime) {
+		super();
+		this.fRptNo = fRptNo;
+		this.postNo = postNo;
+		this.cmtNo = cmtNo;
+		this.mbrNo = mbrNo;
+		this.forumReportTypeVO = forumReportTypeVO;
+		this.fRptMsg = fRptMsg;
+		this.fRptTime = fRptTime;
+		this.backNo = backNo;
+		this.fRptReply = fRptReply;
+		this.fRptReplyTime = fRptReplyTime;
+	}
+
 
 	public String getfRptMsg() {
 		return fRptMsg;

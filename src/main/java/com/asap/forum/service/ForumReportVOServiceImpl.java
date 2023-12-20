@@ -27,4 +27,9 @@ public class ForumReportVOServiceImpl implements ForumReportVOService {
 	public List<ForumReportVO> getAll() {
 		return dao.getAll();
 	}
+
+	@Override
+	public ForumReportVO findByPK(Integer fRptNo) {
+		return dao.findByPK(fRptNo);
+	}
 }

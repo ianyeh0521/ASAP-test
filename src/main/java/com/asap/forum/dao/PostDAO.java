@@ -99,7 +99,7 @@ public class PostDAO implements PostDAO_interface {
 
 	@Override
 	public List<PostVO> getAllbyDate() {
-		return getSession().createQuery("from PostVO where postStatus=1 order by postCrtTime", PostVO.class).list();
+		return getSession().createQuery("from PostVO where postStatus=1 order by postCrtTime DESC", PostVO.class).list();
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class PostDAO implements PostDAO_interface {
 
 	@Override
 	public List<PostVO> getAllbyViews() {
-		return getSession().createQuery("from PostVO where postStatus=1 order by postViews", PostVO.class).list();
+		return getSession().createQuery("from PostVO where postStatus=1 order by postViews DESC", PostVO.class).list();
 	}
 	
 	@Override
@@ -128,7 +128,7 @@ public class PostDAO implements PostDAO_interface {
 
 	@Override
 	public List<PostVO> getMyPosts(String mbrNo) {
-		return getSession().createQuery("from PostVO where mbrNo= :mbrno", PostVO.class)
+		return getSession().createQuery("from PostVO where mbrNo= :mbrno AND (postStatus=1 OR postStatus=0)", PostVO.class)
 				.setParameter("mbrno", mbrNo)
 				.list();
 	}

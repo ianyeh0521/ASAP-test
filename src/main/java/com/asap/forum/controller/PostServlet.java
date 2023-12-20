@@ -45,7 +45,12 @@ public class PostServlet extends HttpServlet {
 //			dispatcher.forward(req, res);
 		}else if ("savedraft".equals(action)) {
 			forwardPath = addDraft(req,res);
-			res.setContentType("text/html; charset=UTF-8");
+			res.sendRedirect(forwardPath);
+		}else if ("updatedraft".equals(action)) {
+			forwardPath = updateDraft(req,res);
+			res.sendRedirect(forwardPath);
+		}else if ("updatepost".equals(action)) {
+			forwardPath = updatePost(req,res);
 			res.sendRedirect(forwardPath);
 		}
 		
@@ -65,9 +70,16 @@ public class PostServlet extends HttpServlet {
 			case "bypopularity":
 				searchByPopularity(req,res);
 				break;
-//			case "getAll":
-//				forwardPath = getAllPosts(req, res);
-//				break;
+			case "getmypost":
+				getPost(req,res);
+				break;
+			case "deletepost":
+				deletePost(req,res);
+				break;
+				
+			case "postrptmgmt":
+				forwardPath = postRptmgmt(req, res);
+				break;
 //			case "compositeQuery":
 //				forwardPath = getCompositeEmpsQuery(req, res);
 //				break;
@@ -80,7 +92,64 @@ public class PostServlet extends HttpServlet {
 		
 	}
 
+	private String postRptmgmt(HttpServletRequest req, HttpServletResponse res) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String updatePost(HttpServletRequest req, HttpServletResponse res) {
+		res.setContentType("text/html; charset=UTF-8");
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		Integer posttypeno = Integer.parseInt(req.getParameter("posttypeno"));
+		String posttitle =req.getParameter("posttitle");
+		String posttext=req.getParameter("posttext");
+		PostTypeVO postTypeVO=new PostTypeVO(posttypeno);
+		PostVO post=postVOService.findbyPK(postno);
+		post.setPostStatus(1);
+		post.setPostTitle(posttitle);
+		post.setPostText(posttext);
+		post.setPostTypeVO(postTypeVO);
+		postVOService.updatePost(post);
+		return "/ASAP/forum/forum_home.jsp";
+	}
+
+	private String updateDraft(HttpServletRequest req, HttpServletResponse res) {
+		res.setContentType("text/html; charset=UTF-8");
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		Integer posttypeno = Integer.parseInt(req.getParameter("posttypeno"));
+		String posttitle =req.getParameter("posttitle");
+		String posttext=req.getParameter("posttext");
+		PostTypeVO postTypeVO=new PostTypeVO(posttypeno);
+		PostVO post=postVOService.findbyPK(postno);
+		post.setPostTitle(posttitle);
+		post.setPostText(posttext);
+		post.setPostTypeVO(postTypeVO);
+		postVOService.updatePost(post);
+		return "/ASAP/forum/forum_home.jsp";
+	}
+
+	private void deletePost(HttpServletRequest req, HttpServletResponse res) {
+		res.setContentType("application/json;charset=UTF-8");
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		PostVO post=postVOService.findbyPK(postno);
+		post.setPostStatus(2);
+		postVOService.updatePost(post);
+		
+	}
+
+	private void getPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		res.setContentType("application/json;charset=UTF-8");
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		PostVO post=postVOService.findbyPK(postno);
+		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+		String jsonString=gson.toJson(post);
+		PrintWriter out = res.getWriter();
+        out.write(jsonString);          
+        out.close();  
+	}
+
 	private String addDraft(HttpServletRequest req, HttpServletResponse res) {
+		res.setContentType("text/html; charset=UTF-8");
 		Integer posttypeno = Integer.parseInt(req.getParameter("posttypeno"));
 		String posttitle =req.getParameter("posttitle");
 		String posttext=req.getParameter("posttext");
@@ -96,7 +165,6 @@ public class PostServlet extends HttpServlet {
 //		--------待刪-----------
 		postvo.setMbrNo("M002");
 //		--------待刪-----------
-		PostVOService postVOService= new PostVOServiceImpl();
 		postVOService.addPost(postvo);
 		return "/ASAP/forum/forum_home.jsp";
 	}
@@ -104,7 +172,7 @@ public class PostServlet extends HttpServlet {
 	private void searchByPopularity(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		res.setContentType("application/json;charset=UTF-8");
 		List<PostVO> postList = postVOService.getAllbyViews();
-		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 		String jsonString=gson.toJson(postList);
 		PrintWriter out = res.getWriter();
         out.write(jsonString);          
@@ -115,7 +183,7 @@ public class PostServlet extends HttpServlet {
 	private void searchByTime(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		res.setContentType("application/json;charset=UTF-8");
 		List<PostVO> postList = postVOService.getAllbyDate();
-		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 		String jsonString=gson.toJson(postList);
 		PrintWriter out = res.getWriter();
         out.write(jsonString);          
@@ -128,7 +196,7 @@ public class PostServlet extends HttpServlet {
 		Integer type=Integer.valueOf(req.getParameter("type"));
 		System.out.println(type);
 		List <PostVO> searchList=postVOService.getbyPostCategory(type);
-		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 		String jsonString=gson.toJson(searchList);
 //		System.out.println(searchList);
 		PrintWriter out = res.getWriter();
@@ -141,7 +209,7 @@ public class PostServlet extends HttpServlet {
 		res.setContentType("application/json;charset=UTF-8");
 		String title=req.getParameter("keyword");
 		List <PostVO> searchList=postVOService.getbyPostTitle(title);
-		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 		String jsonString=gson.toJson(searchList);
 //		System.out.println(searchList);
 		PrintWriter out = res.getWriter();
@@ -152,7 +220,7 @@ public class PostServlet extends HttpServlet {
 	private void loadPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		res.setContentType("application/json;charset=UTF-8");
 		List<PostVO> postList = postVOService.getAlltoShow();
-		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 		String jsonString=gson.toJson(postList);
 		PrintWriter out = res.getWriter();
         out.write(jsonString);          
@@ -161,6 +229,7 @@ public class PostServlet extends HttpServlet {
 	}
 
 	private String addNewPost(HttpServletRequest req, HttpServletResponse res) {
+		res.setContentType("text/html; charset=UTF-8");
 		Integer posttypeno = Integer.parseInt(req.getParameter("posttypeno"));
 		String posttitle =req.getParameter("posttitle");
 		String posttext=req.getParameter("posttext");

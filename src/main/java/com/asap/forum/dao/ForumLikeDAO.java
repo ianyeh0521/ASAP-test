@@ -43,8 +43,9 @@ public class ForumLikeDAO implements ForumLikeDAO_interface {
 
 	@Override
 	public Long getLikes(Integer postNo) {
-		return getSession().createQuery("select count(*) from ForumLikeVO where postNo= :postno", Long.class)
-			   .uniqueResult();
+		return getSession().createQuery("select count(*) from ForumLikeVO where postNo= :postNo AND likeStat=true", Long.class)
+				.setParameter("postNo", postNo)
+				.uniqueResult();
 	}
 	@Override
 	public ForumLikeVO postisLiked(String mbrNo, Integer postNo) {

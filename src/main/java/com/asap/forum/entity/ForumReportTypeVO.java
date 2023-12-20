@@ -19,13 +19,18 @@ public class ForumReportTypeVO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Integer getfRptTypeNo() {
+		return fRptTypeNo;
+	}
+	public ForumReportTypeVO(Integer fRptTypeNo) {
+		super();
+		this.fRptTypeNo = fRptTypeNo;
+	}
 	public ForumReportTypeVO(Integer fRptTypeNo, String fRptTypeName) {
 		super();
 		this.fRptTypeNo = fRptTypeNo;
 		this.fRptTypeName = fRptTypeName;
-	}
-	public Integer getfRptTypeNo() {
-		return fRptTypeNo;
 	}
 	public void setfRptTypeNo(Integer fRptTypeNo) {
 		this.fRptTypeNo = fRptTypeNo;
