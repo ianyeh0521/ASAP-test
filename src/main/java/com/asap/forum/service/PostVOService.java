@@ -19,6 +19,8 @@ public interface PostVOService {
 	
 	public void deletePost(Integer postNo);
 	
+	public List<PostVO> getMyPosts(String mbrNo);
+	
 	public List<PostVO> getAllPosts();
 	
 	public List<PostVO> getAlltoShow();

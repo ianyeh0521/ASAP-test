@@ -9,4 +9,6 @@ public interface ForumLikeVOService {
 	public Integer postLikecheck(String mbrNo, Integer postNo);
 	
 	public String cmtLikecheck(String mbrNo, Integer cmtNo);
+	
+	public Long likeCounts(Integer postNo);
 }

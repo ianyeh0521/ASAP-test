@@ -82,6 +82,8 @@ private  ForumLikeDAO_interface dao;
 		}
 	}
 	
-	
+	public Long likeCounts(Integer postNo) {
+		return dao.getLikes(postNo);
+	}
 
 }

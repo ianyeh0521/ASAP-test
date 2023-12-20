@@ -1,6 +1,7 @@
 package com.asap.forum.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,8 @@ import com.asap.forum.service.ForumCommentVOService;
 import com.asap.forum.service.ForumCommentVOServiceImpl;
 import com.asap.forum.service.PostVOService;
 import com.asap.forum.service.PostVOServiceImpl;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @WebServlet("/forum/forumcomment.do")
 public class ForumCommentServlet extends HttpServlet {
@@ -35,11 +38,24 @@ public class ForumCommentServlet extends HttpServlet {
 		case "addcomment":
 			addcomment(req, res);
 			break;
-		
+		case "getonecomment":
+			getOneComment(req, res);
+			break;
 		
 	}
 	
 	res.setContentType("text/html; charset=UTF-8");
+	}
+
+	private void getOneComment(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		res.setContentType("text/html; charset=UTF-8");
+		Integer cmtno = Integer.parseInt(req.getParameter("cmtno"));
+		ForumCommentVO comment=  forumCommentVOService.getOneComment(cmtno);
+		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+		String jsonString=gson.toJson(comment);
+		PrintWriter out = res.getWriter();
+        out.write(jsonString);          
+        out.close();  
 	}
 
 	private void addcomment(HttpServletRequest req, HttpServletResponse res) {
@@ -53,8 +69,8 @@ public class ForumCommentServlet extends HttpServlet {
 //		--------待刪-----------
 		commentVO.setMbrNo("M002");
 //		--------待刪-----------
-		ForumCommentVOService commentSvc= new ForumCommentVOServiceImpl();
-		commentSvc.addComment(commentVO);
+		
+		forumCommentVOService.addComment(commentVO);
 		
 	}
 

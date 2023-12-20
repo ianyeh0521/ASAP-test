@@ -30,4 +30,9 @@ private  ForumCommentDAO_interface dao;
 		//change CmtStatus to 0
 	}
 
+	@Override
+	public ForumCommentVO getOneComment(Integer cmtno) {
+		return dao.findbyPK(cmtno);
+	}
+
 }

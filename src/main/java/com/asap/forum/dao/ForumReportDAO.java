@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.asap.forum.entity.ForumReportVO;
+import com.asap.forum.entity.PostVO;
 import com.asap.util.HibernateUtil;
 
 public class ForumReportDAO implements ForumReportDAO_interface {
@@ -37,6 +38,11 @@ public class ForumReportDAO implements ForumReportDAO_interface {
 	@Override
 	public List<ForumReportVO> getAll() {
 		return getSession().createQuery("from ForumReportVO", ForumReportVO.class).list();
+	}
+	
+	@Override
+	public ForumReportVO findByPK(Integer fRptNo) {
+		return getSession().get(ForumReportVO.class, fRptNo);
 	}
 
 }

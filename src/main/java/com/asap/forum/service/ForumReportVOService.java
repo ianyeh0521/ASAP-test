@@ -10,4 +10,6 @@ public interface ForumReportVOService {
 	public Integer update (ForumReportVO forumReport);
 	
 	public List<ForumReportVO> getAll();
+	
+	public ForumReportVO findByPK(Integer fRptNo);
 }

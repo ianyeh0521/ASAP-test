@@ -1,8 +1,8 @@
 package com.asap.forum.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.asap.forum.entity.ForumCommentVO;
+import com.asap.forum.entity.ForumReportTypeVO;
 import com.asap.forum.entity.ForumReportVO;
 import com.asap.forum.service.ForumReportVOService;
 import com.asap.forum.service.ForumReportVOServiceImpl;
@@ -35,6 +35,9 @@ public class ForumReportServlet extends HttpServlet {
 			break;
 		case "reportpost":
 			reportPost(req, res);
+			break;
+		case "postrptmgmt":
+			postRptMgmt(req, res);
 			break;
 		
 	}
@@ -61,6 +64,16 @@ public class ForumReportServlet extends HttpServlet {
 //		System.out.println("reporttext "+text);
 	}
 
+	private void postRptMgmt(HttpServletRequest req, HttpServletResponse res) {
+		Integer fRptno = Integer.parseInt(req.getParameter("frptNo"));
+		String  replyText =req.getParameter("replyText");
+		ForumReportVO forumReportVO= forumreportVOService.findByPK(fRptno);
+		forumReportVO.setfRptReply(replyText);
+		forumReportVO.setfRptReplyTime(Timestamp.valueOf(LocalDateTime.now()));
+		forumreportVOService.update(forumReportVO);
+		System.out.println("success");
+	}
+
 	private void reportPost(HttpServletRequest req, HttpServletResponse res) {
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
 		Integer rpttype = Integer.parseInt(req.getParameter("rpttype"));
@@ -68,7 +81,8 @@ public class ForumReportServlet extends HttpServlet {
 		res.setContentType("application/json; charset=UTF-8");
 		ForumReportVO forumReportVO= new ForumReportVO();
 		forumReportVO.setfRptMsg(rpttext);
-		forumReportVO.setfRptTypeNo(rpttype);
+		ForumReportTypeVO fRptTypeVO= new ForumReportTypeVO(rpttype);
+		forumReportVO.setForumReportTypeVO(fRptTypeVO);
 		forumReportVO.setPostNo(postno);
 		
 		//待刪
@@ -88,14 +102,14 @@ public class ForumReportServlet extends HttpServlet {
 		res.setContentType("application/json; charset=UTF-8");
 		ForumReportVO forumReportVO= new ForumReportVO();
 		forumReportVO.setfRptMsg(rpttext);
-		forumReportVO.setfRptTypeNo(rpttype);
+		ForumReportTypeVO fRptTypeVO= new ForumReportTypeVO(rpttype);
+		forumReportVO.setForumReportTypeVO(fRptTypeVO);
 		forumReportVO.setCmtNo(cmtno);
 		
 		//待刪
 		forumReportVO.setMbrNo("M001");
 		//待刪
-		ForumReportVOService forumReportVOService= new ForumReportVOServiceImpl();
-		forumReportVOService.add(forumReportVO);
+		forumreportVOService.add(forumReportVO);
 		System.out.println("success");
 	}
 

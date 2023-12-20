@@ -16,4 +16,6 @@ public interface ForumReportDAO_interface {
 	public Integer update(ForumReportVO forumReport);
 	
 	public List<ForumReportVO> getAll();
+	
+	public ForumReportVO findByPK(Integer fRptNo);
 }

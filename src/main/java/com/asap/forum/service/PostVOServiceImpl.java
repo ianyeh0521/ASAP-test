@@ -76,6 +76,11 @@ public class PostVOServiceImpl implements PostVOService {
 		return dao.getAllbyViews();
 	}
 
+	@Override
+	public List<PostVO> getMyPosts(String mbrNo) {
+		return dao.getMyPosts(mbrNo);
+	}
+
 
 
 
