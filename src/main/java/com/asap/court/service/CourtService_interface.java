@@ -19,13 +19,20 @@ public interface CourtService_interface {
 	
 	List<CourtVO> getAllCourts();
 	
+	List<CourtVO> getAll(int startIndex, int pageSize);
+	
 	List<CourtVO> getAllCourtsSortingDis(BigDecimal userLatitude, BigDecimal userLongitude, String sortBy);
 	
 	List<CourtVO> getAllSorting(String orderBy);
 	
 	List<CourtVO> getCourtsByCourtName(String name);
 	
-	int getPageTotal();
+//	int getPageTotal();
 	
 	List<CourtVO> getCourtsByCompositeQuery(Map<String, String[]> map);
+	
+//	int getCountByCompositeQuery(Map<String, String[]> map);
+	
+	int getTotalPage();
+		
 }

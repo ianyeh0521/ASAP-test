@@ -1,9 +1,12 @@
 package com.asap.court.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.Hashtable;
 
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +22,11 @@ import com.asap.court.service.CourtOrderService;
 import com.asap.court.service.CourtOrderService_interface;
 import com.asap.court.service.CourtService;
 import com.asap.court.service.CourtService_interface;
+import com.asap.member.entity.MemberVO;
+import com.asap.member.service.MemberService;
+import com.asap.member.service.MemberService_interface;
+import com.asap.util.JavaMail;
+import com.asap.util.MailFormat;
 
 import ecpay.payment.integration.AllInOne;
 
@@ -46,11 +54,28 @@ public class ecPayReturnServlet extends HttpServlet{
 		String RtnMsg = req.getParameter("RtnMsg");
 		String checkMacValue = req.getParameter("CheckMacValue");
 		String rtnCode = req.getParameter("RtnCode");
-		String closedTimePK = req.getParameter("CustomField1");
+		Integer courtNo = Integer.valueOf(req.getParameter("CustomField1"));
+		String courtOrdDateAndTimeAndEnd = req.getParameter("CustomField2");
+//		String courtOrdTimeAndEnd = req.getParameter("CustomField3");
+		String memberNo = req.getParameter("CustomField4");
+		
+		CourtService_interface courtSvc = new CourtService();
+		CourtVO courtVO = courtSvc.getCourtByCourtNo(courtNo);
+		MemberService_interface memberSvc = new MemberService();
+		MemberVO memberVO = memberSvc.findByMbrNo(memberNo);
 
-		System.out.println(merchantTradeNo + " " + RtnMsg + " RtnCode=" + rtnCode + " closedTimePK=" + closedTimePK);
+		System.out.println(merchantTradeNo + " " + RtnMsg + " RtnCode=" + rtnCode 
+				+ " courtNo=" + courtNo
+				+"courtOrdDateAndTimeAndEnd="+courtOrdDateAndTimeAndEnd
+				+"memberNo="+memberNo);
+		
+		String[] stringArray = courtOrdDateAndTimeAndEnd.split(",");
+		Date courtOrdDate = java.sql.Date.valueOf(stringArray[0].trim());
+		Integer courtOrdTime = Integer.valueOf(stringArray[1].trim());
+		Integer courtOrdTimeEnd = Integer.valueOf(stringArray[2].trim());
 		
 		
+
 		if ("1".equals(rtnCode)) {
 			// 付款成功
 			// 檢查 checkMacValue，正確的話回傳 1|OK
@@ -63,13 +88,13 @@ public class ecPayReturnServlet extends HttpServlet{
 				res.getWriter().write("1|OK");
 			}
 			
-			// 更改訂單狀態（MerchantTradeNo 做拆解）
+			// 更改訂單狀態成已付款（拆解 MerchantTradeNo）
 			String trimmedString = merchantTradeNo.substring(5);
 			Integer remainInteger = Integer.valueOf(trimmedString);
 			Integer orderNo = remainInteger - 10000;
 			System.out.println(orderNo);
 			CourtOrderVO courtOrderUpdate = courtOrderService_interface.findByPK(orderNo);
-//			System.out.println(courtOrderUpdate.toString());
+			
 			CourtOrderVO courtOrderVO = new CourtOrderVO();
 			courtOrderVO.setCourtOrdNo(courtOrderUpdate.getCourtOrdNo());
 			courtOrderVO.setCourtOrdDate(courtOrderUpdate.getCourtOrdDate());
@@ -81,13 +106,32 @@ public class ecPayReturnServlet extends HttpServlet{
 			courtOrderVO.setCourtOrdStat(true);
 			System.out.println(courtOrderVO.toString());
 			System.out.println(courtOrderService_interface.update(courtOrderVO)); 
-		}else {
-			// 付款不成功，刪除原本新增的不開放時間（用 PK）
-			String[] stringArray = closedTimePK.split(",");
-			for(String ele: stringArray) {
-				int inValue = Integer.valueOf(ele);
-				courtClosedTimeService_interface.delete(inValue);
+			
+			// 寫入不開放時間
+			for(int i = courtOrdTime; i < courtOrdTimeEnd;i++) {
+				CourtClosedTimeVO courtClosedTimeVO = new CourtClosedTimeVO(courtVO, courtOrdDate, i);
+				courtClosedTimeService_interface.insert(courtClosedTimeVO);
 			}
+			
+			// 預約成功通知信
+			String title = "ASAP場地預約成功通知 - [" + courtVO.getCourtName() + "]";
+			String content = "親愛的會員您好，您已預約 " + courtOrdDate + " " + courtOrdTime + ":00 ~ " + courtOrdTimeEnd +":00 " 
+						+ "「" + courtVO.getCourtName()+ "」之場館使用，請務必在預約時間內準時到達，並遵守我們的場地使用規定。如有任何問題或需要進一步協助，請隨時聯繫我們的客服部門。";
+			MailFormat mailFormat = new MailFormat(memberVO.getMbrName(), content);
+			InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
+			DataSource dataSource = new ByteArrayDataSource(in, "application/png");
+			
+			// 寄出信件
+			JavaMail mail = new JavaMail(memberVO.getMbrEmail(), title, mailFormat.getMessageTextAndImg(), dataSource);
+			String result = mail.sendMail();
+			System.out.println("SendMail : " + result);
+		}else {
+			// 付款不成功，刪除原本新增的不開放時間（付款前寫入不開放時間情況下）
+//			String[] stringArray = closedTimePK.split(",");
+//			for(String ele: stringArray) {
+//				int inValue = Integer.valueOf(ele);
+//				courtClosedTimeService_interface.delete(inValue);
+//			}
 		}
 			
 	}

@@ -46,7 +46,8 @@ public class CourseDAO implements CourseDAO_interface{
 			courseUpdate.setCoursePrice(courseVO.getCoursePrice());
 			courseUpdate.setCourseStat(courseVO.getCourseStat());
 			courseUpdate.setCourseText(courseVO.getCourseText());
-			courseUpdate.setCourseTime(courseVO.getCourseTime());
+			courseUpdate.setCourseStartTime(courseVO.getCourseStartTime());
+			courseUpdate.setCourseEndTime(courseVO.getCourseEndTime());
 			courseUpdate.setSportTypeVO(courseVO.getSportTypeVO());
 			getSession().update(courseUpdate);
 			return 1;

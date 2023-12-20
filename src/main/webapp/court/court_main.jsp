@@ -21,6 +21,9 @@
 	String memberNo = session.getAttribute("memberVO").getMbrNo();
 	pageContext.setAttribute("memberNo",memberNo);
 	*/
+	
+	String mbrNo = "M1206202300001";
+	pageContext.setAttribute("mbrNo",mbrNo);
 %>
 
 <head>
@@ -73,6 +76,38 @@
 	  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
 	           height: 151px;   /* height:  151px; */
 	  }
+	  
+		/* 分頁按鈕 */
+	  .pagination-buttons button {
+        margin-right: 5px;
+      }
+      
+      .pagination-buttons button:hover {
+        cursor: pointer; 
+      }
+      
+      .pagination-buttons button.selected-page {
+        background-color: #009EEE; 
+        color: #fff; 
+        cursor: default;
+       }
+       
+       .outer-container {
+	        border: 1px solid rgba(0, 0, 0, 0.1); 
+	        border-radius: 10px; 
+	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+	        padding: 20px; 
+	        margin: 20px; 
+	    }
+	    
+	  	  #f_date1{
+	  	  	border-radius: 8px;
+	    	border: 1px solid;
+	    	
+	    }
+       
+       
+       
 	</style>
 
 	
@@ -83,9 +118,76 @@
 
 		<header class="header">
 			
-		</header><!-- header -->
+		</header><!-- header --><header class="header">
+      	<div class="header-middle sticky-header"
+				data-sticky-options="{'mobile': true}"
+				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
+				<div class="container">
+					<div class="header-left col-lg-2 w-auto pl-0">
+						<button class="mobile-menu-toggler text-primary mr-2"
+							type="button">
+							<i class="fas fa-bars"></i>
+						</button>
+						<a href="#" style="width: 222; height: 88;"> <img
+							src="${pageContext.request.contextPath}/newImg/logo2.png"
+							alt="Logo" />
+						</a>
+					</div>
+					<!-- End .header-left -->
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .header-middle -->
 
-		<main class="main">
+			<div class="header-bottom sticky-header d-none d-lg-block"
+				data-sticky-options="{'mobile': false}">
+				<div class="container">
+					<nav class="main-nav w-100">
+						<ul class="menu" style="display: flex; justify-content: flex-end">
+							<li><a href="#">論壇</a>
+								<ul>
+									<li><a href="#">論壇首頁</a></li>
+									<li><a href="#">發佈貼文</a></li>
+									<li><a href="#">我的貼文</a></li>
+									<li><a href="#">收藏貼文</a></li>
+								</ul></li>
+							<li><a href="#">揪團</a>
+								<ul>
+									<li><a href="#">揪團首頁</a></li>
+									<li><a href="#">發起揪團</a></li>
+									<li><a href="#">我的揪團</a></li>
+								</ul></li>
+							<li><a href="#">找課程</a>
+								<ul>
+									<li><a href="#">查詢課程</a></li>
+									<li><a href="#">我的課程</a></li>
+								</ul></li>
+							<li><a href="#">找場地</a>
+								<ul>
+									<li><a href="#">詢找場地</a></li>
+									<li><a href="#">我的預約</a></li>
+									<li><a href="#">我的收藏</a></li>
+								</ul></li>
+							<li><a href="#">賣家入口</a>
+								<ul>
+									<li><a href="#">所有訂單</a></li>
+									<li><a href="#">所有商品</a></li>
+									<li><a href="#">新增商品</a></li>
+									<li><a href="#">商品評論</a></li>
+								</ul></li>
+
+							<li><a href="">商城</a></li>
+							<li><a href="login.jsp" style="color: blue">登出</a></li>
+						</ul>
+					</nav>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .header-bottom -->
+      </header>
+      <!-- End .header -->
+
+		<main class="main" >
 
 			<!-- 搜尋列 -->
 			<div class="container" style="margin-top: 20px !important;">
@@ -100,7 +202,7 @@
 							
 							<!--日期選擇-->
 							<div class="select-custom" style="display:flex;justify-content:center;align-items:center">
-								<input name="chooseDate" id="f_date1" type="text" style="width: 100%; box-sizing: border-box;">
+								<input name="chooseDate" id="f_date1" type="text" onkeydown="return false" style="width: 100%; box-sizing: border-box;" autocomplete="off">
 							</div>
 								
 							
@@ -153,6 +255,8 @@
 			</div>
 			
 			
+			
+			
 			<!-- main container -->
 			<div class="container mt-6" style="margin-top: 0px !important;">
 				<!-- 整個 row -->
@@ -189,12 +293,15 @@
 									</svg>
 									<span>Filter</span>
 								</a>
-
+								
+								<!-- 暫放會員編號給前端 -->
+								<div id="hiddenDivForMember" ref="hiddenDiv" style="display: none;">${mbrNo}</div>		
+									
 								<div class="toolbox-item toolbox-sort">
 									<label>排序方式:</label>
 
 									<div class="select-custom">
-										<select name="orderby" class="form-control" v-model="selectedSortOption" @change="fetchSortedData">
+										<select name="orderby" class="form-control" v-model="selectedSortOption" @change="sortProducts" style="border-radius: 10px">
 											<option value="menu_order" selected="selected" disabled>預設</option>
 											<option value="priceHL" >價格高➪低</option>
 											<option value="priceLH">價格低➪高</option>
@@ -212,7 +319,9 @@
 						</nav>
 					
 						<!-- 場地資訊 -->
+						
 						<div v-for="data in datas">
+<!-- 						<div class="outer-container"> -->
 						<div class="row" >
 							<div class="col-sm-12 col-6 product-default left-details product-list mb-2">
 								<figure>								
@@ -225,47 +334,64 @@
 									<div class="category-list">
 										<a href="category.html" class="type">{{data.courtTypeVO.courtType}}</a>
 									</div>
-									<h3 class="product-title" class="name"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtNo">{{data.courtName}}</a></h3>
+									<h3 class="product-title" class="name"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtNo" @click="writeCourt(data.courtNo)">{{data.courtName}}</a></h3>
 									<p class="product-description" class="text">{{data.courtText}}</p>
 									<div class="price-box">
 										<span class="product-price" class="price">{{data.courtPrice}} / hr</span>
 									</div>
 									<div class="product">
-										<a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtNo" class="btn btn-primary btn-rounded btn-md">
+										<a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtNo" class="btn btn-primary btn-rounded btn-md" @click="writeCourt(data.courtNo)">
 											<span style="color: white;">我要預約</span>
 										</a>
 									</div>
+									<div style="display:none" class="long">{{data.courtLong}}</div>
+									<div style="display:none" class="lat">{{data.courtLat}}</div>
 								</div>
 							</div>	
-						</div><!-- 場地資訊結束 -->
+						</div>
+<!-- 						</div> -->
+						</div>
+						<!-- 場地資訊結束 -->
+						
+						
+						<!-- 分頁按鈕 -->
+						<div class="pagination-buttons">
+							<button v-for="page in totalPage" :key="page" @click="changePage(page)" 
+							:class="{ 'selected-page': page === currentPage }" 
+							:disabled="page === currentPage">{{ page }}</button>
 						</div>
 					</div>
 					
-					<!-- current browse history -->
-					<div class="col-lg-3">
+					
+					
+					
+					
+					<!-- 近期瀏覽 -->
+					<div class="col-lg-3" id="recentlyViewedContainer" style="position: relative;">
 						<h4 class="text-uppercase heading-bottom-border mt-6 mt-lg-4" style="margin-top: 30px !important;">近期瀏覽</h4>
-						<div class="product-default left-details product-widget">
+						<div class="product-default left-details product-widget" v-for="data in recentlyViewDatas">
 							<figure>
-								<a href="">
-									<img src="#" width="84" height="84"
-										alt="還不會redis">
-									<img src="#" width="84" height="84"
-										alt="還不會redis">
+								<a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtVO.courtNo" @click="writeCourt(data.courtVO.courtNo)">
+									<img :src="'data:image/jpeg;base64,' + data.img.img" width="84" height="84"
+										alt="圖片">
 								</a>
 							</figure>
 							<div class="product-details">
-								<h3 class="product-title"> <a href="product.html" class="name">室內網球場</a> </h3>
+								<h3 class="product-title"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtVO.courtNo" class="name" @click="writeCourt(data.courtVO.courtNo)">{{data.courtVO.courtName}}</a> </h3>
 								<div class="ratings-container">
 								</div><!-- End .product-container -->
 								<div class="price-box">
-									<span class="product-price">1000</span>
+									<span class="product-price">{{data.courtVO.courtPrice}}</span>
 								</div><!-- End .price-box -->
 							</div><!-- End .product-details -->
 						</div>
 					</div>
 
 				</div>
+				
 			</div>
+			
+			
 
 		</main><!-- End .main -->
 
@@ -279,7 +405,7 @@
 
 	<div class="sticky-navbar">	</div>
 
-	<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
+<!-- 	<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a> -->
 
 	<!-- import Vue 3.0 -->
 	<script src="https://unpkg.com/vue@next"></script>
@@ -307,7 +433,7 @@
 
 	<!-- header and footer template -->
 	<script>
-		$("header").load("header.html");
+// 		$("header").load("header.html");
 		$("footer").load("footer.html");
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
@@ -321,9 +447,12 @@
 	            data: function(){
 	                return{
 	                    datas: [],
+	                    recentlyViewDatas: [],
 	                    selectedSortOption: 'menu_order',
 	                    userlatitude: null,
 	                    userlongitude: null,
+	                    currentPage: 1,
+	                    totalPage: 0,
 	                }
 	            },
 	            methods:{
@@ -340,7 +469,6 @@
 	                },
 	                
 	                errorCallback: function (error) {
-	                    // Handle errors when obtaining geolocation
 	                    switch (error.code) {
 	                        case error.PERMISSION_DENIED:
 	                            console.log("使用者拒絕位置存取");
@@ -359,13 +487,16 @@
 	                
 	                // 場地資料初始化
 	            	fetchInitialData: function () {
-	                    const request1 = { url: 'courtAjax.do', method: 'get' };
+	                    const request1 = { url: 'courtAjax.do', method: 'get', params: { page: this.currentPage } };;
 	                    const request2 = { url: 'courtImgAjax.do', method: 'get' };
+	                    const request3 = { url: 'courtAjax.do', method: 'get', params: { getTotalPage: true } };
 
-	                    axios.all([axios(request1), axios(request2)])
-	                        .then(axios.spread((response1, response2) => {
+	                    axios.all([axios(request1), axios(request2), axios(request3)])
+	                        .then(axios.spread((response1, response2, response3) => {
 	                            var result1 = response1.data;
 	                            var result2 = response2.data;
+	                            var result3 = response3.data;
+	                            console.log(JSON.stringify(result3));
 
 	                            for (let i = 0; i < result1.length; i++) {
 	                                let imgCount = 0;
@@ -385,80 +516,142 @@
 	                            }
 
 	                            this.datas = result1;
+	                            this.totalPage = result3;
+	                            console.log(this.datas)
+	                            console.log(this.totalPage)
 	                        }))
 	                        .catch(function (reason) {
 	                            console.log(reason);
 	                        });
 	            	},
 	            	
-	            	// 排序查詢
-	            	fetchSortedData: function () {
-	                    const sortingOption = this.selectedSortOption;
+	            	// 顯示近期瀏覽
+	            	recentlyViewData: function () {
+	            		// 會員編號
+		                const textContent = this.$refs.hiddenDiv.textContent;
+	            		axios.get('courtRecView.do', {
+		                      params: {
+		                        action: 'get',
+		                        mbrNo:textContent,
+		                      }
+		                    })
+		                    .then(response => {
+// 		                      console.log(response.data);
+		                      var result = response.data;
+		                      this.processDatas(result);
+								
+		                    })
+		                    .catch(error => {
+		                      console.error(error);
+		                    });
+	            	},
+	            	
+	            	processDatas(result) {
+            	      const dataArray = Object.values(result);
 
-	                 	// Map the selected sort option to the corresponding server-side parameter
-	                    const sortParams = {
-	                        'menu_order': 'menu_order',
-	                        'priceHL': 'courtPrice desc',
-	                        'priceLH': 'courtPrice asc',
-	                        'distanceFN': 'desc',
-	                        'distanceNF': 'asc',
-	                    };
-	                 	
-	                 	// Check if the sorting option requires location parameters
-	                    const requiresLocation = sortingOption === 'distanceFN' || sortingOption === 'distanceNF';
-
-	                    const params = {
-	                        sortBy: sortParams[sortingOption],
-	                    };
-
-	                    // Include location parameters if required
-	                    if (requiresLocation) {
-	                        params.userLatitude = this.userlatitude;
-	                        params.userLongitude = this.userlongitude;
-	                    }
-
-	                    axios.all([
-	                        axios.get('courtSorting.do', {
-	                            params: params,
-	                        }),
-	                        axios.get('courtImgAjax.do'),
-	                    ])
-	                    .then(axios.spread((sortedResponse, imgResponse) => {
-// 	                    	console.log(sortedResponse);
-// 	                        console.log(imgResponse);
-	                        // Process image data and update datas
-	                        var sortedResult = sortedResponse.data;
-	                        var imgResult = imgResponse.data;
-	                        for (let i = 0; i < sortedResult.length; i++) {
-	                        	let imgCount = 0;
-	                            for (let j = 0; j < imgResult.length; j++) {
-	                                if (sortedResult[i].courtNo == imgResult[j][0]) {
-                                	 	imgCount += 1;
-                                        let courtImg = "courtImg";
-                                        courtImg = courtImg + imgCount;
-	                                    sortedResult[i][courtImg] = 'data:image/jpg;base64,' + imgResult[j][1];
-	                                }
-	                            }
-	                        }
-	                        this.datas = sortedResult;
-	                    }))
-                        .catch(error => {
-                            console.error('Error fetching sorted data:', error);
-                        });
+            	      dataArray.forEach(jsonString => {
+            	        const parsedData = JSON.parse(jsonString);
+            	        this.recentlyViewDatas.push(parsedData);
+            	      });
+            	    },
+	            	
+					// 排序
+					sortProducts: function () {
+				        const selectedOption = this.selectedSortOption;
+				
+				        switch (selectedOption) {
+				            case 'priceHL':
+				                this.datas.sort((a, b) => this.getNumericPrice(b) - this.getNumericPrice(a));
+				                break;
+				            case 'priceLH':
+				                this.datas.sort((a, b) => this.getNumericPrice(a) - this.getNumericPrice(b));
+				                break;
+				            case 'distanceFN':
+				                this.datas.sort((a, b) => this.getDistance(b) - this.getDistance(a));
+				                break;
+				            case 'distanceNF':
+				                this.datas.sort((a, b) => this.getDistance(a) - this.getDistance(b));
+				                break;
+				            default:
+				                break;
+				        }
+				    },
+				
+				    getNumericPrice: function (product) {
+				        return parseFloat(product.courtPrice); 
+				    },
+				
+				    getDistance: function (product) {
+				        const userLatitude = this.userlatitude;
+				        const userLongitude = this.userlongitude;
+				
+				        const productLatitude = parseFloat(product.courtLat); 
+				        const productLongitude = parseFloat(product.courtLong); 
+				
+				        return this.calculateDistance(userLatitude, userLongitude, productLatitude, productLongitude);
+				    },
+				
+				    calculateDistance: function (lat1, lon1, lat2, lon2) {
+				        const R = 6371; // 地球半徑
+				        const dLat = this.deg2rad(lat2 - lat1);
+				        const dLon = this.deg2rad(lon2 - lon1);
+				
+				        const a =
+				            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+				            Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+				            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+				
+				        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+				
+				        const distance = R * c;
+				
+				        return distance;
+				    },
+				
+				    deg2rad: function (deg) {
+				        return deg * (Math.PI / 180);
+				    },
+	                
+	                // 換頁按鈕
+	                changePage: function (page) {
+	                    this.currentPage = page;
+	                    this.fetchInitialData();
+	                    
+	                    window.scrollTo({
+	                        top: 230,
+	                        behavior: 'smooth' 
+	                    });
 	                },
+	                
+	                // 點擊場地寫入 Redis
+	                writeCourt(courtNo) {
+	                	// 會員編號
+		                const textContent = this.$refs.hiddenDiv.textContent;
+	                    axios.get('courtRecView.do', {
+	                      params: {
+	                        action: 'write',
+	                        courtNo:courtNo,
+	                        mbrNo:textContent,
+	                      }
+	                    })
+	                    .then(response => {
+	                      console.log(response.data);
+	                    })
+	                    .catch(error => {
+	                      console.error(error);
+	                    });
+	                }
 	            	
 	            },
 	            mounted: function(){
 	            	// geolocation
 	                if (navigator.geolocation) {
-	                    // Browser supports Geolocation API
 	                    navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback);
 	                } else {
-	                    // Browser does not support Geolocation API
 	                    console.log("瀏覽器不支援定位");
 	                }
-
 	                this.fetchInitialData();
+	                this.recentlyViewData();
 	                
 	            },
             	
@@ -467,8 +660,9 @@
 			
 		}
 		
-		// 日期選擇
+		
 		$(document).ready(function() {
+			// 日期選擇
 			var somedate1 = new Date('<%=closedDate%>');
 			$.datetimepicker.setLocale('zh'); 
 	        $('#f_date1').datetimepicker({
@@ -492,9 +686,12 @@
 	           //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
 	        });
 	        $('#f_date1').attr("placeholder", "請選擇日期");
+	        
+	        
+	       
 		})
 		
-		console.log()
+	
 		
 	</script>
 	

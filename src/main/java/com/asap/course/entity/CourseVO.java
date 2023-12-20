@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.asap.coach.entity.CoachVO;
-import com.asap.coach.entity.SportTypeVO;
+import com.asap.group.entity.SportTypeVO;
 
 @Entity
 @Table(name="Course")
@@ -62,13 +62,14 @@ public class CourseVO{
 
 	public CourseVO(){}
 
-	public CourseVO(Integer courseNo, String courseName, Timestamp courseTime, Integer coursePplLimit,
-			String courseAddress, Integer coursePrice, String courseText, byte[] courseImg, SportTypeVO sportTypeVO,
-			CoachVO coachVO, Boolean courseStat) {
+	public CourseVO(Integer courseNo, String courseName, Timestamp courseStartTime, Timestamp courseEndTime,
+			Integer coursePplLimit, String courseAddress, Integer coursePrice, String courseText, byte[] courseImg,
+			SportTypeVO sportTypeVO, CoachVO coachVO, Boolean courseStat) {
 		super();
 		this.courseNo = courseNo;
 		this.courseName = courseName;
-		this.courseTime = courseTime;
+		this.courseStartTime = courseStartTime;
+		this.courseEndTime = courseEndTime;
 		this.coursePplLimit = coursePplLimit;
 		this.courseAddress = courseAddress;
 		this.coursePrice = coursePrice;
@@ -78,6 +79,8 @@ public class CourseVO{
 		this.coachVO = coachVO;
 		this.courseStat = courseStat;
 	}
+
+
 
 
 
@@ -183,11 +186,13 @@ public class CourseVO{
 
 	@Override
 	public String toString() {
-		return "CourseVO [courseNo=" + courseNo + ", courseName=" + courseName + ", courseTime=" + courseTime
-				+ ", coursePplLimit=" + coursePplLimit + ", courseAddress=" + courseAddress + ", coursePrice="
-				+ coursePrice + ", courseText=" + courseText + ", courseImg=" + Arrays.toString(courseImg)
-				+ ", sportTypeVO=" + sportTypeVO + ", coachVO=" + coachVO + ", courseStat=" + courseStat + "]";
+		return "CourseVO [courseNo=" + courseNo + ", courseName=" + courseName + ", courseStartTime=" + courseStartTime
+				+ ", courseEndTime=" + courseEndTime + ", coursePplLimit=" + coursePplLimit + ", courseAddress="
+				+ courseAddress + ", coursePrice=" + coursePrice + ", courseText=" + courseText + ", courseImg="
+				+ Arrays.toString(courseImg) + ", sportTypeVO=" + sportTypeVO + ", coachVO=" + coachVO + ", courseStat="
+				+ courseStat + "]";
 	}
+
 
 	
 

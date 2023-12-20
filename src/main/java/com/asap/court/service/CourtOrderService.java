@@ -55,6 +55,37 @@ public class CourtOrderService implements CourtOrderService_interface{
 		}
 		
 	}
+
+	@Override
+	public Boolean checkOrderDateAndTime(Integer courtNo, Date courtOrdDate, Integer courtOrdTime,
+			Integer courtOrdTimeEnd) {
+		
+		List<CourtOrderVO> listByCourtNoAndDate = null;
+		try {
+			listByCourtNoAndDate = dao.findByCourtNoAndDate(courtNo, courtOrdDate);
+			int getCount = 0;
+			for(CourtOrderVO courtOrderVO: listByCourtNoAndDate) {
+				if(((courtOrderVO.getCourtOrdTime()<=courtOrdTime && courtOrderVO.getCourtOrdTimeEnd()>courtOrdTime)
+						|| (courtOrderVO.getCourtOrdTime()<courtOrdTimeEnd && courtOrderVO.getCourtOrdTimeEnd()>courtOrdTimeEnd)) 
+						&& courtOrderVO.getCourtOrdStat()==true) {	//已成立的訂單
+					getCount += 1;
+					break;
+				}
+			}
+			System.out.println("getCount="+getCount);
+			if(getCount == 0) {
+				return true;		// 沒有時間重疊的預約
+			}else {
+				return false;		// 有時間重疊的預約
+			}
+		} catch (Exception e) {
+			return true;	// 沒有時間重疊的預約
+		}
+				
+		
+	}
+	
+	
 	
 	
 	

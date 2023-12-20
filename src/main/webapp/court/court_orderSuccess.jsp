@@ -85,21 +85,12 @@
               <div class="alert alert-info" style="border-radius: 5px;">
                 <div class="alert-wrapper">
                   <h4>預約成功!</h4>
-                  <p>[使用者名稱]
+                  	<p>
                     耶，你的場地預約成功啦！🎉
                     <br>
-                    <br>
-                    這裡是預約詳情：
-                    <br>
-                    日期：[預約日期]
-                    <br>
-                    時間：[預約時間]
-                    <br>
-                    場地：[預約場地名稱]
-                    <br>
-                    <br>
                     開心期待你的到來！如果需要，可以在我的預約中進行變更，若有任何問題，隨時跟我們聯繫。
-                    Enjoy your event! 🚀</p>
+                    Enjoy your event! 🚀
+                    </p>
                    <a href="${pageContext.request.contextPath}/court/court_main.jsp">
                    <button class="btn btn-info mt-xs mb-xs" type="button" style="text-align: right;">返回場地搜尋</button>
                    </a>
