@@ -1,5 +1,6 @@
 package com.asap.court.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.asap.court.entity.CourtOrderVO;
@@ -15,7 +16,9 @@ public interface CourtOrderDAO_interface{
 	// Find order by member
 	List<CourtOrderVO> findByMember(String mbrNo);
 	
-	CourtOrderVO checkOrderExistence(Integer courtNo, java.sql.Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd);
+	List<CourtOrderVO> findByCourtNoAndDate(Integer courtNo, Date courtOrdDate);
 	
+	CourtOrderVO checkOrderExistence(Integer courtNo, java.sql.Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd);
+		
 	List<CourtOrderVO> getAll();
 }

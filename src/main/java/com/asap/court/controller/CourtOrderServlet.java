@@ -67,7 +67,7 @@ public class CourtOrderServlet extends HttpServlet{
 	}
 	
 
-	private void placeOrder(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	private void placeOrder(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		String mbrNo = req.getParameter("mbrNo");	
 		MemberService_interface mbrSvc = new MemberService();
 		MemberVO memberVO = mbrSvc.findByMbrNo(mbrNo);
@@ -76,7 +76,7 @@ public class CourtOrderServlet extends HttpServlet{
 		CourtService_interface courtSvc = new CourtService();
 		CourtVO courtVO = courtSvc.getCourtByCourtNo(courtNo);
 		
-		Boolean courtOrdStat = false;		// 訂單一開始都是未付款狀態，交易結束仍為未付款，將會刪除不開放時間的紀錄，等同無效訂單
+		Boolean courtOrdStat = false;		// 訂單一開始都是未付款狀態，交易結束仍為未付款，將會不會有不開放時間寫入的紀錄
 		
 		java.sql.Date courtOrdDate = java.sql.Date.valueOf(req.getParameter("courtOrdDate"));
 		
@@ -86,64 +86,93 @@ public class CourtOrderServlet extends HttpServlet{
 		
 		Integer totalPrice = Integer.valueOf(req.getParameter("totalPrice"));
 		
+		String memberEmail = memberVO.getMbrEmail();
+		
 		CourtOrderVO courtOrderVO = new CourtOrderVO(memberVO, courtVO, courtOrdStat,courtOrdDate, courtOrdTime, courtOrdTimeEnd, totalPrice);
 		
+		// 判斷不開放時間是否有訂單選擇時間，如同一時間有人付款成功涵蓋此時段的訂單，則取消
+//		for(int i = courtOrdTime; i < courtOrdTimeEnd; i++) {
+//			System.out.println(i);
+//			if(courtClosedTimeService_interface.existsDeter(courtNo, courtOrdDate, i)) {
+//				req.getRequestDispatcher("court_orderFail.jsp?error=time").forward(req, res);
+//				return;
+//			}
+//		}
 		
-		// 避免系統錯誤，先判斷是否有相同訂單
-		if(courtOrderService_interface.checkOrder(courtNo, courtOrdDate, courtOrdTime, courtOrdTimeEnd)) {
-			
-			// 寫入訂單
-			Integer getPlaceOrderNo = courtOrderService_interface.insert(courtOrderVO);
-			System.out.println(getPlaceOrderNo);
 		
-			CourtOrderVO courtOrderVO2 = courtOrderService_interface.findByPK(getPlaceOrderNo);
-			Timestamp tradeDate = courtOrderVO2.getCourtOrdCrtTime();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			String formattedTradeDate = dateFormat.format(tradeDate);
-			
-			// 寫入不開放時間，courtOrdTime ~ courtOrdTimeEnd，並將回傳的 PK 放入一個 list，再將其變成用,分隔的字串
-			List<Integer> newClosedTimeList = new ArrayList<>();
-			for(int i = courtOrdTime; i < courtOrdTimeEnd;i++) {
-				CourtClosedTimeVO courtClosedTimeVO = new CourtClosedTimeVO(courtVO, courtOrdDate, i);
-				newClosedTimeList.add(courtClosedTimeService_interface.insert(courtClosedTimeVO));
-			}
-			StringBuilder newClosedTimeString = new StringBuilder();
-	        for (int i = 0; i < newClosedTimeList.size(); i++) {
-	        	newClosedTimeString.append(newClosedTimeList.get(i));
-	            if (i < newClosedTimeList.size() - 1) {
-	            	newClosedTimeString.append(",");
-	            }
-	        }
-	        String resultString = newClosedTimeString.toString();
-			
-			// 呼叫綠界
-			AioCheckOutALL obj = new AioCheckOutALL();
-			int currentYear = getCurrentYear();
-			int merchantTradeNoSet = 10000 + getPlaceOrderNo;
-			obj.setMerchantTradeNo("C" + currentYear + merchantTradeNoSet);
-			obj.setMerchantTradeDate(formattedTradeDate);
-			obj.setTotalAmount(String.valueOf(totalPrice));
-			obj.setTradeDesc(courtVO.getCourtName());
-			obj.setItemName(courtVO.getCourtName() + "  " + courtOrdDate + "  " + courtOrdTime + ":00 ~ " + courtOrdTimeEnd + ":00");
-			obj.setCustomField1(resultString); // 放入接收結果判斷所需的參數 - 已新增不開放時間
-			obj.setReturnURL("https://fed4-1-164-226-209.ngrok-free.app/ASAP/court/ecPayReturn.do");	// 使用時要記得換成外網
-			obj.setOrderResultURL("http://localhost:8081/ASAP/court/court_orderSuccess.jsp");  // 使用者付款完成的頁面
-			obj.setNeedExtraPaidInfo("N");
-			String form = all.aioCheckOut(obj, null);
-			System.out.println(form);
-			
-			res.setCharacterEncoding("UTF-8");
-			res.setContentType("text/html");
-			try(PrintWriter out = res.getWriter()){
-				out.print(form);
-			}
-			
-
+		// 判斷是否有已寫入的訂單涵蓋此時間（同時間付款完成的其他訂單）
+		if(courtOrderService_interface.checkOrderDateAndTime(courtNo, courtOrdDate, courtOrdTime, courtOrdTimeEnd)==false) {
+			System.out.println("有到這裡2");
+			req.getRequestDispatcher("court_orderFail.jsp?error=time").forward(req, res);
 		}else {
+			// 判斷是否有重複的訂單，避免系統錯誤
+			if((courtOrderService_interface.checkOrder(courtNo, courtOrdDate, courtOrdTime, courtOrdTimeEnd))==false) {
+				System.out.println("有到這裡3");
+				req.getRequestDispatcher("court_orderFail.jsp?error=order").forward(req, res);
+			}else {
+				// 寫入訂單
+				Integer getPlaceOrderNo = courtOrderService_interface.insert(courtOrderVO);
+				System.out.println(getPlaceOrderNo);
 			
-			 // 待補：已存在該時間造成的錯誤，預約失敗頁面
+				CourtOrderVO courtOrderVO2 = courtOrderService_interface.findByPK(getPlaceOrderNo);
+				Timestamp tradeDate = courtOrderVO2.getCourtOrdCrtTime();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				String formattedTradeDate = dateFormat.format(tradeDate);
+				
+				// 付款成功前先寫入不開放時間（鎖定其他人的預約衝突），courtOrdTime ~ courtOrdTimeEnd，並將回傳的 PK 放入一個 list，再將其變成用,分隔的字串，可以給另一個controller做刪除用
+//				List<Integer> newClosedTimeList = new ArrayList<>();
+//				for(int i = courtOrdTime; i < courtOrdTimeEnd;i++) {
+//					CourtClosedTimeVO courtClosedTimeVO = new CourtClosedTimeVO(courtVO, courtOrdDate, i);
+//					newClosedTimeList.add(courtClosedTimeService_interface.insert(courtClosedTimeVO));
+//				}
+//				StringBuilder newClosedTimeString = new StringBuilder();
+//		        for (int i = 0; i < newClosedTimeList.size(); i++) {
+//		        	newClosedTimeString.append(newClosedTimeList.get(i));
+//		            if (i < newClosedTimeList.size() - 1) {
+//		            	newClosedTimeString.append(",");
+//		            }
+//		        }
+//		        String resultString = newClosedTimeString.toString();
+				
+				// 呼叫綠界
+				AioCheckOutALL obj = new AioCheckOutALL();
+				int currentYear = getCurrentYear();
+				int merchantTradeNoSet = 10000 + getPlaceOrderNo;
+				obj.setMerchantTradeNo("C" + currentYear + merchantTradeNoSet);
+				obj.setMerchantTradeDate(formattedTradeDate);
+				obj.setTradeDesc(courtVO.getCourtName());
+				obj.setItemName(courtVO.getCourtName() + "  " + courtOrdDate + "  " + courtOrdTime + ":00 ~ " + courtOrdTimeEnd + ":00");
+				obj.setTotalAmount(String.valueOf(totalPrice));
+				obj.setCustomField1(String.valueOf(courtNo)); // 訂單成立接收到CourtNo
+				obj.setCustomField2(String.valueOf(courtOrdDate)+","+String.valueOf(courtOrdTime)+","+String.valueOf(courtOrdTimeEnd)); // 預約日期、時間
+//				obj.setCustomField3(); 
+				obj.setCustomField4(mbrNo); // 會員編號
+				obj.setReturnURL("https://fed4-1-164-226-209.ngrok-free.app/ASAP/court/ecPayReturn.do");	// 使用時要記得換成外網
+				obj.setOrderResultURL("http://localhost:8081/ASAP/court/court_orderSuccess.jsp");  // 使用者付款完成跳轉頁面
+				obj.setNeedExtraPaidInfo("N");
+				String form = all.aioCheckOut(obj, null);
+				System.out.println(form);
+				
+				res.setCharacterEncoding("UTF-8");
+				res.setContentType("text/html");
+				try(PrintWriter out = res.getWriter()){
+					out.print(form);
+				}
+				
+				
+				
+				// 最後檢查訂單付款狀態，這是付款成功前先寫入不開放時間資料庫檔同時進行的人，但目前會出事
+//				CourtOrderVO finalOrderVO = courtOrderService_interface.findByPK(getPlaceOrderNo);
+//				if(finalOrderVO.getCourtOrdStat()==false) {
+//					// 非因進到綠界後的其他原因付款不成功
+//					String[] stringArray = resultString.split(",");
+//					for(String ele: stringArray) {
+//						int inValue = Integer.valueOf(ele);
+//						courtClosedTimeService_interface.delete(inValue);
+//					}
+//				}
+			}
 		}
-		
 	}
 	
 

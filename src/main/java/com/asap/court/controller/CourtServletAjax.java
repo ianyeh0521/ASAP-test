@@ -35,30 +35,43 @@ public class CourtServletAjax extends HttpServlet{
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		res.setContentType("application/json;charset=UTF-8");
-		
-		
-		
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {	
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
-		
 		Gson gson = builder.create();
 		
-		// 取得 CourtVO List
-		List<CourtVO> courtList = courtService_interface.getAllCourts();
-		System.out.println(courtList);
+		boolean getTotalPage = Boolean.parseBoolean(req.getParameter("getTotalPage"));
+		
+		if (getTotalPage) {
+			int totalPage =  courtService_interface.getTotalPage();
 			
-		String jsonCourtVO = gson.toJson(courtList);
-		System.out.println(jsonCourtVO);
+			String jsonTotalPageString = gson.toJson(totalPage);
+			res.setContentType("application/json");
+			res.setCharacterEncoding("UTF-8");
+			res.getWriter().write(jsonTotalPageString);
+		}else {
+			try {				
+				String page = req.getParameter("page");
+				int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+		        
+//		        System.out.println("page in controller ="+page);
+		        
+		        List<CourtVO> courtList = courtService_interface.getAllCourts(currentPage);
+//		        System.out.println(courtList.size());;
 
-		res.getWriter().write(jsonCourtVO);
-	
-//			List<CourtVO> courtListSorting = courtService_interface.getAllSorting(action);
-//			System.out.println(courtListSorting);
-//			
-//			String jsonCourtSorting = gson.toJson(courtListSorting);
-//			res.getWriter().write(jsonCourtSorting);
+		        String json = gson.toJson(courtList);
+		        res.setContentType("application/json");
+		        res.setCharacterEncoding("UTF-8");
+		        res.getWriter().write(json);
+		    } catch (NumberFormatException e) {
+		        // Handle invalid or missing parameters
+		        res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		        res.getWriter().write("Invalid or missing pagination parameters.");
+		    }
+		}
+		
+		
+
 		
 		
 	}

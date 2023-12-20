@@ -30,6 +30,37 @@ public class CourtImgServletAjax extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+//		res.setContentType("application/json;charset=UTF-8");
+//
+//        GsonBuilder builder = new GsonBuilder();
+//        builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+//
+//        Gson gson = builder.create();
+//        List<List<String>> result = new ArrayList<>();
+//        
+//        try {
+//            int page = Integer.parseInt(req.getParameter("page"));
+//            int itemsPerPage = Integer.parseInt(req.getParameter("itemsPerPage"));
+//
+//            List<CourtImgVO> courtImgList = courtImgService_interface.getAll(page, itemsPerPage);
+//
+//            for (final CourtImgVO courtImgVO : courtImgList) {
+//                List<String> noAndImg = new ArrayList<>();
+//                noAndImg.add(String.valueOf(courtImgVO.getCourtVO().getCourtNo()));
+//                noAndImg.add(Base64.getEncoder().encodeToString(courtImgVO.getCourtImg()));
+//                result.add(noAndImg);
+//            }
+//        } catch (NumberFormatException e) {
+//            // Handle invalid or missing parameters
+//            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            res.getWriter().write("Invalid or missing pagination parameters.");
+//            return;
+//        }
+//
+//        String jsonObj = gson.toJson(result);
+//        System.out.println(jsonObj);
+//        res.getWriter().write(jsonObj);
+		
 		res.setContentType("application/json;charset=UTF-8");
 
 		GsonBuilder builder = new GsonBuilder();
@@ -45,14 +76,6 @@ public class CourtImgServletAjax extends HttpServlet{
 			result.add(NoAndImg);
 		}
 		String jsonObj = gson.toJson(result);
-//		for(int i=0;i<result.size();i++) {
-//			System.out.println(result.get(i));
-//			System.out.println();
-//		}
-		
-		
-		
-//		System.out.println(jsonObj);
 		res.getWriter().write(jsonObj);
 		
 	}

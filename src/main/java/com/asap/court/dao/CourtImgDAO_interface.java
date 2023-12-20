@@ -16,4 +16,6 @@ public interface CourtImgDAO_interface {
 	List<CourtImgVO> findByCourtNo(Integer courtNo);
 	
 	List<CourtImgVO> getAll();
+	
+	List<CourtImgVO> getAll(int startIndex, int pageSize);
 }

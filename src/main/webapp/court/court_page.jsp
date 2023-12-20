@@ -59,7 +59,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- fb sharing -->
-	<meta property="og:url"           content="<%=request.getRequestURL().toString()%>" />
+	<meta property="og:url"           content="<%=request.getRequestURL()%>" />
 	<meta property="og:type"          content="website" />
 	<meta property="og:title"         content="${getCourtPage.courtName}" />
 	<meta property="og:description"   content="${getCourtPage.courtText}" />
@@ -355,7 +355,7 @@
 							<div style="display: flex; flex-direction: row; align-items: center;">
 								<div style="margin: 10px 10px 10px 0;">
 								<label for="f_date1">請選擇日期：</label>
-									<input name="chooseDate" id="f_date1" type="text" >
+									<input name="chooseDate" id="f_date1" type="text" autocomplete="off">
 								</div>
 							<div id="unavailable">預約已滿!</div>
 							</div>
@@ -402,8 +402,9 @@
 								<div class="social-icons mr-2">
 									<a href="#" class="social-icon social-facebook icon-facebook" target="_blank"
 										title="Facebook"></a>
+										<!-- facebook sharing -->
 <!-- 									<div class="fb-share-button"  -->
-<%-- 										data-href="<%=request.getRequestURL().toString()%>"  --%>
+<%-- 										data-href="<%=request.getRequestURL()%>"  --%>
 <!-- 										data-layout="button_count"> -->
 <!-- 									</div> -->
 									<a href="#" class="social-icon social-twitter icon-twitter" target="_blank"

@@ -90,7 +90,9 @@ public class CourtClosedTimeDAO implements CourtClosedTimeDAO_interface{
 			query.setParameter("courtClosedDate", courtClosedDate);
 			query.setParameter("courtClosedTime", courtClosedTime);
 			
-			List<CourtClosedTimeVO> DataList = query.list();
+			List<CourtClosedTimeVO> DataList = null;
+			DataList = query.list();
+			System.out.println(DataList.size());
 			if(DataList.size() == 0) {
 				return false;
 			}else {

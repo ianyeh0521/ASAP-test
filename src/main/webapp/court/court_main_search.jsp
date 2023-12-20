@@ -16,6 +16,16 @@
 	} catch (Exception e) {
 		 closedDate = new java.sql.Date(System.currentTimeMillis());
 	}
+	
+	// 會員編號
+	/*
+	String memberNo = session.getAttribute("memberVO").getMbrNo();
+	pageContext.setAttribute("memberNo",memberNo);
+	*/
+	
+	String mbrNo = "M1206202300001";
+	pageContext.setAttribute("mbrNo",mbrNo);
+	
 %>
 <head>
 	<meta charset="UTF-8">
@@ -92,7 +102,7 @@
 							
 							<!--日期選擇-->
 							<div class="select-custom" style="display:flex;justify-content:center;align-items:center">
-								<input name="chooseDate" id="f_date1" type="text" style="width: 100%; box-sizing: border-box;">
+								<input name="chooseDate" id="f_date1" type="text" onkeydown="return false" style="width: 100%; box-sizing: border-box;" autocomplete="off">
 							</div>
 							
 							<!-- 場地種類選擇 -->
@@ -179,6 +189,9 @@
 									</svg>
 									<span>Filter</span>
 								</a>
+								
+								<!-- 暫放會員編號給前端 -->
+								<div id="hiddenDivForMember"  style="display: none;">${mbrNo}</div>	
 
 								<div class="toolbox-item toolbox-sort">
 									<label>排序方式:</label>
@@ -221,13 +234,13 @@
 									<div class="category-list">
 										<a href="category.html" class="type">${entry.key.courtTypeVO.courtType}</a>
 									</div>
-									<h3 class="product-title name" >${entry.key.courtName}</h3>
+									<h3 class="product-title name" ><a href="/ASAP/court/court_page.jsp?courtNo=${entry.key.courtNo}" class="getCourtNo">${entry.key.courtName}</a></h3>
 									<p class="product-description text" >${entry.key.courtText}</p>
 									<div class="price-box">
 										<span class="product-price price" >${entry.key.courtPrice} / hr</span>
 									</div>
 									<div class="product-action">
-										<a href="/ASAP/court/court_page.jsp?courtNo=${entry.key.courtNo}" class="btn btn-primary btn-rounded btn-md">
+										<a href="/ASAP/court/court_page.jsp?courtNo=${entry.key.courtNo}" class="btn btn-primary btn-rounded btn-md getCourtNo">
 											<span style="color: white;">我要預約</span>
 										</a>					
 									</div>
@@ -238,30 +251,19 @@
 							</c:forEach>
 						</div><!-- 場地資訊結束 -->
 						
+						<div class="pagination">
+						    <c:forEach var="i" begin="1" end="${totalPages}">
+						        <button onclick="changePage(${i})">${i}</button>
+						    </c:forEach>
+						</div>
+						
 						</div>
 				
 					
-					<!-- current browse history -->
-				<div class="col-lg-3">
+					<!-- 近期瀏覽 -->
+					<div class="col-lg-3" id="productContainer">
 						<h4 class="text-uppercase heading-bottom-border mt-6 mt-lg-4" style="margin-top: 30px !important;">近期瀏覽</h4>
-						<div class="product-default left-details product-widget">
-							<figure>
-								<a href="">
-									<img src="" width="84" height="84"
-										alt="product">
-									<img src="" width="84" height="84"
-										alt="product">
-								</a>
-							</figure>
-							<div class="product-details">
-								<h3 class="product-title"> <a href="product.html" class="name">室內網球場</a> </h3>
-								<div class="ratings-container">
-								</div><!-- End .product-container -->
-								<div class="price-box">
-									<span class="product-price">1000</span>
-								</div><!-- End .price-box -->
-							</div><!-- End .product-details -->
-						</div>
+						
 					</div>
 
 					
@@ -332,88 +334,208 @@
 	        window.sortProducts = sortProducts;
 	        const userlatitude = JSON.parse(sessionStorage.getItem('userlatitude'));
 	        const userlongitude = JSON.parse(sessionStorage.getItem('userlongitude'));
+	
 		})
 		
+		
+		
 		// 前端排序
+		function sortProducts() {
+	        // 綁定排序
+	        const selectedOption = document.getElementById('orderby').value;
+	
+	        // 綁定整個 court row
+	        const courtContainer = document.getElementById('courtContainer');
+	        const courtEntries = courtContainer.querySelectorAll('.product-default');
+	
+	        // 節點轉為 array
+	        const courtsArray = Array.from(courtEntries);
+	
+	        // 排序 courtsArray
+	        switch (selectedOption) {
+	            case 'priceHL':
+	            	courtsArray.sort((a, b) => getNumericPrice(b) - getNumericPrice(a));
+	                break;
+	            case 'priceLH':
+	            	courtsArray.sort((a, b) => getNumericPrice(a) - getNumericPrice(b));
+	                break;
+	          		case 'distanceFN':
+	                courtsArray.sort((a, b) => getDistance(a) - getDistance(b));
+	                break;
+	            case 'distanceNF':
+	                courtsArray.sort((a, b) => getDistance(b) - getDistance(a));
+	                break;
+	            default:
+	                break;
+	                
+	        }
+	
+	        // 新增 container
+	        const sortedContainer = document.createElement('div');
+	        sortedContainer.className = 'row';
+	        sortedContainer.setAttribute("id", "courtContainer");
+	
+	        // 將排序好的加入 container
+	        courtsArray.forEach(product => {
+	            sortedContainer.appendChild(product);
+	        });
+	
+	        // Replace the original container with the sorted one
+	        courtContainer.parentNode.replaceChild(sortedContainer, courtContainer);
+	    }
 		
-			function sortProducts() {
-		        // 綁定排序
-		        const selectedOption = document.getElementById('orderby').value;
-		
-		        // 綁定整個 court row
-		        const courtContainer = document.getElementById('courtContainer');
-		        const courtEntries = courtContainer.querySelectorAll('.product-default');
-		
-		        // 節點轉為 array
-		        const courtsArray = Array.from(courtEntries);
-		
-		        // 排序 courtsArray
-		        switch (selectedOption) {
-		            case 'priceHL':
-		            	courtsArray.sort((a, b) => getNumericPrice(b) - getNumericPrice(a));
-		                break;
-		            case 'priceLH':
-		            	courtsArray.sort((a, b) => getNumericPrice(a) - getNumericPrice(b));
-		                break;
- 	          		case 'distanceFN':
-		                courtsArray.sort((a, b) => getDistance(a) - getDistance(b));
-		                break;
-		            case 'distanceNF':
-		                courtsArray.sort((a, b) => getDistance(b) - getDistance(a));
-		                break;
-		            default:
-		                break;
-		                
-		        }
-		
-		        // 新增 container
-		        const sortedContainer = document.createElement('div');
-		        sortedContainer.className = 'row';
-		        sortedContainer.setAttribute("id", "courtContainer");
-		
-		        // 將排序好的加入 container
-		        courtsArray.forEach(product => {
-		            sortedContainer.appendChild(product);
+	    function getNumericPrice(product) {
+	        return parseFloat(product.querySelector('.product-price').innerText.replace(/[^0-9.-]+/g, ''));
+	    }
+	    
+	    function getDistance(product) {
+	        const userLatitude = parseFloat(sessionStorage.getItem('userlatitude'));
+	        const userLongitude = parseFloat(sessionStorage.getItem('userlongitude'));
+
+	        const productLatitude = parseFloat(product.querySelector('.lat').innerText);
+	        const productLongitude = parseFloat(product.querySelector('.long').innerText);
+
+	        return calculateDistance(userLatitude, userLongitude, productLatitude, productLongitude);
+	    }
+
+	    function calculateDistance(lat1, lon1, lat2, lon2) {
+	        const R = 6371; // 地球半徑
+	        const dLat = deg2rad(lat2 - lat1);
+	        const dLon = deg2rad(lon2 - lon1);
+	        
+
+	        const a =
+	            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+	            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+	            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+	        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+	        const distance = R * c; 
+			
+	        
+	        return distance;
+	    }
+
+	    function deg2rad(deg) {
+	        return deg * (Math.PI / 180);
+	    }
+	    
+	    // 顯示近期瀏覽
+	    function recentlyViewData() {
+		    // 會員編號
+		    const textContent = $('#hiddenDivForMember').text(); 
+		    console.log(textContent);
+		    $.get('courtRecView.do', { action: 'get', mbrNo: textContent })
+		        .done(result => {
+		            console.log(result);
+		            const courtObjects = result.map(jsonString => JSON.parse(jsonString));
+		            processDatas(courtObjects);
+		            
+		        })
+		        .fail((xhr, status, error) => {
+		            console.error(error);
 		        });
+		}
 		
-		        // Replace the original container with the sorted one
-		        courtContainer.parentNode.replaceChild(sortedContainer, courtContainer);
-		    }
+		function processDatas(courtObjects) {
+			const productContainer = document.getElementById('productContainer');
+			
+			courtObjects.forEach(item => {
+		        
+		        const productWidgetDiv = document.createElement('div');
+		        productWidgetDiv.className = 'product-default left-details product-widget';
+		        
+		        const figure = document.createElement('figure');
+		        
+		        const link = document.createElement('a');
+		        link.href =  "/ASAP/court/court_page.jsp?courtNo=" + item.courtVO.courtNo;
+		        link.className = "getCourtNo";
+		        
+		        const img1 = document.createElement('img');
+		        img1.src = "data:image/jpeg;base64," + item.img.img; 
+		        img1.width = '84';
+		        img1.height = '84';
+		        img1.alt = '圖片';
+		        
+		        const productDetailsDiv = document.createElement('div');
+		        productDetailsDiv.className = 'product-details';
+		        
+		        const productTitleH3 = document.createElement('h3');
+		        productTitleH3.className = 'product-title';
+		        
+		        const productTitleLink = document.createElement('a');
+		        productTitleLink.href = "/ASAP/court/court_page.jsp?courtNo=" + item.courtVO.courtNo;
+		        productTitleLink.className = 'getCourtNo';
+		        productTitleLink.textContent = item.courtVO.courtName; 
+		        
+		        const ratingsContainerDiv = document.createElement('div');
+		        ratingsContainerDiv.className = 'ratings-container';
+		        
+		        const priceBoxDiv = document.createElement('div');
+		        priceBoxDiv.className = 'price-box';
+		        
+		        const productPriceSpan = document.createElement('span');
+		        productPriceSpan.className = 'product-price';
+		        productPriceSpan.textContent = item.courtVO.courtPrice; 
+
+		        priceBoxDiv.appendChild(productPriceSpan);
+		        productTitleH3.appendChild(productTitleLink);
+		        productDetailsDiv.appendChild(productTitleH3);
+		        productDetailsDiv.appendChild(ratingsContainerDiv);
+		        productDetailsDiv.appendChild(priceBoxDiv);
+		        
+		        link.appendChild(img1);
+		        figure.appendChild(link);
+		        
+		        productWidgetDiv.appendChild(figure);
+		        productWidgetDiv.appendChild(productDetailsDiv);
+		        
+		        
+		        productContainer.appendChild(productWidgetDiv);
+		    });
+			
+		}
 		
-		    function getNumericPrice(product) {
-		        return parseFloat(product.querySelector('.product-price').innerText.replace(/[^0-9.-]+/g, ''));
-		    }
-		    
-		    function getDistance(product) {
-		        const userLatitude = parseFloat(sessionStorage.getItem('userLatitude'));
-		        const userLongitude = parseFloat(sessionStorage.getItem('userLongitude'));
+		recentlyViewData();
+		
+		// 點擊場地寫入 Redis
+		function writeCourt(courtNo) {
+		  // 會員編號
+		  const textContent = $('#hiddenDivForMember').text();
 
-		        const productLatitude = parseFloat(product.querySelector('.lat').innerText);
-		        const productLongitude = parseFloat(product.querySelector('.long').innerText);
+		  $.ajax({
+		    url: 'courtRecView.do',
+		    method: 'GET',
+		    data: {
+		      action: 'write',
+		      courtNo: courtNo,
+		      mbrNo: textContent,
+		    },
+		    success: function (data) {
+		      console.log(data);
+		    },
+		    error: function (error) {
+		      console.error(error);
+		    },
+		  });
+		}
 
-		        return calculateDistance(userLatitude, userLongitude, productLatitude, productLongitude);
-		    }
+		document.addEventListener('click', function (event) {
+	        const target = event.target;
 
-		    function calculateDistance(lat1, lon1, lat2, lon2) {
-		        const R = 6371; // 地球半徑
-		        const dLat = deg2rad(lat2 - lat1);
-		        const dLon = deg2rad(lon2 - lon1);
+	        if (target.matches('.getCourtNo')) {
 
-		        const a =
-		            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-		            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	            const href = target.getAttribute('href');
+	            const courtNo = href.match(/courtNo=(\d+)/)[1];
+	
+	            console.log('courtNo:', courtNo);
 
-		        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	            writeCourt(courtNo);
+	        }
+	    });
 
-		        const distance = R * c; 
-
-		        return distance;
-		    }
-
-		    function deg2rad(deg) {
-		        return deg * (Math.PI / 180);
-		    }
+		
 		    
 		   	
 		

@@ -16,5 +16,7 @@ public interface CourtOrderService_interface {
 	
 	Boolean checkOrder(Integer courtNo, java.sql.Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd);
 	
+	Boolean checkOrderDateAndTime(Integer courtNo, java.sql.Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd);
+	
 	List<CourtOrderVO> getAll();
 }

@@ -39,5 +39,11 @@ public class CourtImgService implements CourtImgService_interface{
 		return dao.getAll();
 	}
 
+	@Override
+	public List<CourtImgVO> getAll(int startIndex, int pageSize) {
+		return dao.getAll(startIndex, pageSize) ;
+	}
+
+	
 	
 }

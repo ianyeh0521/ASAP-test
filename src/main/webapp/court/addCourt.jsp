@@ -3,7 +3,7 @@
 <%@page import="com.asap.court.service.SiteService"%>
 <%@page import="com.asap.court.entity.CourtVO"%>
 <%@page import="com.asap.court.entity.SiteVO"%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.asap.court.*"%>
@@ -31,7 +31,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-<title>³õ¦a«á¥x-·s¼W</title>
+<title>å ´åœ°å¾Œå°-æ–°å¢</title>
 
 
 
@@ -64,9 +64,23 @@
 	href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" type="text/css"
 	href="/ASAP/assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
+<style>
+    .outer-container {
+        border: 1px solid rgba(0, 0, 0, 0.1); 
+        border-radius: 10px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        padding: 20px; 
+        margin: 20px; 
+    }
+    
+    
+
+</style>	
+	
 </head>
 
 <body>
+	
 	<div class="page-wrapper">
 		<header class="header"></header>
 		<!-- End .header -->
@@ -78,19 +92,19 @@
 					<nav aria-label="breadcrumb" class="breadcrumb-nav">
 						<div class="container">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">³õ¦aºŞ²z</a></li>
-								<li class="breadcrumb-item"><a href="listAllCourts_datatable_Ajax.html">©Ò¦³³õ¦a</a></li>
-								<li class="breadcrumb-item active" aria-current="page">·s¼W</li>
+								<li class="breadcrumb-item"><a href="#">å ´åœ°ç®¡ç†</a></li>
+								<li class="breadcrumb-item"><a href="listAllCourts_datatable_Ajax.html">æ‰€æœ‰å ´åœ°</a></li>
+								<li class="breadcrumb-item active" aria-current="page">æ–°å¢</li>
 							</ol>
 						</div>
 					</nav>
-					<h1>·s¼W</h1>
+					<h1>æ–°å¢</h1>
 				</div>
 			</div>
 			
-			<%-- ¿ù»~ªí¦C --%>
+			<%-- éŒ¯èª¤è¡¨åˆ— --%>
 			<c:if test="${not empty errorMsgs}">
-				<font style="color:red">½Ğ­×¥¿¥H¤U¿ù»~:</font>
+				<font style="color:red">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</font>
 				<ul>
 					<c:forEach var="message" items="${errorMsgs}">
 						<li style="color:red">${message}</li>
@@ -98,25 +112,28 @@
 				</ul>
 			</c:if>
 
+
+			
 			<div class="container account-container custom-account-container">
 				<div class="row justify-content-center align-items-center">
 					<div class="col-lg-9 order-lg-last order-1 tab-content">
 						<!-- modify HERE -->
+						<div class="outer-container">
 						<div class="" id="shipping" role="tabpanel">
 							<div class="address account-content mt-0 pt-2">
-								<h4 class="title mb-3"></h4>
+								
 
 								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/court/court.do" class="mb-2" enctype="multipart/form-data">
 									
 									<div class="form-group">
-										<label>¦WºÙ </label> <input type="text" class="form-control"
-											name="name" value="">
+										<label>åç¨± </label> <input type="text" class="form-control"
+											name="name" value=""  style="border-radius: 10px;">
 									</div>
 
 									<div class="select-custom">
-										<label>Ãş«¬<span class="required">*</span></label> 
-										<select name="type" class="form-control">
-											<!-- 											<option value="" selected="selected">--½Ğ¿ï¾Ü³õ¦aÃş«¬--</option> -->
+										<label>é¡å‹<span class="required">*</span></label> 
+										<select name="type" class="form-control" style="border-radius: 10px;">
+											<!-- 											<option value="" selected="selected">--è«‹é¸æ“‡å ´åœ°é¡å‹--</option> -->
 											<c:forEach var="courtTypeVO" items="${typelist}">
 												<option value="${courtTypeVO.courtTypeNo}">${courtTypeVO.courtType}
 											</c:forEach>
@@ -125,22 +142,22 @@
 
 
 									<div class="select-custom">
-										<label>«Ç¤º<span></span></label> 
-										<select name="indoor" class="form-control">
-											<option value="true" selected="selected">¬O
-											<option value="false">§_
+										<label>å®¤å…§<span></span></label> 
+										<select name="indoor" class="form-control" style="border-radius: 10px;">
+											<option value="true" selected="selected">æ˜¯
+											<option value="false">å¦
 										</select>
 									</div>
 
 									<div class="form-group">
-										<label>¦a§} </label> <input type="text" class="form-control" onblur="ShowLngLati()" id="getAddress"
+										<label>åœ°å€ </label> <input type="text" class="form-control" style="border-radius: 10px;" onblur="ShowLngLati()" id="getAddress"
 											name="address" value="">
 									</div>
 
 									<div class="select-custom">
-										<label>°Ï°ì<span></span></label> 
-										<select name="site" class="form-control">
-											<!-- 											<option value="" selected="selected">--½Ğ¿ï¦æ¬F°Ï°ì--</option> -->
+										<label>å€åŸŸ<span></span></label> 
+										<select name="site" class="form-control" style="border-radius: 10px;">
+											<!-- 											<option value="" selected="selected">--è«‹é¸è¡Œæ”¿å€åŸŸ--</option> -->
 											<c:forEach var="siteVO" items="${sitelist}">
 												<option value="${siteVO.siteNo}">${siteVO.regions}
 											</c:forEach>
@@ -150,15 +167,15 @@
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label>¸g«×<span></span></label> <input type="text" id="getLng"
-													class="form-control" name="lng"
+												<label>ç¶“åº¦<span></span></label> <input type="text" id="getLng"
+													class="form-control" style="border-radius: 10px;" name="lng"
 													value="" />
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<label>½n«×<span></span></label> <input type="text" id="getLati"
-													class="form-control" name="lati"
+												<label>ç·¯åº¦<span></span></label> <input type="text" id="getLati"
+													class="form-control" style="border-radius: 10px;" name="lati"
 													value=""/>
 											</div>
 										</div>
@@ -167,60 +184,60 @@
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label>¤H¼Æ­­¨î<span></span></label> <input type="text"
-													class="form-control" name="pplLimit"
+												<label>äººæ•¸é™åˆ¶<span></span></label> <input type="text"
+													class="form-control" style="border-radius: 10px;" name="pplLimit"
 													value=""/>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<label>»ù®æ<span></span></label> <input type="text"
-													class="form-control" name="price"
+												<label>åƒ¹æ ¼<span></span></label> <input type="text"
+													class="form-control" style="border-radius: 10px;" name="price"
 													value=""/>
 											</div>
 										</div>
 									</div>
 
 									<div class="form-group">
-										<label>¤¶²Ğ¤º¤å<span></span></label>
+										<label>ä»‹ç´¹å…§æ–‡<span></span></label>
 										<textarea cols="30" rows="1" id="contact-message"
-											class="form-control" name="courtText" style="height: 30px; text-align: left;"
+											class="form-control" name="courtText" style="height: 30px; text-align: left; border-radius: 10px;"
 											onblur="courtTextAlert()"></textarea>
 												
 										
 									</div>
 
 									<div class="select-custom">
-										<label>ª¬ºA<span></span></label> <select name="stat"
-											class="form-control">
-											<option value="true" selected="selected">Àç¹B¤¤</option>
-											<option value="false">¼È°±Àç¹B</option>
+										<label>ç‹€æ…‹<span></span></label> <select name="stat"
+											class="form-control" style="border-radius: 10px;">
+											<option value="true" selected="selected">ç‡Ÿé‹ä¸­</option>
+											<option value="false">æš«åœç‡Ÿé‹</option>
 										</select>
 									</div>
 
 									<div class="mb-3">
 									    <div class="row">
 									        <div class="col-md-3">
-									            <label for="upFiles1" class="form-label">·Ó¤ù1:</label>
-									            <input id="upFiles1" name="upFiles1" class="form-control" type="file" 
+									            <label for="upFiles1" class="form-label">ç…§ç‰‡1:</label>
+									            <input id="upFiles1" name="upFiles1" class="form-control" style="border-radius: 10px;" type="file" 
 									            	onchange="previewImage('upFiles1', 'blob_holder1')">
 									            <div class="blob_holder" id="blob_holder1"></div>
 									        </div>
 									        <div class="col-md-3">
-									            <label for="upFiles2" class="form-label">·Ó¤ù2:</label>
-									            <input id="upFiles2" name="upFiles2" class="form-control" type="file"
+									            <label for="upFiles2" class="form-label">ç…§ç‰‡2:</label>
+									            <input id="upFiles2" name="upFiles2" class="form-control" style="border-radius: 10px;" type="file"
 									            	onchange="previewImage('upFiles2', 'blob_holder2')">
 									            <div class="blob_holder" id="blob_holder2"></div>
 									        </div>
 									        <div class="col-md-3">
-									            <label for="upFiles3" class="form-label">·Ó¤ù3:</label>
-									            <input id="upFiles3" name="upFiles3" class="form-control" type="file"
+									            <label for="upFiles3" class="form-label">ç…§ç‰‡3:</label>
+									            <input id="upFiles3" name="upFiles3" class="form-control" style="border-radius: 10px;" type="file"
 									            	onchange="previewImage('upFiles3', 'blob_holder3')">
 									            <div class="blob_holder" id="blob_holder3"></div>
 									        </div>
 									        <div class="col-md-3">
-									            <label for="upFiles4" class="form-label">·Ó¤ù4:</label>
-									            <input id="upFiles4" name="upFiles4" class="form-control" type="file"
+									            <label for="upFiles4" class="form-label">ç…§ç‰‡4:</label>
+									            <input id="upFiles4" name="upFiles4" class="form-control" style="border-radius: 10px;" type="file"
 									            	onchange="previewImage('upFiles4', 'blob_holder4')">
 									            <div class="blob_holder" id="blob_holder4"></div>
 									        </div>
@@ -230,20 +247,20 @@
 									<div class="form-footer mb-0">
 											<div class="form-footer-right">
 											<input type="hidden" name="action" value="add">
-											<input type="submit" class="btn btn-dark py-4" value="·s¼W">
+											<input type="submit" class="btn btn-dark py-4" value="æ–°å¢" style="border-radius: 10px;">
 										</div>
 									</div>
 								</FORM>
 							</div>
 						</div>
-
+						</div>
 
 					</div>
 				</div>
 				<!-- End .tab-pane -->
 			</div>
 			<!-- End .tab-content -->
-
+			
 
 	<div class="mb-5"></div>
 	<!-- margin -->
@@ -254,6 +271,7 @@
 	<!-- End .footer -->
 	</div>
 	<!-- End .page-wrapper -->
+
 
 	<div class="loading-overlay">
 		<div class="bounce-loader">
@@ -297,7 +315,7 @@
 				 	var userData = "https://maps.googleapis.com/maps/api/geocode/json?address=" + $('#getAddress').val() +"&key=AIzaSyAnAshx89XCdT3mcu8Aru0-uD7tBTH9cUs";
 		            console.log($('#getAddress').val());
 		            
-		         	// ¦Û°Ê§ì¸g½n«× 
+		         	// è‡ªå‹•æŠ“ç¶“ç·¯åº¦ 
 		            $.ajax({
 		                type:'GET',
 		                url: userData,
@@ -316,7 +334,7 @@
 		                }
 		            })  
 		            
-		            // ¦Û°Ê¿ï¾Ü¦a°Ï
+		            // è‡ªå‹•é¸æ“‡åœ°å€
 		            const inputAddress = document.getElementById('getAddress').value;
 
 				    const selectElement = document.querySelector('select[name="site"]');
@@ -334,7 +352,7 @@
 		 
 		function courtTextAlert(){
 			if($("#contact-message").val().length > 255){
-				alert("¤¶²Ğ¤£±o¶W¹L255­Ó¦r!");
+				alert("ä»‹ç´¹ä¸å¾—è¶…é255å€‹å­—!");
 			}
 			
 		}
@@ -351,7 +369,7 @@
 		            
 		            const img = document.createElement('img');
 		            img.src = e.target.result;
-		            img.alt = '·Ó¤ù¹wÄı';
+		            img.alt = 'ç…§ç‰‡é è¦½';
 		            img.style.maxWidth = '100%';
 
 		            blobHolder.innerHTML = '';

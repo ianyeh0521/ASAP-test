@@ -81,6 +81,24 @@ public class CourtOrderDAO implements CourtOrderDAO_interface{
 			return null;
 		}
 	}
+	
+	
+
+	@Override
+	public List<CourtOrderVO> findByCourtNoAndDate(Integer courtNo, Date courtOrdDate) {
+		// 以 courtNo 尋找 CourtOrderVO，成功回傳 CourtOrderVO List，失敗回傳 null
+		try {
+			String hql = "from CourtOrderVO co where co.courtVO.courtNo = :courtNo "
+					+ "AND co.courtOrdDate = :courtOrdDate";
+			Query query = getSession().createQuery(hql);
+			query.setParameter("courtNo", courtNo);
+			query.setParameter("courtOrdDate", courtOrdDate);
+			return query.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	@Override
 	public List<CourtOrderVO> getAll() {
@@ -115,6 +133,12 @@ public class CourtOrderDAO implements CourtOrderDAO_interface{
 			return null;
 		}
 	}
+	
+	
+
+	
+	
+	
 	
 	
 	

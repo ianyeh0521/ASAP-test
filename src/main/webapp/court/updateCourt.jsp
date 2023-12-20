@@ -87,6 +87,17 @@
 	href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" type="text/css"
 	href="/ASAP/assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
+	
+<style>
+    .outer-container {
+        border: 1px solid rgba(0, 0, 0, 0.1); /* Border color with some transparency */
+        border-radius: 10px; /* Border-radius for rounded corners */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        padding: 20px; /* Optional: Add padding to the outer container */
+        margin: 20px; /* Optional: Add margin to create space around the container */
+    }
+
+</style>	
 </head>
 
 <body>
@@ -131,6 +142,7 @@
 				<div class="row justify-content-center align-items-center">
 					<div class="col-lg-9 order-lg-last order-1 tab-content">
 						<!-- modify HERE -->
+						<div class="outer-container">
 						<div class="" id="shipping" role="tabpanel">
 							<div class="address account-content mt-0 pt-2" style="margin-bottom: 0px">
 								<h4 class="title mb-3"></h4>
@@ -143,13 +155,12 @@
 									
 									<div class="form-group">
 										<label>名稱 </label> <input type="text" class="form-control"
-											name="name" value="<%=courtVO.getCourtName()%>">
+											name="name" value="<%=courtVO.getCourtName()%>" style="border-radius: 10px;">
 									</div>
 
 									<div class="select-custom">
 										<label>類型<span class="required">*</span></label> 
-										<select name="type" class="form-control">
-											<!-- <option value="" selected="selected">--請選擇場地類型--</option> -->
+										<select name="type" class="form-control" style="border-radius: 10px;">
 											<c:forEach var="courtTypeVO" items="${typelist}">
 												<option value="${courtTypeVO.courtTypeNo}"
 												 ${(courtVO.courtTypeVO.courtTypeNo==courtTypeVO.courtTypeNo)?'selected':'' }>${courtTypeVO.courtType}
@@ -160,7 +171,7 @@
 
 									<div class="select-custom">
 										<label>室內<span></span></label> 
-										<select name="indoor" class="form-control">
+										<select name="indoor" class="form-control" style="border-radius: 10px;">
 											<option value="true" selected="selected">是
 											<option value="false">否
 										</select>
@@ -168,12 +179,12 @@
 
 									<div class="form-group">
 										<label>地址 </label> <input type="text" class="form-control" onblur="ShowLngLati()" id="getAddress"
-											name="address" value="<%=courtVO.getCourtAddress()%>">
+											name="address" value="<%=courtVO.getCourtAddress()%>" style="border-radius: 10px;">
 									</div>
 
 									<div class="select-custom">
 										<label>區域<span></span></label> 
-										<select name="site" class="form-control">
+										<select name="site" class="form-control" style="border-radius: 10px;">
 											<c:forEach var="siteVO" items="${sitelist}">
 												<option value="${siteVO.siteNo}"
 													${(courtVO.siteVO.siteNo==siteVO.siteNo)?'selected':'' }>${siteVO.regions}
@@ -186,14 +197,14 @@
 											<div class="form-group">
 												<label>經度<span></span></label> <input type="text" id="getLng"
 													class="form-control" name="lng"
-													value="<%=courtVO.getCourtLong()%>"/>
+													value="<%=courtVO.getCourtLong()%>" style="border-radius: 10px;"/>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>緯度<span></span></label> <input type="text" id="getLati"
 													class="form-control" name="lati"
-													value="<%=courtVO.getCourtLat()%>"/>
+													value="<%=courtVO.getCourtLat()%>" style="border-radius: 10px;"/>
 											</div>
 										</div>
 									</div>
@@ -203,14 +214,14 @@
 											<div class="form-group">
 												<label>人數限制<span></span></label> <input type="text"
 													class="form-control" name="pplLimit"
-													value="<%=pplLimit%>"/>
+													value="<%=pplLimit%>" style="border-radius: 10px;"/>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>價格<span></span></label> <input type="text"
 													class="form-control" name="price"
-													value="<%=courtVO.getCourtPrice()%>"/>
+													value="<%=courtVO.getCourtPrice()%>" style="border-radius: 10px;"/>
 											</div>
 										</div>
 									</div>
@@ -218,7 +229,7 @@
 									<div class="form-group">
 										<label>介紹內文<span></span></label>
 										<textarea cols="30" rows="1" id="contact-message"
-											class="form-control" name="courtText" style="height: 30px; text-align: left;" 
+											class="form-control" name="courtText" style="height: 30px; text-align: left; border-radius: 10px;" 
 											onblur="courtTextAlert()"><%=courtVO.getCourtText()%></textarea>
 												
 										
@@ -226,7 +237,7 @@
 
 									<div class="select-custom">
 										<label>狀態<span></span></label> <select name="stat"
-											class="form-control">
+											class="form-control" style="border-radius: 10px;">
 											<option value="true" selected="selected">營運中</option>
 											<option value="false">暫停營運</option>
 										</select>
@@ -238,13 +249,13 @@
 										<div class="form-footer-right">
 											<input type="hidden" name="action" value="update"> 
 											<input type="hidden" name="courtNo" value="<%=courtVO.getCourtNo()%>">
-											<input type="submit" class="btn btn-dark py-4" value="完成修改">
+											<input type="submit" class="btn btn-dark py-4" style="border-radius: 10px;" value="完成修改">
 										</div>
 									</div>
 								</FORM>
 							</div>
 						</div>
-
+						</div>
 
 					</div>
 				</div>

@@ -17,13 +17,19 @@ public interface CourtDAO_interface {
 	
 	List<CourtVO> getAll();
 	
+	List<CourtVO> getAll(int startIndex, int pageSize);
+	
 	List<CourtVO> getAllSorting(String orderBy);
 	
 	List<CourtVO> getByCompositeQuery(Map<String, String> map);
 	
+//	long getCountByCompositeQuery(Map<String, String> map);
+	
 	List<CourtVO> getAll(int currentPage);
 	
 	List<CourtVO> getCourtsByName(String name);
+	
+	
 	
 	long getTotal();
 }

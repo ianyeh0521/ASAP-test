@@ -1,6 +1,11 @@
 package com.asap.court.dao;
 
+import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -85,5 +90,26 @@ public class CourtImgDAO implements CourtImgDAO_interface {
 		}
 	}
 
+	@Override
+	public List<CourtImgVO> getAll(int page, int itemsPerPage) {
+		try {
+            CriteriaBuilder builder = getSession().getCriteriaBuilder();
+            CriteriaQuery<CourtImgVO> criteriaQuery = builder.createQuery(CourtImgVO.class);
+            Root<CourtImgVO> root = criteriaQuery.from(CourtImgVO.class);
+
+            // Implement pagination logic
+            int startIndex = (page - 1) * itemsPerPage;
+
+            List<CourtImgVO> result = getSession().createQuery(criteriaQuery)
+                    .setFirstResult(startIndex)
+                    .setMaxResults(itemsPerPage)
+                    .getResultList();
+
+            return result;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
 	
 }

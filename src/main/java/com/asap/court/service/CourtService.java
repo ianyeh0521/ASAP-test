@@ -1,6 +1,6 @@
 package com.asap.court.service;
 
-import static com.asap.util.Constants.PAGE_MAX_RESULT;
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import com.asap.court.entity.CourtVO;
 
 // 搭配 JSP / Thymeleaf 後端渲染畫面，將交易動作至於 view filter
 public class CourtService implements CourtService_interface {
+	private static final long PAGE_MAX_RESULT = 5;
 	// 一個 service 實體對應一個 dao 實體
 	private CourtDAO_interface dao;
 	
@@ -61,6 +62,13 @@ public class CourtService implements CourtService_interface {
 		return dao.getAllSorting(orderBy);
 	}
 	
+	
+	
+
+	@Override
+	public List<CourtVO> getAll(int startIndex, int pageSize) {
+		return dao.getAll(startIndex, pageSize);
+	}
 
 	@Override
 	public List<CourtVO> getAllCourtsSortingDis(BigDecimal userLatitude, BigDecimal userLongitude, String sortBy) {
@@ -129,13 +137,42 @@ public class CourtService implements CourtService_interface {
 		return dao.getByCompositeQuery(query);
 	}
 
-	@Override
-	public int getPageTotal() {
-		long total = dao.getTotal();
-		// 計算Emp數量每頁3筆的話總共有幾頁
-		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
-		return pageQty;
-	}
+//	@Override
+//	public int getCountByCompositeQuery(Map<String, String[]> map) {
+//		Map<String, String> query = new HashMap<>();
+//		// Map.Entry即代表一組key-value
+//		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+//		
+//		for (Map.Entry<String, String[]> row : entry) {
+//			String key = row.getKey();
+//			// 因為請求參數裡包含了action，做個去除動作
+//			if ("action".equals(key)) {
+//				continue;
+//			}
+//			// 若是value為空即代表沒有查詢條件，做個去除動作
+//			String value = row.getValue()[0]; // getValue拿到一個String陣列, 接著[0]取得第一個元素檢查
+//			if (value == null || value.isEmpty()) {
+//				continue;
+//			}
+//			query.put(key, value);
+//		}
+//		
+//		System.out.println(query);
+//		
+//		long total = dao.getCountByCompositeQuery(query);
+//		
+//		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+//		
+//		return pageQty;
+//	}
+
+//	@Override
+//	public int getPageTotal() {
+//		long total = dao.getTotal();
+//		// 計算Emp數量每頁3筆的話總共有幾頁
+//		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+//		return pageQty;
+//	}
 
 	@Override
 	public List<CourtVO> getCourtsByCourtName(String name) {
@@ -169,6 +206,15 @@ public class CourtService implements CourtService_interface {
 
         return distance;
     }
+
+	@Override
+	public int getTotalPage() {
+		long total = dao.getTotal();
+		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+		return pageQty;
+	}
+	
+	
 	
 	
 	

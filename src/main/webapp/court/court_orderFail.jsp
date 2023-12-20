@@ -7,13 +7,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.asap.court.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
 
 <%
+	// 錯誤訊息
+	String error = request.getParameter("error");
+	pageContext.setAttribute("error", error);
+
 	//先設一個 member，記得改
 	String mbrNo = "M1206202300001";
 	pageContext.setAttribute("mbrNo",mbrNo);
+	
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,11 +90,23 @@
                   <i class="fas fa-exclamation-triangle"></i>
                   <span><strong>喔不!</strong>  結帳時出了一些問題</span>
                   <ul>
-                    <li>此時段被預約，請重新選擇時段</li>
-                    <li></li>
-                  </ul>
+		            <c:choose>
+		                <c:when test="${error eq 'time'}">
+		                    <li>此時段已被預約，請重新選擇時段</li>
+		                </c:when>
+		                <c:when test="${error eq 'order'}">
+		                    <li>您已重複下單，請至我的預約確認</li>
+		                </c:when>
+		                <c:otherwise>
+		                    <!-- Handle other error cases if needed -->
+		                    <li>Unknown error</li>
+		                </c:otherwise>
+		            </c:choose>
+			      </ul>
                   <br>
+                  <a href="${pageContext.request.contextPath}/court/court_main.jsp">
                   <button class="btn btn-default mt-xs mb-xs" type="button" style=" border-radius: 5px;">回到場地頁面</button>
+                  </a>
 <!--                   <button class="btn btn-default mt-xs mb-xs" type="button" style="background-color: rgb(191, 194, 197); margin-left: 20px; border-radius: 5px;">取消</button> -->
                 </div>
               </div>

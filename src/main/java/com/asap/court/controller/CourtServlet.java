@@ -35,6 +35,7 @@ import com.asap.court.service.CourtService_interface;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 10 * 1024 * 1024, maxRequestSize = 30 * 1024 * 1024)
 @WebServlet("/court/court.do")
 public class CourtServlet extends HttpServlet {
+	private static final int PAGE_MAX_RESULT = 5;
 	// 一個 servlet 實體對應一個 service 實體
 	private CourtService_interface courtService_interface;
 	private CourtImgService_interface courtImgService_interface;
@@ -225,11 +226,11 @@ public class CourtServlet extends HttpServlet {
 		req.setAttribute("errorMsgs", errorMsgs);
 		
 		String name = req.getParameter("name");
-		String enameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+		String enameReg = "^[(\\u4e00-\\u9fa5)(a-zA-Z0-9_)]{2,20}$";
 		if (name == null || name.trim().length() == 0) {
 			errorMsgs.add("場地名稱: 請勿空白");
 		} else if(!name.trim().matches(enameReg)) { 
-			errorMsgs.add("場地名稱: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
+			errorMsgs.add("場地名稱: 只能是中、英文字母、數字和_ , 且長度必需在2到20之間");
         }
 		
 		Integer type = Integer.valueOf(req.getParameter("type"));
@@ -367,7 +368,7 @@ public class CourtServlet extends HttpServlet {
 		List<CourtVO> courtList = courtService_interface.getAllCourts(currentPage);
 
 		if (req.getSession().getAttribute("courtPageQty") == null) {
-			int courtPageQty = courtService_interface.getPageTotal();
+			int courtPageQty = courtService_interface.getTotalPage();
 			req.getSession().setAttribute("courtPageQty", courtPageQty);
 		}
 		
@@ -416,70 +417,81 @@ public class CourtServlet extends HttpServlet {
 		System.out.println(map.values().toString());
 		
 		
-		if (map != null) {
+		if(!("".equals(String.join(", ", map.get("chooseDate"))))
+			&& String.join(", ", map.get("searchCourt")).equals("") 
+			&& String.join(", ",map.get("courtType")).equals("") 
+			&& String.join(", ",map.get("regions")).equals("")) {		// 只有接到時間資訊，找全部再用時間去篩
+			Date chooseDate = java.sql.Date.valueOf(String.join(", ", map.get("chooseDate")) );
+			Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
+			List<CourtVO> courtAllList = courtService_interface.getAllCourts();
+			List<CourtVO> courtSearchList = new ArrayList<>();
 			
-			if(!("".equals(String.join(", ", map.get("chooseDate"))))
-				&& String.join(", ", map.get("searchCourt")).equals("") 
-				&& String.join(", ",map.get("courtType")).equals("") 
-				&& String.join(", ",map.get("regions")).equals("")) {		// 只有接到時間資訊，找全部再用時間去篩
-				Date chooseDate = java.sql.Date.valueOf(String.join(", ", map.get("chooseDate")) );
-				Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
-				List<CourtVO> courtAllList = courtService_interface.getAllCourts();
-				List<CourtVO> courSearchList = new ArrayList<>();
-				
-				for(CourtVO courtVO: courtAllList) {
-					if(courtClosedTimeService_interface.findByDate(courtVO.getCourtNo(), chooseDate).size() != 10) {
-						courSearchList.add(courtVO);
-					}
+			for(CourtVO courtVO: courtAllList) {
+				if(courtClosedTimeService_interface.findByDate(courtVO.getCourtNo(), chooseDate).size() != 10) {
+					courtSearchList.add(courtVO);
 				}
-				for(CourtVO courtVO:courSearchList) {
-					cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
-				}
-				req.setAttribute("searchCon", searchCon);
-				req.setAttribute("cobineMap", cobineMap);
-				System.out.println("1");
-				
-				
-			}else if(!("".equals(String.join(", ", map.get("chooseDate"))))){		// 有填時間，其他隨意
-				// 將courtVO 和相對應的 courtImgVO List 放入一個 Map
-				Date chooseDate = java.sql.Date.valueOf(String.join(", ", map.get("chooseDate")) );
-				Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
-				List<CourtVO> courtCompositeList = courtService_interface.getCourtsByCompositeQuery(map);
-				List<CourtVO> courtSearchList = new ArrayList<>();
-				
-				for(CourtVO courtVO:courtCompositeList) {
-					if(courtClosedTimeService_interface.findByDate(courtVO.getCourtNo(), chooseDate).size() != 10) {
-						courtSearchList.add(courtVO);
-					}
-				}
-				for(CourtVO courtVO:courtSearchList) {
-					cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
-				}
-				req.setAttribute("searchCon", searchCon);
-				req.setAttribute("cobineMap", cobineMap);
-				System.out.println("2");
-	
-				
-			}else if("".equals(String.join(", ", map.get("chooseDate")))
-				&& (!String.join(", ", map.get("searchCourt")).equals("") 
-				|| !String.join(", ",map.get("courtType")).equals("") 
-				|| !String.join(", ",map.get("regions")).equals(""))){ 			// 時間沒填，其他隨意
-				// 將courtVO 和相對應的 courtImgVO List 放入一個 Map
-				Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
-				List<CourtVO> courSearchList = courtService_interface.getCourtsByCompositeQuery(map);
-				for(CourtVO courtVO:courSearchList) {
-					cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
-				}
-				req.setAttribute("searchCon", searchCon);
-				req.setAttribute("cobineMap", cobineMap);
-				System.out.println("3");
-	
-			}else {	// 全部沒填
-				System.out.println("4");
-				return "/court/court_main.jsp";	
-			}	
+			}			
+			for(CourtVO courtVO:courtSearchList) {
+				cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
+			}
 			
-		}else {	
+			int totalCourts = courtSearchList.size();
+			int pageQty = totalCourts % PAGE_MAX_RESULT == 0 ? (totalCourts / PAGE_MAX_RESULT) : (totalCourts / PAGE_MAX_RESULT + 1);
+			
+			
+			req.setAttribute("searchCon", searchCon);
+			req.setAttribute("cobineMap", cobineMap);
+			req.setAttribute("pageQty", pageQty);
+			System.out.println("1");
+			
+			
+		}else if(!("".equals(String.join(", ", map.get("chooseDate"))))){		// 有填時間，其他隨意
+			// 將courtVO 和相對應的 courtImgVO List 放入一個 Map
+			Date chooseDate = java.sql.Date.valueOf(String.join(", ", map.get("chooseDate")) );
+			Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
+			List<CourtVO> courtCompositeList = courtService_interface.getCourtsByCompositeQuery(map);
+			List<CourtVO> courtSearchList = new ArrayList<>();
+			
+			for(CourtVO courtVO:courtCompositeList) {
+				if(courtClosedTimeService_interface.findByDate(courtVO.getCourtNo(), chooseDate).size() != 10) {
+					courtSearchList.add(courtVO);
+				}
+			}
+			for(CourtVO courtVO:courtSearchList) {
+				cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
+			}
+			
+			int totalCourts = courtSearchList.size();
+			int pageQty = totalCourts % PAGE_MAX_RESULT == 0 ? (totalCourts / PAGE_MAX_RESULT) : (totalCourts / PAGE_MAX_RESULT + 1);
+			
+			req.setAttribute("searchCon", searchCon);
+			req.setAttribute("cobineMap", cobineMap);
+			req.setAttribute("pageQty", pageQty);
+			System.out.println("2");
+
+			
+		}else if("".equals(String.join(", ", map.get("chooseDate")))
+			&& (!String.join(", ", map.get("searchCourt")).equals("") 
+			|| !String.join(", ",map.get("courtType")).equals("") 
+			|| !String.join(", ",map.get("regions")).equals(""))){ 			// 時間沒填，其他隨意
+			// 將courtVO 和相對應的 courtImgVO List 放入一個 Map
+			Map<CourtVO, List<CourtImgVO>> cobineMap = new HashMap<>();
+			List<CourtVO> courtSearchList = courtService_interface.getCourtsByCompositeQuery(map);
+			for(CourtVO courtVO:courtSearchList) {
+				cobineMap.put(courtVO, courtImgService_interface.findByCourtNo(courtVO.getCourtNo()));
+			}
+			
+			int totalCourts = courtSearchList.size();
+			int pageQty = totalCourts % PAGE_MAX_RESULT == 0 ? (totalCourts / PAGE_MAX_RESULT) : (totalCourts / PAGE_MAX_RESULT + 1);
+			
+			req.setAttribute("searchCon", searchCon);
+			req.setAttribute("cobineMap", cobineMap);
+			req.setAttribute("pageQty", pageQty);
+
+			System.out.println("3");
+
+		}else {	// 全部沒填
+			System.out.println("4");
 			return "/court/court_main.jsp";	
 		}
 		return "/court/court_main_search.jsp";	

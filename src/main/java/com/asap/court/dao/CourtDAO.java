@@ -1,7 +1,5 @@
 package com.asap.court.dao;
 
-import static com.asap.util.Constants.PAGE_MAX_RESULT;
-
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -25,6 +23,7 @@ import com.asap.court.entity.CourtVO;
 import com.asap.util.HibernateUtil;
 
 public class CourtDAO implements CourtDAO_interface {
+	private static final int PAGE_MAX_RESULT = 5;
 	// SessionFactory 為 thread-safe，可宣告為屬性讓請求執行緒們共用
 	private SessionFactory factory;
 
@@ -158,6 +157,41 @@ public class CourtDAO implements CourtDAO_interface {
 
 		return query.getResultList();
 	}
+	
+
+//	@Override
+//	public long getCountByCompositeQuery(Map<String, String> map) {
+//		if (map.size() == 0)
+//			return getAll().size();
+//
+//		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+//	    CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
+//	    Root<CourtVO> root = countCriteria.from(CourtVO.class);
+//
+//		List<Predicate> predicates = new ArrayList<>();
+//		
+//		for (Map.Entry<String, String> row : map.entrySet()) {
+//			// 用名稱模糊比對查詢
+//			if ("searchCourt".equals(row.getKey()) && !(row.getValue().equals(""))) {
+//				predicates.add(builder.like(root.get("courtName"), "%" + row.getValue() + "%"));
+//			}
+//			// 用場地類別查詢
+//			if ("courtType".equals(row.getKey()) && !(row.getValue().equals(""))) {
+//				System.out.println(row.getValue());
+//				predicates.add(builder.equal(root.get("courtTypeVO").get("courtTypeNo"), row.getValue()));
+//			}
+//			// 用地點編號（地區）查詢
+//			if ("regions".equals(row.getKey()) && !(row.getValue().equals(""))) {
+//				System.out.println(row.getValue());
+//				predicates.add(builder.equal(root.get("siteVO").get("siteNo"), row.getValue()));
+//			}
+//		}
+//		
+//		countCriteria.select(builder.count(root));
+//		countCriteria.where(builder.and(predicates.toArray(new Predicate[0])));
+//
+//		return getSession().createQuery(countCriteria).getSingleResult();
+//	}
 
 	@Override
 	public List<CourtVO> getAll(int currentPage) {
@@ -180,6 +214,20 @@ public class CourtDAO implements CourtDAO_interface {
 //		return getSession().createQuery("hql", CourtVO.class).list();
 	}
 	 
-	
+	@Override
+	public List<CourtVO> getAll(int page, int itemsPerPage) {
+	    try {
+	        Query<CourtVO> query = getSession().createQuery("from CourtVO", CourtVO.class);
+	        int startIndex = (page - 1) * itemsPerPage;
+	        System.out.println("page="+page+"startIndex="+startIndex+"itemsPerPage="+itemsPerPage);
+	        query.setFirstResult(startIndex);
+	        query.setMaxResults(itemsPerPage);
+	        return query.list();
+	    } catch (HibernateException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+		
+	}
 
 }
