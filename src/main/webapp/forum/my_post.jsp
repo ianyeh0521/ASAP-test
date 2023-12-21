@@ -5,6 +5,7 @@
 <%@page import="com.asap.forum.entity.PostVO"%>
 <%@page import="java.util.*"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%
     PostVOService postSvc = new PostVOServiceImpl();
 	List<PostVO> post = postSvc.getMyPosts("M002");
@@ -356,7 +357,7 @@
     	  let r = confirm("確認刪除？");
     	  if (r){
     	  $.ajax({
-    		  url: "post.do",          
+    		  url: "${pageContext.request.contextPath}/forum/post.do",          
     		  type: "POST",                  
     		  data: {"action": "deletepost",
     			  	 "postno": postNo,

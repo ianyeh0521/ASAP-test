@@ -454,7 +454,7 @@ response.flushBuffer();
     		}
 
     		$.ajax({
-    		  url: "/ASAP/forum/post.do",
+    		  url: "${pageContext.request.contextPath}/forum/post.do",
     		  data: { "action": "loadpost" },
     		  type: "POST",
     		  success: function(data) {
@@ -473,7 +473,7 @@ response.flushBuffer();
           var value = $("select[name='article-type']").val();
 //           console.log(value);
             $.ajax({
-              url: "/ASAP/forum/post.do",
+              url: "${pageContext.request.contextPath}/forum/post.do",
               data: {
                 "action": "bytype",
                 "type": value
@@ -482,6 +482,7 @@ response.flushBuffer();
               success: function (data) {
                 console.log(data);
                 state.querySet = data;
+                state.page=1;
     		    var paginationData = pagination(state.querySet, state.page, state.rows);
     		    console.log(paginationData);
     		    getPosts(paginationData);
@@ -497,7 +498,7 @@ response.flushBuffer();
           alert("請輸入內容");
         } else {
           $.ajax({
-            url: "/ASAP/forum/post.do",
+            url: "${pageContext.request.contextPath}/forum/post.do",
             data: {
               "action": "search",
               "keyword": keyword
@@ -509,6 +510,7 @@ response.flushBuffer();
                 alert("查無資料");
               } else {
                 state.querySet = data;
+                state.page=1;
                 var paginationData = pagination(state.querySet, state.page, state.rows);
                 console.log(paginationData);
                 getPosts(paginationData);
@@ -524,13 +526,14 @@ response.flushBuffer();
 // //      get by popularity
 		$("button.popularity").on("click", function () {
 		        $.ajax({
-		          url: "/ASAP/forum/post.do",
+		          url: "${pageContext.request.contextPath}/forum/post.do",
 		          data: {
 		            "action": "bypopularity"
 		          },
 		          type: "POST",
 		          success: function (data) {
 		            state.querySet = data;
+		            state.page=1;
 		            var paginationData = pagination(state.querySet, state.page, state.rows);
 		            console.log(paginationData);
 		            getPosts(paginationData);
@@ -546,13 +549,14 @@ response.flushBuffer();
 				alert("請輸入內容");
 			}else{
 				$.ajax({
-		              url: "/ASAP/forum/post.do",
+		              url: "${pageContext.request.contextPath}/forum/post.do",
 		              data: {
 		                "action": "bytime"
 		              },
 		              type: "POST",
 		              success: function (data) {
 		            	  state.querySet = data;
+		            	  state.page=1;
 		                  var paginationData = pagination(state.querySet, state.page, state.rows);
 		                  console.log(paginationData);
 		                  getPosts(paginationData);

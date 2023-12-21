@@ -224,8 +224,8 @@
       
       <div id="action-buttons">
         <button type="submit" id="draft-button" class="btn btn-default btn-rounded btn-md" name="action" value="updatedraft">儲存草稿</button>
-        <button type="button" id="cancel-button" class="btn btn-default btn-rounded btn-md"><a href="${pageContext.request.contextPath}/forum/forum_home.jsp"
-            style="color:black">取消</a></button>
+        <a href="${pageContext.request.contextPath}/forum/my_post.jsp"
+            style="color:black"><button type="button" id="cancel-button" class="btn btn-default btn-rounded btn-md">取消</button></a>
         <button type="submit" id="submit-button" class="btn btn-default btn-rounded btn-md" name="action" value="updatepost">送出</button>
       	<input type="hidden" name="postno" value="">
       </div>
@@ -348,7 +348,7 @@
       var postNo = sessionStorage.getItem('postNo');
       console.log(postNo);
       $.ajax({
-		  url: "post.do",          
+		  url: "${pageContext.request.contextPath}/forum/post.do",          
 		  type: "POST",                  
 		  data: {"action": "getmypost",
 			  	 "postno": postNo,
@@ -358,6 +358,11 @@
 			  $("input.posttitle").val(data.postTitle);
 		      $("select#category").val(data.postTypeVO.postTypeNo);
 		      $("input[name='postno']").val(data.postNo);
+		      if(data.postStatus==1){
+		    	  $("#draft-button").prop('disabled', true);
+		      }else if(data.postStatus==0){
+		    	  $('#submit-button').val('updatetime');
+		      }
 		      $('#summernote').summernote({
 	    	        tabsize: 2,
 	    	        height: 300, 

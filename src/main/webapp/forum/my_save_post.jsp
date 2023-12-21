@@ -1,3 +1,6 @@
+<%@page import="com.asap.forum.service.SavePostVOServiceImpl"%>
+<%@page import="com.asap.forum.service.SavePostVOService"%>
+<%@page import="com.asap.forum.entity.SavePostVO"%>
 <%@page import="com.asap.forum.service.PostVOServiceImpl"%>
 <%@page import="com.asap.forum.service.PostVOService"%>
 <%@page import="com.asap.forum.entity.PostVO"%>
@@ -5,6 +8,16 @@
 <%@page import="java.util.*"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<%
+SavePostVOService savePostSvc = new SavePostVOServiceImpl();
+List<SavePostVO> list = savePostSvc.getByMbrNo("M001");
+System.out.println(list);
+pageContext.setAttribute("list", list);
+%>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +34,7 @@
 <meta name="author" content="SW-THEMES" />
 
 <!-- Favicon -->
-<link rel="icon" type="image/png" href="/ASAP/assets/images/icons/favicon.png" />
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
 <link rel="stylesheet"
 	href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
 	integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5"
@@ -40,7 +53,7 @@
       (function (d) {
         var wf = d.createElement("script"),
           s = d.scripts[0];
-        wf.src = "/ASAP/assets/js/webfont.js";
+        wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
         wf.async = true;
         s.parentNode.insertBefore(wf, s);
       })(document);
@@ -48,13 +61,13 @@
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" type="text/css"
-	href="/ASAP/assets/css/bootstrap.min.css" />
+	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
 <!-- Main CSS File -->
-<link rel="stylesheet" type="text/css" href="/ASAP/assets/css/style.min.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/style.min.css" />
 <link rel="stylesheet" type="text/css"
-	href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css" />
-<script src="/ASAP/assets/js/jquery.min.js"></script>
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
+<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
 <!--這裡把jquery往上提-->
 <!-- datatable用 -->
 <link rel="stylesheet" type="text/css"
@@ -63,28 +76,13 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 <script>
 $(document).ready(function () {
-    $.ajax({
-      type: "post",
-      url: "savepost.do",
-      contnentType: "application/json",
-      success: function (result) {
-    	  console.log(result);
-//     	  var jsonstring = JSON.stringify(result);
-//     	  console.log(jsonstring);
-        $("#table_id").DataTable({
-          language: { url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json", },
-          aaData: result,
-          aoColumns: [
-            { "mData": "sPNo"},
-            { "mData": "postNo"},
-            { "mData": "mbrNo"}
-          ],
-        
-        });
-		
-      }
-    })
-  })
+    $("#table_id").DataTable({
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json",
+      },
+      
+    });
+  });
     </script>
 <style>
 #fs_alert {
@@ -246,24 +244,45 @@ $(document).ready(function () {
 					<table id="table_id" class="display">
 						<thead>
 							<tr>
-								<th>貼文編號</th>
-								<th>貼文名稱</th>
-								<th>會員編號</th>
-<!-- 								<th width="10%">查看貼文</th> -->
-<!-- 								<th width="10%">取消收藏</th> -->
+								<th>發文時間</th>
+								<th>文章類型</th>
+								<th>文章標題</th>
+								<th>文章狀態</th>
+								<th>查看貼文</th>
+								<th>取消收藏</th>
 							</tr>
 						</thead>
 						<tbody>
-
+						<c:forEach var="savepost" items="${list}">
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-<!-- 								<td><button type="submit" class="btn btn-primary btn-sm" -->
-<!-- 										style="border-radius: 5px" name="action" value="seemore">查看貼文</button></td> -->
-<!-- 								<td><button type="submit" class="btn btn-danger btn-sm" -->
-<!-- 										style="border-radius: 5px" name="action" value="removesave">取消收藏</button></td> -->
+								<td><fmt:formatDate value="${savepost.postVo.postCrtTime}" pattern="yyyy-MM-dd HH:mm" /></td>
+								<td>${savepost.postVo.postTypeVO.postTypeName}</td>
+								<td>${savepost.postVo.postTitle}</td>
+								<td><c:choose>
+			       				   <c:when test="${savepost.postVo.postStatus == 1}">
+			           				上架中
+			       				   </c:when>
+			        			   <c:when test="${savepost.postVo.postStatus == 2}">
+			            		    已下架
+			        			   </c:when>
+			    				  </c:choose>
+    				 			</td>
+								<td>
+								<c:choose>
+			       				   <c:when test="${savepost.postVo.postStatus == 1}">
+			           				<a href="${pageContext.request.contextPath}/forum/forum_article.jsp?postNo=${savepost.postVo.postNo}"><button type="button" class="btn btn-primary btn-sm"
+										style="border-radius: 5px" name="action" value="seemore">查看貼文</button></a>
+			       				   </c:when>
+			        			   <c:when test="${savepost.postVo.postStatus == 2}">
+			            		    <button type="button" disabled class="btn btn-primary btn-sm"
+										style="border-radius: 5px" name="action" value="seemore">查看貼文</button>
+			        			   </c:when>
+			    				  </c:choose>
+								</td>					
+								<td><button type="button" class="btn btn-danger btn-sm removesave"
+										style="border-radius: 5px" name="action" value="removesave" data-spno="${savepost.sPNo}">取消收藏</button></td>
 							</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -297,17 +316,35 @@ $(document).ready(function () {
 
 	<!-- Plugins JS File -->
 
-	<script src="/ASAP/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="/ASAP/assets/js/plugins.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 
 	<!-- Main JS File -->
-	<script src="/ASAP/assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<script>
       //$("header").load("header.html");
       $("div.sticky-navbar").load("sticky-navbar.html");
       $("div.mobile-menu-container").load("mobile-menu-container.html");
       $("footer").load("footer.html");
+      $("button.removesave").on("click", function(){
+    	  var sPNo=$(this).attr('data-spno');
+    	  let r = confirm("確認刪除此筆收藏？");
+    	  if (r){
+    	  $.ajax({
+				url : "${pageContext.request.contextPath}/forum/savepost.do",
+				type : "POST",
+				data : {
+					"action" : "deletesave",
+					"sPNo" : sPNo,
+				},
+				success : function(data) {
+					alert("刪除成功！")
+					document.location.reload();
+				}
+			});
+    	  }
+      });
     </script>
 </body>
 </html>

@@ -2,8 +2,11 @@ package com.asap.forum.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.criteria.CriteriaBuilder.Case;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,25 +41,60 @@ public class SavePostServlet extends HttpServlet {
 		case "savepost":
 			savePost(req, resp);
 			break;
+		case "checksave":
+			checkSave(req, resp);
+			break;
+		case "deletesave":
+			deleteSave(req, resp);
+			break;
 		}
 	}
 
-	private void savePost(HttpServletRequest req, HttpServletResponse resp) {
-		// TODO Auto-generated method stub
+	private void deleteSave(HttpServletRequest req, HttpServletResponse resp) {
+		Integer spno = Integer.parseInt(req.getParameter("sPNo"));
+		savePostVOService.delete(spno);
+		
+	}
+
+	private void checkSave(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		PostVO postVO=new PostVO(postno);
+		Integer status=savePostVOService.saveCheck("M001", postVO);
+				Map<String, Integer> data = new HashMap<>();
+		data.put("status", status);
+		Gson gson= new Gson();
+		String statusJson=gson.toJson(data);
+		PrintWriter out = resp.getWriter();
+        out.write(statusJson);          
+        out.close();  
+	}
+
+	private void savePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		PostVO postVO=new PostVO(postno);
+//		M001要改
+		Integer status=savePostVOService.save("M001", postVO);
+		Map<String, Integer> data = new HashMap<>();
+		data.put("status", status);
+		Gson gson= new Gson();
+		String statusJson=gson.toJson(data);
+		PrintWriter out = resp.getWriter();
+        out.write(statusJson);          
+        out.close();  
 
 	}
 
 	public void getMySave(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		List<SavePostVO> savePostList = savePostVOService.getAll();
+//		List<SavePostVO> savePostList = savePostVOService.getAll();
 //		System.out.println(savePostList);
 
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(savePostList);
-		System.out.println(jsonString);
-		resp.setContentType("application/json; charset=UTF-8");
-		PrintWriter out = resp.getWriter();
-		out.write(jsonString);
-		out.close();
+//		Gson gson = new Gson();
+//		String jsonString = gson.toJson(savePostList);
+//		System.out.println(jsonString);
+//		resp.setContentType("application/json; charset=UTF-8");
+//		PrintWriter out = resp.getWriter();
+//		out.write(jsonString);
+//		out.close();
 	}
 
 	@Override

@@ -44,6 +44,12 @@ public class PostVO {
 	@JoinColumn(name = "postTypeNo", referencedColumnName = "postTypeNo")
 	private PostTypeVO postTypeVO;
 	
+	public PostVO(Integer postNo) {
+		super();
+		this.postNo = postNo;
+	}
+
+
 	@Column(name="PostViews")
 	private Integer postViews;
 	
