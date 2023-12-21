@@ -104,7 +104,7 @@ public class PostDAO implements PostDAO_interface {
 
 	@Override
 	public List<PostVO> getbyCategory(Integer posttypeno) {
-		return getSession().createQuery("from PostVO where postTypeNo= :posttypeno and postStatus=1", PostVO.class)
+		return getSession().createQuery("from PostVO where postTypeNo= :posttypeno and postStatus=1 order by postCrtTime DESC", PostVO.class)
 		.setParameter("posttypeno", posttypeno)
 		.list();
 	}
@@ -116,14 +116,16 @@ public class PostDAO implements PostDAO_interface {
 	
 	@Override
 	public List<PostVO> getbyPostTitle(String posttitle){
-		return getSession().createQuery("from PostVO where postStatus=1 and postTitle like :posttitle", PostVO.class)
+		return getSession().createQuery("from PostVO where postStatus=1 and postTitle like :posttitle order by postCrtTime DESC", PostVO.class)
 				.setParameter("posttitle", "%" +posttitle+ "%")
 				.list();
 	}
 
 	@Override
 	public PostVO findbyPK(Integer postNo) {
-		return getSession().get(PostVO.class, postNo);
+		return getSession().createQuery("from PostVO where postNo= :postno AND postStatus=1", PostVO.class)
+				.setParameter("postno", postNo)
+				.uniqueResult();
 	}
 
 	@Override

@@ -275,7 +275,7 @@ label {
         var rpttype=$('input[name="report-type"]:checked').val();
         var rpttext=$("textarea#additional-message").val();
         $.ajax({
-  		  url: "forumreport.do",          
+  		  url: "${pageContext.request.contextPath}/forum/forumreport.do",          
   		  type: "POST",                  
   		  data: {"action": "reportpost",
   			  	 "postno": ${post.postNo},

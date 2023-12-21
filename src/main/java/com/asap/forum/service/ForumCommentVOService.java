@@ -14,4 +14,6 @@ public interface ForumCommentVOService {
 	public Integer deleteComment(ForumCommentVO forumComment);
 	
 	public ForumCommentVO getOneComment(Integer cmtno);
+	
+	public Integer uodateComment(ForumCommentVO forumComment);
 }

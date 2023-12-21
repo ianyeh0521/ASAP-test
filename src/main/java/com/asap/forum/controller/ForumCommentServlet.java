@@ -41,10 +41,19 @@ public class ForumCommentServlet extends HttpServlet {
 		case "getonecomment":
 			getOneComment(req, res);
 			break;
-		
+		case "cmtrptmgmt":
+			cmtRptMgmt(req, res);
+			break;
 	}
 	
 	res.setContentType("text/html; charset=UTF-8");
+	}
+
+	private void cmtRptMgmt(HttpServletRequest req, HttpServletResponse res) {
+		Integer cmtno = Integer.parseInt(req.getParameter("cmtno"));
+		ForumCommentVO comment=  forumCommentVOService.getOneComment(cmtno);
+		comment.setCmtStatus(false);
+		forumCommentVOService.uodateComment(comment);
 	}
 
 	private void getOneComment(HttpServletRequest req, HttpServletResponse res) throws IOException {

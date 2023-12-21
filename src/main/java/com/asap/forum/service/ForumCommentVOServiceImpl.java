@@ -35,4 +35,9 @@ private  ForumCommentDAO_interface dao;
 		return dao.findbyPK(cmtno);
 	}
 
+	@Override
+	public Integer uodateComment(ForumCommentVO forumComment) {
+		return dao.update(forumComment);
+	}
+
 }

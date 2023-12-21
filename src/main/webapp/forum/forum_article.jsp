@@ -348,7 +348,7 @@
 
     <hr style="margin: 2px auto;width:70%;">
 
-    <div class="comment-list">
+    <div class="comment-list" style="padding-bottom:0px">
       <div class="new-comment" style="height:auto; position: relative;">
         <div style="width: 100%; display: flex; align-items: flex-end;">
           <div style="width: 100%; display: flex; align-items: center;">
@@ -430,7 +430,7 @@
               </div>
               <div class="report-item message-area">
                 <label for="additional-message">附加訊息：</label>
-                <textarea id="additional-message" name="message" maxlength="200"></textarea>
+                <textarea id="additional-message" name="message" maxlength="200" type="text" ></textarea>
               </div>
               
             </div>
@@ -445,6 +445,8 @@
     </div>
     </c:forEach>
     <!-- Modal Ends -->
+
+<br><br><br>
 
     <footer class="footer bg-dark"></footer>
 
@@ -469,7 +471,7 @@
       $("div.mobile-menu-container").load("mobile-menu-container.html");
       let postno=$("h2.post-title").attr("data-postno");
       $.ajax({
-          url: "forumlike.do",
+          url: "${pageContext.request.contextPath}/forum/forumlike.do",
           type: "POST",
           data: { "action": "loadlike", "postno": postno },
           dataType: "json",
@@ -485,11 +487,27 @@
           },
         });
       
+	  $.ajax({
+		  url: "${pageContext.request.contextPath}/forum/savepost.do",          
+		  type: "POST",                  
+		  data: {"action": "checksave",
+			  	 "postno": postno    },
+		  dataType:"json",
+		  success: function(data){      
+		    if(data.status==1){
+				$("span.save").addClass("-saved");
+		    }else if(data.status==0){
+		        $("span.save").removeClass("-saved");
+		    }
+		  }
+	});
+      
+      
 //    按讚文章
       $("span.thumbs-up").on("click", function () {
     	  let postno=$("h2.post-title").attr("data-postno");
     	  $.ajax({
-    		  url: "forumlike.do",          
+    		  url: "${pageContext.request.contextPath}/forum/forumlike.do",          
     		  type: "POST",                  
     		  data: {"action": "likepost",
     			  	 "postno": postno    },
@@ -519,31 +537,26 @@
       $("span.save").on("click", function () {
     	  let postno=$("h2.post-title").attr("data-postno");
     	  $.ajax({
-    		  url: "savepost.do",          
+    		  url: "${pageContext.request.contextPath}/forum/savepost.do",          
     		  type: "POST",                  
     		  data: {"action": "savepost",
     			  	 "postno": postno    },
     		  dataType:"json",
     		  success: function(data){      
     		    if(data.status==1){
-//     		    	$("this").addClass("-up");
-    		        $("span.thumbs-up").addClass("-up");
-    		        var likes = parseInt($("span.likecounts").text());
-    		        console.log(likes);
-    		        $("span.likecounts").text(likes+1);
+//     		    	
+    		        $("span.save").addClass("-saved");
+    		       
     		    }else if(data.status==0){
 //     		    	$("this").removeClass("-up");
-    		        $("span.thumbs-up").removeClass("-up");
-    		        var likes = parseInt($("span.likecounts").text());
-    		        console.log(likes);
-    		        $("span.likecounts").text(likes-1);
+    		        $("span.save").removeClass("-saved");
+    		       
     		    }
     		   
     		  }
     	});
     	  
-        $("i.fa-floppy-disk").toggleClass("-saved");
-        $("span.save").toggleClass("-saved")
+        
       });
 
 //新增留言
@@ -556,7 +569,7 @@
           alert("請輸入留言");
         } else {
         	$.ajax({
-        		  url: "forumcomment.do",          
+        		  url: "${pageContext.request.contextPath}/forum/forumcomment.do",          
         		  type: "POST",                  
         		  data: {"action": "addcomment",
         			  	 "postno": postno,
@@ -578,10 +591,10 @@
       $("button.filereport").on("click",function(e){
     	  let cmtno = $(this).closest('.modal').find("input.commentNo").val();
     	  let rpttype=$("input[name='report-type']:checked").val();
-    	  let rpttext=$("textarea#additional-message").val().trim();
+    	  var rpttext = $(this).closest('.modal-content').find('textarea#additional-message').val();
     	  console.log(rpttext)
     	  $.ajax({
-    		  url: "forumreport.do",          
+    		  url: "${pageContext.request.contextPath}/forum/forumreport.do",          
     		  type: "POST",                  
     		  data: {"action": "reportcomment",
     			  	 "cmtno": cmtno,
@@ -604,7 +617,7 @@
     	  let cmtno = commentBlock.find("p.comment-content").data("cmtno");
 //     	  console.log(cmtno);
     	  $.ajax({
-    		  url: "forumlike.do",          
+    		  url: "${pageContext.request.contextPath}/forum/forumlike.do",          
     		  type: "POST",                  
     		  data: {"action": "likecmt",
     			  	 "cmtno": cmtno},

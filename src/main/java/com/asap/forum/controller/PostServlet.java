@@ -52,6 +52,9 @@ public class PostServlet extends HttpServlet {
 		}else if ("updatepost".equals(action)) {
 			forwardPath = updatePost(req,res);
 			res.sendRedirect(forwardPath);
+		}else if ("updatetime".equals(action)) {
+			forwardPath = updateTime(req,res);
+			res.sendRedirect(forwardPath);
 		}
 		
 		switch (action) {
@@ -65,7 +68,7 @@ public class PostServlet extends HttpServlet {
 				searchByType(req,res);
 				break;
 			case "bytime":
-				searchByTime(req,res);
+				loadPost(req,res);
 				break;
 			case "bypopularity":
 				searchByPopularity(req,res);
@@ -76,9 +79,8 @@ public class PostServlet extends HttpServlet {
 			case "deletepost":
 				deletePost(req,res);
 				break;
-				
 			case "postrptmgmt":
-				forwardPath = postRptmgmt(req, res);
+				postRptmgmt(req, res);
 				break;
 //			case "compositeQuery":
 //				forwardPath = getCompositeEmpsQuery(req, res);
@@ -92,9 +94,28 @@ public class PostServlet extends HttpServlet {
 		
 	}
 
-	private String postRptmgmt(HttpServletRequest req, HttpServletResponse res) {
-		// TODO Auto-generated method stub
-		return null;
+	private String updateTime(HttpServletRequest req, HttpServletResponse res) {
+		res.setContentType("text/html; charset=UTF-8");
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		Integer posttypeno = Integer.parseInt(req.getParameter("posttypeno"));
+		String posttitle =req.getParameter("posttitle");
+		String posttext=req.getParameter("posttext");
+		PostTypeVO postTypeVO=new PostTypeVO(posttypeno);
+		PostVO post=postVOService.findbyPK(postno);
+		post.setPostStatus(1);
+		post.setPostTitle(posttitle);
+		post.setPostText(posttext);
+		post.setPostTypeVO(postTypeVO);
+		post.setPostCrtTime(new java.sql.Timestamp(System.currentTimeMillis()));
+		postVOService.updatePost(post);
+		return "/ASAP/forum/my_post.jsp";
+	}
+
+	private void postRptmgmt(HttpServletRequest req, HttpServletResponse res) {
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		PostVO post=postVOService.findbyPK(postno);
+		post.setPostStatus(2);
+		postVOService.updatePost(post);
 	}
 
 	private String updatePost(HttpServletRequest req, HttpServletResponse res) {
@@ -110,7 +131,7 @@ public class PostServlet extends HttpServlet {
 		post.setPostText(posttext);
 		post.setPostTypeVO(postTypeVO);
 		postVOService.updatePost(post);
-		return "/ASAP/forum/forum_home.jsp";
+		return "/ASAP/forum/my_post.jsp";
 	}
 
 	private String updateDraft(HttpServletRequest req, HttpServletResponse res) {
@@ -125,7 +146,7 @@ public class PostServlet extends HttpServlet {
 		post.setPostText(posttext);
 		post.setPostTypeVO(postTypeVO);
 		postVOService.updatePost(post);
-		return "/ASAP/forum/forum_home.jsp";
+		return "/ASAP/forum/my_post.jsp";
 	}
 
 	private void deletePost(HttpServletRequest req, HttpServletResponse res) {
@@ -180,16 +201,6 @@ public class PostServlet extends HttpServlet {
 		
 	}
 
-	private void searchByTime(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		res.setContentType("application/json;charset=UTF-8");
-		List<PostVO> postList = postVOService.getAllbyDate();
-		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
-		String jsonString=gson.toJson(postList);
-		PrintWriter out = res.getWriter();
-        out.write(jsonString);          
-        out.close();  
-		
-	}
 
 	private void searchByType(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		res.setContentType("application/json;charset=UTF-8");
@@ -219,12 +230,12 @@ public class PostServlet extends HttpServlet {
 
 	private void loadPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		res.setContentType("application/json;charset=UTF-8");
-		List<PostVO> postList = postVOService.getAlltoShow();
+		List<PostVO> postList = postVOService.getAllbyDate();
 		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 		String jsonString=gson.toJson(postList);
 		PrintWriter out = res.getWriter();
         out.write(jsonString);          
-        out.close();  
+        out.close(); 
 		
 	}
 
