@@ -39,9 +39,16 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
   <!-- Main CSS File (style.min.css 10166 style.css 8837)   -->
-   <link rel="stylesheet" href="${pageContext.request.contextPath}/forum/style1.css" />
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/forum/style1.css" /> --%>
 
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/forum/style1.min.css" /> 
+<%--   <link rel="stylesheet" href="${pageContext.request.contextPath}/forum/style1.min.css" />  --%>
+
+<!-- Main CSS File (style.min.css 10166 style.css 8837)   -->
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style1.css" />
+
+  <link rel="stylesheet" href="/${pageContext.request.contextPath}/assets/css/style1.min.css" /> 
+
+
 
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
 
