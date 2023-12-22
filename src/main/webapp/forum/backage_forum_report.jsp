@@ -236,8 +236,9 @@ $(document).ready(function () {
 				<div class="fs_alert_bg"></div>
 				<div class="fs_alert_show">
 					<form action="" method="post">
-						<div class="fs_alert_title">成功</div>
-						<div class="fs_alert_txt">這就是彈窗</div>
+						<div class="fs_alert_title"></div>
+						<h3 class="article-status"></h3>
+						<div class="fs_alert_txt"></div>
 						<div class="btn_s" id="alert_ok">確認</div>
 					</form>
 				</div>
@@ -283,14 +284,27 @@ $(document).ready(function () {
 												<button type="button" class="btn btn-success btn-sm getpost"
 													id="lookup" style="border-radius: 5px; margin-bottom: 10px"
 													data-postno="${report.postNo}">查看</button>
-												<button type="button"
+												<c:choose>
+											<c:when test="${report.fRptReplyTime != null}">
+												
+												<button type="button" disabled
 													class="btn btn-primary btn-sm post-manage"
 													style="border-radius: 5px; margin-bottom: 10px"
 													data-toggle="modal"
 													data-target="#postModal${report.fRptNo}"
 													data-rptno="${report.fRptNo}"
 													data-postno="${report.postNo}">處理</button>
-
+											</c:when>
+											<c:when test="${report.fRptReplyTime == null}">
+													<button type="button"
+													class="btn btn-primary btn-sm post-manage"
+													style="border-radius: 5px; margin-bottom: 10px"
+													data-toggle="modal"
+													data-target="#postModal${report.fRptNo}"
+													data-rptno="${report.fRptNo}"
+													data-postno="${report.postNo}">處理</button>
+											</c:when>
+											</c:choose>
 												<!-- Post Modal -->
 												<div class="modal fade" id="postModal${report.fRptNo}"
 													tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -336,11 +350,23 @@ $(document).ready(function () {
 													class="btn btn-success btn-sm getcomment" id="lookup"
 													style="border-radius: 5px; margin-bottom: 10px"
 													data-cmtno="${report.cmtNo}">查看</button>
+												
+												<c:choose>
+											<c:when test="${report.fRptReplyTime != null}">
+												<button type="button" disabled
+													class="btn btn-primary btn-sm cmt-manage"
+													style="border-radius: 5px; margin-bottom: 10px"
+													data-toggle="modal" data-target="#cmtModal${report.fRptNo}"
+													data-rptno="${report.fRptNo}" data-cmtno="${report.cmtNo}">處理</button>
+												</c:when>
+												<c:when test="${report.fRptReplyTime == null}">
 												<button type="button"
 													class="btn btn-primary btn-sm cmt-manage"
 													style="border-radius: 5px; margin-bottom: 10px"
 													data-toggle="modal" data-target="#cmtModal${report.fRptNo}"
 													data-rptno="${report.fRptNo}" data-cmtno="${report.cmtNo}">處理</button>
+												</c:when>
+												</c:choose>
 												<!-- Comment Modal -->
 												<div class="modal fade" id="cmtModal${report.fRptNo}"
 													tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -445,6 +471,9 @@ $(document).ready(function () {
 					$(".fs_alert_title").html("");
 					$(".fs_alert_txt").html(data.cmtText);
 					$("#fs_alert").css("display", "block");
+					if(data.cmtStatus==0){
+						$("h3.article-status").html("本則留言已下架")
+					}
 
 				}
 			});
@@ -456,14 +485,17 @@ $(document).ready(function () {
 				url : "${pageContext.request.contextPath}/forum/post.do",
 				type : "POST",
 				data : {
-					"action" : "getmypost",
+					"action" : "getonepost",
 					"postno" : postNo,
 				},
 				dataType : "json",
 				success : function(data) {
-					$(".fs_alert_title").html(data.postTitle);
+					$("h3.article-status").html(data.postTitle);
 					$(".fs_alert_txt").html(data.postText);
 					$("#fs_alert").css("display", "block");
+					if(data.postStatus==2){
+						$(".fs_alert_title").html("本則貼文已下架")
+					}
 				}
 			});
 		})
@@ -475,7 +507,7 @@ $(document).ready(function () {
 				url : "${pageContext.request.contextPath}/forum/post.do",
 				type : "POST",
 				data : {
-					"action" : "getmypost",
+					"action" : "getonepost",
 					"postno" : postNo,
 				},
 				dataType : "json",

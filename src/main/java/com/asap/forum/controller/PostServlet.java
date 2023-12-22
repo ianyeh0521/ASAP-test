@@ -82,6 +82,9 @@ public class PostServlet extends HttpServlet {
 			case "postrptmgmt":
 				postRptmgmt(req, res);
 				break;
+			case "getonepost":
+				getOnePost(req, res);
+				break;
 //			case "compositeQuery":
 //				forwardPath = getCompositeEmpsQuery(req, res);
 //				break;
@@ -92,6 +95,17 @@ public class PostServlet extends HttpServlet {
 		
 		res.setContentType("text/html; charset=UTF-8");
 		
+	}
+
+	private void getOnePost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		res.setContentType("text/html; charset=UTF-8");
+		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		PostVO post=postVOService.backstageFindbyPK(postno);
+		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+		String jsonString=gson.toJson(post);
+		PrintWriter out = res.getWriter();
+        out.write(jsonString);          
+        out.close();  
 	}
 
 	private String updateTime(HttpServletRequest req, HttpServletResponse res) {

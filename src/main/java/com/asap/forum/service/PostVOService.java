@@ -30,4 +30,6 @@ public interface PostVOService {
 	public List<PostVO> getAllbyDate();
 	
 	public List<PostVO> getAllbyViews();
+	
+	public PostVO backstageFindbyPK(Integer postNo);
 }

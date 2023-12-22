@@ -33,7 +33,7 @@ public interface PostDAO_interface {
 	
 //	public List<PostVO> getByCompositeQuery(Map<String, String> map);
 	
-
+	public PostVO backstageFindbyPK(Integer postNo);
 
 	
 }

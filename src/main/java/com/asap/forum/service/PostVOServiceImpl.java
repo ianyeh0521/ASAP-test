@@ -81,6 +81,11 @@ public class PostVOServiceImpl implements PostVOService {
 		return dao.getMyPosts(mbrNo);
 	}
 
+	@Override
+	public PostVO backstageFindbyPK(Integer postNo) {
+		return dao.backstageFindbyPK(postNo);
+	}
+
 
 
 

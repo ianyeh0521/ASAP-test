@@ -2,6 +2,7 @@ package com.asap.forum.dao;
 
 import static com.asap.forum.util.Constants.PAGE_MAX_RESULT;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -66,7 +67,9 @@ public class PostDAO implements PostDAO_interface {
 		return getSession().createQuery("from PostVO", PostVO.class).list();
 	}
 
-	
+	public PostVO backstageFindbyPK(Integer postNo) {
+		return getSession().get(PostVO.class,postNo);
+	}
 	
 
 	@Override
