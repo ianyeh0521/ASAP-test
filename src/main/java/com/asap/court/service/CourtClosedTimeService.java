@@ -25,6 +25,13 @@ public class CourtClosedTimeService implements CourtClosedTimeService_interface{
 	public void delete(Integer courtClosedTimeNo) {
 		dao.delete(courtClosedTimeNo);
 	}
+	
+	
+
+	@Override
+	public int delete(Integer courtNo, Date courtClosedDate, Integer courtClosedTime) {
+		return dao.delete(courtNo, courtClosedDate, courtClosedTime);
+	}
 
 	@Override
 	public List<CourtClosedTimeVO> findByCourtNo(Integer courtNo) {

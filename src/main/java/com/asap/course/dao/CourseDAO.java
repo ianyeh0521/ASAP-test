@@ -18,10 +18,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.asap.course.entity.CourseVO;
+import com.asap.court.entity.CourtVO;
 import com.asap.util.HibernateUtil;
 
 public class CourseDAO implements CourseDAO_interface{
 
+	private static final int PAGE_MAX_RESULT = 5;
 	private SessionFactory factory;
 	
 	public CourseDAO() {
@@ -171,6 +173,20 @@ public class CourseDAO implements CourseDAO_interface{
 			return null;
 		}
 	}
+
+	@Override
+	public List<CourseVO> getAll(int currentPage) {
+		int first = (currentPage - 1) * PAGE_MAX_RESULT;
+		return getSession().createQuery("from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP", CourseVO.class).setFirstResult(first)
+				.setMaxResults(PAGE_MAX_RESULT).list();
+	}
+
+	@Override
+	public long getTotal() {
+		return getSession().createQuery("select count(*) from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP", Long.class).uniqueResult();
+	}
+	
+	
 	
 	
 }

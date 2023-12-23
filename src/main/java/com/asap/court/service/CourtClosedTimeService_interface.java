@@ -11,6 +11,8 @@ public interface CourtClosedTimeService_interface {
 	
 	void delete(Integer courtClosedTimeNo);
 	
+	int delete(Integer courtNo, Date courtClosedDate, Integer courtClosedTime);
+	
 	// Find by courtNo
 	List<CourtClosedTimeVO> findByCourtNo(Integer courtNo);
 	
@@ -19,4 +21,6 @@ public interface CourtClosedTimeService_interface {
 	Boolean existsDeter(Integer courtNo,  Date courtClosedDate, Integer courtClosedTime);
 	
 	List<CourtClosedTimeVO> getAll();
+	
+	
 }

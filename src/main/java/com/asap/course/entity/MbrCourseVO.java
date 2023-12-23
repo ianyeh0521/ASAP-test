@@ -25,11 +25,11 @@ public class MbrCourseVO{
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="CourseVO", referencedColumnName = "CourseNo")
+	@JoinColumn(name="courseNo", referencedColumnName = "courseNo")
 	private CourseVO courseVO;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MemberVO", referencedColumnName = "MbrNo")
+	@JoinColumn(name="mbrNo", referencedColumnName = "mbrNo")
 	private MemberVO memberVO;
 	
 	@Column(name = "MbrCourseTime")

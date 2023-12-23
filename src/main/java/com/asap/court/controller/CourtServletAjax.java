@@ -64,7 +64,6 @@ public class CourtServletAjax extends HttpServlet{
 		        res.setCharacterEncoding("UTF-8");
 		        res.getWriter().write(json);
 		    } catch (NumberFormatException e) {
-		        // Handle invalid or missing parameters
 		        res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		        res.getWriter().write("Invalid or missing pagination parameters.");
 		    }

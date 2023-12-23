@@ -138,6 +138,28 @@ public class CourtClosedTimeDAO implements CourtClosedTimeDAO_interface{
 			return null;
 		}
 	}
+
+	@Override
+	public int delete(Integer courtNo, Date courtClosedDate, Integer courtClosedTime) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "DELETE FROM CourtClosedTimeVO cc " +
+                    "WHERE cc.courtNo = :courtNo " +
+                    "AND cc.courtClosedDate = :closedDate " +
+                    "AND cc.courtClosedTime = :closedTime";
+
+            Query query = session.createQuery(hql);
+            query.setParameter("courtNo", courtNo);
+            query.setParameter("closedDate", courtClosedDate);
+            query.setParameter("closedTime", courtClosedTime);
+
+            return query.executeUpdate(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+	}
+	
+	
 	
 	
 	

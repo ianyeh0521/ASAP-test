@@ -1,5 +1,7 @@
 package com.asap.court.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.asap.court.entity.CourtOrderVO;
@@ -19,4 +21,6 @@ public interface CourtOrderService_interface {
 	Boolean checkOrderDateAndTime(Integer courtNo, java.sql.Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd);
 	
 	List<CourtOrderVO> getAll();
+	
+	List<CourtOrderVO> getAllUnPaidCourt(Date currentDateAsDate);
 }
