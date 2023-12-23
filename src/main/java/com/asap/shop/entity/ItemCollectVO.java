@@ -62,10 +62,13 @@ public class ItemCollectVO implements Serializable {
 		this.itemInfoVO = itemInfoVO;
 	}
 
+
 	@Override
 	public String toString() {
 		return "ItemCollectVO [itemCollectNo=" + itemCollectNo + ", mbrNo=" + mbrNo + ", itemInfoVO=" + itemInfoVO
 				+ "]";
 	}
 
+
+	
 }
