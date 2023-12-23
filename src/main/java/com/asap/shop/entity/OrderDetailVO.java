@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -24,8 +26,9 @@ public class OrderDetailVO implements Serializable {
 	@Column(name = "OrderNo")
 	private Integer orderNo;
 
-	@Column(name = "ItemNo")
-	private Integer itemNo;
+	@ManyToOne
+	@JoinColumn(name = "ItemNo", referencedColumnName = "itemNo")
+	private ItemInfoVO itemInfoVO;
 
 	@Column(name = "ItemOrderQty")
 	private Integer itemOrderQty;
@@ -39,13 +42,11 @@ public class OrderDetailVO implements Serializable {
 	@Column(name = "CmtText")
 	private String cmtText;
 
-	
 	@Column(name = "CmtTime")
 	private Timestamp cmtTime;
 
 	@Column(name = "CmtReText")
 	private String cmtReText;
-
 
 	@Column(name = "CmtReTime")
 	private Timestamp cmtReTime;
@@ -60,13 +61,13 @@ public class OrderDetailVO implements Serializable {
 
 	}
 
-	public OrderDetailVO(Integer orderDetailNo, Integer orderNo, Integer itemNo, Integer itemOrderQty, String mbrNo,
-			Integer cmtScore, String cmtText, Timestamp cmtTime, String cmtReText, Timestamp cmtReTime,
+	public OrderDetailVO(Integer orderDetailNo, Integer orderNo, ItemInfoVO itemInfoVO, Integer itemOrderQty,
+			String mbrNo, Integer cmtScore, String cmtText, Timestamp cmtTime, String cmtReText, Timestamp cmtReTime,
 			boolean delyStat, Integer itemOrderPrice) {
 		super();
 		this.orderDetailNo = orderDetailNo;
 		this.orderNo = orderNo;
-		this.itemNo = itemNo;
+		this.itemInfoVO = itemInfoVO;
 		this.itemOrderQty = itemOrderQty;
 		this.mbrNo = mbrNo;
 		this.cmtScore = cmtScore;
@@ -94,12 +95,12 @@ public class OrderDetailVO implements Serializable {
 		this.orderNo = orderNo;
 	}
 
-	public Integer getItemNo() {
-		return itemNo;
+	public ItemInfoVO getItemInfoVO() {
+		return itemInfoVO;
 	}
 
-	public void setItemNo(Integer itemNo) {
-		this.itemNo = itemNo;
+	public void setItemInfoVO(ItemInfoVO itemInfoVO) {
+		this.itemInfoVO = itemInfoVO;
 	}
 
 	public Integer getItemOrderQty() {
@@ -176,7 +177,7 @@ public class OrderDetailVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "OrderDetailVO [orderDetailNo=" + orderDetailNo + ", orderNo=" + orderNo + ", itemNo=" + itemNo
+		return "OrderDetailVO [orderDetailNo=" + orderDetailNo + ", orderNo=" + orderNo + ", itemInfoVO=" + itemInfoVO
 				+ ", itemOrderQty=" + itemOrderQty + ", mbrNo=" + mbrNo + ", cmtScore=" + cmtScore + ", cmtText="
 				+ cmtText + ", cmtTime=" + cmtTime + ", cmtReText=" + cmtReText + ", cmtReTime=" + cmtReTime
 				+ ", delyStat=" + delyStat + ", itemOrderPrice=" + itemOrderPrice + "]";

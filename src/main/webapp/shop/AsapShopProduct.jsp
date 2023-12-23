@@ -10,7 +10,7 @@
 <%
 Integer itemInfo = Integer.valueOf(request.getParameter("itemNo"));
 ItemInfoService_interface ItemSvc = new ItemInfoService();
-ItemInfoVO list = ItemSvc.getItemInfoById(itemInfo);
+ItemInfoVO list = ItemSvc.findByItemNo(itemInfo);
 pageContext.setAttribute("list", list);
 System.out.println(list);
 %>
@@ -413,11 +413,13 @@ System.out.println(list);
         $(".add-cart").on("click", function() {
         	var addCart = $(".product-title").attr("data-itemno");
         	var cartQty = $(".horizontal-quantity").val();
+        	var mbrNo = "M1";
         	
+        	console.log(addCart);
         		 $.ajax({
         	            url: "ShoppingCartServlet",
         	            type: "POST",
-        	            data: { itemNo: addCart,itemqty: cartQty, "action": "addcart" },
+        	            data: { itemNo: addCart,itemqty: cartQty, mbrNo: mbrNo, "action": "addcart"},
 //         	            dataType: "json",
         	            success: function(data) {
         	            	console.log("aaa");
