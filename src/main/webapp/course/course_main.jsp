@@ -3,34 +3,42 @@
 <%@page import="com.asap.course.service.CourseService"%>
 <%@page import="com.asap.course.service.CourseService_interface"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <%
-	CourseService_interface courseSvc = new CourseService();
-	List<CourseVO> courseList = courseSvc.getAll();
-	
-	pageContext.setAttribute("courseList", courseList);
+//datetime picker
+java.sql.Date closedDate = null;
+try {
+	closedDate = java.sql.Date.valueOf(request.getParameter("closedDate").trim());
+} catch (Exception e) {
+	closedDate = new java.sql.Date(System.currentTimeMillis());
+}
+// 	CourseService_interface courseSvc = new CourseService();
+// 	List<CourseVO> courseList = courseSvc.getAll();
 
+// 	pageContext.setAttribute("courseList", courseList);
 %>
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>課程</title>
+<title>課程</title>
 
-	<meta name="keywords" content="HTML5 Template" />
-	<meta name="description" content="Porto - Bootstrap eCommerce Template">
-	<meta name="author" content="SW-THEMES">
+<meta name="keywords" content="HTML5 Template" />
+<meta name="description" content="Porto - Bootstrap eCommerce Template">
+<meta name="author" content="SW-THEMES">
 
-	<!-- Favicon -->
-	<link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
 
-	<script>
+<script>
 		WebFontConfig = {
 			google: { families: ['Open+Sans:400,600,700', 'Poppins:300,400,500,600,700'] }
 		};
@@ -42,35 +50,83 @@
 		})(document);
 	</script>
 
-	<!-- Plugins CSS File -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
-	<link rel="preload" href="${pageContext.request.contextPath}/assets/fonts/porto.woff2?64334846" as="font" type="font/ttf" crossorigin>
-	<link rel="preload" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
-		crossorigin>
-	<link rel="preload" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
-		crossorigin>
+<!-- Plugins CSS File -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
+<link rel="preload"
+	href="${pageContext.request.contextPath}/assets/fonts/porto.woff2?64334846"
+	as="font" type="font/ttf" crossorigin>
+<link rel="preload"
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/webfonts/fa-solid-900.woff2"
+	as="font" type="font/woff2" crossorigin>
+<link rel="preload"
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/webfonts/fa-brands-400.woff2"
+	as="font" type="font/woff2" crossorigin>
 
-	<!-- Main CSS File -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
+<!-- Main CSS File -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/style.min.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 
-	<style>
-		.outer-container {
-	        border: 1px solid rgba(0, 0, 0, 0.1); 
-	        border-radius: 10px; 
-	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-	        padding: 20px; 
-	        margin: 10px; 
-	    }
-	</style>
-	
+<!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.css" />
+<script
+	src="${pageContext.request.contextPath}/court/datetimepicker/jquery.js"></script>
+<script
+	src="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.full.js"></script>
+
+<style>
+.xdsoft_datetimepicker .xdsoft_datepicker {
+	width: 300px; /* width:  300px; */
+}
+
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+	height: 151px; /* height:  151px; */
+}
+
+.outer-container {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	margin: 10px;
+}
+
+/* 分頁按鈕 */
+.pagination-buttons button {
+	margin-right: 5px;
+}
+
+.pagination-buttons button:hover {
+	cursor: pointer;
+}
+
+.pagination-buttons button.selected-page {
+	background-color: #009EEE;
+	color: #fff;
+	cursor: default;
+}
+
+#f_date1 {
+	border-radius: 8px;
+	border: 1px solid;
+}
+
+#f_date2 {
+	border-radius: 8px;
+	border: 1px solid;
+}
+</style>
+
 </head>
 
 <body>
 	<div class="page-wrapper">
 
-		    <header class="header">
-      	<div class="header-middle sticky-header"
+		<header class="header">
+			<div class="header-middle sticky-header"
 				data-sticky-options="{'mobile': true}"
 				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
 				<div class="container">
@@ -135,29 +191,38 @@
 				<!-- End .container -->
 			</div>
 			<!-- End .header-bottom -->
-      </header>
-      <!-- End .header -->
+		</header>
+		<!-- End .header -->
 
 		<main class="main">
 			<!-- 搜尋列 -->
 			<div class="container" style="margin-top: 20px !important;">
 				<div
 					class="header-icon header-search header-search-inline header-search-category w-lg-max text-right mt-0">
-					<a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
+					<a href="#" class="search-toggle" role="button"><i
+						class="icon-search-3"></i></a>
 					<form action="#" method="get">
 						<div class="header-search-wrapper">
-							<input type="search" class="form-control" name="courseSearch"  placeholder="搜尋課程...">
+							<input type="search" class="form-control" name="courseSearch"
+								placeholder="搜尋課程...">
+
 							<!--日期選擇-->
-							<div class="select-custom" style="display:flex;justify-content:center;align-items:center">
-								<input type="date"  name="startTime">
+							<div class="select-custom"
+								style="display: flex; justify-content: center; align-items: center; padding-right: 5px">
+								<input name="chooseStartDate" id="f_date1" type="text"
+									onkeydown="return false"
+									style="width: 100%; box-sizing: border-box;" autocomplete="off">
 							</div>
 
-							<div class="select-custom" style="display:flex;justify-content:center;align-items:center">
-								<input type="date" name="endTime">
+							<div class="select-custom"
+								style="display: flex; justify-content: center; align-items: center; padding-left: 5px">
+								<input name="chooseEndtDate" id="f_date2" type="text"
+									onkeydown="return false"
+									style="width: 100%; box-sizing: border-box;" autocomplete="off">
 							</div>
-							
+
 							<div class="select-custom">
-								<select  name="sportType">
+								<select name="sportType">
 									<option value="">選擇運動</option>
 									<option value="1">- 游泳</option>
 									<option value="2">- 棒球</option>
@@ -172,8 +237,9 @@
 									<option value="11">- 足球</option>
 									<option value="12">- 高爾夫</option>
 								</select>
-							</div><!-- End .select-custom -->
-	
+							</div>
+							<!-- End .select-custom -->
+
 							<div class="select-custom">
 								<select name="site">
 									<option value="">選擇地區</option>
@@ -190,66 +256,134 @@
 									<option value="士林區">- 士林區</option>
 									<option value="北投區">- 北投區</option>
 								</select>
-							</div><!-- End .select-custom -->
-							<button class="btn icon-magnifier p-0" type="submit" title="search"></button>
-						</div><!-- End .header-search-wrapper -->
-					</form>	
-				</div>		
-			</div><!-- End .container -->
+							</div>
+							<!-- End .select-custom -->
+							<button class="btn icon-magnifier p-0" type="submit"
+								title="search"></button>
+						</div>
+						<!-- End .header-search-wrapper -->
+					</form>
+				</div>
+			</div>
+			<!-- End .container -->
 
 			<!-- 功能按鈕 -->
-			<div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
-				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>我的課程</button>
+			<div class="container"
+				style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
+				<button class="btn btn-primary btn-rounded btn-md">
+					<a href="#"></a>我的課程
+				</button>
 			</div>
-			
-			
-			<div class="container">
-                <!-- 課程資訊 -->
-                
-                <c:forEach var="entry" items="${courseList}">
-				<div class="outer-container">
-					<div class="row justify-content-center align-items-center"  >
-						<div class="col-sm-12 col-6 product-default left-details product-list mb-2 d-flex justify-content-center">
+
+
+			<div class="container" id="divTest">
+				<!-- 排序按鈕 -->
+				<nav class="toolbox sticky-header"
+					data-sticky-options="{'mobile': true}" style="margin-bottom: 0px;">
+					<div class="toolbox-left"></div>
+					<!-- End .toolbox-left -->
+
+					<div class="toolbox-right">
+						<a href="#" class="sidebar-toggle"> <svg data-name="Layer 3"
+								id="Layer_3" viewBox="0 0 32 32"
+								xmlns="http://www.w3.org/2000/svg">
+										<line x1="15" x2="26" y1="9" y2="9" class="cls-1"></line>
+										<line x1="6" x2="9" y1="9" y2="9" class="cls-1"></line>
+										<line x1="23" x2="26" y1="16" y2="16" class="cls-1"></line>
+										<line x1="6" x2="17" y1="16" y2="16" class="cls-1"></line>
+										<line x1="17" x2="26" y1="23" y2="23" class="cls-1"></line>
+										<line x1="6" x2="11" y1="23" y2="23" class="cls-1"></line>
+										<path
+									d="M14.5,8.92A2.6,2.6,0,0,1,12,11.5,2.6,2.6,0,0,1,9.5,8.92a2.5,2.5,0,0,1,5,0Z"
+									class="cls-2"></path>
+										<path d="M22.5,15.92a2.5,2.5,0,1,1-5,0,2.5,2.5,0,0,1,5,0Z"
+									class="cls-2"></path>
+										<path d="M21,16a1,1,0,1,1-2,0,1,1,0,0,1,2,0Z" class="cls-3"></path>
+										<path
+									d="M16.5,22.92A2.6,2.6,0,0,1,14,25.5a2.6,2.6,0,0,1-2.5-2.58,2.5,2.5,0,0,1,5,0Z"
+									class="cls-2"></path>
+									</svg> <span>Filter</span>
+						</a>
+
+						<div class="toolbox-item toolbox-sort">
+							<label>排序方式:</label>
+
+							<div class="select-custom">
+								<select name="orderby" class="form-control"
+									v-model="selectedSortOption" @change="sortProducts"
+									style="border-radius: 10px">
+									<option value="menu_order" selected="selected" disabled>預設</option>
+									<option value="priceHL">價格高➪低</option>
+									<option value="priceLH">價格低➪高</option>
+								</select>
+							</div>
+							<!-- End .select-custom -->
+						</div>
+						<!-- End .toolbox-item -->
+					</div>
+					<!-- End .toolbox-right -->
+				</nav>
+				<!-- 課程資訊 -->
+				<div class="outer-container" v-for="data in datas">
+					<div class="row justify-content-center align-items-center">
+						<div
+							class="col-sm-12 col-6 product-default left-details product-list mb-2 d-flex justify-content-center">
 							<figure>
-								<a href="#">
-									<img src="<%=request.getContextPath()%>/course/DBGifReader?courseNo=${entry.courseNo}" width="250" height="250"
-										alt="圖片" />
+								<a href="#"> <img
+									:src="'/ASAP/course/DBGifReader?courseNo=' + data.courseNo"
+									width="400" height="400" alt="圖片" />
 								</a>
 							</figure>
-							<div class="product-details" >
+							<div class="product-details">
 								<div class="category-list">
-									<a href="" class="type">${entry.sportTypeVO.sportTypeName}</a>
+									<a href="" class="type">{{data.sportTypeVO.sportTypeName}}</a>
 								</div>
-								<h3 class="product-title" class="name"> <a href="product.html"> ${entry.courseName}</a></h3>
-								<p class="product-description" class="text">${entry.courseText}</p>
-								
-								
+								<h3 class="product-title" class="name">
+									<a href="product.html"> {{data.courseName}}</a>
+								</h3>
+								<p class="product-description" class="text">{{data.courseText}}</p>
+
+
 								<div class="price-box">
-									<span class="product-price" class="price"> $${entry.coursePrice} / 堂</span>
+									<span class="product-price" class="price"> $
+										{{data.coursePrice}} / 堂</span>
 								</div>
-								
-<!-- 								<div class="price-box"> -->
-<!-- 									<span class="product-price" class="price"> 文山區 </span> -->
-<!-- 								</div> -->
-								
+
+								<!-- 								<div class="price-box"> -->
+								<!-- 									<span class="product-price" class="price"> 文山區 </span> -->
+								<!-- 								</div> -->
+
 								<div class="product-action">
 									<div class="product">
-										<a href="/ASAP/court/course_page.jsp?courseNo=${entry.courseNo}" class="btn btn-primary btn-rounded btn-md" @click="writeCourt(data.courtNo)">
-											<span style="color: white;">我要預約</span>
+										<a
+											:href="'/ASAP/course/course_page.jsp?courseNo=' + data.courseNo"
+											class="btn btn-primary btn-rounded btn-md"
+											@click="writeCourt(data.courtNo)"> <span
+											style="color: white;">我要預約</span>
 										</a>
 									</div>
 								</div>
 							</div>
-						</div>	
-					</div><!-- 課程資訊結束 -->
+						</div>
+					</div>
+					<!-- 課程資訊結束 -->
 				</div>
-				</c:forEach>
-				
-            </div><!-- End .container -->
+				<!-- 分頁按鈕 -->
+				<div class="pagination-buttons"
+					style="text-align: center; margin-bottom: 20px">
+					<button v-for="page in totalPage" :key="page"
+						@click="changePage(page)"
+						:class="{ 'selected-page': page === currentPage }"
+						:disabled="page === currentPage">{{ page }}</button>
+				</div>
+			</div>
+			<!-- End .container -->
 
-		</main><!-- End .main -->
+		</main>
+		<!-- End .main -->
 
-		 <footer class="footer bg-dark">	<div class="footer-middle">
+		<footer class="footer bg-dark">
+			<div class="footer-middle">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-3 col-sm-6">
@@ -316,28 +450,37 @@
 				</div>
 				<!-- End .footer-bottom -->
 			</div>
-			<!-- End .container --></footer>
-	</div><!-- End .page-wrapper -->
+			<!-- End .container -->
+		</footer>
+	</div>
+	<!-- End .page-wrapper -->
 
-	<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
-	<div class="mobile-menu-container"></div><!-- End .mobile-menu-container -->
+	<div class="mobile-menu-overlay"></div>
+	<!-- End .mobil-menu-overlay -->
+	<div class="mobile-menu-container"></div>
+	<!-- End .mobile-menu-container -->
 
-	<div class="sticky-navbar">	</div>
+	<div class="sticky-navbar"></div>
 
-	<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
+	<a id="scroll-top" href="#top" title="Top" role="button"><i
+		class="icon-angle-up"></i></a>
 
 	<!-- import Vue 3.0 -->
 	<script src="https://unpkg.com/vue@next"></script>
 
 	<!-- CDN import Axios -->
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	
+
 	<!-- Plugins JS File -->
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/nouislider.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/optional/isotope.pkgd.min.js"></script>
+	<%-- 	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script> --%>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/nouislider.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/optional/isotope.pkgd.min.js"></script>
 
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
@@ -347,33 +490,155 @@
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
 	</script>
-	
-	<script>
-		// window.onload=function(){
-		// 	Vue.createApp({
-	    //         data: function(){
-	    //             return{
-	    //                 datas: []
-	    //             }
-	    //         },
-	    //         methods:{
 
-	    //         },
-	    //         mounted: function(){
-	    //             axios.get('courtAjax.do')
-	    //                 .then((response) => {
-	    //                     console.log(response)
-	    //                     this.datas = response.data
-	    //                 })
-	    //                 .catch(function (reason){
-	    //                 	console.log(reason)
-	    //                 })
-	    //         }
-	    //     }).mount('#divTest');
+	<script>
+	window.onload=function(){
+		
+		// vue 初始化
+		Vue.createApp({
+            data: function(){
+                return{
+                    datas: [],
+                    recentlyViewDatas: [],
+                    selectedSortOption: 'menu_order',
+                    userlatitude: null,
+                    userlongitude: null,
+                    currentPage: 1,
+                    totalPage: 0,
+                }
+            },
+            methods:{
+                
+                // 課程資料初始化
+            	fetchInitialData: function () {
+                    const request1 = { url: 'course.do?action=getAll', method: 'get', params: { page: this.currentPage } };;
+                    const request2 = { url: 'course.do?action=getAll', method: 'get', params: { getTotalPage: true } };
+
+                    axios.all([axios(request1), axios(request2)])
+                        .then(axios.spread((response1, response2) => {
+                            var result1 = response1.data;
+                            var result2 = response2.data;
+                            console.log(result1)
+                            console.log(result2)
+
+                            this.datas = result1;
+                            this.totalPage = result2;
+                            console.log(this.datas)
+                            console.log(this.totalPage)
+                        }))
+                        .catch(function (reason) {
+                            console.log(reason);
+                        });
+            	},
+            	
+				// 排序
+				sortProducts: function () {
+			        const selectedOption = this.selectedSortOption;
 			
-		// }
-	</script>
+			        switch (selectedOption) {
+			            case 'priceHL':
+			                this.datas.sort((a, b) => this.getNumericPrice(b) - this.getNumericPrice(a));
+			                break;
+			            case 'priceLH':
+			                this.datas.sort((a, b) => this.getNumericPrice(a) - this.getNumericPrice(b));
+			                break;
+			            default:
+			                break;
+			        }
+			    },
+			
+			    getNumericPrice: function (product) {
+			        return parseFloat(product.coursePrice); 
+			    },
+			
+                
+                // 換頁按鈕
+                changePage: function (page) {
+                    this.currentPage = page;
+                    this.fetchInitialData();
+                    
+                    window.scrollTo({
+                        top: 230,
+                        behavior: 'smooth' 
+                    });
+                },
+              
+            	
+            },
+            mounted: function(){
+                this.fetchInitialData();
+                
+            },
+        	
+            
+        }).mount('#divTest');
+		
+	}
 	
+	$(document).ready(function() {
+		// 日期選擇
+		var somedate1 = new Date('<%=closedDate%>');
+		$.datetimepicker.setLocale('zh'); 
+        $('#f_date1').datetimepicker({
+           theme: '',          
+           timepicker: false,   //timepicker: false,
+           step: 60,            
+	       format: 'Y-m-d',
+//		       value: somedate1,
+	       beforeShowDay: function(date) {
+           	  if (  date.getYear() <  somedate1.getYear() || 
+    		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+    		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+                 ) {
+                      return [false, ""]
+                 }
+                 return [true, ""];
+           }
+           //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
+           //startDate:	        '2022/07/10',  // 起始日
+           //minDate:           '-1970-01-01', // 去除今日(不含)之前
+           //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+        });
+        $('#f_date1').attr("placeholder", "請選擇起始日期");
+		
+        
+        var somedate2 = new Date('<%=closedDate%>');
+		$.datetimepicker.setLocale('zh'); 
+        $('#f_date2').datetimepicker({
+           theme: '',          
+           timepicker: false,   //timepicker: false,
+           step: 60,            
+	       format: 'Y-m-d',
+//		       value: somedate2,
+	       beforeShowDay: function(date) {
+           	  if (  date.getYear() <  somedate1.getYear() || 
+    		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+    		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+                 ) {
+                      return [false, ""]
+                 }
+                 return [true, ""];
+           }
+           //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
+           //startDate:	        '2022/07/10',  // 起始日
+           //minDate:           '-1970-01-01', // 去除今日(不含)之前
+           //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+        });
+        $('#f_date2').attr("placeholder", "請選擇結束日期");
+
+       
+        
+        
+       
+	})
+	
+           
+        
+   
+	
+
+	</script>
+
 </body>
 
 </html>

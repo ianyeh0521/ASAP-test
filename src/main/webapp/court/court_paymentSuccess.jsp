@@ -72,10 +72,10 @@
         <main class="main">
             <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
               <li class="disabled">
-                  <a href="#">付款確認</a>
+                  <a href="#">完成預約</a>
               </li>
               <li class="active">
-                  <a href="#">完成預約</a>
+                  <a href="#">付款完成</a>
               </li>
             </ul>
 
@@ -84,27 +84,14 @@
             <div class="container">
               <div class="alert alert-info" style="border-radius: 5px;">
                 <div class="alert-wrapper">
-                  <h4>預約成功!</h4>
+                  <h4>付款成功!</h4>
                   	<p>
-                    耶，你的場地預約成功啦！🎉
+                    耶，你的場地預約付款完成啦！🎉
                     <br>
-                    請在預約後一天內完成付款，若超時將自動取消您的場地預約
-                    </p>
-                   
-                   <FORM METHOD="get" ACTION="<%=request.getContextPath()%>/court/courtOrderServlet.do" class="mb-2">
-                   
-	                   <input type="hidden" name="action" value="pay">
-	                   <input type="hidden" name="mbrNo" value="${mbrNo}">
-	                   <input type="hidden" name="courtOrdNo" value="${courtOrdNo}">                  
-	                   <button class="btn btn-info mt-xs mb-xs" type="submit" style="text-align: right;">立即付款</button>
-	                   
-	                   <a href="${pageContext.request.contextPath}/court/court_main.jsp">
-	                   <button class="btn btn-default mt-xs mb-xs" type="button" style="background-color: rgb(191, 194, 197); margin-left: 20px;">稍後付款</button>
-	                   </a>
-                   
-                   </FORM>
-                   
-                   
+					<p>
+                   <a href="${pageContext.request.contextPath}/court/court_main.jsp">
+                   <button class="btn btn-info mt-xs mb-xs" type="button" style="background-color: rgb(191, 194, 197); margin-left: 20px; border-radius: 5px;">返回場地查詢</button>
+                   </a>
                   <!-- <button class="btn btn-default mt-xs mb-xs" type="button">Not convinced yet</button> -->
     
                 </div>

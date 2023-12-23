@@ -1,48 +1,24 @@
+<%@page import="com.asap.course.entity.CourseVO"%>
+<%@page import="com.asap.course.service.CourseService"%>
+<%@page import="com.asap.course.service.CourseService_interface"%>
 <%@page import="com.asap.member.service.MemberService"%>
-<%@page import="com.asap.member.service.MemberService_interface"%>
 <%@page import="com.asap.member.entity.MemberVO"%>
-<%@page import="com.asap.court.service.CourtImgService_interface"%>
-<%@page import="com.asap.court.entity.CourtImgVO"%>
-<%@page import="com.asap.court.service.CourtImgService"%>
-<%@page import="com.asap.court.entity.SiteVO"%>
-<%@page import="com.asap.court.service.SiteService"%>
-<%@page import="com.asap.court.entity.CourtTypeVO"%>
-<%@page import="com.asap.court.service.CourtTypeService"%>
-<%@page import="com.asap.court.entity.CourtVO"%>
-<%@page import="com.asap.court.service.CourtService_interface"%>
-<%@page import="com.asap.court.service.CourtService"%>
+<%@page import="com.asap.member.service.MemberService_interface"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.asap.court.*"%>
 <%@ page import="com.asap.util.*"%>
 
 <%
-
-	String courtNo = request.getParameter("courtNo");
-	String chooseDate = request.getParameter("chooseDate");
-	String startTime = request.getParameter("startTime");
-	String endTime = request.getParameter("endTime");
-	String totalPrice = request.getParameter("totalPrice");
+	Integer courseNo = Integer.valueOf(request.getParameter("courseNo"));
+	CourseService_interface courseSvc = new CourseService();
+	CourseVO courseVO = courseSvc.findByPK(courseNo);
 	
-	CourtService_interface courtSvc = new CourtService();
-	CourtVO courtVO = courtSvc.getCourtByCourtNo(Integer.valueOf(courtNo));
+	String courseTime = request.getParameter("courseTime");
 	
+	pageContext.setAttribute("courseVO", courseVO);
+	pageContext.setAttribute("courseTime", courseTime);
 	
-	CourtImgService_interface courtImgSvc = new CourtImgService();
-	List<CourtImgVO> imgs = courtImgSvc.findByCourtNo(Integer.valueOf(courtNo));
-	String base64Img = "";
-	for(int i = 0; i < 1;i++){
-		base64Img = Base64.getEncoder().encodeToString(imgs.get(i).getCourtImg());
-	}
-	
-	pageContext.setAttribute("courtNo", courtNo);
-	pageContext.setAttribute("courtVO", courtVO);
-	pageContext.setAttribute("chooseDate", chooseDate);
-	pageContext.setAttribute("startTime", startTime);
-	pageContext.setAttribute("endTime", endTime);
-	pageContext.setAttribute("base64Img", base64Img);
-	pageContext.setAttribute("totalPrice", totalPrice);
 	
 	
 	// 這邊還會有一個 member 的session.getAttribute
@@ -60,7 +36,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>場地-付款頁面</title>
+    <title>課程  -付款頁面</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -92,15 +68,79 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
     
- 	
- 	
+ 
 </head>
 
 <body>
     <div class="page-wrapper">
-        <header class="header"></header>
-        <!-- End .header -->
+        <header class="header">
+      	<div class="header-middle sticky-header"
+				data-sticky-options="{'mobile': true}"
+				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
+				<div class="container">
+					<div class="header-left col-lg-2 w-auto pl-0">
+						<button class="mobile-menu-toggler text-primary mr-2"
+							type="button">
+							<i class="fas fa-bars"></i>
+						</button>
+						<a href="#" style="width: 222; height: 88;"> <img
+							src="${pageContext.request.contextPath}/newImg/logo2.png"
+							alt="Logo" />
+						</a>
+					</div>
+					<!-- End .header-left -->
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .header-middle -->
 
+			<div class="header-bottom sticky-header d-none d-lg-block"
+				data-sticky-options="{'mobile': false}">
+				<div class="container">
+					<nav class="main-nav w-100">
+						<ul class="menu" style="display: flex; justify-content: flex-end">
+							<li><a href="#">論壇</a>
+								<ul>
+									<li><a href="#">論壇首頁</a></li>
+									<li><a href="#">發佈貼文</a></li>
+									<li><a href="#">我的貼文</a></li>
+									<li><a href="#">收藏貼文</a></li>
+								</ul></li>
+							<li><a href="#">揪團</a>
+								<ul>
+									<li><a href="#">揪團首頁</a></li>
+									<li><a href="#">發起揪團</a></li>
+									<li><a href="#">我的揪團</a></li>
+								</ul></li>
+							<li><a href="#">找課程</a>
+								<ul>
+									<li><a href="#">查詢課程</a></li>
+									<li><a href="#">我的課程</a></li>
+								</ul></li>
+							<li><a href="#">找場地</a>
+								<ul>
+									<li><a href="#">詢找場地</a></li>
+									<li><a href="#">我的預約</a></li>
+									<li><a href="#">我的收藏</a></li>
+								</ul></li>
+							<li><a href="#">賣家入口</a>
+								<ul>
+									<li><a href="#">所有訂單</a></li>
+									<li><a href="#">所有商品</a></li>
+									<li><a href="#">新增商品</a></li>
+									<li><a href="#">商品評論</a></li>
+								</ul></li>
+
+							<li><a href="">商城</a></li>
+							<li><a href="login.jsp" style="color: blue">登出</a></li>
+						</ul>
+					</nav>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .header-bottom -->
+      </header>
+      <!-- End .header -->
 
         <main class="main main-test">
             <div class="container checkout-container text-center">
@@ -115,7 +155,7 @@
 				
                 <div class="row justify-content-center">
                     <div class="col-lg-7">
-                     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/court/courtOrderServlet.do" class="mb-2">
+                     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/course/mbrCourseServlet.do" class="mb-2">
                         <div class="order-summary">
                             <ul class="checkout-steps">
 	                            <li>
@@ -126,11 +166,7 @@
 	                                                <label>姓名</label>
 	                                                <input type="text" class="form-control text-center" value="${mbrVO.mbrName}" required readonly/>
 	                                                <input type="hidden" name="mbrNo" value="${mbrVO.mbrNo}">
-	                                                <input type="hidden" name="courtNo" value="${courtNo}">
-	                                                <input type="hidden" name="courtOrdDate" value="${chooseDate}">
-	                                                <input type="hidden" name="courtOrdTime" value="${startTime}">
-	                                                <input type="hidden" name="courtOrdTimeEnd" value="${endTime}">
-	                                                <input type="hidden" name="totalPrice" value="${totalPrice}">
+	                                                <input type="hidden" name="courseNo" value="${courseVO.courseNo}">
 	                                            </div>
 	                                        </div>
 	
@@ -164,24 +200,27 @@
 								            <div class="row align-items-center" style="margin-bottom: 20px">
 								                <div class="col-md-4">
 								                    <h3 class="product-title">
-								                        <img src="data:image/jpg;base64,${base64Img}" width="250" height="250" alt="場地圖片">
+								                        <img src="${pageContext.request.contextPath}/course/DBGifReader?courseNo=${courseVO.courseNo}" width="250" height="250" alt="場地圖片">
 								                    </h3>
 								                </div>
 								                <div class="col-md-8">
 								                    <div class="product-details text-center">
 								                        <h3 class="product-title mb-3" style="margin-top:30px">
-								                            ${courtVO.courtName}
+								                           	課程名稱： ${courseVO.courseName}
 								                        </h3>
 								                        <h3 class="product-title mb-3">
-								                            ${chooseDate}
+								                           	運動種類： ${courseVO.sportTypeVO.sportTypeName}
 								                        </h3>
 								                        <h3 class="product-title mb-3">
-								                            ${startTime}：00 ~ ${endTime}：00
+								                           	教練姓名： ${courseVO.coachVO.coachName}
+								                        </h3>
+								                        <h3 class="product-title mb-3">
+								                            時間：${courseTime}
 								                        </h3>
 								                        
 								                        <div class="row mt-3 justify-content-center">
 								                            <div class="col-md-6">
-								                                <h4 style="font-weight: bold;">總金額 $ ${totalPrice}</h4>
+								                                <h4 style="font-weight: bold;">總金額 $ ${courseVO.coursePrice}</h4>
 								                            </div>
 								                        </div>
 								                    </div>
@@ -202,14 +241,13 @@
 		                        </div>
 		                        
 		                        <div class="col-md-6">
-		                        	<a href="court_page.jsp?courtNo=${courtNo}">
+		                        	<a href="course_page.jsp?courseNo=${courseVO.courseNo}">
 		                            <button type="button" class="btn btn-gray btn-place-order">
 					                    取消
 					                </button>
 					                </a>
 					            </div>
 			                </div>
-			                
                         </div>
                         </FORM>
                         <!-- End .cart-summary -->
@@ -258,12 +296,10 @@
 
     <!-- header and footer template -->
 	<script>
-		$("header").load("header.html");
+// 		$("header").load("header.html");
 		$("footer").load("footer.html");
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
-		
-
 	</script>
 </body>
 

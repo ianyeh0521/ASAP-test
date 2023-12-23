@@ -25,7 +25,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>場地-我的預約</title>
+    <title>課程-我的課程</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -199,11 +199,9 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-nav">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/court_main.jsp"><i class="icon-home"></i></a></li>
-                    <li class="breadcrumb-item">我的預約</li>
+                    <li class="breadcrumb-item">我的課程</li>
                   </ol>
-                </nav>
-                <a href="${pageContext.request.contextPath}/court/court_mapSearching.jsp"><button class="btn btn-primary btn-rounded btn-md">地圖搜尋</button></a>
-                <a href="${pageContext.request.contextPath}/court/court_savelist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的收藏</button></a>                        
+                </nav>       
             </div>  
             
               <!-- 彈窗 -->
@@ -240,11 +238,11 @@
                       <tr>
                         <!-- 欄位標題 可以調整欄位數量但標題和內容要一起-->
                         <th ></th>
-                        <th >場地名稱</th>
-                        <th >地址</th>
+                        <th >課程名稱</th>
+                        <th >課程地址</th>
+                        <th >教練姓名</th>
                         <th >訂單成立時間</th>
-                        <th >預約日期</th>
-                        <th >預約時段</th>	<!-- 先暫訂起始時間，再調整 -->
+                        <th >課程時間</th>
                         <th >總金額</th>
                         <th >付款狀態</th>
 <!--                         <th >查看地點</th> -->

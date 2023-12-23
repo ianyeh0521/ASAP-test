@@ -3,6 +3,7 @@ package com.asap.course.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,9 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.asap.coach.entity.CoachVO;
 import com.asap.group.entity.SportTypeVO;
+import com.asap.util.HibernateProxyTypeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.asap.course.entity.CourseVO;
 import com.asap.course.service.CourseService;
 import com.asap.course.service.CourseService_interface;
+import com.asap.court.entity.CourtVO;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 10 * 1024 * 1024, maxRequestSize = 30 * 1024 * 1024)
 @WebServlet("/course/course.do")
@@ -33,29 +38,64 @@ public class CourseServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		String forwardPath = "";
 		
 		switch (action) {
 		case "add":
-			forwardPath = addCourse(req,res);
+			addCourse(req,res);
 			break;
 		case "update":
-			forwardPath = "";
+			;
+			break;
+		case "getAll":
+			getAll(req,res);
 			break;
 		default:
 			
 			break;
 		}
 		
-		res.setContentType("text/html; charset=UTF-8");
-		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-		dispatcher.forward(req, res);
+		
 	}
 	
 	
 	
 	
-	private String addCourse(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+	private void getAll(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+		Gson gson = builder.create();
+		
+		boolean getTotalPage = Boolean.parseBoolean(req.getParameter("getTotalPage"));
+		
+		if (getTotalPage) {
+			int totalPage =  courseSvc.getTotalPage();
+			
+			String jsonTotalPageString = gson.toJson(totalPage);
+			res.setContentType("application/json");
+			res.setCharacterEncoding("UTF-8");
+			res.getWriter().write(jsonTotalPageString);
+		}else {
+			try {				
+				String page = req.getParameter("page");
+				int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+		        
+		        
+		        List<CourseVO> courseList = courseSvc.getAll(currentPage);
+//		        System.out.println(courtList.size());;
+
+		        String json = gson.toJson(courseList);
+		        res.setContentType("application/json");
+		        res.setCharacterEncoding("UTF-8");
+		        res.getWriter().write(json);
+		    } catch (NumberFormatException e) {
+		        res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		        res.getWriter().write("Invalid or missing pagination parameters.");
+		    }
+		}
+	}
+
+
+	private void addCourse(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		
 		String nameError = null;
 		String courseName = req.getParameter("name");
@@ -161,7 +201,10 @@ public class CourseServlet extends HttpServlet{
 			
 			courseSvc.insert(courseVO);
 			
-			return "/course/addCourse.jsp";
+			
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/addCourse.jsp");
+			dispatcher.forward(req, res);
 		}else {
 			req.setAttribute("nameError", nameError);
 			req.setAttribute("addressError", addressError);
@@ -170,8 +213,10 @@ public class CourseServlet extends HttpServlet{
 			req.setAttribute("timeError", timeError);
 			req.setAttribute("textError", textError);
 			req.setAttribute("imgError", imgError);
-			
-			return "/course/addCourse.jsp";
+
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/addCourse.jsp");
+			dispatcher.forward(req, res);
 		}
 	}
 

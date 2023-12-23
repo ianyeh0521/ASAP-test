@@ -1,6 +1,8 @@
 package com.asap.court.dao;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -72,7 +74,7 @@ public class CourtOrderDAO implements CourtOrderDAO_interface{
 	public List<CourtOrderVO> findByMember(String mbrNo) {
 		// 以 mbrNo 尋找 CourtOrderVO，成功回傳 CourtOrderVO List，失敗回傳 null
 		try {
-			String hql = "from CourtOrderVO co where co.memberVO.mbrNo = :mbrNo";
+			String hql = "from CourtOrderVO co where co.memberVO.mbrNo = :mbrNo order by co.courtOrdDate DESC";
 			Query query = getSession().createQuery(hql);
 			query.setParameter("mbrNo", mbrNo);
 			return query.list();
@@ -133,6 +135,33 @@ public class CourtOrderDAO implements CourtOrderDAO_interface{
 			return null;
 		}
 	}
+
+	@Override
+	public List<CourtOrderVO> getAllUnPaidCourt(Date currentDate) {
+		// 昨天日期轉換
+		LocalDate localDate = currentDate.toLocalDate();
+		LocalDate oneDayBefore = localDate.minusDays(1);
+		java.sql.Date oneDayBeforeDate = java.sql.Date.valueOf(oneDayBefore);
+		
+		// 開始找
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+	            String hql = "FROM CourtOrderVO co " +
+	                    "WHERE co.courtOrdStat = false " +
+	                    "AND co.courtOrdDate >= :currentDate " +
+	                    "AND co.courtOrdCrtTime BETWEEN :oneDayBeforeCurrentDate AND :currentDate";
+
+	            Query<CourtOrderVO> query = session.createQuery(hql, CourtOrderVO.class);
+	            query.setParameter("currentDate", currentDate);
+	            query.setParameter("oneDayBeforeCurrentDate", oneDayBeforeDate);
+
+	            return query.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
 	
 	
 

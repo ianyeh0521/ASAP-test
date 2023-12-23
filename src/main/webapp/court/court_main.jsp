@@ -96,8 +96,9 @@
 	        border: 1px solid rgba(0, 0, 0, 0.1); 
 	        border-radius: 10px; 
 	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-	        padding: 20px; 
-	        margin: 20px; 
+	        padding: 0px; 
+	        margin: 0px; 
+	        text-align: center;
 	    }
 	    
 	  	  #f_date1{
@@ -105,6 +106,33 @@
 	    	border: 1px solid;
 	    	
 	    }
+	    
+/* 	    近期瀏覽 */
+/* 		#recentlyViewedContainer { */
+/* 			border-radius: 5px; */
+/* 		    position: fixed; */
+/* 		    top: 276px;  */
+/* 		    right: 20px;  */
+/* 		    height: 400px; */
+/* 		    width: 300px;  */
+/* 		    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
+/* 		    overflow-y: auto; */
+/* 		} */
+		
+/* 		#recentlyViewedContainer.initial-position { */
+/* 		    position: relative; */
+/* 		} */
+		
+/* 		#recentlyViewedContainer.fixed { */
+/* 		    position: fixed; */
+/* 		    top: 0px;  */
+/* 		    right: 20px;  */
+/* 		    height: 400px; */
+/* 		    width: 300px; */
+/* 		    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
+/* 		    overflow-y: auto;  */
+/* 		} */
+		
        
        
        
@@ -116,9 +144,8 @@
 <body>
 	<div class="page-wrapper">
 
-		<header class="header">
-			
-		</header><!-- header --><header class="header">
+	<!-- header -->
+	<header class="header">
       	<div class="header-middle sticky-header"
 				data-sticky-options="{'mobile': true}"
 				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
@@ -188,9 +215,10 @@
       <!-- End .header -->
 
 		<main class="main" >
+		
 
 			<!-- 搜尋列 -->
-			<div class="container" style="margin-top: 20px !important;">
+			<div class="container" style="margin-top: 20px !important;" >
 				<div
 					class="header-icon header-search header-search-inline header-search-category w-lg-max text-right mt-0">
 					<a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
@@ -249,7 +277,7 @@
 
 			<!-- 功能按鈕 -->
 			<div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
-				<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
+				<a href="${pageContext.request.contextPath}/court/court_mapSearching.jsp"><button class="btn btn-primary btn-rounded btn-md">地圖搜尋</button></a>
 				<a href="${pageContext.request.contextPath}/court/court_savelist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的收藏</button></a>
 				<a href="${pageContext.request.contextPath}/court/court_orderlist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的預約</button></a>
 			</div>
@@ -258,11 +286,32 @@
 			
 			
 			<!-- main container -->
-			<div class="container mt-6" style="margin-top: 0px !important;">
+			<div class="container mt-6" style="margin-top: 0px !important;" id="divTest">
 				<!-- 整個 row -->
 				
+				<!-- 原本的側邊欄近期瀏覽改到這裡 (先改回去)-->
+<!-- 					<div class="col-lg-3" id="recentlyViewedContainer"  class="initial-position" style="height: 400px;"> -->
+<!-- 							<h4 class="text-uppercase heading-bottom-border mt-6 mt-lg-4" style="margin-top: 30px !important;">近期瀏覽</h4> -->
+<!-- 							<div class="product-default left-details product-widget" v-for="data in recentlyViewDatas"> -->
+<!-- 								<figure> -->
+<!-- 									<a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtVO.courtNo" @click="writeCourt(data.courtVO.courtNo)"> -->
+<!-- 										<img :src="'data:image/jpeg;base64,' + data.img.img" width="84" height="84" -->
+<!-- 											alt="圖片"> -->
+<!-- 									</a> -->
+<!-- 								</figure> -->
+<!-- 								<div class="product-details"> -->
+<!-- 									<h3 class="product-title"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtVO.courtNo" class="name" @click="writeCourt(data.courtVO.courtNo)">{{data.courtVO.courtName}}</a> </h3> -->
+<!-- 									<div class="ratings-container"> -->
+<!-- 									</div>End .product-container -->
+<!-- 									<div class="price-box"> -->
+<!-- 										<span class="product-price">{{data.courtVO.courtPrice}}</span> -->
+<!-- 									</div>End .price-box -->
+<!-- 								</div>End .product-details -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 				
-				<div class="row mb-8" id="divTest">
+				
+				<div class="row mb-8" >
 
 					<!-- court list -->
 					<div class="col-lg-9">
@@ -294,8 +343,7 @@
 									<span>Filter</span>
 								</a>
 								
-								<!-- 暫放會員編號給前端 -->
-								<div id="hiddenDivForMember" ref="hiddenDiv" style="display: none;">${mbrNo}</div>		
+									
 									
 								<div class="toolbox-item toolbox-sort">
 									<label>排序方式:</label>
@@ -310,13 +358,14 @@
 										</select>
 									</div>
 									<!-- End .select-custom -->
-
-
 								</div>
 								<!-- End .toolbox-item -->
 							</div>
 							<!-- End .toolbox-right -->
 						</nav>
+						
+						<!-- 暫放會員編號給前端 -->
+						<div id="hiddenDivForMember" ref="hiddenDiv" style="display: none;">${mbrNo}</div>	
 					
 						<!-- 場地資訊 -->
 						
@@ -367,7 +416,8 @@
 					
 					
 					<!-- 近期瀏覽 -->
-					<div class="col-lg-3" id="recentlyViewedContainer" style="position: relative;">
+					
+					<div class="col-lg-3" id="recentlyViewedContainer" style="height: 400px;">
 						<h4 class="text-uppercase heading-bottom-border mt-6 mt-lg-4" style="margin-top: 30px !important;">近期瀏覽</h4>
 						<div class="product-default left-details product-widget" v-for="data in recentlyViewDatas">
 							<figure>
@@ -379,14 +429,14 @@
 							<div class="product-details">
 								<h3 class="product-title"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtVO.courtNo" class="name" @click="writeCourt(data.courtVO.courtNo)">{{data.courtVO.courtName}}</a> </h3>
 								<div class="ratings-container">
-								</div><!-- End .product-container -->
+								</div>End .product-container
 								<div class="price-box">
 									<span class="product-price">{{data.courtVO.courtPrice}}</span>
-								</div><!-- End .price-box -->
-							</div><!-- End .product-details -->
+								</div>End .price-box
+							</div>End .product-details
 						</div>
 					</div>
-
+				
 				</div>
 				
 			</div>
@@ -422,14 +472,6 @@
 
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
-
-	<!-- datepicker -->
-<!-- 	<script> -->
-<!-- 		import AirDatepicker from 'air-datepicker'; -->
-<!-- 		import 'air-datepicker/air-datepicker.css'; -->
-<!-- 		let dp = new AirDatepicker('#el'); -->
-<!--  		dp.show(); -->
-<!-- 	</script> -->
 
 	<!-- header and footer template -->
 	<script>
@@ -686,6 +728,22 @@
 	           //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
 	        });
 	        $('#f_date1').attr("placeholder", "請選擇日期");
+	        
+	        
+	        // 側邊欄
+// 	        var container = $("recentlyViewedContainer");
+// 	        var initialPosition = container.offsetTop;
+
+// 	        window.addEventListener("scroll", function () {
+// 	            if (window.pageYOffset >= initialPosition) {
+// 	                container.classList.add("fixed");
+// 	                container.classList.remove("initial-position");
+// 	            } else {
+// 	                container.classList.remove("fixed");
+// 	                container.classList.add("initial-position");
+// 	            }
+// 	        });
+	       
 	        
 	        
 	       

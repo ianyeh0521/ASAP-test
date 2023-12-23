@@ -1,6 +1,7 @@
 package com.asap.court.service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.asap.court.dao.CourtOrderDAO;
@@ -84,6 +85,13 @@ public class CourtOrderService implements CourtOrderService_interface{
 				
 		
 	}
+
+	@Override
+	public List<CourtOrderVO> getAllUnPaidCourt(Date currentDate) {
+		return dao.getAllUnPaidCourt(currentDate);
+	}
+	
+	
 	
 	
 	

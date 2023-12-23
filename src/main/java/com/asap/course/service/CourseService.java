@@ -8,6 +8,7 @@ import com.asap.course.dao.CourseDAO_interface;
 import com.asap.course.entity.CourseVO;
 
 public class CourseService implements CourseService_interface{
+	private static final long PAGE_MAX_RESULT = 5;
 	CourseDAO_interface dao;
 	
 	public CourseService() {
@@ -57,6 +58,18 @@ public class CourseService implements CourseService_interface{
 	@Override
 	public List<CourseVO> getAll() {
 		return dao.getAll();
+	}
+
+	@Override
+	public List<CourseVO> getAll(int currentPage) {
+		return dao.getAll(currentPage);
+	}
+
+	@Override
+	public int getTotalPage() {
+		long total = dao.getTotal();
+		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+		return pageQty;
 	}
 	
 	

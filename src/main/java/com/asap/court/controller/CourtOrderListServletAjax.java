@@ -120,21 +120,18 @@ public class CourtOrderListServletAjax extends HttpServlet{
 		Gson gson = builder.create();
 		
 		List<CourtOrderVO> orderList = courtOrderService_interface.findByMember(mbrNo);
-		List<CourtOrderVO> orderListPaid = new ArrayList<>();
 		List<CourtImgVO> orderImgList = new ArrayList<>();
 		List<String> orderImgBase64 = new ArrayList<>();
 		for(CourtOrderVO courtOrderVO: orderList) {
-			Boolean stat = courtOrderVO.getCourtOrdStat();
-			if(stat) {
-				orderListPaid.add(courtOrderVO);
-				orderImgList = courtImgService_interface.findByCourtNo(courtOrderVO.getCourtVO().getCourtNo());
-				for(int i = 0; i < 1;i++) {
-					orderImgBase64.add(Base64.getEncoder().encodeToString(orderImgList.get(i).getCourtImg()));
-				}
-			}	
+
+			orderImgList = courtImgService_interface.findByCourtNo(courtOrderVO.getCourtVO().getCourtNo());
+			for(int i = 0; i < 1;i++) {
+				orderImgBase64.add(Base64.getEncoder().encodeToString(orderImgList.get(i).getCourtImg()));
+			}
+			
 		}
 		
-		String jsonObj = gson.toJson(orderListPaid);
+		String jsonObj = gson.toJson(orderList);
 		String jsonObjofImg = gson.toJson(orderImgBase64);
 		
 		JsonObject combinedJson = new JsonObject();

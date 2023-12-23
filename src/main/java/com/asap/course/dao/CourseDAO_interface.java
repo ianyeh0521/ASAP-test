@@ -3,6 +3,8 @@ package com.asap.course.dao;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ListModel;
+
 import com.asap.course.entity.CourseVO;
 
 public interface CourseDAO_interface {
@@ -26,4 +28,8 @@ public interface CourseDAO_interface {
 	List<CourseVO> getByCompositeQuery(Map<String, String> map);
 	
 	List<CourseVO> getAll();
+	
+	List<CourseVO> getAll(int currentPage);
+	
+	long getTotal();
 }

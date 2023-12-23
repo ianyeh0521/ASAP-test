@@ -179,11 +179,11 @@
             <div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
                 <nav aria-label="breadcrumb" class="breadcrumb-nav">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="court_main.jsp"><i class="icon-home"></i></a></li>
-                    <li class="breadcrumb-item"><a href="">我的收藏</a></li>
+                    <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/court_main.jsp"><i class="icon-home"></i></a></li>
+                    <li class="breadcrumb-item">我的收藏</li>
                   </ol>
                 </nav>
-                <button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
+                <a href="${pageContext.request.contextPath}/court/court_mapSearching.jsp"><button class="btn btn-primary btn-rounded btn-md">地圖搜尋</button></a>
                 <a href="${pageContext.request.contextPath}/court/court_orderlist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的預約</button></a>                         
             </div>  
             
@@ -342,18 +342,18 @@
                           "createdRow": function(row, data, dataIndex) {
                               $(row).attr('id', data.courtVO.courtNo);
                            		
-                              // Add a click event to the entire row
+                              
                               $(row).on('click', function() {
-                                  // Extract the courtNo from the clicked row
+                                  
                                   var courtNo = data.courtVO.courtNo;
                                   
-                                  // Navigate to the specific page using courtNo
+                                  
                                   window.location.href = '/ASAP/court/court_page.jsp?courtNo=' + courtNo;
                               });
                               
-                              // Add click event to the "移除" button
+                              
                               $(row).find('.lookup').on('click', function(event) {
-                                  // Prevent the row click event from firing
+                                  
                                   event.stopPropagation();
                               
 	                            	var clickedId = $(this).data('id');

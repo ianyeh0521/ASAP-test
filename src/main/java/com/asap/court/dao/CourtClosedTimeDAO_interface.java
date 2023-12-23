@@ -11,6 +11,8 @@ public interface CourtClosedTimeDAO_interface {
 	int insert(CourtClosedTimeVO courtclosedtimeVO);
 	int delete(Integer courtClosedTimeNo);
 	
+	int delete(Integer courtNo, Date courtClosedDate, Integer courtClosedTime);
+	
 	// delete the closed time in db where date before NOW
 	int deleteBeforeNow();
 	

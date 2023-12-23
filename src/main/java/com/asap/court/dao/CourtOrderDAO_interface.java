@@ -1,6 +1,7 @@
 package com.asap.court.dao;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.asap.court.entity.CourtOrderVO;
@@ -21,4 +22,6 @@ public interface CourtOrderDAO_interface{
 	CourtOrderVO checkOrderExistence(Integer courtNo, java.sql.Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd);
 		
 	List<CourtOrderVO> getAll();
+	
+	List<CourtOrderVO> getAllUnPaidCourt(Date currentDate);
 }
