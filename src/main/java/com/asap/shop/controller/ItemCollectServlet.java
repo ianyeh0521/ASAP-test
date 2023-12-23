@@ -10,20 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.asap.shop.entity.ItemInfoVO;
-import com.asap.shop.service.ShoppingCartService;
-import com.asap.shop.service.ShoppingCartService_interface;
+import com.asap.shop.service.ItemCollectService;
+import com.asap.shop.service.ItemCollectService_interface;
 import com.google.gson.Gson;
 
-/**
- * Servlet implementation class ShoppingCartController
- */
-@WebServlet("/shop/ShoppingCartServlet")
-public class ShoppingCartController extends HttpServlet {
-	private ShoppingCartService_interface shoppingCartService;
+@WebServlet("/ItemCollectController")
+public class ItemCollectServlet extends HttpServlet {
+	
+	private ItemCollectService_interface itemCollectService;
+	
 
 	@Override
 	public void init() throws ServletException {
-		shoppingCartService = new ShoppingCartService();
+		itemCollectService = new ItemCollectService();
 	}
 
 	@Override
@@ -42,17 +41,24 @@ public class ShoppingCartController extends HttpServlet {
 	}
 
 	private void insert(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		
-	    String mbrNo = req.getParameter("mbrNo"); 
-	    Integer itemNo = Integer.valueOf(req.getParameter("itemNo")); 
-	    String itemName = req.getParameter("itemName");
+		  // 获取请求参数
+	    String mbrNo = req.getParameter("mbrNo"); // 会员号
+	    Integer itemNo = Integer.valueOf(req.getParameter("itemNo")); // 商品编号
+	    String itemName = req.getParameter("itemName"); // 商品名称
+	    
+	    // ... 其他需要的参数
 
+	    // 创建ItemInfoVO实例
 	    ItemInfoVO itemInfo = new ItemInfoVO(itemNo, itemName, itemName, null, null, itemName, itemNo, itemNo, itemNo, null, itemNo, itemNo, null, null);
 
+	    // 获取商品数量
 	    Integer itemqty = Integer.valueOf(req.getParameter("itemqty"));
 
-	    Integer result = shoppingCartService.insert(mbrNo, itemInfo, itemqty);
+	    // 调用购物车服务层添加商品
+	    Integer result = ItemCollectService.insert(mbrNo, itemInfo, itemqty);
 
+	    // 响应处理
+	    // 设置响应类型和编码
 	    res.setContentType("application/json");
 	    res.setCharacterEncoding("UTF-8");
 

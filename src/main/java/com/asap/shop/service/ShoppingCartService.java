@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.asap.shop.dao.ShoppingCartDAO;
 import com.asap.shop.dao.ShoppingCartDAO_interface;
+import com.asap.shop.entity.ItemInfoVO;
 import com.asap.shop.entity.ShoppingCartVO;
 
 public class ShoppingCartService implements ShoppingCartService_interface {
@@ -15,9 +16,9 @@ public class ShoppingCartService implements ShoppingCartService_interface {
 	}
 
 	@Override
-	public Integer insert(String mbrNo, int itemNo, int itemShopQty) {
+	public Integer insert(String mbrNo, ItemInfoVO itemInfoVO, int itemShopQty) {
 		// 檢查是否有相同的記錄
-		ShoppingCartVO vo = dao.findByMemberAndItemNo(mbrNo, itemNo);
+		ShoppingCartVO vo = dao.findByMemberAndItemNo(mbrNo, itemInfoVO.getItemNo());
 		if (vo != null) {
 			// 如果有存在相同的記錄，數量加一
 			vo.setItemShopQty(vo.getItemShopQty() + itemShopQty);
@@ -26,7 +27,7 @@ public class ShoppingCartService implements ShoppingCartService_interface {
 		} else {
 			ShoppingCartVO newVo = new ShoppingCartVO();
 			newVo.setMbrNo(mbrNo);
-			newVo.getItemInfoVO().setItemNo(itemNo);
+			newVo.setItemInfoVO(itemInfoVO);
 			newVo.setItemShopQty(itemShopQty);
 
 			return dao.insert(newVo);

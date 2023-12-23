@@ -1,4 +1,4 @@
-	package com.asap.shop.entity;
+package com.asap.shop.entity;
 
 import java.io.Serializable;
 
@@ -21,10 +21,10 @@ public class ItemCollectVO implements Serializable {
 	private Integer itemCollectNo;
 
 	@Column(name = "MbrNo")
-	private String mbrNo;	
-	
+	private String mbrNo;
+
 	@ManyToOne
-	@JoinColumn(name = "ItemNo", referencedColumnName = "ItemNo")
+	@JoinColumn(name = "ItemNo", referencedColumnName = "itemNo")
 	private ItemInfoVO itemInfoVO;
 
 	public ItemCollectVO() {
@@ -62,7 +62,13 @@ public class ItemCollectVO implements Serializable {
 		this.itemInfoVO = itemInfoVO;
 	}
 
-	
+
+	@Override
+	public String toString() {
+		return "ItemCollectVO [itemCollectNo=" + itemCollectNo + ", mbrNo=" + mbrNo + ", itemInfoVO=" + itemInfoVO
+				+ "]";
+	}
+
 
 	
 }

@@ -259,7 +259,7 @@ System.out.println(list);
 							</table>
 
 							<div class="checkout-methods">
-								<a href="AsapOrderCheck.jsp?mbrNo=${cartItem.mbrNo}"
+								<a href="AsapOrderCheck.jsp"
 									class="btn btnoter-block btn-dark" style="padding-left: 20px">確認訂單
 									<i class="fa fa-arrow-right"></i>
 								</a>

@@ -1,9 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.List"  %>
-<%@ page import="com.asap.shop.entity.ItemInfoVO" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.asap.shop.entity.ShoppingCartVO"%>
+<%@ page import="com.asap.shop.service.ShoppingCartService_interface"%>
+<%@ page import="com.asap.shop.service.ShoppingCartService"%>
+<%@ page import="com.asap.shop.entity.ItemInfoVO"%>
+<%@ page import="com.asap.shop.service.ItemInfoService_interface"%>
+<%@ page import="com.asap.shop.service.ItemInfoService"%>
 <!DOCTYPE html>
 <html lang="en">
+
+<%
+// String shoppingCart = request.getParameter("mbrNo");
+ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
+ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
+List<ShoppingCartVO> list = ShoppingCartSvc.findByMember("M1");
+pageContext.setAttribute("list", list);
+
+System.out.println(list);
+%>
 
 <head>
     <meta charset="UTF-8">
