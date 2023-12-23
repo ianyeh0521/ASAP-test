@@ -1,4 +1,4 @@
-	package com.asap.shop.entity;
+package com.asap.shop.entity;
 
 import java.io.Serializable;
 
@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,18 +23,19 @@ public class ItemCollectVO implements Serializable {
 	@Column(name = "MbrNo")
 	private String mbrNo;
 
-	@Column(name = "ItemNo")
-	private Integer itemNo;
+	@ManyToOne
+	@JoinColumn(name = "ItemNo", referencedColumnName = "itemNo")
+	private ItemInfoVO itemInfoVO;
 
 	public ItemCollectVO() {
 
 	}
 
-	public ItemCollectVO(Integer itemCollectNo, String mbrNo, Integer itemNo) {
+	public ItemCollectVO(Integer itemCollectNo, String mbrNo, ItemInfoVO itemInfoVO) {
 		super();
 		this.itemCollectNo = itemCollectNo;
 		this.mbrNo = mbrNo;
-		this.itemNo = itemNo;
+		this.itemInfoVO = itemInfoVO;
 	}
 
 	public Integer getItemCollectNo() {
@@ -51,17 +54,18 @@ public class ItemCollectVO implements Serializable {
 		this.mbrNo = mbrNo;
 	}
 
-	public Integer getItemNo() {
-		return itemNo;
+	public ItemInfoVO getItemInfoVO() {
+		return itemInfoVO;
 	}
 
-	public void setItemNo(Integer itemNo) {
-		this.itemNo = itemNo;
+	public void setItemInfoVO(ItemInfoVO itemInfoVO) {
+		this.itemInfoVO = itemInfoVO;
 	}
 
 	@Override
 	public String toString() {
-		return "ItemCollectVO [itemCollectNo=" + itemCollectNo + ", mbrNo=" + mbrNo + ", itemNo=" + itemNo + "]";
+		return "ItemCollectVO [itemCollectNo=" + itemCollectNo + ", mbrNo=" + mbrNo + ", itemInfoVO=" + itemInfoVO
+				+ "]";
 	}
 
 }

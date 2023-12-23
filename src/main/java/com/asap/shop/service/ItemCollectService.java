@@ -18,7 +18,7 @@ public class ItemCollectService implements ItemCollectService_interface {
 	@Override
 	public Integer insert(ItemCollectVO entity) {
 		// 檢查是否有存在相同的記錄
-		ItemCollectVO vo = dao.findByMbrNoAndItemNo(entity.getMbrNo(), entity.getItemNo());
+		ItemCollectVO vo = dao.findByMbrNoAndItemNo(entity.getMbrNo(), entity.getItemInfoVO().getItemNo());
 		if (vo != null) {
 			// 如果有存在相同的記錄，無法新增
 			System.out.println("相同的記錄已存在，無法新增。");

@@ -65,6 +65,14 @@ public class ItemInfoVO {
 	public ItemInfoVO() {
 	}
 
+	
+	
+	public ItemInfoVO(Integer itemNo) {
+		super();
+		this.itemNo = itemNo;
+	}
+
+
 	public ItemInfoVO(Integer itemNo, String itemName, String mbrNo, ItemTypeVO itemTypeVO, ItemStatVO itemStatVO,
 			String itemText, Integer itemStockQty, Integer itemPrice, Integer preItemPrice, ItemSizeVO itemSizeVO,
 			Integer itemView, Integer itemAddStat, Timestamp itemAddTime, Timestamp itemUpdTime) {
