@@ -17,6 +17,8 @@ public class OrderCheckRun implements Runnable{
 	
 	@Override
 	public void run() {
+		System.out.println("Start Checking Order Stats!");
+		
 		LocalDate currentDate = LocalDate.now();
 
 		Date currentDateAsDate = Date.valueOf(currentDate);
