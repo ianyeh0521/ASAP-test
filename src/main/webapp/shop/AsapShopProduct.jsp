@@ -1,9 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.List"  %>
-<%@ page import="com.asap.shop.entity.ItemInfoVO" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.asap.shop.entity.ItemInfoVO"%>
 <%@ page import="com.asap.shop.service.ItemInfoService_interface"%>
 <%@ page import="com.asap.shop.service.ItemInfoService"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.util.Date"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,6 +17,12 @@ ItemInfoService_interface ItemSvc = new ItemInfoService();
 ItemInfoVO list = ItemSvc.findByItemNo(itemInfo);
 pageContext.setAttribute("list", list);
 System.out.println(list);
+
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+String formattedDate = "";
+if (list.getItemAddTime() != null) {
+	formattedDate = sdf.format(list.getItemAddTime());
+}
 %>
 
 <head>
@@ -33,16 +43,20 @@ System.out.println(list);
 
 
 <script>
-        WebFontConfig = {
-            google: { families: [ 'Open+Sans:300,400,600,700,800,400italic,800italic', 'Poppins:300,400,500,600,700,800', 'Oswald:300,400,500,600,700,800' ] }
-        };
-        ( function ( d ) {
-            var wf = d.createElement( 'script' ), s = d.scripts[ 0 ];
-            wf.src = '../assets/js/webfont.js';
-            wf.async = true;
-            s.parentNode.insertBefore( wf, s );
-        } )( document );
-    </script>
+	WebFontConfig = {
+		google : {
+			families : [ 'Open+Sans:300,400,600,700,800,400italic,800italic',
+					'Poppins:300,400,500,600,700,800',
+					'Oswald:300,400,500,600,700,800' ]
+		}
+	};
+	(function(d) {
+		var wf = d.createElement('script'), s = d.scripts[0];
+		wf.src = '../assets/js/webfont.js';
+		wf.async = true;
+		s.parentNode.insertBefore(wf, s);
+	})(document);
+</script>
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
@@ -148,9 +162,13 @@ System.out.println(list);
 									class="product-single-carousel owl-carousel owl-theme show-nav-hover">
 									<div class="product-item">
 										<img class="product-single-image"
-											src="../assets/images/asapshop/football.jpg"
-											data-zoom-image="../assets/images/asapshop/football.jpg"
+											src="ItemInfoServlet?action=getImg&itemNo=${list.itemNo}"
+											data-zoom-image="ItemInfoServlet?action=getImg&itemNo=${list.itemNo}"
 											width="468" height="468" alt="product" />
+
+
+
+
 									</div>
 								</div>
 								<!-- End .product-single-carousel -->
@@ -159,10 +177,12 @@ System.out.println(list);
 							</div>
 
 							<div class="prod-thumbnail owl-dots">
+
 								<div class="owl-dot">
-									<img src="../assets/images/asapshop/football.jpg" width="110"
-										height="110" alt="product-thumbnail" />
+									<img src="ItemInfoServlet?action=getImg&itemNo=${list.itemNo}"
+										width="110" height="110" alt="product-thumbnail" />
 								</div>
+
 							</div>
 						</div>
 						<!-- End .product-single-gallery -->
@@ -187,12 +207,17 @@ System.out.println(list);
 							<hr class="short-divider">
 
 							<div class="price-box">
-								<del class="product-price"> $200.00</del>
+								<c:if test="${list.preItemPrice != 0}">
+									<del class="old-price">$${list.preItemPrice}</del>
+								</c:if>
+								<span class="product-price">$${list.itemPrice}</span>
 							</div>
+
+
 							<!-- End .price-box -->
 
 							<div class="product-desc">
-								<p>這顆二手足球是2023世界盃冠軍賽踢的，現在特價只要200元!!。</p>
+								<p>${list.itemText}</p>
 							</div>
 							<!-- End .product-desc -->
 
@@ -201,27 +226,21 @@ System.out.println(list);
 								<li>商品編號: <strong>${list.itemNo}</strong>
 								</li>
 
-								<li>商品分類: <strong>足球</strong>
+								<li>商品分類: <strong>${list.itemTypeVO.itemTypeName}</strong>
 								</li>
-
-								<li>上架時間: <strong> <a href="#"
-										class="product-category">2023/08/28</a>
+								<fmt:formatDate value="${list.itemAddTime}" pattern="yyyy-MM-dd"
+									var="formattedDate" />
+								<li>上架時間: <strong><a class="product-category">${formattedDate}</a></strong></li>
+								<li>商品狀態: <strong> <a class="product-category">${list.itemStatVO.itemStatText}</a>
 								</strong>
 								</li>
-								<li>商品狀態: <strong> <a href="#"
-										class="product-category">狀況尚可</a>
+								<li>庫存數量: <strong> <a class="product-category">${list.itemStockQty}</a>
 								</strong>
 								</li>
-								<li>庫存數量: <strong> <a href="#"
-										class="product-category">2</a>
+								<li>賣家: <strong> <a class="product-category">${list.mbrNo}</a>
 								</strong>
 								</li>
-								<li>賣家: <strong> <a href="#"
-										class="product-category">M123</a>
-								</strong>
-								</li>
-								<li>瀏覽人數: <strong> <a href="#"
-										class="product-category">${list.itemView}</a>
+								<li>瀏覽人數: <strong> <a class="product-category">${list.itemView}</a>
 								</strong>
 								</li>
 
@@ -260,8 +279,9 @@ System.out.println(list);
 								</div>
 								<!-- End .social-icons -->
 
-								<span class="addwish"><a href="#" class="btn-icon-wish add-wishlist"
-									title="加入我的收藏"><i class="icon-wishlist-2"></i><span>加入我的收藏</span></a></span>
+								<span class="addwish"><a href="#"
+									class="btn-icon-wish add-wishlist" title="加入我的收藏"><i
+										class="icon-wishlist-2"></i><span>加入我的收藏</span></a></span>
 							</div>
 							<!-- End .product single-share -->
 						</div>
@@ -305,7 +325,9 @@ System.out.println(list);
 
 								</p>
 								<ul>
-									<li>商品狀態 -狀況商可</li>
+									<li>商品狀態: <strong> <a class="product-category">${list.itemStatVO.itemStatText}</a>
+									</strong>
+									</li>
 									<li>安全支付選項</li>
 									<li>依據售出商品屬於個人衛生或特殊性質，故無法提供換貨服務。</li>
 								</ul>
@@ -405,71 +427,85 @@ System.out.println(list);
 	<script src="../assets/js/main.min.js"></script>
 
 	<script>
+		$("footer").load("footer.html");
+		$("div.sticky-navbar").load("sticky-navbar.html");
+		$("div.mobile-menu-container").load("mobile-menu-container.html");
 
-        $("footer").load("footer.html");
-        $("div.sticky-navbar").load("sticky-navbar.html");
-        $("div.mobile-menu-container").load("mobile-menu-container.html");
-        
-        var itemNo = $(".product-title").attr("data-itemno");
-    	var mbrNo = "M001";
-        $.ajax({
-	            url: "${pageContext.request.contextPath}/shop/ItemCollectController",
-	            type: "POST",
-	            data: { "itemNo": itemNo, "mbrNo": mbrNo, "action": "checkwishlist"},
-	            dataType:"json",
-	            success: function(data) {
-	            	if(data.status==-1){
-	            	$("a.add-wishlist").html("已加入收藏");
-	            	 $("a.add-wishlist").removeAttr("href");
-	            	 $("span.addwish").unbind();
-	            	}
-	            }
+		var itemNo = $(".product-title").attr("data-itemno");
+		var mbrNo = "M001";
+		$
+				.ajax({
+					url : "${pageContext.request.contextPath}/shop/ItemCollectController",
+					type : "POST",
+					data : {
+						"itemNo" : itemNo,
+						"mbrNo" : mbrNo,
+						"action" : "checkwishlist"
+					},
+					dataType : "json",
+					success : function(data) {
+						if (data.status == -1) {
+							$("a.add-wishlist").html("已加入收藏");
+							$("a.add-wishlist").removeAttr("href");
+							$("span.addwish").unbind();
+						}
+					}
 
-	            })
-        
-        
-        
-        
-        $(".add-cart").on("click", function() {
-        	var addCart = $(".product-title").attr("data-itemno");
-        	var cartQty = $(".horizontal-quantity").val();
-        	var mbrNo = "M1";
-        	
-        	console.log(addCart);
-        		 $.ajax({
-        	            url: "ShoppingCartServlet",
-        	            type: "POST",
-        	            data: { itemNo: addCart,itemqty: cartQty, mbrNo: mbrNo, "action": "addcart"},
-//         	            dataType: "json",
-        	            success: function(data) {
-        	            	console.log("aaa");
-        	            }
+				})
 
-        	            })
-        })
-        
-        
-        $("span.addwish").on("click", function(){
-        	var itemNo = $(".product-title").attr("data-itemno");
-        	var mbrNo = "M001";
-        	 $.ajax({
- 	            url: "${pageContext.request.contextPath}/shop/ItemCollectController",
- 	            type: "POST",
- 	            data: { "itemNo": itemNo, "mbrNo": mbrNo, "action": "wishlist"},
- 	            success: function(data) {
- 	            	console.log(data.status)
- 	            	
- 	            	$("a.add-wishlist").html("已加入收藏");
- 	            	 $("a.add-wishlist").removeAttr("href");
- 	            	 $("span.addwish").unbind();
- 	            	
- 	            }
+		$(".add-cart").on("click", function() {
+			var addCart = $(".product-title").attr("data-itemno");
+			var cartQty = $(".horizontal-quantity").val();
+			var mbrNo = "M1";
 
- 	            })
-        	
-        	
-        })
-      </script>
+			console.log(addCart);
+			$.ajax({
+				url : "ShoppingCartServlet",
+				type : "POST",
+				data : {
+					itemNo : addCart,
+					itemqty : cartQty,
+					mbrNo : mbrNo,
+					"action" : "addcart"
+				},
+				//         	            dataType: "json",
+				success : function(data) {
+					console.log("aaa");
+				}
+
+			})
+		})
+
+		$("span.addwish")
+				.on(
+						"click",
+						function() {
+							var itemNo = $(".product-title")
+									.attr("data-itemno");
+							var mbrNo = "M001";
+							$
+									.ajax({
+										url : "${pageContext.request.contextPath}/shop/ItemCollectController",
+										type : "POST",
+										data : {
+											"itemNo" : itemNo,
+											"mbrNo" : mbrNo,
+											"action" : "wishlist"
+										},
+										success : function(data) {
+											console.log(data.status)
+
+											$("a.add-wishlist").html("已加入收藏");
+											$("a.add-wishlist").removeAttr(
+													"href");
+											$("span.addwish").unbind();
+
+										}
+
+									})
+
+						})
+	</script>
 
 </body>
 
