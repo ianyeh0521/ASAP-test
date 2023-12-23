@@ -19,5 +19,7 @@ public interface ItemCollectService_interface {
 	List<ItemCollectVO> getAll();
 	
 	void cleanByMbrNo(String mbrNo);
+	
+	public Integer checkCollect(ItemCollectVO entity);
 
 }
