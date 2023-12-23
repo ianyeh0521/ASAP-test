@@ -260,8 +260,8 @@ System.out.println(list);
 								</div>
 								<!-- End .social-icons -->
 
-								<a href="asapshopwish.html" class="btn-icon-wish add-wishlist"
-									title="加入我的收藏"><i class="icon-wishlist-2"></i><span>加入我的收藏</span></a>
+								<span class="addwish"><a href="#" class="btn-icon-wish add-wishlist"
+									title="加入我的收藏"><i class="icon-wishlist-2"></i><span>加入我的收藏</span></a></span>
 							</div>
 							<!-- End .product single-share -->
 						</div>
@@ -410,6 +410,26 @@ System.out.println(list);
         $("div.sticky-navbar").load("sticky-navbar.html");
         $("div.mobile-menu-container").load("mobile-menu-container.html");
         
+        var itemNo = $(".product-title").attr("data-itemno");
+    	var mbrNo = "M001";
+        $.ajax({
+	            url: "${pageContext.request.contextPath}/shop/ItemCollectController",
+	            type: "POST",
+	            data: { "itemNo": itemNo, "mbrNo": mbrNo, "action": "checkwishlist"},
+	            dataType:"json",
+	            success: function(data) {
+	            	if(data.status==-1){
+	            	$("a.add-wishlist").html("已加入收藏");
+	            	 $("a.add-wishlist").removeAttr("href");
+	            	 $("span.addwish").unbind();
+	            	}
+	            }
+
+	            })
+        
+        
+        
+        
         $(".add-cart").on("click", function() {
         	var addCart = $(".product-title").attr("data-itemno");
         	var cartQty = $(".horizontal-quantity").val();
@@ -428,6 +448,27 @@ System.out.println(list);
         	            })
         })
         
+        
+        $("span.addwish").on("click", function(){
+        	var itemNo = $(".product-title").attr("data-itemno");
+        	var mbrNo = "M001";
+        	 $.ajax({
+ 	            url: "${pageContext.request.contextPath}/shop/ItemCollectController",
+ 	            type: "POST",
+ 	            data: { "itemNo": itemNo, "mbrNo": mbrNo, "action": "wishlist"},
+ 	            success: function(data) {
+ 	            	console.log(data.status)
+ 	            	
+ 	            	$("a.add-wishlist").html("已加入收藏");
+ 	            	 $("a.add-wishlist").removeAttr("href");
+ 	            	 $("span.addwish").unbind();
+ 	            	
+ 	            }
+
+ 	            })
+        	
+        	
+        })
       </script>
 
 </body>

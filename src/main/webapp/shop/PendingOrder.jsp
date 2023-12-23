@@ -1,12 +1,3 @@
-<%@page import="com.asap.shop.entity.ItemCollectVO"%>
-<%@page import="com.asap.shop.service.ItemCollectService"%>
-<%@page import="com.asap.shop.service.ItemCollectService_interface"%>
-<%@page import="com.asap.forum.service.SavePostVOServiceImpl"%>
-<%@page import="com.asap.forum.service.SavePostVOService"%>
-<%@page import="com.asap.forum.entity.SavePostVO"%>
-<%@page import="com.asap.forum.service.PostVOServiceImpl"%>
-<%@page import="com.asap.forum.service.PostVOService"%>
-<%@page import="com.asap.forum.entity.PostVO"%>
 <%@page import="com.asap.util.*"%>
 <%@page import="java.util.*"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>

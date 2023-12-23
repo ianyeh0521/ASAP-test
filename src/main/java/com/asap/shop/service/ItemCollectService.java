@@ -22,8 +22,21 @@ public class ItemCollectService implements ItemCollectService_interface {
 		if (vo != null) {
 			// 如果有存在相同的記錄，無法新增
 			System.out.println("相同的記錄已存在，無法新增。");
-		}
+			return -1;
+		}else {
 		return dao.insert(entity);
+		}
+	}
+	
+	public Integer checkCollect(ItemCollectVO entity) {
+		// 檢查是否有存在相同的記錄
+		ItemCollectVO vo = dao.findByMbrNoAndItemNo(entity.getMbrNo(), entity.getItemInfoVO().getItemNo());
+		if (vo != null) {
+			
+			return -1;
+		}else {
+		  return 1;
+		}
 	}
 
 	@Override
@@ -48,7 +61,6 @@ public class ItemCollectService implements ItemCollectService_interface {
 
 	@Override
 	public ItemCollectVO findByMbrNoAndItemNo(String mbrNo, Integer itemNo) {
-
 		return dao.findByMbrNoAndItemNo(mbrNo, itemNo);
 	}
 
