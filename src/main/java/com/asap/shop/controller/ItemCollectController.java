@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.asap.shop.entity.ItemCollectVO;
+import com.asap.shop.service.ItemCollectService;
 import com.asap.shop.service.ItemCollectService_interface;
 import com.asap.shop.service.OrderDetailService_interface;
 import com.asap.shop.service.OrderService;
@@ -15,14 +17,14 @@ import com.asap.shop.service.OrderService_interface;
 import com.asap.shop.service.ShoppingCartService;
 import com.asap.shop.service.ShoppingCartService_interface;
 
-@WebServlet("/ItemCollectController")
+@WebServlet("/shop/ItemCollectController")
 public class ItemCollectController extends HttpServlet {
 	
 	ItemCollectService_interface itemCollevtSvc;
 	
 	@Override
 	public void init() throws ServletException {
-		super.init();
+		itemCollevtSvc= new ItemCollectService();
 	}
 
 	@Override
@@ -31,13 +33,20 @@ public class ItemCollectController extends HttpServlet {
 	    
 	    String action = req.getParameter("action");
 
-	    if("add".equals(action)) {
+	    if("deletesave".equals(action)) {
+	    	deletesave(req, resp);
 	    	
-	    	
-	    	return;
 	    }
 	    
 	    
+	}
+
+	private void deletesave(HttpServletRequest req, HttpServletResponse resp) {
+		Integer collectno = Integer.parseInt(req.getParameter("collectno"));
+		ItemCollectVO entity= new ItemCollectVO();
+		entity.setItemCollectNo(collectno);
+		itemCollevtSvc.delete(entity);
+		
 	}
 
 	@Override
