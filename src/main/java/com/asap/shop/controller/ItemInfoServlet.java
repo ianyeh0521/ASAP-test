@@ -23,38 +23,30 @@ import com.google.gson.Gson;
 @WebServlet("/shop/ItemInfoServlet")
 public class ItemInfoServlet extends HttpServlet {
 	private ItemInfoService_interface itemInfoService;
-	 private ItemImgService itemImgService;
+	private ItemImgService itemImgService;
 
 	@Override
 	public void init() throws ServletException {
 		itemInfoService = new ItemInfoService();
-		 itemImgService = new ItemImgService();
-    }
-	
+		itemImgService = new ItemImgService();
+	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 
-//    	    // 检查action是否为null
-//    	    if (action == null) {
-//    	        // 如果 action 为空，尝试获取 'q' 参数以启用模糊搜索
-//    	        String searchQuery = req.getParameter("q");
-//    	        if (searchQuery != null) {
-//    	            getByFuzzySearch(req, res);
-//    	            return;
-//    	        }
-//    	        action = ""; // 如果没有 'action' 和 'q'，选择其他默认值
-//    	    }
 		switch (action) {
 		case "orderby":
 			orderByItemPrice(req, res);
-//    				forwardPath = getAllEmps(req, res);
 			break;
 
 		case "view_order":
 			orderByItemView(req, res);
+			break;
+			
+		case "new_order":
+			orderByItemAddTime(req, res);
 			break;
 
 		case "search":
@@ -83,15 +75,25 @@ public class ItemInfoServlet extends HttpServlet {
 //    		dispatcher.forward(req, res);
 	}
 
-
-
-
 	private void increaseViewItem(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		Integer itemId = Integer.valueOf(req.getParameter("itemNo"));
 		ItemInfoVO iteminfo = itemInfoService.findByItemNo(itemId);
 		itemInfoService.increaseItemView(iteminfo);
 		res.sendRedirect("AsapShopProduct.jsp?itemNo=" + itemId);
 	}
+	
+	private void orderByItemAddTime(HttpServletRequest req, HttpServletResponse res) throws IOException {
+
+		res.setContentType("text/html; charset=UTF-8");
+		List<ItemInfoVO> itemInfo = itemInfoService.orderByItemAddTime();
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(itemInfo);
+		PrintWriter out = res.getWriter();
+		out.write(jsonString);
+		out.close();
+		System.out.println(jsonString);
+	}
+	
 
 	private void orderByItemPrice(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
@@ -217,22 +219,21 @@ public class ItemInfoServlet extends HttpServlet {
 
 	private void getImgByItemNo(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
-		        String itemNoStr = req.getParameter("itemNo");
-		        Integer itemNo = Integer.parseInt(itemNoStr);
+		String itemNoStr = req.getParameter("itemNo");
+		Integer itemNo = Integer.parseInt(itemNoStr);
 
-		        List<ItemImgVO> itemImgList = itemImgService.findByItemNo(itemNo); 
-		        for(ItemImgVO item: itemImgList) {
-		        	if(item.getItemImgfront()) {
-			            byte[] imgData = item.getItemImg();
-			            
-			            res.setContentType("image/jpg"); // 根據照片格式進行調整
-			            res.getOutputStream().write(imgData);
-		        	}
-		        }
-		 
+		List<ItemImgVO> itemImgList = itemImgService.findByItemNo(itemNo);
+		for (ItemImgVO item : itemImgList) {
+			if (item.getItemImgfront()) {
+				byte[] imgData = item.getItemImg();
+
+				res.setContentType("image/jpg"); // 根據照片格式進行調整
+				res.getOutputStream().write(imgData);
+			}
+		}
+
 	}
-	
-	
+
 	private void getpage(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		List<ItemInfoVO> list = itemInfoService.getAll();
 		Gson gson = new Gson();
@@ -241,9 +242,8 @@ public class ItemInfoServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		out.write(json);
 		out.close();
-		
-	}
 
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
