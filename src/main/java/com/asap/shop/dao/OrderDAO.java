@@ -47,7 +47,7 @@ public class OrderDAO implements OrderDAO_interface {
 			return -1;
 		}
 	}
-	
+
 	public int delete(OrderVO entity) {
 		try {
 			if (entity != null) {
@@ -73,7 +73,6 @@ public class OrderDAO implements OrderDAO_interface {
 			return null;
 		}
 	}
-
 
 	@Override
 	public List<OrderVO> findByMbrNo(String mbrNo) {
@@ -134,8 +133,41 @@ public class OrderDAO implements OrderDAO_interface {
 	@Override
 	public List<OrderVO> findUnPaid(String mbrNo) {
 		return getSession().createQuery("from OrderVO where mbrNo= :mbrNo and orderStat=0", OrderVO.class)
-		.setParameter("mbrNo", mbrNo)
-		.list();
+				.setParameter("mbrNo", mbrNo).list();
+	}
+
+	@Override
+	public List<OrderVO> checkUnpaid() {
+		Session session = factory.openSession();
+		try {
+			List<OrderVO> list = session.createQuery("from OrderVO where orderStat=0", OrderVO.class).list();
+			return list;
+		} finally {
+			if (session != null) {
+				session.close();
+				System.out.println("session is closed");
+			}
+		}
+	}
+
+	@Override
+	public Integer checkerUpdate(OrderVO entity) {
+		Session session = factory.openSession();
+		try {
+			session.beginTransaction();
+			session.update(entity);
+			session.getTransaction().commit();
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return -1;
+		}finally {
+			if (session != null) {
+				session.close();
+				System.out.println("session is closed");
+			}
+		}
 	}
 
 }

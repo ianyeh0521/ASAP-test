@@ -20,6 +20,7 @@ import com.asap.shop.entity.ItemInfoVO;
 import com.asap.shop.entity.ItemSizeVO;
 import com.asap.shop.entity.ItemStatVO;
 import com.asap.shop.entity.ItemTypeVO;
+import com.asap.shop.entity.OrderVO;
 import com.asap.util.HibernateUtil;
 
 public class ItemInfoDAO implements ItemInfoDAO_interface {
@@ -209,44 +210,44 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 			return getAll();
 		}
 		try {
-			
+
 //		getSession().beginTransaction();
-		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-		CriteriaQuery<ItemInfoVO> criteria = builder.createQuery(ItemInfoVO.class);
-		Root<ItemInfoVO> root = criteria.from(ItemInfoVO.class);
+			CriteriaBuilder builder = getSession().getCriteriaBuilder();
+			CriteriaQuery<ItemInfoVO> criteria = builder.createQuery(ItemInfoVO.class);
+			Root<ItemInfoVO> root = criteria.from(ItemInfoVO.class);
 
-		List<Predicate> predicates = new ArrayList<>();
+			List<Predicate> predicates = new ArrayList<>();
 
-		if (map.containsKey("minPrice") && map.containsKey("maxPrice")) {
-			predicates.add(builder.between(root.get("itemPrice"), new BigDecimal(map.get("minPrice")),
-					new BigDecimal(map.get("maxPrice"))));
-		}
-
-		for (Map.Entry<String, String> row : map.entrySet()) {
-			 
-			if ("itemType".equals(row.getKey())) {
-				ItemTypeVO itemTypeVo = new ItemTypeVO();
-				itemTypeVo.setItemTypeNo(Integer.parseInt(row.getValue()));
-				predicates.add(builder.equal(root.get("itemTypeVO"), itemTypeVo));
-			}
-			if ("itemSize".equals(row.getKey())) {
-				ItemSizeVO itemSizeVo = new ItemSizeVO();
-				itemSizeVo.setItemSizeNo(Integer.parseInt(row.getValue()));
-				predicates.add(builder.equal(root.get("itemSizeVO"), itemSizeVo));
-			}
-			if ("itemStat".equals(row.getKey())) {
-				ItemStatVO itemStatVo = new ItemStatVO();
-				itemStatVo.setItemStatNo(Integer.parseInt(row.getValue()));
-				predicates.add(builder.equal(root.get("itemStatVO"), itemStatVo));
+			if (map.containsKey("minPrice") && map.containsKey("maxPrice")) {
+				predicates.add(builder.between(root.get("itemPrice"), new BigDecimal(map.get("minPrice")),
+						new BigDecimal(map.get("maxPrice"))));
 			}
 
-		}
+			for (Map.Entry<String, String> row : map.entrySet()) {
 
-		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
-		TypedQuery<ItemInfoVO> query = getSession().createQuery(criteria);
-		List<ItemInfoVO> list = query.getResultList();
+				if ("itemType".equals(row.getKey())) {
+					ItemTypeVO itemTypeVo = new ItemTypeVO();
+					itemTypeVo.setItemTypeNo(Integer.parseInt(row.getValue()));
+					predicates.add(builder.equal(root.get("itemTypeVO"), itemTypeVo));
+				}
+				if ("itemSize".equals(row.getKey())) {
+					ItemSizeVO itemSizeVo = new ItemSizeVO();
+					itemSizeVo.setItemSizeNo(Integer.parseInt(row.getValue()));
+					predicates.add(builder.equal(root.get("itemSizeVO"), itemSizeVo));
+				}
+				if ("itemStat".equals(row.getKey())) {
+					ItemStatVO itemStatVo = new ItemStatVO();
+					itemStatVo.setItemStatNo(Integer.parseInt(row.getValue()));
+					predicates.add(builder.equal(root.get("itemStatVO"), itemStatVo));
+				}
+
+			}
+
+			criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+			TypedQuery<ItemInfoVO> query = getSession().createQuery(criteria);
+			List<ItemInfoVO> list = query.getResultList();
 //		getSession().getTransaction().commit();
-		return list;
+			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -299,7 +300,7 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 	public int getHighestPrice() {
 		try {
 			String hqlQuery = "SELECT MAX(itemPrice) FROM ItemInfoVO";
-			int maxPrice = getSession().createQuery(hqlQuery,  Integer.class).uniqueResult();
+			int maxPrice = getSession().createQuery(hqlQuery, Integer.class).uniqueResult();
 			return maxPrice;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -307,9 +308,45 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 		}
 	}
 
+	public ItemInfoVO checkerFindByItemNo(Integer itemNo) {
+		Session session = factory.openSession();
+		try {
+			ItemInfoVO vo = session.get(ItemInfoVO.class, itemNo);
+			return vo;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (session != null) {
+				session.close();
+				System.out.println("session is closed");
+			}
+		}
+	}
+
+	@Override
+	public Integer checkerUpdate(ItemInfoVO itemInfo) {
+		Session session = factory.openSession();
+		try {
+			session.beginTransaction();
+			session.update(itemInfo);
+			session.getTransaction().commit();
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return -1;
+		}finally {
+			if (session != null) {
+				session.close();
+				System.out.println("session is closed");
+			}
+		}
+	}
+
 //	public static void main(String[] args) {
 //		ItemInfoDAO dao = new ItemInfoDAO();
-		
+
 //		Map<String, String> map = new HashMap<>();
 //		map.put("minPrice", "80");
 //		map.put("maxPrice", "3000");

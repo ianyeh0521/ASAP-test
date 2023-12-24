@@ -22,6 +22,10 @@ public interface OrderService_interface {
 
 	int getTotal();
 	
+	List<OrderVO> checkUnpaid();
+	
 	List<OrderVO> findUnPaid(String mbrNo);
+	
+	Integer checkerUpdate(OrderVO entity);
 	
 }

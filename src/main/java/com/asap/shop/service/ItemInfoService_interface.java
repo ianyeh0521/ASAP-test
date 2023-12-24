@@ -44,4 +44,7 @@ public interface ItemInfoService_interface {
 	//找最高價
 	int getHighestPrice();
 	
+	ItemInfoVO checkerFindByItemNo(Integer itemNo);
+	
+	Integer checkerUpdate(ItemInfoVO itemInfo);
 }

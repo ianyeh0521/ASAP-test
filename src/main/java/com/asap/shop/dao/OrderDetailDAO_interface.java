@@ -23,4 +23,5 @@ public interface OrderDetailDAO_interface {
 	
 	Integer getTotal();
 
+	List<OrderDetailVO> checkerFindByOrderNo(Integer orderNo);
 }

@@ -123,4 +123,18 @@ public class OrderDetailDAO implements OrderDetailDAO_interface {
 		}
 	}
 
+	@Override
+	public List<OrderDetailVO> checkerFindByOrderNo(Integer orderNo) {
+		Session session = factory.openSession();
+		try {
+			List<OrderDetailVO> list = session.createQuery("from OrderDetailVO", OrderDetailVO.class).list();
+			return list;
+		} finally {
+			if (session != null) {
+				session.close();
+				System.out.println("session is closed");
+			}
+		}
+	}
+
 }

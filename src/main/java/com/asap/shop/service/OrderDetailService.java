@@ -78,4 +78,9 @@ public class OrderDetailService implements OrderDetailService_interface {
 		return "評論成功";
 	}
 
+	@Override
+	public List<OrderDetailVO> checkerFindByOrderNo(Integer orderNo) {
+		return dao.checkerFindByOrderNo(orderNo);
+	}
+
 }
