@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.asap.shop.entity.ItemInfoVO;
+import com.asap.shop.entity.ShoppingCartVO;
 import com.asap.shop.service.ShoppingCartService;
 import com.asap.shop.service.ShoppingCartService_interface;
 import com.google.gson.Gson;
@@ -34,8 +35,11 @@ public class ShoppingCartController extends HttpServlet {
 		switch (action) {
 		case "addcart":
 			insert(req, res);
-
 			break;
+			
+        case "remove":
+            remove(req, res);
+            break;
 
 		}
 		res.setContentType("text/html; charset=UTF-8");
@@ -57,6 +61,22 @@ public class ShoppingCartController extends HttpServlet {
 	    res.setCharacterEncoding("UTF-8");
 
 	    // 使用Gson生成JSON响应
+	    Gson gson = new Gson();
+	    String jsonResponse = gson.toJson(result);
+	    PrintWriter out = res.getWriter();
+	    out.print(jsonResponse);
+	    out.flush();
+	}
+	
+	private void remove(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	    Integer shoppingCartNo = Integer.valueOf(req.getParameter("shoppingCartNo"));
+	    
+	    ShoppingCartVO entity = shoppingCartService.findByPK(shoppingCartNo);
+
+	    String result = shoppingCartService.delete(entity);
+
+	    res.setContentType("application/json");
+	    res.setCharacterEncoding("UTF-8");
 	    Gson gson = new Gson();
 	    String jsonResponse = gson.toJson(result);
 	    PrintWriter out = res.getWriter();

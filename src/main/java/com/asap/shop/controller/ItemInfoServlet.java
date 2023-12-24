@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.asap.shop.entity.ItemImgVO;
 import com.asap.shop.entity.ItemInfoVO;
+import com.asap.shop.service.ItemImgService;
+import com.asap.shop.service.ItemImgService_interface;
 import com.asap.shop.service.ItemInfoService;
 import com.asap.shop.service.ItemInfoService_interface;
 import com.google.gson.Gson;
@@ -21,11 +23,14 @@ import com.google.gson.Gson;
 @WebServlet("/shop/ItemInfoServlet")
 public class ItemInfoServlet extends HttpServlet {
 	private ItemInfoService_interface itemInfoService;
+	 private ItemImgService itemImgService;
 
 	@Override
 	public void init() throws ServletException {
 		itemInfoService = new ItemInfoService();
-	}
+		 itemImgService = new ItemImgService();
+    }
+	
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -62,6 +67,10 @@ public class ItemInfoServlet extends HttpServlet {
 
 		case "increaseViewItem":
 			increaseViewItem(req, res);
+			break;
+
+		case "getImg":
+			getImgByItemNo(req, res);
 			break;
 
 		}
@@ -154,8 +163,7 @@ public class ItemInfoServlet extends HttpServlet {
 //		        out.write(json);
 //		    }
 //		}
-		    
-	        
+
 //	    Map<String, String[]> map = req.getParameterMap();
 //
 //	  	    List<ItemInfoVO> itemInfoList = itemInfoService.getByCompositeQuery(map);
@@ -167,48 +175,63 @@ public class ItemInfoServlet extends HttpServlet {
 //	        out.write(json);
 //	    }
 //	    }
-	
-		  Map<String, String[]> paramMap = new HashMap<>();
 
-		    addParameterIfNotEmpty(req, paramMap, "ItemTypeNo", "itemType");
-		    addParameterIfNotEmpty(req, paramMap, "ItemSizeNo", "itemSize");
-		    addParameterIfNotEmpty(req, paramMap, "ItemStatNo", "itemStat");
+		Map<String, String[]> paramMap = new HashMap<>();
 
-		    String minPrice = req.getParameter("minPrice");
-		    String maxPrice = req.getParameter("maxPrice");
-		    if (minPrice != null && !minPrice.trim().isEmpty()) {
-		        paramMap.put("minPrice", new String[]{minPrice});
-		    }
-		    if (maxPrice != null && !maxPrice.trim().isEmpty()) {
-		        paramMap.put("maxPrice", new String[]{maxPrice});
-		    }
+		addParameterIfNotEmpty(req, paramMap, "ItemTypeNo", "itemType");
+		addParameterIfNotEmpty(req, paramMap, "ItemSizeNo", "itemSize");
+		addParameterIfNotEmpty(req, paramMap, "ItemStatNo", "itemStat");
 
-		    List<ItemInfoVO> itemInfoList = itemInfoService.getByCompositeQuery(paramMap);
-
-		    String json = new Gson().toJson(itemInfoList);
-		    res.setContentType("application/json; charset=UTF-8");
-
-		    try (PrintWriter out = res.getWriter()) {
-		        out.write(json);
-		    }
+		String minPrice = req.getParameter("minPrice");
+		String maxPrice = req.getParameter("maxPrice");
+		if (minPrice != null && !minPrice.trim().isEmpty()) {
+			paramMap.put("minPrice", new String[] { minPrice });
+		}
+		if (maxPrice != null && !maxPrice.trim().isEmpty()) {
+			paramMap.put("maxPrice", new String[] { maxPrice });
 		}
 
-	private void addParameterIfNotEmpty(HttpServletRequest req, Map<String, String[]> paramMap, String paramName, String mapKey) {
-	    String paramValue = req.getParameter(paramName);
-	    if (paramValue != null && !paramValue.trim().isEmpty()) {
-	        paramMap.put(mapKey, new String[]{paramValue});
+		List<ItemInfoVO> itemInfoList = itemInfoService.getByCompositeQuery(paramMap);
+
+		String json = new Gson().toJson(itemInfoList);
+		res.setContentType("application/json; charset=UTF-8");
+
+		try (PrintWriter out = res.getWriter()) {
+			out.write(json);
+		}
+	}
+
+	private void addParameterIfNotEmpty(HttpServletRequest req, Map<String, String[]> paramMap, String paramName,
+			String mapKey) {
+		String paramValue = req.getParameter(paramName);
+		if (paramValue != null && !paramValue.trim().isEmpty()) {
+			paramMap.put(mapKey, new String[] { paramValue });
+		}
+	}
+
+	private void getImgByItemNo(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		 try {
+		        String itemNoStr = req.getParameter("itemNo");
+		        Integer itemNo = Integer.parseInt(itemNoStr);
+
+		        List<ItemImgVO> itemImgList = itemImgService.findByItemNo(itemNo); 
+
+	        if (!itemImgList.isEmpty() && itemImgList.get(0).getItemImg() != null) {
+	            byte[] imgData = itemImgList.get(0).getItemImg();
+	            res.setContentType("image/jpg"); // 根據照片格式進行調整
+	            res.getOutputStream().write(imgData);
+	        } else {
+	        }
+	    } catch (NumberFormatException e) {
+	        e.printStackTrace();    
+	    } catch (Exception e) {
+	        e.printStackTrace();
 	    }
 	}
-	
-	
-	
-	
-	
+
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
 }
-
-

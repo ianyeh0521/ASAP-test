@@ -30,9 +30,9 @@ public class ItemImgDAOtest {
 //            tx = session.beginTransaction();
 //
 //            ItemImgVO itemImg = new ItemImgVO();
-//            itemImg.setItemNo(1001); // 商品編號
-//            itemImg.setItemImg(convertImageToByteArray("C:/Users/frank/OneDrive/桌面/215034120.jpg"));
-//            itemImg.setItemImgfront(true); // 是否為主圖片
+//            itemImg.setItemNo(1004); // 商品編號
+//            itemImg.setItemImg(convertImageToByteArray("C:/Users/frank/OneDrive/桌面/basketball.jpg"));
+//            itemImg.setItemImgfront(false); // 是否為主圖片
 //            itemImg.setItemImgUpdTime(new Timestamp(System.currentTimeMillis()));
 //
 //            session.save(itemImg);

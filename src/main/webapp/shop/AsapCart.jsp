@@ -161,16 +161,21 @@ System.out.println(list);
 								<tbody>
 
 									<c:forEach items="${list}" var="cartItem" varStatus="status">
-										<tr class="product-row">
+										<tr class="product-row"  data-cartid="${cartItem.shoppingCartNo}">
 											<td>
 												<figure class="product-image-container">
 													<a
-														href="AsapshopProduct.jsp?itemNo=${cartItem.itemInfoVO.itemNo}"
+														href="ItemInfoServlet?action=increaseViewItem&itemNo=${cartItem.itemInfoVO.itemNo}"
 														class="product-image"> <img
-														src="../assets/images/asapshop/football.jpg" alt="product">
+														src="ItemInfoServlet?action=getImg&itemNo=${cartItem.itemInfoVO.itemNo}"
+														alt="product">
 													</a>
+
+
 													<a href="#" class="btn-remove icon-cancel"
-														title="Remove Product"></a>
+														title="Remove Product"
+														></a>
+														
 												</figure>
 											</td>
 											<td class="product-col" style="padding-left: 10px">
@@ -259,9 +264,9 @@ System.out.println(list);
 							</table>
 
 							<div class="checkout-methods">
-								<a href="AsapOrderCheck.jsp"
-									class="btn btnoter-block btn-dark" style="padding-left: 20px">確認訂單
-									<i class="fa fa-arrow-right"></i>
+								<a href="AsapOrderCheck.jsp" class="btn btnoter-block btn-dark"
+									style="padding-left: 20px">確認訂單 <i
+									class="fa fa-arrow-right"></i>
 								</a>
 
 							</div>
@@ -308,8 +313,36 @@ System.out.println(list);
 		$("footer").load("footer.html");
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
-	</script>
+		
+		$('.btn-remove').on('click', function(e) {
+		    e.preventDefault();
+		    var cartId = $(this).closest('tr').data('cartid'); // 獲取購物車項目 ID
 
+		    // 發送 AJAX 請求到後端
+		    $.ajax({
+		        url: '/shop/ShoppingCartServlet',
+		        method: 'POST',
+		        data: {
+		            action: 'remove',
+		            shoppingCartNo: cartId // 購物車項目 ID
+		        },
+		        success: function(response) {
+		            // 處理響應
+		            console.log(response);
+		        },
+		        error: function(xhr, status, error) {
+		            // 處理錯誤
+		            console.error(error);
+		        }
+		    });
+		});
+		
+		
+		
+		
+		
+	</script>
+	
 </body>
 
 </html>

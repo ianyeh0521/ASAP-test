@@ -1,6 +1,7 @@
 package com.asap.shop.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -13,12 +14,12 @@ import javax.servlet.http.HttpSession;
 import com.asap.shop.entity.ItemInfoVO;
 import com.asap.shop.entity.OrderDetailVO;
 import com.asap.shop.entity.OrderVO;
-import com.asap.shop.service.ItemInfoService;
-import com.asap.shop.service.ItemInfoService_interface;
+import com.asap.shop.entity.ShoppingCartVO;
 import com.asap.shop.service.OrderDetailService;
 import com.asap.shop.service.OrderDetailService_interface;
 import com.asap.shop.service.OrderService;
 import com.asap.shop.service.OrderService_interface;
+import com.asap.shop.service.ShoppingCartService;
 
 @WebServlet("/shop/OrderServlet")
 public class OrderServlet extends HttpServlet {
@@ -73,7 +74,20 @@ public class OrderServlet extends HttpServlet {
 
 		Integer orderno= orderService.insert(entity);
 
-	    ItemInfoService_interface itemInfoSvc = new ItemInfoService();
+//	    ItemInfoService_interface itemInfoSvc = new ItemInfoService();
+		// 檢查訂單是否成功創建
+	    if (orderno != null && orderno > 0) {
+	        // 刪除會員購物車內容
+	        String mbrNo = "M1"; // 或從某處獲取會員編號
+	        ShoppingCartService shoppingCartService = new ShoppingCartService();
+
+	        // 假設有一個方法可以獲取特定會員的所有購物車項目
+	        List<ShoppingCartVO> shoppingCartItems = shoppingCartService.findByMember(mbrNo);
+
+	        for (ShoppingCartVO item : shoppingCartItems) {
+	            shoppingCartService.delete(item);
+	        }
+	    }
 
 		Map<String, String[]> map = req.getParameterMap();
 		// map.keySet().stream().forEach(System.out::println);
@@ -103,26 +117,24 @@ public class OrderServlet extends HttpServlet {
 //				購買物庫存減少(update)
 //				 ItemInfoService_interface itemInfoSvc = new ItemInfoService();
 //				itemInfoSvc.setItemInfoQty(Integer.parseInt(product[2])); -數量
-				Integer itemId = Integer.parseInt(product[0]);
-		        Integer quantityPurchased = Integer.parseInt(product[2]);
-
-		        //獲取當前物品訊息
-		        ItemInfoVO currentItemInfoVO  = itemInfoSvc.findByItemNo(itemId);
-		        if (itemInfoVO != null) {
-		            //計算新的庫存數量
-		            Integer newStockQty = itemInfoVO.getItemStockQty() - quantityPurchased;
-		            newStockQty = Math.max(newStockQty, 0); // 防止庫存數量變負數
-
-		            // 更新商品信息
-		            itemInfoVO.setItemStockQty(newStockQty);
-		            itemInfoSvc.update(itemInfoVO);
+//				Integer itemId = Integer.parseInt(product[0]);
+//		        Integer quantityPurchased = Integer.parseInt(product[2]);
+//
+//		        //獲取當前物品訊息
+//		        ItemInfoVO currentItemInfoVO  = itemInfoSvc.findByItemNo(itemId);
+//		        if (itemInfoVO != null) {
+//		            //計算新的庫存數量
+//		            Integer newStockQty = itemInfoVO.getItemStockQty() - quantityPurchased;
+//		            newStockQty = Math.max(newStockQty, 0); // 防止庫存數量變負數
+//
+//		            // 更新商品信息
+//		            itemInfoVO.setItemStockQty(newStockQty);
+//		            itemInfoSvc.update(itemInfoVO);
 		        }
 		    }
 		}
 
-				
-				
-			}
+
 
 //		    
 //		    res.setContentType("application/json");

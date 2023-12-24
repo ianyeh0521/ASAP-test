@@ -285,7 +285,8 @@ System.out.println(list);
 										<figure>
 											<a
 												href="ItemInfoServlet?action=increaseViewItem&itemNo=${ItemInfoVO.itemNo}">
-												<img src="../assets/images/asapshop/football.jpg"
+												<img
+												src="ItemInfoServlet?action=getImg&itemNo=${ItemInfoVO.itemNo}"
 												width="300" height="300" alt="product" />
 											</a>
 
@@ -333,9 +334,9 @@ System.out.println(list);
 
 											<div class="price-box">
 												<c:if test="${ItemInfoVO.preItemPrice != 0}">
-													<del class="old-price">${ItemInfoVO.preItemPrice}</del>
+													<del class="old-price">$${ItemInfoVO.preItemPrice}</del>
 												</c:if>
-												<span class="product-price">${ItemInfoVO.itemPrice}</span>
+												<span class="product-price">$${ItemInfoVO.itemPrice}</span>
 											</div>
 
 										</div>
@@ -852,8 +853,10 @@ System.out.println(list);
                 <div class="product-default inner-quickview inner-icon">
                   <figure>
                     <a href="ItemInfoServlet?action=increaseViewItem&itemNo=\${data[itemabc]["itemNo"]}">
-                    <img src="../assets/images/asapshop/football.jpg"
-                    width="300" height="300" alt="product" />
+                	<img
+					src="ItemInfoServlet?action=getImg&itemNo=\${data[itemabc]["itemNo"]}"
+					width="300" height="300" alt="product" />
+
                 </a>
                 
                     <div class="label-group">
@@ -896,10 +899,10 @@ System.out.println(list);
                       <div class="price-box">`;
 
                   if (data[itemabc]["preItemPrice"] != 0) {
-                      itemsorthtml += `<del class="old-price">\${data[itemabc]["preItemPrice"]}</del>`;
+                      itemsorthtml += `<del class="old-price">$\${data[itemabc]["preItemPrice"]}</del>`;
                   }
 
-                  itemsorthtml += `<span class="product-price">\${data[itemabc]["itemPrice"]}</span>
+                  itemsorthtml += `<span class="product-price">$\${data[itemabc]["itemPrice"]}</span>
                       </div>
                   </div>`
                   $("div#roworder").append(itemsorthtml)
@@ -913,26 +916,27 @@ System.out.println(list);
   //搜尋功能
  $(document).ready(function() {
 $("#itemsearch").on("click", function(event) {
-    event.preventDefault(); // 阻止表单默认提交行为
-    var searchQuery = $("#q").val(); // 获取搜索关键词
+    event.preventDefault(); // 阻止表單提交默認行為
+    var searchQuery = $("#q").val(); // 獲取搜索關鍵詞
     $.ajax({
         url: "ItemInfoServlet", // Servlet URL
         type: "GET", // 使用GET方法
         data: { q: searchQuery, 
-          action:"search"}, // 传递搜索参数
+          action:"search"}, // 傳遞搜索參數
         dataType: "json",
         success: function(data) {
-            $("div#roworder").empty(); // 清空当前商品列表\
-            var itemsHtml = "";
+            $("div#roworder").empty(); // 清空當前商品列表\
+            var itemsorthtml = "";
             $.each(data, function(index, item) {
-                // 根据返回的数据构建商品HTML
-                // 此处需要根据您的数据结构和HTML结构进行调整
-                itemsHtml += `<div class="col-6 col-sm-3">
+                // 根據返回的數據構件商品HTML
+                //根據結構數據和HTML結構進行調整
+                itemsorthtml += `<div class="col-6 col-sm-3">
                     <div class="product-default inner-quickview inner-icon">
                     <figure>
                     <a href="AsapShopProduct.jsp?itemNo=\${item["itemNo"]}">
-        <img src="../assets/images/asapshop/football.jpg"
-        width="300" height="300" alt="product" />
+                	<img
+					src="ItemInfoServlet?action=getImg&itemNo=\${item["itemNo"]}""
+					width="300" height="300" alt="product" />
       </a>
                         <div class="label-group">
                             <span class="product-label label-sale">-50%</span>
@@ -942,26 +946,41 @@ $("#itemsearch").on("click", function(event) {
                     <div class="product-details">
                         <div class="category-wrap">
                             <div class="category-list">
-                                <span>\${item.itemName}</span>, <span>\${item.itemTypeNo}</span>, <a href="#">狀況尚可</a>
-                            </div>
-                            <a href="AsapShopWish.jsp" class="btn-icon-wish" title="加入收藏"><i class="icon-heart"></i></a>
-                        </div>
+                                <span>\${item.itemName}</span>, <span>\${item.itemTypeVO.itemTypeName}</span>, <span>\${item.itemStatVO.itemStatText}</span>
+                                </div>
+                                <a href="AsapShopWish.jsp" class="btn-icon-wish"
+                                  title="加入收藏"><i class="icon-heart"></i></a>
+                              </div>
                         <h3 class="product-title">
                             <span>\${item.itemName}</span><br>
-                            瀏覽人數: <span>\${item.itemView}</span>
+                            瀏覽人數: <span>\${item.itemView}</span><br>
+                            商品庫存: <span>\${item.itemStockQty}</span>
                         </h3>
-                        <div class="product-buttons">
-                            <a href="AsapCart.jsp" class="btn-icon-cart" title="加入購物車"><i class="icon-shopping-cart"></i> 加入購物車</a>
-                        </div>
-                        <div class="price-box">
-                            <del class="old-price">\${item.preItemPrice}</del>
-                            <span class="product-price">\${item.itemPrice}</span>
-                        </div>
+                        
+                        <div class="product-buttons" style="display: flex; align-items: center;">
+                        <input type="number" class="product-quantity" placeholder="請選擇數量" min="1"
+                        max="\${item.itemStockQty}"
+                        style="width: 100px; margin-right: 20px;" />
+                        <a href="javascript:;" class="btn-icon-cart" title="加入購物車"
+                        data-itemno="\${item.itemNo}">
+                        <i class="icon-shopping-cart"></i> 加入購物車</a>
+                    </div>
+                    <div style="margin-top: 1px; margin-left: 138px;">
+                        <a href="AsapCart.jsp" class="btn-view-cart">查看購物車</a>
+                    </div>
+                    <div class="price-box">`;
+
+                if (item.preItemPrice != 0) {
+                    itemsorthtml += `<del class="old-price">\${item.preItemPrice}</del>`;
+                }
+
+                itemsorthtml += `<span class="product-price">\${item.itemPrice}</span>
+                    </div>
                     </div>
                 </div>
             </div>`;
             });
-            $("div#roworder").html(itemsHtml); // 更新页面内容
+            $("div#roworder").html(itemsorthtml); // 更新页面内容
         }
     });
 });
@@ -1094,7 +1113,9 @@ $(document).ready(function() {
                        <div class="product-default inner-quickview inner-icon">
                        <figure>
                            <a href="ItemInfoServlet?action=increaseViewItem&itemNo=\${item["itemNo"]}">
-                               <img src="../assets/images/asapshop/football.jpg" width="300" height="300" alt="product" />
+                       	<img
+    					src="ItemInfoServlet?action=getImg&itemNo=\${item["itemNo"]}""
+    					width="300" height="300" alt="product" />
                            </a>
                            <div class="label-group">
                                <span class="product-label label-sale">-50%</span>
@@ -1129,9 +1150,9 @@ $(document).ready(function() {
                            <div class="price-box">`;
 
                if (item["preItemPrice"] != 0) {
-                   itemsorthtml += `<del class="old-price">\${item["preItemPrice"]}</del>`;
+                   itemsorthtml += `<del class="old-price">$\${item["preItemPrice"]}</del>`;
                }
-               itemsorthtml += `<span class="product-price">\${item["itemPrice"]}</span>
+               itemsorthtml += `<span class="product-price">$\${item["itemPrice"]}</span>
                            </div>
                        </div>
                    </div>`;
