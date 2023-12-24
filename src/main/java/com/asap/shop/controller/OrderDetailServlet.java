@@ -1,6 +1,8 @@
 package com.asap.shop.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,13 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.asap.shop.entity.OrderDetailVO;
 import com.asap.shop.service.OrderDetailService;
 import com.asap.shop.service.OrderDetailService_interface;
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class OrderDetailServlet
  */
-@WebServlet("/OrderDetailServlet")
+@WebServlet("/shop/OrderDetailServlet")
 public class OrderDetailServlet extends HttpServlet {
 	private OrderDetailService_interface orderDetailService;
 
@@ -29,8 +33,8 @@ public class OrderDetailServlet extends HttpServlet {
 		String action = req.getParameter("action");
 
 		switch (action) {
-		case "orderby":
-			orderByItemPrice(req, res);
+		case "getOrderDetail":
+			getOrderDetail(req, res);
 			break;
 
 		}
@@ -38,9 +42,21 @@ public class OrderDetailServlet extends HttpServlet {
 		res.setContentType("text/html; charset=UTF-8");
 	}	
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	private void getOrderDetail(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		Integer orderno= Integer.valueOf(req.getParameter("orderNo"));
+		List<OrderDetailVO> data= orderDetailService.findByOrderNo(orderno);
+		res.setContentType("application/json; charset=UTF-8");
+		Gson gson= new Gson();
+		String ordDetailJson=gson.toJson(data);
+		PrintWriter out = res.getWriter();
+		System.out.println(ordDetailJson);
+        out.write(ordDetailJson);          
+        out.close(); 
+		
+	}
+
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doPost(req, res);
 	}
 
 
