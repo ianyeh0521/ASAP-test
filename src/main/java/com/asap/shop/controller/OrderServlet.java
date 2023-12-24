@@ -15,6 +15,8 @@ import com.asap.shop.entity.ItemInfoVO;
 import com.asap.shop.entity.OrderDetailVO;
 import com.asap.shop.entity.OrderVO;
 import com.asap.shop.entity.ShoppingCartVO;
+import com.asap.shop.service.ItemInfoService;
+import com.asap.shop.service.ItemInfoService_interface;
 import com.asap.shop.service.OrderDetailService;
 import com.asap.shop.service.OrderDetailService_interface;
 import com.asap.shop.service.OrderService;
@@ -42,8 +44,32 @@ public class OrderServlet extends HttpServlet {
 			insert(req, res);
 
 			break;
+		case "deleteOrder":
+			deleteOrder(req, res);
+
+			break;
+			
 		}
 		res.setContentType("text/html; charset=UTF-8");
+	}
+
+	private void deleteOrder(HttpServletRequest req, HttpServletResponse res) {
+		Integer orderNo = Integer.valueOf(req.getParameter("orderNo"));
+		OrderVO orderVO= orderService.findByPK(orderNo);
+		orderVO.setOrderStat(4);
+		orderService.update(orderVO);
+		OrderDetailService_interface orderDetail= new OrderDetailService();
+		ItemInfoService_interface itemInfoSvc = new ItemInfoService();
+		List <OrderDetailVO> orderdetails = orderDetail.findByOrderNo(orderNo);
+		for(OrderDetailVO orderitem: orderdetails) {
+			Integer itemno= orderitem.getItemInfoVO().getItemNo();
+			Integer itemqty= orderitem.getItemOrderQty();
+			ItemInfoVO itemInfoVO= itemInfoSvc.findByItemNo(itemno);
+			Integer inStock=itemInfoVO.getItemStockQty();
+			itemInfoVO.setItemStockQty(inStock+itemqty);
+			itemInfoSvc.update(itemInfoVO);
+		}
+		
 	}
 
 	private void insert(HttpServletRequest req, HttpServletResponse res) throws IOException {

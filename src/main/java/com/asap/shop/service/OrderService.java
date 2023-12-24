@@ -2,6 +2,7 @@ package com.asap.shop.service;
 
 import java.util.List;
 
+import com.asap.forum.entity.PostVO;
 import com.asap.shop.dao.OrderDAO;
 import com.asap.shop.dao.OrderDAO_interface;
 import com.asap.shop.entity.OrderVO;
@@ -55,6 +56,11 @@ public class OrderService implements OrderService_interface {
 	@Override
 	public int getTotal() {
 		return dao.getTotal();
+	}
+
+	@Override
+	public List<OrderVO> findUnPaid(String mbrNo) {
+		return dao.findUnPaid(mbrNo);
 	}
 
 }

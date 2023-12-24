@@ -21,4 +21,6 @@ public interface OrderDAO_interface {
 	List<OrderVO> getAll();
 
 	int getTotal();
+	
+	public List<OrderVO> findUnPaid(String mbrNo);
 }

@@ -21,4 +21,7 @@ public interface OrderService_interface {
 	List<OrderVO> getAll();
 
 	int getTotal();
+	
+	List<OrderVO> findUnPaid(String mbrNo);
+	
 }

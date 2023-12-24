@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import com.asap.forum.entity.PostVO;
 import com.asap.shop.entity.OrderVO;
 import com.asap.util.HibernateUtil;
 
@@ -128,6 +129,13 @@ public class OrderDAO implements OrderDAO_interface {
 			e.printStackTrace();
 			return -1;
 		}
+	}
+
+	@Override
+	public List<OrderVO> findUnPaid(String mbrNo) {
+		return getSession().createQuery("from OrderVO where mbrNo= :mbrNo and orderStat=0", OrderVO.class)
+		.setParameter("mbrNo", mbrNo)
+		.list();
 	}
 
 }
