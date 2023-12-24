@@ -8,10 +8,11 @@
 <!DOCTYPE html>
 
 <%
-ItemInfoService_interface ItemSvc = new ItemInfoService();
-List<ItemInfoVO> list = ItemSvc.getAll();
-pageContext.setAttribute("list", list);
-System.out.println(list);
+
+// ItemInfoService_interface ItemSvc = new ItemInfoService();
+// List<ItemInfoVO> list = ItemSvc.getAll();
+// pageContext.setAttribute("list", list);
+// System.out.println(list);
 %>
 
 <html lang="en">
@@ -152,8 +153,8 @@ System.out.println(list);
 					</div>
 
 					<a href="AsapShopWish.jsp" class="header-icon position-relative"
-						title="我的收藏"><i class="icon-wishlist-2"></i> <span
-						class="cart-count badge-circle">3</span></a>
+						title="我的收藏"><i class="icon-wishlist-2"></i> <!-- 						 <span -->
+						<!-- 						class="cart-count badge-circle">3</span> --> </a>
 
 					<div class="dropdown cart-dropdown">
 						<a href="#" title="購物車" class="dropdown-toggle cart-toggle"
@@ -283,12 +284,16 @@ System.out.println(list);
 								<div class="col-6 col-sm-3">
 									<div class="product-default inner-quickview inner-icon">
 										<figure>
-											<a
+											<span
+												style="display: flex; align-items: center; justify-content: center; height: 300px;">
+												<a
 												href="ItemInfoServlet?action=increaseViewItem&itemNo=${ItemInfoVO.itemNo}">
-												<img
-												src="ItemInfoServlet?action=getImg&itemNo=${ItemInfoVO.itemNo}"
-												width="300" height="300" alt="product" />
+													<img
+													src="ItemInfoServlet?action=getImg&itemNo=${ItemInfoVO.itemNo}"
+													alt="product" style="max-height: 100%;" />
 											</a>
+											</span>
+
 
 											<div class="label-group">
 												<span class="product-label label-sale">-50%</span>
@@ -302,8 +307,8 @@ System.out.println(list);
 												<div class="category-list">
 													<span>${ItemInfoVO.itemName}</span>、<span>${ItemInfoVO.itemTypeVO.itemTypeName}</span>、<span>${ItemInfoVO.itemStatVO.itemStatText}</span>
 												</div>
-												<a href="AsapShopWish.jsp" class="btn-icon-wish"
-													title="加入收藏"><i class="icon-heart"></i></a>
+												<!-- 												<a href="AsapShopWish.jsp" class="btn-icon-wish" -->
+												<!-- 													title="加入收藏"><i class="icon-heart"></i></a> -->
 											</div>
 											<h3 class="product-title">
 												<a href="AsapShopProduct.jsp?itemNo=${ItemInfoVO.itemNo}"><div>
@@ -313,7 +318,7 @@ System.out.println(list);
 													瀏覽人數: <span>${ItemInfoVO.itemView}</span>
 												</div>
 												<div>
-													商品庫存: <span>${ItemInfoVO.itemStockQty}</span>
+													商品庫存: <span class=itemstockqty>${ItemInfoVO.itemStockQty}</span>
 												</div>
 											</h3>
 											<div class="product-buttons"
@@ -348,19 +353,22 @@ System.out.println(list);
 						</div>
 						<!-- End .row -->
 
-						<nav class="toolbox toolbox-pagination">
-							<ul class="pagination toolbox-item">
-								<li class="page-item disabled"><a
-									class="page-link page-link-btn" href="#"><i
-										class="icon-angle-left"></i></a></li>
-								<li class="page-item active"><a class="page-link" href="#">1
-										<span class="sr-only">(current)</span>
-								</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link page-link-btn"
-									href="#"><i class="icon-angle-right"></i></a></li>
-							</ul>
-						</nav>
+						<div class="pagination-container" style="text-align: center">
+							<div id="pagination-wrapper"></div>
+						</div>
+						<!-- 						<nav class="toolbox toolbox-pagination"> -->
+						<!-- 							<ul class="pagination toolbox-item"> -->
+						<!-- 								<li class="page-item disabled"><a -->
+						<!-- 									class="page-link page-link-btn" href="#"><i -->
+						<!-- 										class="icon-angle-left"></i></a></li> -->
+						<!-- 								<li class="page-item active"><a class="page-link" href="#">1 -->
+						<!-- 										<span class="sr-only">(current)</span> -->
+						<!-- 								</a></li> -->
+						<!-- 								<li class="page-item"><a class="page-link" href="#">2</a></li> -->
+						<!-- 								<li class="page-item"><a class="page-link page-link-btn" -->
+						<!-- 									href="#"><i class="icon-angle-right"></i></a></li> -->
+						<!-- 							</ul> -->
+						<!-- 						</nav> -->
 					</div>
 					<!-- End .col-lg-9 -->
 
@@ -561,6 +569,7 @@ System.out.println(list);
 
 												<button type="button" id="select" class="btn btn-primary"
 													data-column="">篩選</button>
+
 											</div>
 											<!-- End .filter-price-action -->
 										</form>
@@ -873,15 +882,14 @@ System.out.println(list);
                       <span>\${data[itemabc]["itemTypeVO"]["itemTypeName"]}</span>
                    <span>\${data[itemabc]["itemStatVO"]["itemStatText"]}</span>
                       </div>
-                      <a href="AsapShopWish.jsp" class="btn-icon-wish"
-                        title="加入收藏"><i class="icon-heart"></i></a>
+
                     </div>
 
                       <h3 class="product-title">
                     <span>\${data[itemabc]["itemName"]}</span><br>
                     瀏覽人數: <span>\${data[itemabc]["itemView"]}</span><br>
                     <div>
-                  商品庫存: <span>\${data[itemabc]["itemStockQty"]}</span>
+                  商品庫存: <span class="itemstockqty">\${data[itemabc]["itemStockQty"]}</span>
                 </div>
                     </h3>
                     
@@ -914,7 +922,7 @@ System.out.println(list);
   
   
   //搜尋功能
- $(document).ready(function() {
+  $(document).ready(function() {
 $("#itemsearch").on("click", function(event) {
     event.preventDefault(); // 阻止表單提交默認行為
     var searchQuery = $("#q").val(); // 獲取搜索關鍵詞
@@ -925,66 +933,76 @@ $("#itemsearch").on("click", function(event) {
           action:"search"}, // 傳遞搜索參數
         dataType: "json",
         success: function(data) {
-            $("div#roworder").empty(); // 清空當前商品列表\
-            var itemsorthtml = "";
-            $.each(data, function(index, item) {
-                // 根據返回的數據構件商品HTML
-                //根據結構數據和HTML結構進行調整
-                itemsorthtml += `<div class="col-6 col-sm-3">
-                    <div class="product-default inner-quickview inner-icon">
-                    <figure>
-                    <a href="AsapShopProduct.jsp?itemNo=\${item["itemNo"]}">
-                	<img
-					src="ItemInfoServlet?action=getImg&itemNo=\${item["itemNo"]}""
-					width="300" height="300" alt="product" />
-      </a>
-                        <div class="label-group">
-                            <span class="product-label label-sale">-50%</span>
-                        </div>
-                        <a href="ProductQuickView.html" class="btn-quickview" title="快速查看">快速查看</a>
-                    </figure>
-                    <div class="product-details">
-                        <div class="category-wrap">
-                            <div class="category-list">
-                                <span>\${item.itemName}</span>, <span>\${item.itemTypeVO.itemTypeName}</span>, <span>\${item.itemStatVO.itemStatText}</span>
-                                </div>
-                                <a href="AsapShopWish.jsp" class="btn-icon-wish"
-                                  title="加入收藏"><i class="icon-heart"></i></a>
-                              </div>
-                        <h3 class="product-title">
-                            <span>\${item.itemName}</span><br>
-                            瀏覽人數: <span>\${item.itemView}</span><br>
-                            商品庫存: <span>\${item.itemStockQty}</span>
-                        </h3>
+        	state.querySet = data;
+            var paginationData = pagination(state.querySet, state.page, state.rows);
+            console.log(paginationData);
+            getPosts(paginationData);
+            pageButtons(paginationData.pages);
+
+			}
+		})
+	})
+})
+//             $("div#roworder").empty(); // 清空當前商品列表
+//             var itemsorthtml = "";
+//             $.each(data, function(index, item) {
+//                 // 根據返回的數據構件商品HTML
+//                 //根據結構數據和HTML結構進行調整
+//                 itemsorthtml += `<div class="col-6 col-sm-3">
+//                     <div class="product-default inner-quickview inner-icon">
+//                     <figure>
+//                     <a href="AsapShopProduct.jsp?itemNo=\${item["itemNo"]}">
+//                 	<img
+// 					src="ItemInfoServlet?action=getImg&itemNo=\${item["itemNo"]}""
+// 					width="300" height="300" alt="product" />
+//       </a>
+//                         <div class="label-group">
+//                             <span class="product-label label-sale">-50%</span>
+//                         </div>
+//                         <a href="ProductQuickView.html" class="btn-quickview" title="快速查看">快速查看</a>
+//                     </figure>
+//                     <div class="product-details">
+//                         <div class="category-wrap">
+//                             <div class="category-list">
+//                                 <span>\${item.itemName}</span>, <span>\${item.itemTypeVO.itemTypeName}</span>, <span>\${item.itemStatVO.itemStatText}</span>
+//                                 </div>
+//                                 <a href="AsapShopWish.jsp" class="btn-icon-wish"
+//                                   title="加入收藏"><i class="icon-heart"></i></a>
+//                               </div>
+//                         <h3 class="product-title">
+//                             <span>\${item.itemName}</span><br>
+//                             瀏覽人數: <span>\${item.itemView}</span><br>
+//                             商品庫存: <span class="itemstockqty">\${item.itemStockQty}</span>
+//                         </h3>
                         
-                        <div class="product-buttons" style="display: flex; align-items: center;">
-                        <input type="number" class="product-quantity" placeholder="請選擇數量" min="1"
-                        max="\${item.itemStockQty}"
-                        style="width: 100px; margin-right: 20px;" />
-                        <a href="javascript:;" class="btn-icon-cart" title="加入購物車"
-                        data-itemno="\${item.itemNo}">
-                        <i class="icon-shopping-cart"></i> 加入購物車</a>
-                    </div>
-                    <div style="margin-top: 1px; margin-left: 138px;">
-                        <a href="AsapCart.jsp" class="btn-view-cart">查看購物車</a>
-                    </div>
-                    <div class="price-box">`;
+//                         <div class="product-buttons" style="display: flex; align-items: center;">
+//                         <input type="number" class="product-quantity" placeholder="請選擇數量" min="1"
+//                         max="\${item.itemStockQty}"
+//                         style="width: 100px; margin-right: 20px;" />
+//                         <a href="javascript:;" class="btn-icon-cart" title="加入購物車"
+//                         data-itemno="\${item.itemNo}">
+//                         <i class="icon-shopping-cart"></i> 加入購物車</a>
+//                     </div>
+//                     <div style="margin-top: 1px; margin-left: 138px;">
+//                         <a href="AsapCart.jsp" class="btn-view-cart">查看購物車</a>
+//                     </div>
+//                     <div class="price-box">`;
 
-                if (item.preItemPrice != 0) {
-                    itemsorthtml += `<del class="old-price">\${item.preItemPrice}</del>`;
-                }
+//                 if (item.preItemPrice != 0) {
+//                     itemsorthtml += `<del class="old-price">\${item.preItemPrice}</del>`;
+//                 }
 
-                itemsorthtml += `<span class="product-price">\${item.itemPrice}</span>
-                    </div>
-                    </div>
-                </div>
-            </div>`;
-            });
-            $("div#roworder").html(itemsorthtml); // 更新页面内容
-        }
-    });
-});
-});
+//                 itemsorthtml += `<span class="product-price">\${item.itemPrice}</span>
+//                     </div>
+//                     </div>
+//                 </div>
+//             </div>`;
+//             });
+//             $("div#roworder").html(itemsorthtml); // 更新頁面內容
+//         }
+//     });
+// });
+// });
   
   
 
@@ -1129,7 +1147,6 @@ $(document).ready(function() {
                                    <span>\${item["itemTypeVO"]["itemTypeName"]}</span>、
                                    <span>\${item["itemStatVO"]["itemStatText"]}</span>
                                </div>
-                               <a href="AsapShopWish.jsp" class="btn-icon-wish" title="加入收藏"><i class="icon-heart"></i></a>
                            </div>
                            <h3 class="product-title">
                            商品名稱: <span>\${item["itemName"]}</span><br>
@@ -1229,28 +1246,34 @@ $(document).ready(function() {
 //           }});
 //       }
 
-
 $(document).on("click", ".btn-icon-cart", function() {
     var itemNo = $(this).data("itemno");
-    var quantity = $(this).siblings(".product-quantity").val(); // 获取相邻的数量输入框的值
-    var mbrNo = "M1"; // 用你的会员号替换YOUR_MEMBER_NUMBER
+    var productCard = $(this).closest('.product-default'); // 定位到商品卡片
+    var max = productCard.find("span.itemstockqty").text(); // 從商品卡片中獲取庫存量
+    var quantity = $(this).siblings(".product-quantity").val(); // 獲取數量框的值
+    var mbrNo = "M1"; // 會員號碼
+    console.log(max);
 
     $.ajax({
         url: "ShoppingCartServlet",
         type: "POST",
         data: {
             itemNo: itemNo,
+            max:max,
             itemqty: quantity,
-            mbrNo: mbrNo, // 将会员号作为参数传递给后端
+            mbrNo: mbrNo, //將會員號作為參數傳入後端
             action: "addcart"
         },
+        dataType: "json",
         success: function(response) {
-            console.log("Response:", response);
-        },
-        error: function(error) {
-            console.log("Error:", error);
+        	if(response.status==-2){
+        		alert("超過可購買上限!")
+        	} else{ 
+        		alert("加入成功")
+        		}
+        	}
         }
-    });
+    )
 });
   
 //发起 AJAX 请求，获取特定商品类别的数量
@@ -1306,7 +1329,134 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePriceRangeDisplay();
 });
   
+ //首頁分頁
+$.ajax({
+        url: "${pageContext.request.contextPath}/shop/ItemInfoServlet",
+        data: { "action": "page" },
+        type: "POST",
+        success: function(data) {
+          console.log(data);
+          state.querySet = data;
+          var paginationData = pagination(state.querySet, state.page, state.rows);
+          console.log(paginationData);
+          getPosts(paginationData);
+          pageButtons(paginationData.pages);
+        }
+      });
   
+  
+ //功能分頁
+var state = {
+		  'querySet': [],
+		  'page': 1,
+		  'rows': 16,
+		  'window': 3,
+		};
+
+	function getPosts(paginationData) {
+		 var item_html = "";
+	  paginationData.querySet.forEach(function(item) {
+		 
+		  item_html += `<div class="col-6 col-sm-3">
+        <div class="product-default inner-quickview inner-icon">
+        <figure>
+        <a href="AsapShopProduct.jsp?itemNo=\${item["itemNo"]}">
+    	<img
+			src="ItemInfoServlet?action=getImg&itemNo=\${item["itemNo"]}""
+			width="300" height="300" alt="product" />
+</a>
+            <div class="label-group">
+                <span class="product-label label-sale">-50%</span>
+            </div>
+            <a href="ProductQuickView.html" class="btn-quickview" title="快速查看">快速查看</a>
+        </figure>
+        <div class="product-details">
+            <div class="category-wrap">
+                <div class="category-list">
+                    <span>\${item.itemName}</span>, <span>\${item.itemTypeVO.itemTypeName}</span>, <span>\${item.itemStatVO.itemStatText}</span>
+                    </div>
+                    <a href="AsapShopWish.jsp" class="btn-icon-wish"
+                      title="加入收藏"><i class="icon-heart"></i></a>
+                  </div>
+            <h3 class="product-title">
+                <span>\${item.itemName}</span><br>
+                瀏覽人數: <span>\${item.itemView}</span><br>
+                商品庫存: <span class="itemstockqty">\${item.itemStockQty}</span>
+            </h3>
+            
+            <div class="product-buttons" style="display: flex; align-items: center;">
+            <input type="number" class="product-quantity" placeholder="請選擇數量" min="1"
+            max="\${item.itemStockQty}"
+            style="width: 100px; margin-right: 20px;" />
+            <a href="javascript:;" class="btn-icon-cart" title="加入購物車"
+            data-itemno="\${item.itemNo}">
+            <i class="icon-shopping-cart"></i> 加入購物車</a>
+        </div>
+        <div style="margin-top: 1px; margin-left: 138px;">
+            <a href="AsapCart.jsp" class="btn-view-cart">查看購物車</a>
+        </div>
+        <div class="price-box">`;
+
+    if (item.preItemPrice != 0) {
+    	item_html += `<del class="old-price">\${item.preItemPrice}</del>`;
+    }
+
+    item_html += `<span class="product-price">\${item.itemPrice}</span>
+        </div>
+        </div>
+    </div>
+</div>`;
+	     ;
+	  });
+	  $("div#roworder").html(item_html);
+	}
+
+	function pagination(querySet, page, rows) {
+	  var trimStart = (page - 1) * rows;
+	  var trimEnd = trimStart + rows;
+	  var trimmedData = querySet.slice(trimStart, trimEnd);
+	  var pages = Math.ceil(querySet.length / rows);
+	  return {
+	    'querySet': trimmedData,
+	    'pages': pages
+	  };
+	}
+
+	function pageButtons(pages) {
+	  var wrapper = document.getElementById('pagination-wrapper');
+	  wrapper.innerHTML = '';
+	  var maxLeft = state.page - Math.floor(state.window / 2);
+	  var maxRight = state.page + Math.floor(state.window / 2);
+	  if (maxLeft < 1) {
+	    maxLeft = 1;
+	    maxRight = state.window;
+	  }
+	  if (maxRight > pages) {
+	    maxLeft = pages - (state.window - 1);
+
+	    if (maxLeft < 1) {
+	      maxLeft = 1;
+	    }
+	    maxRight = pages;
+	  }
+	  if (state.page != 1) {
+	    wrapper.innerHTML += `<button value="1" class="page btn btn-sm btn-info" style="background-color:#007bff; border:0px">&#171; 第一頁</button>`;
+	  }
+
+	  for (var page = maxLeft; page <= maxRight; page++) {
+	    wrapper.innerHTML += `<button value="\${page}" class="page btn btn-sm btn-info" style="background-color:#007bff; border:0px">\${page}</button>`;
+	  }
+	  if (state.page != pages) {
+	    wrapper.innerHTML += `<button value="\${pages}" class="page btn btn-sm btn-info" style="background-color:#007bff; border:0px">最末頁 &#187;</button>`;
+	  }
+	  $('.page').on('click', function() {
+	    $('div#roworder').empty();
+	    state.page = Number($(this).val());
+	    var paginationData = pagination(state.querySet, state.page, state.rows);
+	    getPosts(paginationData);
+	    pageButtons(paginationData.pages);
+	  });
+	}
   
   
 </script>

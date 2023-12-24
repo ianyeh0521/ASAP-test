@@ -317,24 +317,27 @@ System.out.println(list);
 		$('.btn-remove').on('click', function(e) {
 		    e.preventDefault();
 		    var cartId = $(this).closest('tr').data('cartid'); // 獲取購物車項目 ID
-
+		    let r = confirm("確認刪除此項商品?");
+			console.log(cartId);
 		    // 發送 AJAX 請求到後端
+		    if (r){
 		    $.ajax({
-		        url: '/shop/ShoppingCartServlet',
+		        url: '${pageContext.request.contextPath}/shop/ShoppingCartServlet',
 		        method: 'POST',
 		        data: {
 		            action: 'remove',
 		            shoppingCartNo: cartId // 購物車項目 ID
 		        },
 		        success: function(response) {
-		            // 處理響應
-		            console.log(response);
+		        	alert("刪除成功")
+		           document.location.reload()
 		        },
 		        error: function(xhr, status, error) {
 		            // 處理錯誤
 		            console.error(error);
 		        }
 		    });
+		    }
 		});
 		
 		

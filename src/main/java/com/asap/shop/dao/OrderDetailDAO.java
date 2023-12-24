@@ -88,7 +88,7 @@ public class OrderDetailDAO implements OrderDetailDAO_interface {
 		try {
 			// getSession().beginTransaction();
 			Query<OrderDetailVO> query = getSession().createQuery("FROM OrderDetailVO WHERE  mbrNo = : mbrNo");
-			query.setParameter(" mbrNo", mbrNo);
+			query.setParameter("mbrNo", mbrNo);
 			List<OrderDetailVO> list = query.list();
 			return list;
 		} catch (Exception e) {
