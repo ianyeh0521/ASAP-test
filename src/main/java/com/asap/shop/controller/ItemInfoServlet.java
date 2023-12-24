@@ -72,6 +72,9 @@ public class ItemInfoServlet extends HttpServlet {
 		case "getImg":
 			getImgByItemNo(req, res);
 			break;
+		case "page":
+			getpage(req, res);
+			break;
 
 		}
 
@@ -79,6 +82,9 @@ public class ItemInfoServlet extends HttpServlet {
 //    		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 //    		dispatcher.forward(req, res);
 	}
+
+
+
 
 	private void increaseViewItem(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		Integer itemId = Integer.valueOf(req.getParameter("itemNo"));
@@ -210,23 +216,32 @@ public class ItemInfoServlet extends HttpServlet {
 	}
 
 	private void getImgByItemNo(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		 try {
+
 		        String itemNoStr = req.getParameter("itemNo");
 		        Integer itemNo = Integer.parseInt(itemNoStr);
 
 		        List<ItemImgVO> itemImgList = itemImgService.findByItemNo(itemNo); 
-
-	        if (!itemImgList.isEmpty() && itemImgList.get(0).getItemImg() != null) {
-	            byte[] imgData = itemImgList.get(0).getItemImg();
-	            res.setContentType("image/jpg"); // 根據照片格式進行調整
-	            res.getOutputStream().write(imgData);
-	        } else {
-	        }
-	    } catch (NumberFormatException e) {
-	        e.printStackTrace();    
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		        for(ItemImgVO item: itemImgList) {
+		        	if(item.getItemImgfront()) {
+			            byte[] imgData = item.getItemImg();
+			            
+			            res.setContentType("image/jpg"); // 根據照片格式進行調整
+			            res.getOutputStream().write(imgData);
+		        	}
+		        }
+		 
+	}
+	
+	
+	private void getpage(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		List<ItemInfoVO> list = itemInfoService.getAll();
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		res.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = res.getWriter();
+		out.write(json);
+		out.close();
+		
 	}
 
 

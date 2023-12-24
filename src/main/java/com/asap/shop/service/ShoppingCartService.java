@@ -21,15 +21,23 @@ public class ShoppingCartService implements ShoppingCartService_interface {
 		ShoppingCartVO vo = dao.findByMemberAndItemNo(mbrNo, itemInfoVO.getItemNo());
 		if (vo != null) {
 			// 如果有存在相同的記錄，數量加一
-			vo.setItemShopQty(vo.getItemShopQty() + itemShopQty);
-			int result = dao.update(vo);
-			return result;
+			Integer max = itemInfoVO.getItemStockQty();
+			System.out.println("max is "+max);
+			Integer qty = vo.getItemShopQty() + itemShopQty;
+			if(max>qty) {
+				vo.setItemShopQty(qty);
+				int result = dao.update(vo);
+				return result;
+			} else {
+				return -2;
+			}
+
 		} else {
 			ShoppingCartVO newVo = new ShoppingCartVO();
 			newVo.setMbrNo(mbrNo);
 			newVo.setItemInfoVO(itemInfoVO);
 			newVo.setItemShopQty(itemShopQty);
-
+			
 			return dao.insert(newVo);
 		}
 

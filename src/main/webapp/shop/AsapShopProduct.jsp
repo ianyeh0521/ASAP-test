@@ -1,10 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.List"%>
+<%@ page import="java.util.*"%>
 <%@ page import="com.asap.shop.entity.ItemInfoVO"%>
 <%@ page import="com.asap.shop.service.ItemInfoService_interface"%>
 <%@ page import="com.asap.shop.service.ItemInfoService"%>
+<%@ page import="com.asap.shop.entity.OrderDetailVO"%>
+<%@ page import="com.asap.shop.service.OrderDetailService_interface"%>
+<%@ page import="com.asap.shop.service.OrderDetailService"%>
+<%@ page import="com.asap.shop.entity.ItemImgVO"%>
+<%@ page import="com.asap.shop.service.ItemImgService_interface"%>
+<%@ page import="com.asap.shop.service.ItemImgService"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.util.Date"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -17,6 +23,18 @@ ItemInfoService_interface ItemSvc = new ItemInfoService();
 ItemInfoVO list = ItemSvc.findByItemNo(itemInfo);
 pageContext.setAttribute("list", list);
 System.out.println(list);
+
+OrderDetailService_interface OrderDetailSvc = new OrderDetailService();
+List<OrderDetailVO> orderdetail= OrderDetailSvc.findByMbrNo("M1");
+pageContext.setAttribute("cmtlist", orderdetail);
+
+ItemImgService_interface itemImgSvc = new ItemImgService();
+List<String> itemImgBase64 = new ArrayList<>();
+List<ItemImgVO> itemImgVOList = itemImgSvc.findByItemNo(itemInfo);
+for (ItemImgVO itemImgVO : itemImgVOList) {
+	itemImgBase64.add(Base64.getEncoder().encodeToString(itemImgVO.getItemImg()));
+}
+pageContext.setAttribute("itemimgbase64", itemImgBase64);
 
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 String formattedDate = "";
@@ -160,16 +178,16 @@ if (list.getItemAddTime() != null) {
 
 								<div
 									class="product-single-carousel owl-carousel owl-theme show-nav-hover">
-									<div class="product-item">
-										<img class="product-single-image"
-											src="ItemInfoServlet?action=getImg&itemNo=${list.itemNo}"
-											data-zoom-image="ItemInfoServlet?action=getImg&itemNo=${list.itemNo}"
-											width="468" height="468" alt="product" />
 
+									<c:forEach var="img" items="${itemimgbase64}">
+										<div class="product-item">
+											<img class="product-single-image"
+												src="data:image/jpg;base64,${img}"
+												data-zoom-image="data:image/jpg;base64,${img}" width="468"
+												height="468" alt="圖片" />
+										</div>
+									</c:forEach>
 
-
-
-									</div>
 								</div>
 								<!-- End .product-single-carousel -->
 								<span class="prod-full-screen"> <i class="icon-plus"></i>
@@ -178,10 +196,12 @@ if (list.getItemAddTime() != null) {
 
 							<div class="prod-thumbnail owl-dots">
 
-								<div class="owl-dot">
-									<img src="ItemInfoServlet?action=getImg&itemNo=${list.itemNo}"
-										width="110" height="110" alt="product-thumbnail" />
-								</div>
+								<c:forEach var="img" items="${itemimgbase64}">
+									<div class="owl-dot">
+										<img src="data:image/jpg;base64,${img}" width="110"
+											height="110" alt="圖片" />
+									</div>
+								</c:forEach>
 
 							</div>
 						</div>
@@ -193,14 +213,14 @@ if (list.getItemAddTime() != null) {
 
 
 							<div class="ratings-container">
-								<div class="product-ratings">
-									<span class="ratings" style="width: 80%"></span>
-									<!-- End .ratings -->
-									<span class="tooltiptext tooltip-top"></span>
-								</div>
-								<!-- End .product-ratings -->
+								<!-- 								<div class="product-ratings"> -->
+								<!-- 									<span class="ratings" style="width: 80%"></span> -->
+								<!-- 									End .ratings -->
+								<!-- 									<span class="tooltiptext tooltip-top"></span> -->
+								<!-- 								</div> -->
+								<!-- 								End .product-ratings -->
 
-								<a href="#" class="rating-link">( 1 則評論 )</a>
+								<!-- 								<a href="#" class="rating-link">( 1 則評論 )</a> -->
 							</div>
 							<!-- End .ratings-container -->
 
@@ -230,17 +250,17 @@ if (list.getItemAddTime() != null) {
 								</li>
 								<fmt:formatDate value="${list.itemAddTime}" pattern="yyyy-MM-dd"
 									var="formattedDate" />
-								<li>上架時間: <strong><a class="product-category">${formattedDate}</a></strong></li>
-								<li>商品狀態: <strong> <a class="product-category">${list.itemStatVO.itemStatText}</a>
+								<li>上架時間: <strong><a class="product-addtime">${formattedDate}</a></strong></li>
+								<li>商品狀態: <strong> <a class="product-stat">${list.itemStatVO.itemStatText}</a>
 								</strong>
 								</li>
-								<li>庫存數量: <strong> <a class="product-category">${list.itemStockQty}</a>
+								<li>庫存數量: <strong> <a class="product-qty">${list.itemStockQty}</a>
 								</strong>
 								</li>
-								<li>賣家: <strong> <a class="product-category">${list.mbrNo}</a>
+								<li>賣家: <strong> <a class="product-seller">${list.mbrNo}</a>
 								</strong>
 								</li>
-								<li>瀏覽人數: <strong> <a class="product-category">${list.itemView}</a>
+								<li>瀏覽人數: <strong> <a class="product-cview">${list.itemView}</a>
 								</strong>
 								</li>
 
@@ -265,18 +285,7 @@ if (list.getItemAddTime() != null) {
 							<div class="product-single-share mb-2">
 								<label class="sr-only">Share:</label>
 
-								<div class="social-icons mr-2">
-									<a href="#" class="social-icon social-facebook icon-facebook"
-										target="_blank" title="Facebook"></a> <a href="#"
-										class="social-icon social-twitter icon-twitter"
-										target="_blank" title="Twitter"></a> <a href="#"
-										class="social-icon social-linkedin fab fa-linkedin-in"
-										target="_blank" title="Linkedin"></a> <a href="#"
-										class="social-icon social-gplus fab fa-google-plus-g"
-										target="_blank" title="Google +"></a> <a href="#"
-										class="social-icon social-mail icon-mail-alt" target="_blank"
-										title="Mail"></a>
-								</div>
+								<div class="social-icons mr-2"></div>
 								<!-- End .social-icons -->
 
 								<span class="addwish"><a href="#"
@@ -314,16 +323,7 @@ if (list.getItemAddTime() != null) {
 						<div class="tab-pane fade show active" id="product-desc-content"
 							role="tabpanel" aria-labelledby="product-tab-desc">
 							<div class="product-desc-content">
-								<p>
-									這是一個精選的二手足球，它承載著無數場激烈比賽的回憶，每一個凹陷和磨損都是一個故事的痕跡。這個足球曾在綠茵場上跟隨著球員的腳步，感受過壓力和速度的交織。
-
-									雖然它可能不再是全新的，但這些瑕疵卻是經歷過的象徵，讓這顆足球充滿了特殊的價值。它可能曾是一場重要比賽的主角，也可能是孩子們在街頭踢球時的陪伴。這顆球可能見證過勝利的歡呼，也承受過失敗的沉重。
-
-									儘管它已經歷過時光的考驗，但它的品質依然可靠。皮革表面可能有些微磨損，但仍然保持著足球應有的彈性和觸感。這顆球不僅是一個運動器材，更是一個充滿情感和回憶的文物。
-
-									如果你是一位熱愛足球的收藏家，這顆二手足球將會是你收藏品中不可或缺的一部分。它帶著過去的光榮，等待著新主人為它注入新的故事和榮譽。足球場上的歷史，現在就在你手中。
-
-								</p>
+								<p>${list.itemText}</p>
 								<ul>
 									<li>商品狀態: <strong> <a class="product-category">${list.itemStatVO.itemStatText}</a>
 									</strong>
@@ -344,6 +344,7 @@ if (list.getItemAddTime() != null) {
 									Shoes</h3>
 
 								<div class="comment-list">
+								<c:forEach var="OrderDetailVO" items="${cmtlist}">
 									<div class="comments">
 										<figure class="img-thumbnail">
 											<img src="../assets/images/blog/author.jpg" alt="author"
@@ -363,8 +364,7 @@ if (list.getItemAddTime() != null) {
 													<!-- End .product-ratings -->
 												</div>
 
-												<span class="comment-by"> <strong>Joe Doe</strong> –
-													April 12, 2018
+												<span class="comment-by"> <strong>Joe Doe</strong> ${OrderDetailVO.cmtTime}
 												</span>
 											</div>
 
@@ -373,7 +373,9 @@ if (list.getItemAddTime() != null) {
 											</div>
 										</div>
 									</div>
+									</c:forEach>
 								</div>
+								
 
 								<div class="divider"></div>
 
@@ -455,6 +457,7 @@ if (list.getItemAddTime() != null) {
 
 		$(".add-cart").on("click", function() {
 			var addCart = $(".product-title").attr("data-itemno");
+			var max = $(".product-qty").text();
 			var cartQty = $(".horizontal-quantity").val();
 			var mbrNo = "M1";
 
@@ -464,13 +467,19 @@ if (list.getItemAddTime() != null) {
 				type : "POST",
 				data : {
 					itemNo : addCart,
+					max : max,
 					itemqty : cartQty,
 					mbrNo : mbrNo,
 					"action" : "addcart"
 				},
 				//         	            dataType: "json",
 				success : function(data) {
-					console.log("aaa");
+					if (data.status == -2) {
+						alert("超過可購買上限!")
+					} else {
+						alert("加入成功")
+					}
+
 				}
 
 			})

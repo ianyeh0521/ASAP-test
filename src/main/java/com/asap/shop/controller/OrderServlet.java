@@ -27,10 +27,12 @@ import com.asap.shop.service.ShoppingCartService;
 public class OrderServlet extends HttpServlet {
 
 	private OrderService_interface orderService;
+	private ItemInfoService_interface itemInfoSvc;
 
 	@Override
 	public void init() throws ServletException {
 		orderService = new OrderService();
+		itemInfoSvc = new ItemInfoService();
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -38,11 +40,11 @@ public class OrderServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-
+		String forwardPath = "";
 		switch (action) {
 		case "ordercreate":
-			insert(req, res);
-
+			forwardPath = insert(req, res);
+			res.sendRedirect(forwardPath);
 			break;
 		case "deleteOrder":
 			deleteOrder(req, res);
@@ -59,7 +61,7 @@ public class OrderServlet extends HttpServlet {
 		orderVO.setOrderStat(4);
 		orderService.update(orderVO);
 		OrderDetailService_interface orderDetail= new OrderDetailService();
-		ItemInfoService_interface itemInfoSvc = new ItemInfoService();
+
 		List <OrderDetailVO> orderdetails = orderDetail.findByOrderNo(orderNo);
 		for(OrderDetailVO orderitem: orderdetails) {
 			Integer itemno= orderitem.getItemInfoVO().getItemNo();
@@ -72,7 +74,7 @@ public class OrderServlet extends HttpServlet {
 		
 	}
 
-	private void insert(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	private String insert(HttpServletRequest req, HttpServletResponse res) throws IOException {
 //			String mbrNo = req.getParameter("mbrNo"); 
 
 		Integer total = Integer.valueOf(req.getParameter("total"));
@@ -136,36 +138,21 @@ public class OrderServlet extends HttpServlet {
 				orderDetail.setMbrNo("M1");
 				orderDetail.setDelyStat(false);
 				
-				orderDetail.setItemInfoVO( itemInfoVO);
+				orderDetail.setItemInfoVO(itemInfoVO);
 				OrderDetailService_interface orderDetailSvc = new OrderDetailService();
 				orderDetailSvc.insert(orderDetail);
 				
-//				購買物庫存減少(update)
-//				 ItemInfoService_interface itemInfoSvc = new ItemInfoService();
-//				itemInfoSvc.setItemInfoQty(Integer.parseInt(product[2])); -數量
-//				Integer itemId = Integer.parseInt(product[0]);
-//		        Integer quantityPurchased = Integer.parseInt(product[2]);
-//
-//		        //獲取當前物品訊息
-//		        ItemInfoVO currentItemInfoVO  = itemInfoSvc.findByItemNo(itemId);
-//		        if (itemInfoVO != null) {
-//		            //計算新的庫存數量
-//		            Integer newStockQty = itemInfoVO.getItemStockQty() - quantityPurchased;
-//		            newStockQty = Math.max(newStockQty, 0); // 防止庫存數量變負數
-//
-//		            // 更新商品信息
-//		            itemInfoVO.setItemStockQty(newStockQty);
-//		            itemInfoSvc.update(itemInfoVO);
+				Integer sold = Integer.parseInt(product[2]);
+				ItemInfoVO itemInfo = itemInfoSvc.findByItemNo(Integer.parseInt(product[0]));
+				Integer itemstockqty = itemInfo.getItemStockQty();
+				Integer newStockQty = Math.max(itemstockqty-sold, 0);
+				itemInfo.setItemStockQty(newStockQty);
+				itemInfoSvc.update(itemInfo);
+				
 		        }
 		    }
+		return "/ASAP/shop/PendingOrder.jsp";
 		}
-
-
-
-//		    
-//		    res.setContentType("application/json");
-//		    res.setCharacterEncoding("UTF-8");
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
