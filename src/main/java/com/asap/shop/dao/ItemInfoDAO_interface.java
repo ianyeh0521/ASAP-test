@@ -51,7 +51,8 @@ public interface ItemInfoDAO_interface {
 	//找最高價
 	int getHighestPrice();
 	
+	public ItemInfoVO checkerFindByItemNo(Integer itemNo);
 	
-	
+	Integer checkerUpdate(ItemInfoVO itemInfo);
 
 }

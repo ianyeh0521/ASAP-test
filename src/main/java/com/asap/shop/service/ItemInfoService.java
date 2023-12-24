@@ -118,4 +118,15 @@ public class ItemInfoService implements ItemInfoService_interface {
 
 		return dao.getHighestPrice();
 	}
+
+	@Override
+	public ItemInfoVO checkerFindByItemNo(Integer itemNo) {
+		return dao.checkerFindByItemNo(itemNo);
+	}
+
+	@Override
+	public Integer checkerUpdate(ItemInfoVO itemInfo) {
+		// TODO Auto-generated method stub
+		return dao.checkerUpdate(itemInfo);
+	}
 }

@@ -27,6 +27,7 @@ public interface OrderDetailService_interface {
 
 	Integer getTotal();
 	
+	public List<OrderDetailVO> checkerFindByOrderNo(Integer orderNo);
 	
 
 }

@@ -63,4 +63,14 @@ public class OrderService implements OrderService_interface {
 		return dao.findUnPaid(mbrNo);
 	}
 
+	@Override
+	public List<OrderVO> checkUnpaid() {
+		return dao.checkUnpaid();
+	}
+
+	@Override
+	public Integer checkerUpdate(OrderVO entity) {
+		return dao.checkerUpdate(entity);
+	}
+
 }

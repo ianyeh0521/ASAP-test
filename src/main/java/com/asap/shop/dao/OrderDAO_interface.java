@@ -23,4 +23,8 @@ public interface OrderDAO_interface {
 	int getTotal();
 	
 	public List<OrderVO> findUnPaid(String mbrNo);
+	
+	public List<OrderVO> checkUnpaid();
+	
+	Integer checkerUpdate(OrderVO entity);
 }
