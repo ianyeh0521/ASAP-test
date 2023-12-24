@@ -10,27 +10,33 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.asap.group.entity.GrpJoinInfoVO" %>
 <%@ page import="com.asap.group.entity.SportTypeVO" %>
+<%@ page import="com.asap.group.service.SportTypeService" %>
+<%@ page import="com.asap.group.service.SportTypeService_interface" %>
 
 <%
+	
 	Boolean bIsSkip = (Boolean) request.getAttribute("Skip");
-	if(bIsSkip == null || !bIsSkip)
- 	{
+	if(bIsSkip == null || !bIsSkip){
+		// 發起人頁面搜尋框
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
 	 	List<GrpInfoVO> list = grpInfoSvc.getALL(); 
-	 	List<GrpInfoVO> grpVOTempList = new ArrayList<>();
+	 	List<GrpInfoVO> grpJoinVOTempList = new ArrayList<>();
 		String sActNo = "M1206202300001";
 		for (GrpInfoVO Vo : list) {
 			String OrgMbrNo = Vo.getOrgMbrNo();
 			
-			if(OrgMbrNo.equals(sActNo)) 
-			{
-				grpVOTempList.add(Vo);
+			if(OrgMbrNo.equals(sActNo)) {
+				grpJoinVOTempList.add(Vo);
 			}
 		}
-		list = grpVOTempList;
+		list = grpJoinVOTempList;
 	 	pageContext.setAttribute("grpVOList",list);
+	 	
+	 	SportTypeService grpSportSvc = new SportTypeService_interface();
+		List<SportTypeVO> strSportList = grpSportSvc.getALL();
+		pageContext.setAttribute("SportNameList", strSportList);
+	 	
  	}
- 
 %>
 
 <!DOCTYPE html>
@@ -176,16 +182,22 @@
 <main class="main">
 		<div class="page-header">
 			<div class="container d-flex flex-column align-items-center">
+				<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
+				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/group/mygroupchoose.jsp">我的揪團</a></li>
+				<li class="breadcrumb-item active" aria-current="page">我發起的揪團</li>
+				</ol>
 				<h1>我發起的揪團</h1>
 			</div>
 		</div>
 	<div class="container">
+	
 		<div class="row">
 			<nav class="toolbox-sticky-header"
 				data-sticky-options="{'mobile': true}">
 				<div class="toolbox-right">
 					<div class="search_bar d-flex justify-content-between align-items-center">
-						<button class="Btn_mygroup" id="mygroup_Btn" style=width:68px;>我的揪團</button>
+<!-- 						<button class="Btn_mygroup" id="mygroup_Btn" style=width:68px;>我的揪團</button> -->
 						
 						<form id="search_formid" class="search_c" action="<%=request.getContextPath()%>/Grpinfo.do" method="post">
 						<input type="text" name="grpInfoKeyword" id="search" class="search" placeholder="搜尋" value="${param.grpInfoKeyword}" > 
@@ -216,14 +228,56 @@
 								    <input type="hidden" name="action" value="detailsinfo">
 									</FORM>
 								</figure>
+								
+								<!-- 發起人icon -->
+									<c:if test="${grpInfoVO.orgMbrNo eq 'M1206202300001'}">
+										<div class="orgmbr_grp" style="background-color:#003D79 ; color:white;">
+										<i class="fas fa-flag" id="fas_fa_flag" style="color:white;"></i>我發起的揪團</div>
+									</c:if>
+								
+								
 								<div class="product-details">
 
-									<h3 class="product-title">
+									<h3 class="product-title" style="font-size:24px; margin-top:5px;">
 										<a>${grpInfoVO.grpName}</a>
 									</h3>
-									<div class="ratings-container">
-										<c:set var="findonesportType" value="${findonesportType}" />
-										<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>${grpInfoVO.sportTypeNo}</a><br> 
+									<div class="ratings-container" style="margin-top:5px;">
+										<c:if test="${grpInfoVO.sportTypeNo eq '1'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>游泳</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '2'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>棒球</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '3'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>網球</a><br> 
+										</c:if>						
+										<c:if test="${grpInfoVO.sportTypeNo eq '4'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>手球</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '5'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>藍球</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '6'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>排球</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '7'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>桌球</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '8'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>羽球</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '9'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>跑步</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '10'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>自行車</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '11'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>足球</a><br> 
+										</c:if>
+										<c:if test="${grpInfoVO.sportTypeNo eq '12'}">
+											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>高爾夫</a><br> 
+										</c:if>
 										<a><i class="fas fa-thumbtack"></i> 活動日期：</a><fmt:formatDate value="${grpInfoVO.grpDate}" pattern="yyyy-MM-dd" var="formattedGrpDate" />
 										<a>${formattedGrpDate}</a>
 										<br>
@@ -236,19 +290,14 @@
 									<!-- End .product-ratings -->
 								</div>
 								<!-- End .product-container -->
-									<div class="category-wrap">
-									<c:if test="${empty partiMbrNoCount}">
-								    <a class="btn-icon-wish" style="font-size: 12px; color: red;">目前參與人數：1/${grpInfoVO.grpPplLimit}</a>
-									</c:if>
-									<c:if test="${not empty partiMbrNoCount}">
-								    <a class="btn-icon-wish" style="font-size: 12px; color: red;">目前參與人數：${partiMbrNoCount}/${grpInfoVO.grpPplLimit}</a>
-									</c:if>
-									</div>
-		<%-- 						<FORM METHOD="post"  class="Btn_allgrpJoin" ACTION="<%=request.getContextPath()%>/Grpinfo.do" style="margin-bottom: 0px;"> --%>
-		<!-- 						    <input type="submit" value="報名參加" style="width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;"> -->
-		<%-- 						    <input type="hidden" name="#" value="${grpInfoVO.grpNo}"> --%>
-		<!-- 						    <input type="hidden" name="action" value="entergrpno"> -->
-		<!-- 						</FORM> -->
+<!-- 									<div class="category-wrap"> -->
+<%-- 									<c:if test="${empty partiMbrNoCount}"> --%>
+<%-- 								    <a class="btn-icon-wish" style="font-size: 12px; color: red;">目前參與人數：1/${grpInfoVO.grpPplLimit}</a> --%>
+<%-- 									</c:if> --%>
+<%-- 									<c:if test="${not empty partiMbrNoCount}"> --%>
+<%-- 								    <a class="btn-icon-wish" style="font-size: 12px; color: red;">目前參與人數：${partiMbrNoCount}/${grpInfoVO.grpPplLimit}</a> --%>
+<%-- 									</c:if> --%>
+<!-- 									</div> -->
 						
 							</div> 
 							<!-- End .product-details -->
@@ -256,74 +305,6 @@
 				<!-- End .col-6_col-sm-4 -->
 					</c:if>
 				</c:forEach>
-				
-<!-- 				活動列表 -->
-<!-- 				<div class="col-6_col-sm-4"> -->
-<!-- 					<div class="product-default inner-quickview inner-icon"> -->
-<!-- 						<figure class="img-effect"> -->
-<!-- 							<a href="#"> <img src="#" -->
-<!-- 								style="width: 263.533px; height: 263.533px;" alt="無圖片顯示" /> -->
-<!-- 							</a> -->
-<!-- 							<a href="#" class="btn-quickview" title="Quick View">詳細資訊</a> -->
-<!-- 						</figure> -->
-<!-- 						<div class="product-details"> -->
-<!-- 							<div class="category-wrap"> -->
-<!-- 								<a href="#" title="Wishlist" class="btn-icon-wish">2/6</a> -->
-<!-- 							</div> -->
-<!-- 							<h3 class="product-title"> -->
-<!-- 								<a>籃球三對三</a> -->
-<!-- 							</h3> -->
-<!-- 							<div class="ratings-container"> -->
-<!-- 								<a><i class="fas fa-thumbtack"></i> 活動類別：籃球</a> <br> <a><i -->
-<!-- 									class="fas fa-thumbtack"></i> 活動日期：2023/10/16(日)</a> <br> <a><i -->
-<!-- 									class="fas fa-thumbtack"></i> 活動時間：下午13:00至15:00</a> <br> <a><i -->
-<!-- 									class="fas fa-thumbtack"></i> 活動地點：台北體育館</a> -->
-<!-- 							</div> -->
-<!-- <!-- 							End .product-ratings --> 
-<!-- 						</div> -->
-<!-- <!-- 						End .product-container --> 
-<!-- 						<p><input type="submit" class="Btn_allgrpXJoin" value="退出揪團"></p>
-						          <input type="hidden" name="action" value="compositeQuery">
-<!-- 					</div> -->
-<!-- <!-- 					End .product-details --> 
-<!-- 				</div> -->
-<!-- <!-- 				End .col-6_col-sm-4 --> 
-<!-- 				<div class="col-6_col-sm-4"> -->
-
-<!-- 					<div class="product-default inner-quickview inner-icon"> -->
-
-<!-- 						<figure class="img-effect"> -->
-<!-- 							<a href="#"> <img src="#" -->
-<!-- 								style="width: 263.533px; height: 263.533px;" alt="無圖片顯示" /> -->
-<!-- 							</a> -->
-<!-- 							<a href="#" class="btn-quickview" title="Quick View">詳細資訊</a> -->
-<!-- 						</figure> -->
-<!-- 						<div class="orgmbr_grp"> -->
-<!-- 							<i class="fas fa-flag" id="fas_fa_flag"></i>我創建的揪團 -->
-<!-- 						</div> -->
-<!-- 						<div class="product-details"> -->
-
-<!-- 							<div class="category-wrap"> -->
-
-<!-- 								<a href="#" title="Wishlist" class="btn-icon-wish">2/6</a> -->
-<!-- 							</div> -->
-<!-- 							<h3 class="product-title"> -->
-<!-- 								<a>籃球三對三</a> -->
-<!-- 							</h3> -->
-<!-- 							<div class="ratings-container"> -->
-<!-- 								<a><i class="fas fa-thumbtack"></i> 活動類別：籃球</a> <br> <a><i -->
-<!-- 									class="fas fa-thumbtack"></i> 活動日期：2023/10/16(日)</a> <br> <a><i -->
-<!-- 									class="fas fa-thumbtack"></i> 活動時間：下午13:00至15:00</a> <br> <a><i -->
-<!-- 									class="fas fa-thumbtack"></i> 活動地點：台北體育館</a> -->
-<!-- 							</div> -->
-<!-- <!-- 							End .product-ratings --> 
-<!-- 						</div> -->
-<!-- <!-- 						End .product-container --> 
-<!-- 					</div> -->
-<!-- <!-- 					End .product-details --> 
-<!-- 				</div> -->
-<!-- <!-- 				End .col-6_col-sm-4 --> 
-
 			</div>
 			<!-- End .row_products-group -->
 			<div class="toolbox toolbox-pagination">
@@ -334,11 +315,11 @@
 				<!-- End .toolbox-item -->
 				
 				<ul class="pagination toolbox-item">
-					<li class="page-item disabled"><a
-						class="page-link page-link-btn" href="#"><i
-							class="icon-angle-left"></i></a></li>
+					<li class="page-item disabled">
+					<a class="page-link page-link-btn" href="#">
+						<i class="icon-angle-left"></i></a></li>
 					<li class="page-item active"><a class="page-link" href="#">1
-							<span class="sr-only">(current)</span>
+						<span class="sr-only">(current)</span>
 					</a></li>
 					<li class="page-item"><a class="page-link" href="#">2</a></li>
 					<li class="page-item"><a class="page-link" href="#">3</a></li>
@@ -527,26 +508,24 @@
 
 	<div class="sticky-navbar">
 	<div class="sticky-info">
-    <a href="#"> <i class="icon-home"></i>Home </a>
-  </div>
-  <div class="sticky-info">
-    <a href="#" class=""> <i class="icon-edit"></i>Forum </a>
-  </div>
-  <div class="sticky-info">
-    <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a>
-  </div>
-  <div class="sticky-info">
-    <a href="#" class="">
-      <i class="icon-shopping-cart position-relative"> </i>Mall
-    </a>
-  </div>
-  <div class="sticky-info">
-    <a href="#" class=""> <i class="icon-user-2"></i>Account </a>
-  </div>
+   		 <a href="#"> <i class="icon-home"></i>Home </a>
+    </div>
+  	<div class="sticky-info">
+  	     <a href="#" class=""> <i class="icon-edit"></i>Forum </a>
+  	</div>
+  	<div class="sticky-info">
+    	 <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a>
+    </div>
+    <div class="sticky-info">
+    	 <a href="#" class="">
+         <i class="icon-shopping-cart position-relative"> </i>Mall</a>
+    </div>
+  	<div class="sticky-info">
+    	 <a href="#" class=""> <i class="icon-user-2"></i>Account </a>
+    </div>
 	</div>
-
-	<a id="scroll-top" href="#top" title="Top" role="button"><i
-		class="icon-angle-up"></i></a>
+		 <a id="scroll-top" href="#top" title="Top" role="button">
+	<i class="icon-angle-up"></i></a>
 
 	<!-- Plugins JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>

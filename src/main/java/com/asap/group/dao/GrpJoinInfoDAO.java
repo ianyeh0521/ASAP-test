@@ -37,7 +37,7 @@ public class GrpJoinInfoDAO implements GrpJoinInfoDAO_interface {
 			String hql = "UPDATE GrpJoinInfoVO SET GrpJoinStat = :newGrpJoinStat WHERE PartiMbrNo = :partiMbrNo AND GrpNo = :grpNo";
 			query = getSession().createQuery(hql);
 			query.setParameter("newGrpJoinStat", grpJoinInfo.getGrpJoinStat());
-			query.setParameter("partiMbrNo", "M1206202300002");
+			query.setParameter("partiMbrNo", grpJoinInfo.getPartiMbrNo());
 			query.setParameter("grpNo", grpJoinInfo.getGrpNo());
 
 			updatedEntities = query.executeUpdate();
@@ -90,18 +90,25 @@ public class GrpJoinInfoDAO implements GrpJoinInfoDAO_interface {
 	public List<GrpJoinInfoVO> getGrpJoinQuery(String column, String Keyword) {
 		String hqlQuery;
 		Query <GrpJoinInfoVO> query;
-		List<GrpJoinInfoVO> resultList = new ArrayList<>();
+		List<GrpJoinInfoVO> resultList = new ArrayList<>();	
 		try {
 			if (column == null || column.isEmpty() || Keyword == null || Keyword.isEmpty()) {
 				hqlQuery = "FROM GrpJoinInfoVO";
 				query = getSession().createQuery(hqlQuery, GrpJoinInfoVO.class);
 			} else {
-				hqlQuery = "FROM GrpJoinInfoVO WHERE " + column + "= :keyword ";
+				
+				hqlQuery = "FROM GrpJoinInfoVO WHERE " + column + "= :keyword ";				
 				query = getSession().createQuery(hqlQuery, GrpJoinInfoVO.class);
-				query.setParameter("keyword", Keyword);
+				if (column.equals("grpNo")) {
+					query.setParameter("keyword", Integer.parseInt(Keyword));
+				}
+				else {
+					query.setParameter("keyword", Keyword);
+				}
 			}
 			resultList = query.getResultList();
 		} catch (Exception e) {
+			System.out.println("column:" + column);
 			e.printStackTrace();
 		}
 		return resultList;

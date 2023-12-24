@@ -152,9 +152,6 @@
 			<div class="container d-flex flex-column align-items-center">
 				<nav aria-label="breadcrumb" class="breadcrumb-nav">
 					<div class="container">
-<!-- 						<ol class="breadcrumb"> -->
-<!-- 							<li class="breadcrumb-item active" aria-current="page">我的揪團</li> -->
-<!-- 						</ol> -->
 					</div>
 				</nav>
 				<h1>我的揪團</h1>
@@ -172,7 +169,7 @@
 
 								<div class="col-6 col-md-4">
 									<div class="feature-box text-center pb-4">
-										<a href="#"><i
+										<a href="${pageContext.request.contextPath}/group/myJoinGroup.jsp"><i
 											class="sicon-location-pin"></i></a>
 										<div class="feature-box-content">
 											<h3 style="border-radius: 8px;">我參加的揪團</h3>

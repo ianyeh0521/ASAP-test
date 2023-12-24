@@ -3,38 +3,67 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="java.util.*"%>
-<%@ page import="java.util.List" %>
 <%@ page import="com.asap.group.entity.GrpInfoVO" %>
 <%@ page import="com.asap.group.service.GrpInfoService" %>
 <%@ page import="com.asap.group.service.GrpInfoService_interface" %>
-<%@ page import="com.asap.group.entity.SportTypeVO" %>
-<%@ page import="com.asap.group.service.SportTypeService" %>
-<%@ page import="com.asap.group.service.SportTypeService_interface" %>
+<%@ page import="java.util.*"%>
+<%@ page import="java.util.List" %>
 <%@ page import="com.asap.group.entity.GrpJoinInfoVO" %>
 <%@ page import="com.asap.group.service.GrpJoinInfoService_interface" %>
 <%@ page import="com.asap.group.service.GrpJoinInfoService" %>
-<%@ page import="com.asap.member.dao.MemberDAO" %>
-<%@ page import="com.asap.member.service.MemberService" %>
-<%@ page import="com.asap.member.service.MemberService_interface" %>
-
+<%@ page import="com.asap.group.entity.SportTypeVO" %>
+<%@ page import="com.asap.group.service.SportTypeService" %>
+<%@ page import="com.asap.group.service.SportTypeService_interface" %>
 
 <%
 	Boolean bIsSkip = (Boolean) request.getAttribute("Skip");
 	if(bIsSkip == null || !bIsSkip){
-		// 揪團資訊List
+		
+// 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
+// 		GrpJoinInfoService grpJoinInfoSvc = new GrpJoinInfoService_interface();
+
+// 		List<GrpJoinInfoVO> list = grpJoinInfoSvc.getALL(); 
+// 	 	List<GrpInfoVO> grpJoinVOTempList = new ArrayList<>();
+		
+// 		String participantNo = "M1206202300003"; // 参与者编号
+
+		
+// // 		List<String> participantActivities = grpJoinInfoSvc.getgrpjoinserviceQuery(P, participantNo);
+
+// 		Integer grpNo = 0;
+// 		List<GrpInfoVO> participantActivityDetails = new ArrayList<>();
+// 		for (GrpInfoVO  Vo: grpJoinVOTempList) {
+// 		    GrpInfoVO activityDetail = grpInfoSvc.getGrpInfoVOBygrpNo(grpNo);
+		    
+// 		    if (activityDetail != null) {
+// 		        participantActivityDetails.add(activityDetail);
+// 		    }
+// 		}
+// 		list = grpVOTempList;
+// 	 	pageContext.setAttribute("grpVOList",list);
+
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
-	 	List<GrpInfoVO> grpVOList = grpInfoSvc.getALL(); 
-	 	pageContext.setAttribute("grpVOList",grpVOList);
-	 	// 運動種類List
+		GrpJoinInfoService grpJoinInfoSvc = new GrpJoinInfoService_interface();
+		
+		List<GrpJoinInfoVO> grpJoinVOList = grpJoinInfoSvc.getALL();
+		List<GrpInfoVO> GrpInfoVOList = new ArrayList<>();
+		String sActNo = "M1206202300003";
+		for (GrpJoinInfoVO JoinVo : grpJoinVOList) {
+			String PartiMbrNo = JoinVo.getPartiMbrNo();
+			//當參與人資訊裡面的參與人編號等於目前登入的帳號
+			//要抓揪團編號出來，再去查揪團資訊
+			if (PartiMbrNo.equals(sActNo) && JoinVo.getGrpJoinStat()) {
+				GrpInfoVO grpVODetail = grpInfoSvc.getGrpInfoVOBygrpNo(JoinVo.getGrpNo());
+				GrpInfoVOList.add(grpVODetail);
+			}
+		}
+		
+		pageContext.setAttribute("grpVOList", GrpInfoVOList);
+	 	
 	 	SportTypeService grpSportSvc = new SportTypeService_interface();
 		List<SportTypeVO> strSportList = grpSportSvc.getALL();
 		pageContext.setAttribute("SportNameList", strSportList);
-		// 參與人資訊List
-		GrpJoinInfoService grpJoinInfoSvc = new GrpJoinInfoService_interface();
-		List<GrpJoinInfoVO>grpJoinList = grpJoinInfoSvc.getALL();
-		pageContext.setAttribute("grpJoinList", grpJoinList);
-		
+	 	
  	}
 %>
 
@@ -51,8 +80,6 @@
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
 <meta name="author" content="SW-THEMES" />
-
-
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
@@ -82,32 +109,32 @@
 
 	<div class="page-wrapper">
 		<header class="header">
-		   <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}" style="
-              padding-top: 0;
-              padding-bottom: 0;
-              height: 75px;
-              background: rgb(255, 250, 85);
-              background: linear-gradient(
-              90deg,
-              rgba(255, 250, 85, 0.9081757703081232) 0%,
-              rgba(9, 34, 121, 0.8773634453781513) 35%,
-              rgba(0, 212, 255, 1) 100%
-           	  );
-	          position: relative; /* Set position to relative for the parent */
-	          display: flex;
-	          align-items: center;">
-         <div class="container" style="position: relative;">
+		    <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}" style="
+	            padding-top: 0;
+	            padding-bottom: 0;
+	            height: 75px;
+	            background: rgb(255, 250, 85);
+	            background: linear-gradient(
+	              90deg,
+	              rgba(255, 250, 85, 0.9081757703081232) 0%,
+	              rgba(9, 34, 121, 0.8773634453781513) 35%,
+	              rgba(0, 212, 255, 1) 100%
+	            );
+	              position: relative; /* Set position to relative for the parent */
+	              display: flex;
+	              align-items: center;">
+          <div class="container" style="position: relative;">
             <div class="header-left col-lg-2 w-auto pl-0"
               style="
-              position: absolute;
-              top: 50%; /* Move 50% from the top */
-              transform: translateY(-50%);
-              z-index: 999;
-              left: 20px; /* Adjust distance from the left */
+                position: absolute;
+                top: 50%; /* Move 50% from the top */
+                transform: translateY(-50%);
+                z-index: 999;
+                left: 20px; /* Adjust distance from the left */
               ">
-          <button class="mobile-menu-toggler text-primary mr-2" type="button">
-              <i class="fas fa-bars"></i>
-          </button>
+              <button class="mobile-menu-toggler text-primary mr-2" type="button">
+                <i class="fas fa-bars"></i>
+              </button>
               <a href="#" width="222" height="88">
                 <img src="${pageContext.request.contextPath}/newImg/logo2.png" style="max-width: 200px; height: auto; vertical-align: middle; border-style: none;">
               </a>
@@ -118,8 +145,10 @@
         </div>
         <!-- End .header-middle -->
 
-        <div class="header-bottom sticky-header d-none d-lg-block"
-          data-sticky-options="{'mobile': false}">
+        <div
+          class="header-bottom sticky-header d-none d-lg-block"
+          data-sticky-options="{'mobile': false}" 
+        >
           <div class="container">
             <nav class="main-nav w-100" >
               <ul class="menu" style="display: flex; justify-content: flex-end">
@@ -177,24 +206,30 @@
 		</header>
 		<!-- End .header -->
 	</div>
-	<main class="main">
+<main class="main">
 		<div class="page-header">
 			<div class="container d-flex flex-column align-items-center">
-				<h1>揪團</h1>
+				<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
+				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/group/mygroupchoose.jsp">我的揪團</a></li>
+				<li class="breadcrumb-item active" aria-current="page">我參加的揪團</li>
+				</ol>
+				<h1>我參加的揪團</h1>
 			</div>
 		</div>
 	<div class="container">
+	
 		<div class="row">
 			<nav class="toolbox-sticky-header"
 				data-sticky-options="{'mobile': true}">
 				<div class="toolbox-right">
 					<div class="search_bar d-flex justify-content-between align-items-center">
-						<a href="${pageContext.request.contextPath}/group/mygroupchoose.jsp" class="Btn_mygroup" id="mygroup_Btn" style="width:68px;margin-left: 5px;">我的揪團</a>
-						<a href="${pageContext.request.contextPath}/Grpinfo.do?action=creategroup&type=0" class="Btn_creategroup" id="creategroup_Btn" style="width:68px; margin-left: 5px;">發起揪團</a>
+<!-- 						<button class="Btn_mygroup" id="mygroup_Btn" style=width:68px;>我的揪團</button> -->
+						
 						<form id="search_formid" class="search_c" action="<%=request.getContextPath()%>/Grpinfo.do" method="post">
-						<input type="text" name="grpInfoKeyword" id="search" class="search"  placeholder="搜尋" value="${param.grpInfoKeyword}" style="margin-left: 5px;"> 
+						<input type="text" name="grpInfoKeyword" id="search" class="search" placeholder="搜尋" value="${param.grpInfoKeyword}" > 
 						<input type="hidden" name="action" value="FuzzySearch">
-						<input type="hidden" name="type" value="0">
+						<input type="hidden" name="type" value="1">
 						<input type="submit" id="searchBtn" value="搜尋" style="font-size:10px;border:white;height:29.6px;width:36px;">	
 						</form>
 					</div>
@@ -203,13 +238,10 @@
 				<!-- End .toolbox-right -->
 			</nav>
 			<!-- End .toolbox-sticky-header -->
-			
+		
 			<div class="row_products-group">
 				<!-- 活動列表 -->
-				
 				<c:forEach var="grpInfoVO" items="${grpVOList}">
-				<c:set var="MemberVoDetail" value="${MemberVoDetail}" />
-				<c:set var="grpVODetail" value="${grpVODetail}" />
 					<c:if test="${grpInfoVO.grpStat != 1}">
 						<div class="col-6_col-sm-4">
 							<div class="product-default inner-quickview inner-icon">
@@ -223,26 +255,12 @@
 								    <input type="hidden" name="action" value="detailsinfo">
 									</FORM>
 								</figure>
-									
-									<!-- 測試用帳號 -->
-									<c:set var="TestActNo" value="M1206202300001" />
-							
-									<!-- 發起人icon -->
-									<c:if test="${grpInfoVO.orgMbrNo eq TestActNo}">
-										<div class="orgmbr_grp" style="background-color:#003D79 ; color:white;">
-										<i class="fas fa-flag" id="fas_fa_flag" style="color:white;"></i>我發起的揪團</div>
-									</c:if>
-
 								<div class="product-details">
+
 									<h2 class="product-title" style="font-size:24px; margin-top:5px;">
 										<a>${grpInfoVO.grpName}</a>
 									</h2>
-									<div class="ratings-container" style="margin-top:5px;">
-<%-- 										<c:forEach var="SportNameList" items="${SportNameList}"> --%>
-<%-- 											<c:if test="${grpInfoVO.sportTypeNo eq SportNameList.sportTypeNo}"> --%>
-<%-- 												<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>${SportNameList.sportTypeName}</a><br>  --%>
-<%-- 											</c:if> --%>
-<%-- 										</c:forEach> --%>
+									<div class="ratings-container">
 										<c:if test="${grpInfoVO.sportTypeNo eq '1'}">
 											<a><i class="fas fa-thumbtack"></i> 運動種類：</a><a>游泳</a><br> 
 										</c:if>
@@ -299,6 +317,12 @@
 <%-- 								    <a class="btn-icon-wish" style="font-size: 12px; color: red;">目前參與人數：${partiMbrNoCount}/${grpInfoVO.grpPplLimit}</a> --%>
 <%-- 									</c:if> --%>
 <!-- 									</div> -->
+		<%-- 						<FORM METHOD="post"  class="Btn_allgrpJoin" ACTION="<%=request.getContextPath()%>/Grpinfo.do" style="margin-bottom: 0px;"> --%>
+		<!-- 						    <input type="submit" value="報名參加" style="width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;"> -->
+		<%-- 						    <input type="hidden" name="#" value="${grpInfoVO.grpNo}"> --%>
+		<!-- 						    <input type="hidden" name="action" value="entergrpno"> -->
+		<!-- 						</FORM> -->
+						
 							</div> 
 							<!-- End .product-details -->
 						</div>
@@ -307,7 +331,6 @@
 				</c:forEach>
 			</div>
 			<!-- End .row_products-group -->
-			<!-- 頁數 -->
 			<div class="toolbox toolbox-pagination">
 				<div class="toolbox-item_toolbox-show">
 					<label>頁數:</label>
@@ -330,14 +353,14 @@
 					</li>
 				</ul>
 			</div>
-			<!-- End .頁數 -->
-		</div>
-		<!-- End .container -->
-</div>
-		<!-- margin -->
+			<!-- End .row -->
+		  </div>
+		  <!-- End .container -->
+		 </div>
+		 <!-- margin -->
 		</main>
 		<!-- End .main -->
-	
+
 	<!-- End .page-wrapper -->
 	<footer class="footer bg-dark position-relative">
 	<div class="footer-middle">
@@ -509,25 +532,26 @@
 
 	<div class="sticky-navbar">
 	<div class="sticky-info">
-    	<a href="#"> <i class="icon-home"></i>Home </a>
-	  </div>
-	  <div class="sticky-info">
-	    <a href="#" class=""> <i class="icon-edit"></i>Forum </a>
-	  </div>
-	  <div class="sticky-info">
-	    <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a>
-	  </div>
-	  <div class="sticky-info">
-	    <a href="#" class="">
-	      <i class="icon-shopping-cart position-relative"> </i>Mall
-	    </a>
-	  </div>
-	  <div class="sticky-info">
-	    <a href="#" class=""> <i class="icon-user-2"></i>Account </a>
-	  </div>
+    <a href="#"> <i class="icon-home"></i>Home </a>
+  </div>
+  <div class="sticky-info">
+    <a href="#" class=""> <i class="icon-edit"></i>Forum </a>
+  </div>
+  <div class="sticky-info">
+    <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a>
+  </div>
+  <div class="sticky-info">
+    <a href="#" class="">
+      <i class="icon-shopping-cart position-relative"> </i>Mall
+    </a>
+  </div>
+  <div class="sticky-info">
+    <a href="#" class=""> <i class="icon-user-2"></i>Account </a>
+  </div>
 	</div>
 
-	<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
+	<a id="scroll-top" href="#top" title="Top" role="button"><i
+		class="icon-angle-up"></i></a>
 
 	<!-- Plugins JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
@@ -545,20 +569,6 @@
 <!-- // 		$("div.mobile-menu-container").load("mobile-menu-container.html"); -->
 <!-- 	</script> -->
 
-
-		<script>
-// 		var el_Btn_allgrpJoin = document.getElementsByClassName('Btn_allgrpJoin');
-
-// 		for (var i = 0; i < el_Btn_allgrpJoin.length; i++) {
-// 		   el_Btn_allgrpJoin[i].addEventListener('submit', function(e) {
-// 		      e.preventDefault();
-// 		     	 var confirmed = window.confirm('確定要報名嗎？');
-// 		       		if (confirmed) {
-// 		            this.submit();  
-// 		        }
-// 		   );
-// 		}
-		</script>
 </body>
 </html>
 
