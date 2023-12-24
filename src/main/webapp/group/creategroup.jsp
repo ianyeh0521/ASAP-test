@@ -2,11 +2,19 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.asap.group.entity.GrpInfoVO" %>
-
+<%@ page import="com.asap.member.entity.MemberVO" %>
+<%@ page import="com.asap.member.service.MemberService" %>
+<%@ page import="com.asap.member.service.MemberService_interface" %>
 
 <%
-    String type = (String) request.getAttribute("type");
-    GrpInfoVO grpVO = (GrpInfoVO) request.getAttribute("grpVO");
+	MemberService memberSvc = new MemberService();
+
+	//登入帳號
+	String sActNo = "M1206202300001";
+	MemberVO MemberVoDetail = new MemberVO();
+	MemberVoDetail = memberSvc.findByMbrNo(sActNo);
+	pageContext.setAttribute("MemberVoDetail", MemberVoDetail);
+	
 %>
 
 
@@ -57,95 +65,95 @@
 
 <style>
 /* 彈窗樣式 */
-	#creategrpfsfs_alert {
-	    width: 100vw;
-	    height: 100vh;
-	    position: absolute;
-	    top: 0;
-	    /* display: block; */
-	    display: none;
-	    z-index: 999;
-	}
-	.creategrpfsfs_alert_bg {
-	    width: 100vw;
-	    height: 100vh;
-	    background-color: rgba(0, 0, 0, 0.671);
-	    position: fixed;
-	    top: 0;
-	    right:0px;
-	    left:0px;
-	    
-	}
-	.creategrpfsfs_alert_show {
-		position: fixed;
-	    max-width: 450px;
-	    min-width: 400px;
-		top: 25%;
-		left: 32.64%;
-	    background-color: white;
-	    margin: auto;
-	    z-index: 2;
-	    border-radius: 8px;
-	    text-align: center;
-	    border-top: 20px solid;
-        border-image: linear-gradient(to right, #F5F5DC, #D1E9E9, #6db1f1);
-        border-image-slice: 1;
-	}
-	
-	.creategrpfsfs_alert_title {
-	    font-size: 30px;
-	    text-align: center;
-	    margin: 35px;
-	    font-weight: bold;
-	}
-	.creategrpfsfs_alert_title_suc {
-	    color:rgb(85, 184, 201);
-	}
-	.creategrpfsfs_alert_txt {
-	    width: 80%;
-	    word-wrap: break-word;
-	    font-size: 16px;
-	    padding: 0 20px;
-	    text-align: center;
-	    margin: 0px auto 15px auto;
-	}
-	#alert_yes {
-	    margin: 20px 2px 45px 2px;
-	}
-	#alert_no {
-	    margin: 20px 2px 45px 2px;
-	}
-	
-	.btn_s {
-	   width: 100px;
-	    border-radius: 8px;
-	    font-size: 16px;
-	    text-align: center;
-	    padding: 10px;
-	    cursor: pointer;
-	    color: rgb(255, 255, 255);
-	    background-color: rgb(85, 184, 201);
-	    margin: 10px;
-	}
-	
-	 .btn_s:hover { 
-	     background-color:rgb(85, 184, 201);
-	}
-	
-	.Btn_yesorno {
-	    text-align: center;
-	}
-	
-	.btn_s {
-	    display: inline-block;
-	    padding: 8px 16px;
-	    margin: 0 5px;
-	}
-	.Btn_creategrp_sm {
-		width:68px;
-		height:42.4px;
-	
-	}
+#creategrpfsfs_alert {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    /* display: block; */
+    display: none;
+    z-index: 999;
+}
+.creategrpfsfs_alert_bg {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.671);
+    position: fixed;
+    top: 0;
+    right:0px;
+    left:0px;
+    
+}
+.creategrpfsfs_alert_show {
+	position: fixed;
+    max-width: 450px;
+    min-width: 400px;
+	top: 25%;
+	left: 32.64%;
+    background-color: white;
+    margin: auto;
+    z-index: 2;
+    border-radius: 8px;
+    text-align: center;
+    border-top: 20px solid;
+       border-image: linear-gradient(to right, #F5F5DC, #D1E9E9, #6db1f1);
+       border-image-slice: 1;
+}
+
+.creategrpfsfs_alert_title {
+    font-size: 30px;
+    text-align: center;
+    margin: 35px;
+    font-weight: bold;
+}
+.creategrpfsfs_alert_title_suc {
+    color:rgb(85, 184, 201);
+}
+.creategrpfsfs_alert_txt {
+    width: 80%;
+    word-wrap: break-word;
+    font-size: 16px;
+    padding: 0 20px;
+    text-align: center;
+    margin: 0px auto 15px auto;
+}
+#alert_yes {
+    margin: 20px 2px 45px 2px;
+}
+#alert_no {
+    margin: 20px 2px 45px 2px;
+}
+
+.btn_s {
+   width: 100px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    background-color: rgb(85, 184, 201);
+    margin: 10px;
+}
+
+ .btn_s:hover { 
+     background-color:rgb(85, 184, 201);
+}
+
+.Btn_yesorno {
+    text-align: center;
+}
+
+.btn_s {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 5px;
+}
+.Btn_creategrp_sm {
+	width:68px;
+	height:42.4px;
+
+}
 </style>
 </head>
 <body>
@@ -250,9 +258,11 @@
         <!-- End .header-bottom -->
 		</header>
 		<!-- End .header -->
+		<c:set var="MemberVoDetail" value="${MemberVoDetail}" />
 		
 		<main class="main">
 			<h2 class="creategrptitle">發起揪團</h2>
+			
 			<div class="createform">
 				<div class="createform_main">
 					<form id="creategrpform" action="<%=request.getContextPath()%>/Grpinfo.do?action=insertgrpInfo" method="post" enctype="multipart/form-data">
@@ -265,18 +275,15 @@
 						<br/> <span class="form_textbox"> 
 						<label class="create_member">
 						<a class="x">*</a>發起人：</label> 
-<!--可串資料時再加disabled -->
-						<input class="MbrName" type="text" id="MbrName" name="OrgMbrNo" required  />
+						<input class="MbrName" type="text" id="MbrName" name="OrgMbrNo" value="${MemberVoDetail.mbrName}" required disabled />
 						</span> 
 						<span class="form_textbox"> 
 						<label for="create_phonenum">
-<!--可串資料時再加disabled -->
 						<a class="x">*</a>連絡電話：</label> <input class="MbrPhone" type="tel"
-							id="MbrPhone" name="MbrPhone" required  />
+							id="MbrPhone" name="MbrPhone" value="${MemberVoDetail.mbrPhone}"required disabled />
 						</span> <br /> <span class="form_textbox"> 
-<!--可串資料時再加disabled -->
 						<label for="create_email">電子信箱：</label> <input class="MbrEmail"
-							type="email" id="MbrEmail" name="MbrEmail"  />
+							type="email" id="MbrEmail" name="MbrEmail" value="${MemberVoDetail.mbrEmail}"required disabled />
 						</span>
 						<hr/>
 						<!-- 活動資訊 -->
@@ -290,7 +297,7 @@
 						
 						<label for="SportTypeName">
 						<a class="x">*</a>運動類別：</label>
-						<select name="SportTypeName" id="SportTypeName" required>
+						<select name="SportTypeName" id="SportTypeName" required >
 							<option value="">請選擇</option>
 							<option value="1">游泳</option>
 							<option value="2">棒球</option>
@@ -308,7 +315,7 @@
 						<a class="x">*</a>活動日期：</label> 
 						<input type="date" id="GrpDate" name="GrpDate" required /> 
 						<label for="selectstrtime"><a class="x">*</a>開始時間：</label> 
-						<input type="time" id="GrpStartTime" name="GrpStartTime" required />
+						<input type="time" id="GrpStartTime" name="GrpStartTime" required  />
 						<br /> 
 						<label for="GrpEndTime"><a class="x">*</a>結束時間：</label> 
 						<input type="time" id="GrpEndTime" name="GrpEndTime" required /> 
@@ -316,18 +323,16 @@
 						<input type="number" id="GrpPplMin" name="GrpPplMin" required value="2" />
 						<a>人</a> <label for="GrpPplLimit">
 					    <a class="x">*</a>最高人數：</label>
-						<input type="number" id="GrpPplLimit" name="GrpPplLimit" required
-							value="2" /> <a>人</a> <br /> 
+						<input type="number" id="GrpPplLimit" name="GrpPplLimit" 
+							value="2" required /> <a>人</a> <br /> 
 						<label for="GrpAddress"><a class="x">*</a>活動地點：</label> 
 						<input type="text" id="GrpAddress2" name="GrpAddress" required placeholder="例：台北體育館，台北市松山區南京東路四段10號" required /> <br /> 
-							
 							<label for="GrpSignStrTime"><a class="x">*</a>報名期間：</label> 
 							<input type="date" id="GrpSignStrTime1" name="GrpSignStrDate" required />
 							<input type="time" id="GrpSignStrTime2" name="GrpSignStrTime" required /> 
 							<a class="an">至</a> 
-							<input type="date" id="GrpSignEndTime1" name="GrpSignEndDate" required />
+							<input type="date" id="GrpSignEndTime1" name="GrpSignEndDate" required />				
 							<input type="time" id="GrpSignEndTime2" name="GrpSignEndTime" required />
-
 						<div>
 							<label for="GrpImg">圖片上傳：</label> 
 							<input id="GrpImg" name="GrpImg" type="file"  multiple="multiple">
@@ -342,25 +347,7 @@
 						<br />
 						<div class="Grp_Btnsrr">
 							<input class="Btn_creategrp_sm" id="InsertBtn" value="送出">
-<%-- 							<a href="${pageContext.request.contextPath}/group/AllGroup.jsp" class="return-link" id="return_link">返回</a>						 --%>
-							<button class="return-link" id="return_link" style="border: none;cursor: pointer; padding: 0;font: inherit;width:68px;height:42.4px;">返回</button>
-							
-							
-							<!--返回彈窗 -->
-							<div id="creategrpfsfs_alert">
-						    <div class="creategrpfsfs_alert_bg"></div>
-						    <div class="creategrpfsfs_alert_show"> 
-						        <div class="creategrpfsfs_alert_title">提示:</div>
-						        <div class="creategrpfsfs_alert_txt">確定要送出嗎?</div>
-						        <div class="Btn_yesorno">
-						            <input type="submit" class="btn_s" id="alert_yes" value="確定">
-							   	    <input type="hidden" name="action" value="grpInfoinsert">
-							   	    <input type="button" class="btn_s" id="alert_no" value="取消">
-						        </div> 
-						    </div>
-						</div>
-						<!--End .div彈窗畫面 -->
-							
+							<a href="${pageContext.request.contextPath}/group/AllGroup.jsp" class="return-link" id="return_link">返回</a>						
 							<button type="reset">清空</button>
 						</div>
 						<!--彈窗畫面 -->
@@ -371,13 +358,16 @@
 						        <div class="creategrpfsfs_alert_txt">確定要送出嗎?</div>
 						        <div class="Btn_yesorno">
 						            <input type="submit" class="btn_s" id="alert_yes" value="確定">
-							   	    <input type="hidden" name="action" value="grpInfoinsert">
+							   	    <input type="hidden" name="action" value="insertgrpInfo">
 							   	    <input type="button" class="btn_s" id="alert_no" value="取消">
 						        </div> 
 						    </div>
 						</div>
-					<!--End .div彈窗畫面 -->
-					</form>			
+						<!--End .div彈窗畫面 -->
+					</form>		
+					
+					
+						
 				</div>	
 			</div>	
 		</main>
@@ -490,89 +480,89 @@
 
 	<div class="mobile-menu-container">
 		<div class="mobile-menu-wrapper">
-	  <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
-		  <nav class="mobile-nav">
-		    <ul class="mobile-menu">
-		      <li><a href="#">首頁</a></li>
-		      <li>
-		        <a href="#">論壇</a>
-		        <ul>
-		          <li><a href="#">論壇首頁</a></li>
-		          <li>
-		            <a href="#">發佈貼文</a>
-		          </li>
-		          <li>
-		            <a href="#">我的貼文</a>
-		          </li>
-		          <li><a href="#">收藏貼文</a></li>
-		        </ul>
-		      </li>
-		      <li>
-		        <a href="#">揪團</a>
-		        <ul>
-		          <li><a href="#">揪團首頁</a></li>
-		          <li><a href="#">發起揪團</a></li>
-		          <li><a href="#">我的揪團</a></li>
-		        </ul>
-		      </li>
-		      <li>
-		        <a href="#">找課程</a>
-		        <ul>
-		          <li><a href="#">查詢課程</a></li>
-		          <li><a href="#">我的課程</a></li>
-		        </ul>
-		      </li>
-		
-		      <li>
-		        <a href="#">找場地</a>
-		        <ul>
-		          <li><a href="#">詢找場地</a></li>
-		          <li><a href="#">我的預約</a></li>
-		          <li><a href="#">我的收藏</a></li>
-		        </ul>
-		      </li>
-		
-		      <li>
-		        <a href="#">賣家入口</a>
-		        <ul>
-		          <li><a href="#">所有訂單</a></li>
-		          <li><a href="#">所有商品</a></li>
-		          <li><a href="#">新增商品</a></li>
-		          <li><a href="#">商品評論</a></li>
-		        </ul>
-		      </li>
-		      <li><a href="#">商城</a></li>
-		      <li><a href="#">登入</a></li>
-		    </ul>
-		  </nav>
-	  	  <!-- End .mobile-nav -->
-</div>
-<!-- End .mobile-menu-wrapper -->
+		  <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
+			  <nav class="mobile-nav">
+			    <ul class="mobile-menu">
+			      <li><a href="#">首頁</a></li>
+			      <li>
+			        <a href="#">論壇</a>
+			        <ul>
+			          <li><a href="#">論壇首頁</a></li>
+			          <li>
+			            <a href="#">發佈貼文</a>
+			          </li>
+			          <li>
+			            <a href="#">我的貼文</a>
+			          </li>
+			          <li><a href="#">收藏貼文</a></li>
+			        </ul>
+			      </li>
+			      <li>
+			        <a href="#">揪團</a>
+			        <ul>
+			          <li><a href="#">揪團首頁</a></li>
+			          <li><a href="#">發起揪團</a></li>
+			          <li><a href="#">我的揪團</a></li>
+			        </ul>
+			      </li>
+			      <li>
+			        <a href="#">找課程</a>
+			        <ul>
+			          <li><a href="#">查詢課程</a></li>
+			          <li><a href="#">我的課程</a></li>
+			        </ul>
+			      </li>
+			
+			      <li>
+			        <a href="#">找場地</a>
+			        <ul>
+			          <li><a href="#">詢找場地</a></li>
+			          <li><a href="#">我的預約</a></li>
+			          <li><a href="#">我的收藏</a></li>
+			        </ul>
+			      </li>
+			
+			      <li>
+			        <a href="#">賣家入口</a>
+			        <ul>
+			          <li><a href="#">所有訂單</a></li>
+			          <li><a href="#">所有商品</a></li>
+			          <li><a href="#">新增商品</a></li>
+			          <li><a href="#">商品評論</a></li>
+			        </ul>
+			      </li>
+			      <li><a href="#">商城</a></li>
+			      <li><a href="#">登入</a></li>
+			    </ul>
+			  </nav>
+		  	  <!-- End .mobile-nav -->
+			</div>
+	<!-- End .mobile-menu-wrapper -->
 	</div>
 	<!-- End .mobile-menu-container -->
 
 	<div class="sticky-navbar">
 		<div class="sticky-info">
-    <a href="#"> <i class="icon-home"></i>Home </a>
-  </div>
-  <div class="sticky-info">
-    <a href="#" class=""> <i class="icon-edit"></i>Forum </a>
-  </div>
-  <div class="sticky-info">
-    <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a>
-  </div>
-  <div class="sticky-info">
-    <a href="#" class="">
-      <i class="icon-shopping-cart position-relative"> </i>Mall
-    </a>
-  </div>
-  <div class="sticky-info">
-    <a href="#" class=""> <i class="icon-user-2"></i>Account </a>
-  </div>
+    		<a href="#"> <i class="icon-home"></i>Home </a>
+ 	    </div>
+	    <div class="sticky-info">
+		    <a href="#" class=""> <i class="icon-edit"></i>Forum </a>
+		</div>
+	    <div class="sticky-info">
+	        <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a>
+	    </div>
+	    <div class="sticky-info">
+	        <a href="#" class="">
+	        <i class="icon-shopping-cart position-relative"> </i>Mall
+	    </a>
+	    </div>
+	    <div class="sticky-info">
+	        <a href="#" class=""> <i class="icon-user-2"></i>Account </a>
+	    </div>
 	</div>
-
-	<a id="scroll-top" href="#top" title="Top" role="button"><i
-		class="icon-angle-up"></i></a>
+	
+		    <a id="scroll-top" href="#top" title="Top" role="button"><i
+			class="icon-angle-up"></i></a>
 
 	<!-- Plugins JS File -->
 	<script src="assets/js/jquery.min.js"></script>
@@ -591,19 +581,212 @@
 <!-- 	</script> -->
 
 	<script>
-// 	 var form = document.querySelector("creategrpform");
-	 document.addEventListener("DOMContentLoaded", function () {
+	 var form = document.getElementById("creategrpform");
+	 var submitBtn = document.getElementById('InsertBtn');
+	 var alertYesBtn = document.getElementById('alert_yes');
+	 var alertNoBtn = document.getElementById('alert_no');
+	 
+	 submitBtn.addEventListener('click', function(e) {
+		 e.preventDefault();
+		 if (form.reportValidity()) {
+		     creategrpfsfs_alert();
+		    }
+	 });
+	 
+	 // 錯誤處理
+// 	 var MbrName = document.getElementById("MbrName");
+	 var MbrPhone = document.getElementById("MbrPhone");
+	 var MbrGrpName = document.getElementById("GrpName");
+     var GrpPplMin = document.getElementById("GrpPplMin");
+     var GrpPplLimit = document.getElementById("GrpPplLimit");
+     var preview_el = document.getElementById("preview");
+     var GrpImg_el = document.getElementById("GrpImg");
+	 
+// 	 MbrName.addEventListener("input", function () {
+//      	var regex = /^(?=.*[\u4E00-\u9FFFa-zA-Z])[\u4E00-\u9FFFa-zA-Z\s]*$/;
+//         if (!regex.test(MbrName.value)) {
+//         	MbrName.setCustomValidity("只能輸入中文和英文");
+//            } else {
+//             MbrName.setCustomValidity("");
+//            }
+//      });
+	 
+     MbrPhone.addEventListener("input", function () {
+     	var regex = /^(09\d{8}|02\d{8})$/;
+        if (!regex.test(MbrPhone.value)) {
+            MbrPhone.setCustomValidity("必須以09或02開頭並為10位數字");
+         	} else {
+           	MbrPhone.setCustomValidity("");
+         	}
+     });
+	 
+     GrpPplMin.addEventListener("input", function () {
+     	if (GrpPplMin.value <= 1) {
+           	GrpPplMin.setCustomValidity("人數請包含自己(預設為2),也不得設定為負數");
+         	} else {
+           	GrpPplMin.setCustomValidity("");
+         	}
+     });
 
-	      });
-// 清空OK
+     GrpPplLimit.addEventListener("input", function () {
+    	var limit = parseInt(GrpPplLimit.value);
+    	var min = parseInt(GrpPplMin.value);
+    	if (limit <= 1 ) {
+    	    GrpPplLimit.setCustomValidity("人數請包含自己(預設為2)，也不得設定為負數");
+    	    } else if (limit < min) {
+    	        GrpPplLimit.setCustomValidity("最高人數不得小於最低人數");
+    	    } else {
+    	        GrpPplLimit.setCustomValidity("");
+    	    }
+    	});
+     
+     MbrGrpName.addEventListener("input", function () {
+    	var chineseCharacters = MbrGrpName.value.match(/[\u4E00-\u9FFF]/g);
+    	var englishCharacters = MbrGrpName.value.match(/[a-zA-Z]/g);
+    	var chineseCount = chineseCharacters ? chineseCharacters.length : 0;
+    	var englishCount = englishCharacters ? englishCharacters.length : 0;
+
+    	if (chineseCount > 10 || englishCount > 30) {
+    	    MbrGrpName.setCustomValidity("中文不得超過10個字, 英文不得超過30個字元");
+    	} else {
+    	    MbrGrpName.setCustomValidity("");
+    	}
+     });
+     			
+// 	 // 時間處理
+//         //報名開始日期
+//         var GrpSignStartDate = document.getElementById("GrpSignStrTime1");
+//         //報名結束日期
+//         var GrpSignEndDate = document.getElementById("GrpSignEndTime1");
+//         //報名開始時間
+//         var GrpSignStartTime = document.getElementById("GrpSignStrTime2");
+//         //報名結束時間
+//         var GrpSignEndTime = document.getElementById("GrpSignEndTime2");
+//         //活動日期
+//         var GrpDate = document.getElementById("GrpDate");
+//         //活動開始時間
+//         var GrpStartTime = document.getElementById("GrpStartTime");
+//         //活動結束時間
+//         var GrpEndTime = document.getElementById("GrpEndTime");
+	 
+	 
+// 	 // 在設定事件監聽器時，使用 addEventListener 這個方法，已經把事件與 GrpDate 元素連結起來了
+// 	 GrpDate.addEventListener("input", function () {
+// 	  	validateSignUpPeriod();
+// 	 });
+// 	 GrpSignStartDate.addEventListener("input", function () {
+// 	  	validateSignUpPeriod();
+// 	 });
+// 	 GrpStartTime.addEventListener("input", function () {
+// 		validateSignUpPeriod();
+// 	 });
+// 	 GrpEndTime.addEventListener("input", function () {
+// 		validateSignUpPeriod();
+// 	 });
+// 	 GrpSignEndDate.addEventListener("input", function () {
+// 	  	validateSignUpPeriod();
+// 	 });
+// 	 GrpSignStartTime.addEventListener("input", function () {
+// 	  	validateSignUpPeriod();
+// 	 });
+// 	 GrpSignEndTime.addEventListener("input", function () {
+// 	  	validateSignUpPeriod();
+// 	 });
+
+	
+// 	 function validateSignUpPeriod() {
+// 		var dt_GrpDate = new Date(GrpDate.value);
+// 		var tm_GrpStartTime = new Date(GrpStartTime.value).getTime();
+// 		var tm_GrpEndTime = new Date(GrpEndTime.value).getTime();
+// 	    var dt_GrpSignStartDate = new Date(GrpSignStartDate.value);
+// 	    var dt_GrpSignEndDate = new Date(GrpSignEndDate.value);
+// 	    var tm_GrpSignStartTime = new Date(GrpSignStartTime.value).getTime();
+// 	    var tm_GrpSignEndTime = new Date(GrpSignEndTime.value).getTime();
+
+	
+		
+// 	 if (tm_GrpStartTime > tm_GrpEndTime) {
+// 	    GrpEndTime.setCustomValidity("活動結束時間需大於活動開始時間");
+	    
+// 	 } else if (dt_GrpSignEndDate > dt_GrpDate) {
+// 	    GrpSignEndTime1.setCustomValidity("報名結束日期需小於活動日期");
+// 	   // 如果報名結束日期等於活動日期
+// 	 } else if (dt_GrpSignEndDate === dt_GrpDate && tm_GrpSignEndTime > tm_GrpStartTime) {
+// 	    GrpSignEndTime2.setCustomValidity("若報名結束日期等於活動日期，報名結束時間需小於活動開始時間");
+// 	 } else if (dt_GrpSignStartDate > dt_GrpSignEndDate) {
+// 	    GrpSignEndTime1.setCustomValidity("報名結束日期需大於報名開始日期");
+// 	    // 如果報名結束日期等於報名開始日期
+// 	 } else if (dt_GrpSignStartDate === dt_GrpSignEndDate && tm_GrpSignEndTime < tm_GrpSignStartTime) {
+// 		GrpSignEndTime2.setCustomValidity("若報名結束日期等於報名開始日期，報名結束時間需大於報名起始時間");
+// 	 } else {
+// 	    GrpSignEndTime1.setCustomValidity("");
+// 	    GrpSignEndTime2.setCustomValidity("");
+// 	   }
+// 	} 
+	 
+	 // 透過 File 取得預覽圖
+     var preview_img = function (file) {
+	 var reader = new FileReader(); // 用來讀取檔案
+	    reader.readAsDataURL(file); // 讀取檔案
+	    reader.addEventListener("load", function () {
+	    var img_str ='<img src="' + reader.result + '" class="preview_img">';
+	    	preview_el.innerHTML = img_str;
+        });
+     };
+
+     GrpImg_el.addEventListener("change", function (e) {
+        if (this.files.length > 0) {
+            preview_img(this.files[0]);
+        } else {
+            preview_el.innerHTML = '<span class="text">預覽圖</span>';
+        }
+     });
+        
+	 // 清空欄位
+	 var clearFormFields = function () {
+	    document.getElementById("MbrName").value = "";
+	    document.getElementById("MbrPhone").value = "";
+	    document.getElementById("MbrEmail").value = "";
+	    document.getElementById("GrpName").value = "";
+	    document.getElementById("SportTypeName").value = "SportType_select";
+	    document.getElementById("GrpDate").value = "";
+	    document.getElementById("GrpStartTime").value = "";
+	    document.getElementById("GrpEndTime").value = "";
+	    document.getElementById("GrpPplMin").value = "";
+	    document.getElementById("GrpPplLimit").value = "";
+	    document.getElementById("GrpAddress2").value = "";
+	    document.getElementById("GrpImg").value = "";
+	    preview_el.innerHTML = '<span class="text">預覽圖</span>';
+	    document.getElementById("GrpNote").value = "";
+	    document.getElementById("GrpSignStrTime1").value = "";
+	    document.getElementById("GrpSignEndTime1").value = "";
+     };
+
+	 var clearButton = document.querySelector(
+	    '.Grp_Btnsrr button[type="reset"]'
+	 );
+	      
+     clearButton.addEventListener("click", function () {
+         clearFormFields();
+     });
+	
+	// 送出後的確認彈窗
+	 function creategrpfsfs_alert(){
+	 	let creategrpfsfs_alert_el = document.getElementById('creategrpfsfs_alert');
+		creategrpfsfs_alert_el.style.display = 'block';
+
+		let alert_no_Btn = document.getElementById('alert_no');
+		alert_no_Btn.addEventListener('click',function(){
+		creategrpfsfs_alert_el.style.display = 'none';
+		});
+	 }
 	</script>
 	
 	<script>
-		var type = "${type}";
-        if (type === "1"){
 
-            var reserveText = "${grpVO.orgMbrNo}";
-            document.getElementById('MbrName').value = reserveText;
+		var type = "${type}";
+		
+		if (type === '1'){
             
            	reserveText = "${grpVO.sportTypeNo}";
             document.getElementById('SportTypeName').value = reserveText;
@@ -651,34 +834,34 @@
             datePart = reserveDate.substring(11, 19); 
          	document.getElementById('GrpSignEndTime2').value = datePart;
          	
-         	//注意事項
+         	// 注意事項
          	reserveText = "${grpVO.grpNote}";
             document.getElementById('GrpNote').value = reserveText;
             
-         	//圖片
+			// 圖片
 //          	var imagePath = "${grpVO.grpImg}";
 // 			document.getElementById('GrpImg').src = imagePath;  
 
-			var previousImage = "${grpVO.grpImg}"; // 儲存先前的預覽圖片路徑
+// 			var previousImage = "${grpVO.grpImg}"; // 儲存先前的預覽圖片路徑
 			
-			var preview_img = function (file) {
-			  var reader = new FileReader();
-			  reader.readAsDataURL(file);
-			  reader.addEventListener("load", function () {
-			    var img_str = '<img src="' + reader.result + '" class="preview_img">';
-			    preview_el.innerHTML = img_str;
-			    previousImage = reader.result; // 儲存目前預覽的圖片路徑
-			  });
-			};
+// 			var preview_img = function (file) {
+// 				var reader = new FileReader();
+// 				reader.readAsDataURL(file);
+// 				reader.addEventListener("load", function () {
+// 			    var img_str = '<img src="' + reader.result + '" class="preview_img">';
+// 			    preview_el.innerHTML = img_str;
+// 			    previousImage = reader.result; // 儲存目前預覽的圖片路徑
+// 			  	});
+// 			};
 			
-			GrpImg_el.addEventListener("change", function (e) {
-			  if (this.files.length > 0) {
-			    preview_img(this.files[0]);
-			  } else {
-			    preview_el.innerHTML = '<span class="text">預覽圖</span>';
-			    previousImage = "${grpVO.grpImg}"; // 清除先前儲存的圖片路徑
-			  }
-			});
+// 			GrpImg_el.addEventListener("change", function (e) {
+// 				if (this.files.length > 0) {
+// 			    preview_img(this.files[0]);
+// 			 	} else {
+// 			    preview_el.innerHTML = '<span class="text">預覽圖</span>';
+// 			    previousImage = "${grpVO.grpImg}"; // 清除先前儲存的圖片路徑
+// 			  	}
+// 			});
 
 // // 假設使用者進入編輯模式時，先前已有預覽圖片路徑 previousImage
 // if (previousImage !== "") {
@@ -689,30 +872,6 @@
 //   preview_el.innerHTML = '<span class="text">預覽圖</span>';
 // }
         }
-	</script>
-	
-	<script>
-		 //抓到彈窗的元素,並把彈窗顯示出來
-	    function creategrpfsfs_alert(){
-	        let creategrpfsfs_alert_el = document.getElementById('creategrpfsfs_alert');
-	        creategrpfsfs_alert_el.style.display = 'block';
-	
-		    //抓到確認元素,按下確認按鈕即關閉
-		    let alert_no_Btn = document.getElementById('alert_no');
-		    alert_no_Btn.addEventListener('click',function(){
-		    	creategrpfsfs_alert_el.style.display = 'none';
-		    	});
-	    }
-	
-	
-	    function init() {
-	       //為你的按鈕註冊事件
-	       document.querySelector('#InsertBtn').addEventListener('click',creategrpfsfs_alert);
-	    }
-	
-	    // 程式準備開始
-	    window.addEventListener('load', init);
-
 	</script>
 	
 </body>

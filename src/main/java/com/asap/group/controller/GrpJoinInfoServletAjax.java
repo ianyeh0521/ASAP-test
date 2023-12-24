@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.asap.group.entity.GrpJoinInfoVO;
 import com.asap.group.service.GrpJoinInfoService_interface;
+import com.asap.member.dao.MemberDAO;
+import com.asap.member.entity.MemberVO;
 import com.asap.util.HibernateProxyTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,7 +21,7 @@ import com.google.gson.GsonBuilder;
 @WebServlet("/GrpJoinInfoAjax.do")
 public class GrpJoinInfoServletAjax extends HttpServlet {
 	private GrpJoinInfoService_interface grpJoinInfoService_interface;
-
+	
 	@Override
 	public void init() throws ServletException {
 		grpJoinInfoService_interface = new GrpJoinInfoService_interface();
@@ -62,6 +64,7 @@ public class GrpJoinInfoServletAjax extends HttpServlet {
 			res.setStatus(HttpServletResponse.SC_OK);
 			res.getWriter().write("null");
 		}
+		
 	}
 
 	@Override
