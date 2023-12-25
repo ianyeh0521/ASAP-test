@@ -111,19 +111,19 @@ public class ecPayReturnServlet extends HttpServlet{
 //			System.out.println(orderNo);
 			CourtOrderVO courtOrder = courtOrderService_interface.findByPK(courtOrderNo);
 			
-			CourtOrderVO courtOrderUpdate = courtOrderService_interface.findByPK(courtOrderNo);
-			
-			CourtOrderVO courtOrderVO = new CourtOrderVO();
-			courtOrderVO.setCourtOrdNo(courtOrderUpdate.getCourtOrdNo());
-			courtOrderVO.setCourtOrdDate(courtOrderUpdate.getCourtOrdDate());
-			courtOrderVO.setCourtOrdTime(courtOrderUpdate.getCourtOrdTime());
-			courtOrderVO.setCourtOrdTimeEnd(courtOrderUpdate.getCourtOrdTimeEnd());
-			courtOrderVO.setCourtVO(courtOrderUpdate.getCourtVO());
-			courtOrderVO.setMemberVO(courtOrderUpdate.getMemberVO());
-			courtOrderVO.setTotalPrice(courtOrderUpdate.getTotalPrice());
-			courtOrderVO.setCourtOrdStat(true);
-			System.out.println(courtOrderVO.toString());
-			System.out.println(courtOrderService_interface.update(courtOrderVO)); 
+//			CourtOrderVO courtOrderUpdate = courtOrderService_interface.findByPK(courtOrderNo);
+//			
+//			CourtOrderVO courtOrderVO = new CourtOrderVO();
+//			courtOrderVO.setCourtOrdNo(courtOrderUpdate.getCourtOrdNo());
+//			courtOrderVO.setCourtOrdDate(courtOrderUpdate.getCourtOrdDate());
+//			courtOrderVO.setCourtOrdTime(courtOrderUpdate.getCourtOrdTime());
+//			courtOrderVO.setCourtOrdTimeEnd(courtOrderUpdate.getCourtOrdTimeEnd());
+//			courtOrderVO.setCourtVO(courtOrderUpdate.getCourtVO());
+//			courtOrderVO.setMemberVO(courtOrderUpdate.getMemberVO());
+//			courtOrderVO.setTotalPrice(courtOrderUpdate.getTotalPrice());
+			courtOrder.setCourtOrdStat(2);
+			System.out.println(courtOrder.toString());
+			System.out.println(courtOrderService_interface.update(courtOrder)); 
 			
 			// 寫入不開放時間
 //			for(int i = courtOrdTime; i < courtOrdTimeEnd;i++) {

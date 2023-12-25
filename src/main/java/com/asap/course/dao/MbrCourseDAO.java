@@ -26,13 +26,15 @@ public class MbrCourseDAO implements MbrCourseDAO_interface{
 	public int update(MbrCourseVO mbrCourseVO) {
 //		成功更新回傳 1，失敗回傳 -1
 		try {
-			MbrCourseVO mbrCourseUpdate = new MbrCourseVO();
-			mbrCourseUpdate.setMbrCourseNo(mbrCourseVO.getMbrCourseNo());
-			mbrCourseUpdate.setMbrCourseTime(mbrCourseVO.getMbrCourseTime());
-			mbrCourseUpdate.setMbrCourseStat(mbrCourseVO.getMbrCourseStat());
-			mbrCourseUpdate.setCoachVO(mbrCourseVO.getCoachVO());
-			mbrCourseUpdate.setCourseVO(mbrCourseVO.getCourseVO());
-			mbrCourseUpdate.setMemberVO(mbrCourseVO.getMemberVO());
+			MbrCourseVO mbrCourseUpdate = (MbrCourseVO) getSession().get(MbrCourseVO.class, mbrCourseVO.getMbrCourseNo());
+			if(mbrCourseUpdate != null) {
+				mbrCourseUpdate.setMbrCourseNo(mbrCourseVO.getMbrCourseNo());
+				mbrCourseUpdate.setMbrCourseTime(mbrCourseVO.getMbrCourseTime());
+				mbrCourseUpdate.setMbrCourseStat(mbrCourseVO.getMbrCourseStat());
+				mbrCourseUpdate.setCoachVO(mbrCourseVO.getCoachVO());
+				mbrCourseUpdate.setCourseVO(mbrCourseVO.getCourseVO());
+				mbrCourseUpdate.setMemberVO(mbrCourseVO.getMemberVO());
+			}
 			getSession().update(mbrCourseUpdate);
 			return 1;
 		} catch (Exception e) {

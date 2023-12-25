@@ -16,8 +16,7 @@ public class MbrCourseService implements MbrCourseService_interface{
 
 	@Override
 	public int update(MbrCourseVO mbrCourseVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.update(mbrCourseVO);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import javax.swing.event.ListDataListener;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.loader.plan.build.internal.returns.AbstractEntityReference;
 import org.hibernate.query.Query;
 
@@ -141,22 +142,38 @@ public class CourtClosedTimeDAO implements CourtClosedTimeDAO_interface{
 
 	@Override
 	public int delete(Integer courtNo, Date courtClosedDate, Integer courtClosedTime) {
+		System.out.println("courtNo="+courtNo+"courtClosedDate="+courtClosedDate+"courtClosedTime="+courtClosedTime);
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "DELETE FROM CourtClosedTimeVO cc " +
-                    "WHERE cc.courtNo = :courtNo " +
-                    "AND cc.courtClosedDate = :closedDate " +
-                    "AND cc.courtClosedTime = :closedTime";
+	        Transaction transaction = null;
 
-            Query query = session.createQuery(hql);
-            query.setParameter("courtNo", courtNo);
-            query.setParameter("closedDate", courtClosedDate);
-            query.setParameter("closedTime", courtClosedTime);
+	        try {
+	            transaction = session.beginTransaction();
 
-            return query.executeUpdate(); 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
+	            String hql = "DELETE FROM CourtClosedTimeVO cc " +
+	                    "WHERE cc.courtVO.courtNo = :courtNo " +
+	                    "AND cc.courtClosedDate = :closedDate " +
+	                    "AND cc.courtClosedTime = :closedTime";
+
+	            Query query = session.createQuery(hql);
+	            query.setParameter("courtNo", courtNo);
+	            query.setParameter("closedDate", courtClosedDate);
+	            query.setParameter("closedTime", courtClosedTime);
+
+	            int rowsAffected = query.executeUpdate();
+
+	            transaction.commit(); 
+	            return rowsAffected;
+	        } catch (Exception e) {
+	            if (transaction != null) {
+	                transaction.rollback(); 
+	            }
+	            e.printStackTrace();
+	            return -1;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
 	}
 	
 	

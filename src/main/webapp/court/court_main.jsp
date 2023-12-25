@@ -429,11 +429,11 @@
 							<div class="product-details">
 								<h3 class="product-title"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtVO.courtNo" class="name" @click="writeCourt(data.courtVO.courtNo)">{{data.courtVO.courtName}}</a> </h3>
 								<div class="ratings-container">
-								</div>End .product-container
+								</div>
 								<div class="price-box">
 									<span class="product-price">{{data.courtVO.courtPrice}}</span>
-								</div>End .price-box
-							</div>End .product-details
+								</div>
+							</div>
 						</div>
 					</div>
 				

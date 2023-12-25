@@ -23,12 +23,15 @@ import com.asap.course.service.MbrCourseService_interface;
 import com.asap.member.entity.MemberVO;
 import com.asap.member.service.MemberService;
 import com.asap.member.service.MemberService_interface;
+import com.asap.util.HibernateProxyTypeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.protobuf.Timestamp;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
 
-@WebServlet("/course/mbrCourseServlet.do")
+@WebServlet("/course/mbrCourseServlet")
 public class MbrCourseServlet extends HttpServlet{
 
 	public static AllInOne all;
@@ -97,7 +100,7 @@ public class MbrCourseServlet extends HttpServlet{
 				obj.setTotalAmount(String.valueOf(courseVO.getCoursePrice()));
 				obj.setCustomField1(String.valueOf(courseNo)); // 訂單成立接收到CourseNo
 				obj.setCustomField4(mbrNo); // 會員編號
-				obj.setReturnURL("https://da60-114-24-167-99.ngrok-free.app/ASAP/course/courseEcPayReturn.do");	// 使用時要記得換成外網
+				obj.setReturnURL("https://99e7-1-164-235-76.ngrok-free.app/ASAP/course/courseEcPayReturn.do");	// 使用時要記得換成外網
 				obj.setOrderResultURL("http://localhost:8081/ASAP/course/course_main.jsp");  // 使用者付款完成跳轉頁面
 				obj.setNeedExtraPaidInfo("N");
 				String form = all.aioCheckOut(obj, null);
@@ -136,6 +139,54 @@ public class MbrCourseServlet extends HttpServlet{
 			}
 			
 			res.getWriter().write(checkString);
+			
+		}else if("checkInMain".equals(action)) {
+			
+			// 檢查此課程是否額滿，return 報名人數
+			Integer courseNo = Integer.valueOf(req.getParameter("courseNo"));
+			
+			List<MbrCourseVO> allList = mbrCourseService_interface.findByCourseNo(courseNo);
+			List<MbrCourseVO> checkList = new ArrayList<>();
+			for(MbrCourseVO mbrCourseVO: allList) {
+				if(mbrCourseVO.getMbrCourseStat() == true) {
+					checkList.add(mbrCourseVO);
+				}
+			}
+			
+			System.out.println(checkList.size());
+			
+			res.getWriter().write(String.valueOf(checkList.size()));
+			
+		}else if ("getByMember".equals(action)) {
+			
+			String mbrNo = req.getParameter("mbrNo");
+			List<MbrCourseVO> mbrCourseVOs = mbrCourseService_interface.findByMember(mbrNo);
+			
+			GsonBuilder builder = new GsonBuilder();
+			builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+			Gson gson = builder.create();
+			
+			
+			String jsonObj = gson.toJson(mbrCourseVOs);
+			
+			res.setContentType("application/json");
+	        res.setCharacterEncoding("UTF-8");
+	        res.getWriter().write(jsonObj);
+	        
+		}else if ("cancel".equals(action)) {
+			Integer mbrCourseNo = Integer.valueOf(req.getParameter("mbrCourseNo"));
+			
+			MbrCourseVO mbrCourseUpdate = mbrCourseService_interface.findByPK(mbrCourseNo);
+			MbrCourseVO mbrCourseVO = new MbrCourseVO();
+			mbrCourseVO.setMbrCourseNo(mbrCourseNo);
+			mbrCourseVO.setCoachVO(mbrCourseUpdate.getCoachVO());
+			mbrCourseVO.setCourseVO(mbrCourseUpdate.getCourseVO());
+			mbrCourseVO.setMbrCourseTime(mbrCourseUpdate.getMbrCourseTime());
+			mbrCourseVO.setMemberVO(mbrCourseUpdate.getMemberVO());
+			mbrCourseVO.setMbrCourseStat(false);
+			
+			mbrCourseService_interface.update(mbrCourseVO);
+		
 		}
 	}
 	

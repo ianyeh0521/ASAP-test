@@ -499,7 +499,7 @@
 				 try {
 			        var result = await $.ajax({
 			            type: 'GET',
-			            url: 'mbrCourseServlet.do?action=check&courseNo=' + courseNo,
+			            url: 'mbrCourseServlet?action=check&courseNo=' + courseNo,
 			        });
 			
 			        console.log(result);

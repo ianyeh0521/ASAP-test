@@ -35,7 +35,7 @@ public class CourtOrderVO{
 	private CourtVO courtVO;
 	
 	@Column(name = "CourtOrdStat")
-	private Boolean courtOrdStat;
+	private Integer courtOrdStat;
 	
 	@Column(name = "CourtOrdCrtTime",  nullable = false, updatable = false)
 	@CreationTimestamp
@@ -56,7 +56,7 @@ public class CourtOrderVO{
 	public CourtOrderVO() {
 	}
 
-	public CourtOrderVO(Integer courtOrdNo, MemberVO memberVO, CourtVO courtVO, Boolean courtOrdStat,
+	public CourtOrderVO(Integer courtOrdNo, MemberVO memberVO, CourtVO courtVO, Integer courtOrdStat,
 			Timestamp courtOrdCrtTime, Date courtOrdDate, Integer courtOrdTime, Integer courtOrdTimeEnd,
 			Integer totalPrice) {
 		super();
@@ -71,7 +71,7 @@ public class CourtOrderVO{
 		this.totalPrice = totalPrice;
 	}
 
-	public CourtOrderVO(MemberVO memberVO, CourtVO courtVO, Boolean courtOrdStat, Date courtOrdDate,
+	public CourtOrderVO(MemberVO memberVO, CourtVO courtVO, Integer courtOrdStat, Date courtOrdDate,
 			Integer courtOrdTime, Integer courtOrdTimeEnd, Integer totalPrice) {
 		super();
 		this.memberVO = memberVO;
@@ -124,13 +124,13 @@ public class CourtOrderVO{
 		this.courtVO = courtVO;
 	}
 
+	
 
-
-	public Boolean getCourtOrdStat() {
+	public Integer getCourtOrdStat() {
 		return courtOrdStat;
 	}
 
-	public void setCourtOrdStat(Boolean courtOrdStat) {
+	public void setCourtOrdStat(Integer courtOrdStat) {
 		this.courtOrdStat = courtOrdStat;
 	}
 
@@ -174,7 +174,6 @@ public class CourtOrderVO{
 	public void setTotalPrice(Integer totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-
 
 	@Override
 	public String toString() {
