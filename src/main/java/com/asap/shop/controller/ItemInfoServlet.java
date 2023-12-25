@@ -67,6 +67,9 @@ public class ItemInfoServlet extends HttpServlet {
 		case "page":
 			getpage(req, res);
 			break;
+		case "countByCategory":
+            countItemsByCategory(req, res);
+            break;
 
 		}
 
@@ -232,6 +235,18 @@ public class ItemInfoServlet extends HttpServlet {
 			}
 		}
 
+	}
+	
+	private void countItemsByCategory(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	    String categoryType = req.getParameter("categoryType");
+	    int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+
+	    int count = itemInfoService.countItemsByCategory(categoryType, categoryId);
+
+	    res.setContentType("application/json; charset=UTF-8");
+	    PrintWriter out = res.getWriter();
+	    out.write(new Gson().toJson(count));
+	    out.close();
 	}
 
 	private void getpage(HttpServletRequest req, HttpServletResponse res) throws IOException {

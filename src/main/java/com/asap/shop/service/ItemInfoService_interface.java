@@ -47,4 +47,6 @@ public interface ItemInfoService_interface {
 	ItemInfoVO checkerFindByItemNo(Integer itemNo);
 	
 	Integer checkerUpdate(ItemInfoVO itemInfo);
+	
+	int countItemsByCategory(String categoryType, int categoryId);
 }

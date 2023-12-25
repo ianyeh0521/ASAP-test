@@ -466,6 +466,11 @@ if (list.getItemAddTime() != null) {
 			var max = $(".product-qty").text();
 			var cartQty = $(".horizontal-quantity").val();
 			var mbrNo = "M1";
+			
+			 if (cartQty > max) {
+			        alert("超過庫存數量！");
+			        return; // 阻止後續執行
+			    }
 
 			console.log(addCart);
 			$.ajax({

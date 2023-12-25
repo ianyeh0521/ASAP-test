@@ -158,7 +158,7 @@
 						<!-- 						class="cart-count badge-circle">3</span> --> </a>
 
 					<div class="dropdown cart-dropdown">
-						<a href="#" title="購物車" class="dropdown-toggle cart-toggle"
+						<a href="PendingOrder.jsp" title="購物車" class="dropdown-toggle cart-toggle"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false" data-display="static"> <i
 							class="icon-cart-thick"></i> <span
@@ -232,7 +232,13 @@
 
 								<div class="dropdown-cart-action">
 									<a href="AsapCart.jsp" class="btn btn-gray btn-block view-cart">查看購物車</a>
-									<a href="AsapOrderCheck.jsp" class="btn btn-dark btn-block">確認訂單</a>
+									<a href="PendingOrder.jsp" class="btn btn-dark btn-block">確認訂單</a>
+									
+																</div>
+							<button type="submit" class="btn btn-dark btn-place-order"
+								name="action" value="ordercreate" form="checkout-form">前往待付款頁面</button>
+						</div>
+						
 								</div>
 								<!-- End .dropdown-cart-total -->
 							</div>
@@ -908,13 +914,6 @@ $(document).ready(function() {
         console.log("商品類型編號:", itemTypeNo);
     });
     
-    var responseData = {
-    	    count:10
-    	};
-
-    	// 將數量插到頁面中
-    	$('.typetennis .products-count').text('(' + responseData.count + ')');
-    
 
     // 監聽尺寸的點擊事件，同理...
     $('#item_size_select div').on('click', function() {
@@ -982,6 +981,12 @@ $(document).on("click", ".btn-icon-cart", function() {
     var mbrNo = "M1"; // 會員號碼
     console.log(max);
 
+ // 檢查選擇的數量是否超過庫存
+    if (quantity > max) {
+        alert("超過庫存數量!");
+        return; // 阻止後續執行
+    }
+    
     $.ajax({
         url: "ShoppingCartServlet",
         type: "POST",
@@ -1005,20 +1010,25 @@ $(document).on("click", ".btn-icon-cart", function() {
 });
   
 //發起ajax請求，獲取特定商品類別的數量
-$.ajax({
-    url: "getCategoryItemCount", 
-    type: "GET",
-    data: { itemTypeNo: 3 }, 
-    dataType: "json",
-    success: function(data) {
-        // 在這裡處理後端接收到的數據
-        $('.typetennis .products-count').text('(' + data.count + ')');
-    },
-    error: function(xhr, status, error) {
-        // 處理請求錯誤
-        console.error(error);
+function countItemsByCategory(categoryType, categoryId) {
+        $.ajax({
+            url: 'YourServlet', // Servlet 的 URL
+            type: 'POST',
+            data: {
+                action: 'countByCategory',
+                categoryType: categoryType,
+                categoryId: categoryId
+            },
+            success: function(count) {
+                // 在這裡更新頁面上的內容
+                console.log("Count: " + count);
+                // 例如：$("#categoryCount").text(count);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
     }
-});
 
   //價格範圍功能
 document.addEventListener('DOMContentLoaded', function () {
@@ -1082,7 +1092,7 @@ var state = {
 		 var item_html = "";
 	  paginationData.querySet.forEach(function(item) {
 		    var soldOutLabel = item.itemStockQty == 0 ? `<div class="product-label label-hot">已完售</div>` : '';
-		    var hotSaleLabel = item.itemView > 20 ? `<span class="product-label label-sale">熱銷中</span>` : '';
+		    var hotSaleLabel = item.itemView > 180 ? `<span class="product-label label-sale">熱門瀏覽</span>` : '';
 		  item_html += `<div class="col-6 col-sm-3">
         <div class="product-default inner-quickview inner-icon">
         <figure>
@@ -1126,7 +1136,7 @@ var state = {
         </div>
         <div class="price-box">`;
 
-    if (item.preItemPrice != 0) {
+    if (item.preItemPrice > item.itemPrice ) {
     	item_html += `<del class="old-price">$\${item.preItemPrice}</del>`;
     }
 

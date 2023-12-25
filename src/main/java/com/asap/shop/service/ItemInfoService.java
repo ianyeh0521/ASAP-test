@@ -129,4 +129,10 @@ public class ItemInfoService implements ItemInfoService_interface {
 		// TODO Auto-generated method stub
 		return dao.checkerUpdate(itemInfo);
 	}
+	
+	@Override
+    public int countItemsByCategory(String categoryType, int categoryId) {
+        return dao.countItemsByCategory(categoryType, categoryId);
+    }
+
 }

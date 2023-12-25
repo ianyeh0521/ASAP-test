@@ -356,7 +356,7 @@ System.out.println(list);
 		class="icon-angle-up"></i></a>
 
 	<script>
-		//       获取表格中的所有行
+		//       獲取表格中所有行
 		var rows = document.querySelectorAll('tbody tr');
 
 		var total = 0;
