@@ -1,4 +1,4 @@
-package com.asap.chat.model;
+package com.asap.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
