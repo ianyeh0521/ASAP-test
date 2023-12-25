@@ -25,7 +25,7 @@ pageContext.setAttribute("list", list);
 System.out.println(list);
 
 OrderDetailService_interface OrderDetailSvc = new OrderDetailService();
-List<OrderDetailVO> orderdetail= OrderDetailSvc.findByMbrNo("M1");
+List<OrderDetailVO> orderdetail = OrderDetailSvc.findByMbrNo("M1");
 pageContext.setAttribute("cmtlist", orderdetail);
 
 ItemImgService_interface itemImgSvc = new ItemImgService();
@@ -315,8 +315,8 @@ if (list.getItemAddTime() != null) {
 						<li class="nav-item"><a class="nav-link"
 							id="product-tab-reviews" data-toggle="tab"
 							href="#product-reviews-content" role="tab"
-							aria-controls="product-reviews-content" aria-selected="false">商品評論
-								(1)</a></li>
+							aria-controls="product-reviews-content" aria-selected="false">賣家評論
+								</a></li>
 					</ul>
 
 					<div class="tab-content">
@@ -340,42 +340,48 @@ if (list.getItemAddTime() != null) {
 						<div class="tab-pane fade" id="product-reviews-content"
 							role="tabpanel" aria-labelledby="product-tab-reviews">
 							<div class="product-reviews-content">
-								<h3 class="reviews-title">1 review for Men Black Sports
-									Shoes</h3>
+								<h3 class="reviews-title">
+<!-- 								1 review for Men Black SportsShoes -->
+								</h3>
 
 								<div class="comment-list">
-								<c:forEach var="OrderDetailVO" items="${cmtlist}">
-									<div class="comments">
-										<figure class="img-thumbnail">
-											<img src="../assets/images/blog/author.jpg" alt="author"
-												width="80" height="80">
-										</figure>
+									<c:forEach var="OrderDetailVO" items="${cmtlist}">
+										<div class="comments">
+											<figure class="img-thumbnail">
+												<img src="../assets/images/blog/author.jpg" alt="author"
+													width="80" height="80">
+											</figure>
 
-										<div class="comment-block">
-											<div class="comment-header">
-												<div class="comment-arrow"></div>
+											<div class="comment-block">
+												<div class="comment-header">
+													<div class="comment-arrow"></div>
 
-												<div class="ratings-container float-sm-right">
-													<div class="product-ratings">
-														<span class="ratings" style="width: 60%"></span>
-														<!-- End .ratings -->
-														<span class="tooltiptext tooltip-top"></span>
+													<div class="ratings-container float-sm-right">
+														<div class="product-ratings">
+															<c:set var="ratingPercentage"
+																value="${OrderDetailVO.cmtScore * 20}" />
+															<!-- 計算百分比 -->
+															<span class="ratings" style="width: ${ratingPercentage}%"></span>
+															<!-- 應用百分比 -->
+															<!-- End .ratings -->
+															<span class="tooltiptext tooltip-top"></span>
+														</div>
+														<!-- End .product-ratings -->
 													</div>
-													<!-- End .product-ratings -->
+
+													<span class="comment-by"> <strong>${OrderDetailVO.mbrNo}</strong>
+														${OrderDetailVO.cmtTime}
+													</span>
 												</div>
 
-												<span class="comment-by"> <strong>Joe Doe</strong> ${OrderDetailVO.cmtTime}
-												</span>
-											</div>
-
-											<div class="comment-content">
-												<p>Excellent.</p>
+												<div class="comment-content">
+													<p>${OrderDetailVO.cmtText}</p>
+												</div>
 											</div>
 										</div>
-									</div>
 									</c:forEach>
 								</div>
-								
+
 
 								<div class="divider"></div>
 
