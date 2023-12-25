@@ -22,14 +22,12 @@ public class CourseService implements CourseService_interface{
 
 	@Override
 	public int update(CourseVO courseVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.update(courseVO);
 	}
 
 	@Override
 	public int delete(Integer courseNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.delete(courseNo);
 	}
 
 	@Override
@@ -39,14 +37,12 @@ public class CourseService implements CourseService_interface{
 
 	@Override
 	public List<CourseVO> findByName(String courseName) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.findByName(courseName);
 	}
 
 	@Override
 	public List<CourseVO> findByCoach(String coachNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.findByCoach(coachNo);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.asap.court.dao;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
@@ -137,22 +138,27 @@ public class CourtOrderDAO implements CourtOrderDAO_interface{
 	}
 
 	@Override
-	public List<CourtOrderVO> getAllUnPaidCourt(Date currentDate) {
+	public List<CourtOrderVO> getAllUnPaidCourt(Timestamp currentTimestamp) {
 		// 昨天日期轉換
-		LocalDate localDate = currentDate.toLocalDate();
+		LocalDate localDate = currentTimestamp.toLocalDateTime().toLocalDate();
 		LocalDate oneDayBefore = localDate.minusDays(1);
-		java.sql.Date oneDayBeforeDate = java.sql.Date.valueOf(oneDayBefore);
+		Timestamp oneDayBeforeTimestamp = Timestamp.valueOf(oneDayBefore.atStartOfDay());
+		
+		System.out.println(currentTimestamp);
+		System.out.println(oneDayBeforeTimestamp);
 		
 		// 開始找
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	            String hql = "FROM CourtOrderVO co " +
-	                    "WHERE co.courtOrdStat = false " +
-	                    "AND co.courtOrdDate >= :currentDate " +
-	                    "AND co.courtOrdCrtTime BETWEEN :oneDayBeforeCurrentDate AND :currentDate";
-
+	                    "WHERE co.courtOrdStat = 0 " +
+	            		"OR co.courtOrdStat = 1 " +
+	                    "AND co.courtOrdCrtTime >= :oneDayBeforeCurrentDate " +
+	                    "AND co.courtOrdCrtTime <= :currentDate";
+	            
+	            // "AND co.courtOrdDate >= :currentDate " +
 	            Query<CourtOrderVO> query = session.createQuery(hql, CourtOrderVO.class);
-	            query.setParameter("currentDate", currentDate);
-	            query.setParameter("oneDayBeforeCurrentDate", oneDayBeforeDate);
+	            query.setParameter("currentDate", currentTimestamp);
+	            query.setParameter("oneDayBeforeCurrentDate", oneDayBeforeTimestamp);
 
 	            return query.list();
 		} catch (HibernateException e) {

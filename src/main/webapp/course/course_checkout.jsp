@@ -155,7 +155,7 @@
 				
                 <div class="row justify-content-center">
                     <div class="col-lg-7">
-                     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/course/mbrCourseServlet.do" class="mb-2">
+                     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/course/mbrCourseServlet" class="mb-2">
                         <div class="order-summary">
                             <ul class="checkout-steps">
 	                            <li>

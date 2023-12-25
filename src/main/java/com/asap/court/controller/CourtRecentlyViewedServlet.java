@@ -21,6 +21,7 @@ import com.asap.court.service.CourtImgService_interface;
 import com.asap.court.service.CourtService;
 import com.asap.court.service.CourtService_interface;
 import com.asap.util.HibernateProxyTypeAdapter;
+import com.asap.util.JedisPoolUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -28,11 +29,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 
 @WebServlet("/court/courtRecView.do")
 public class CourtRecentlyViewedServlet extends HttpServlet{
 
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 	private CourtService_interface courtService_interface;
 	private CourtImgService_interface courtImgService_interface;
 	
@@ -55,7 +58,7 @@ public class CourtRecentlyViewedServlet extends HttpServlet{
 		Gson gson = builder.create();
 		
 		// Redis 連線
-		Jedis jedis = new Jedis("localhost", 6379);
+		Jedis jedis = pool.getResource();
 		jedis.select(2);
 		
 		if("write".equals(action)) {

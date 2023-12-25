@@ -1,3 +1,6 @@
+<%@page import="com.asap.course.service.CourseService"%>
+<%@page import="com.asap.course.service.CourseService_interface"%>
+<%@page import="com.asap.course.entity.CourseVO"%>
 <%@page import="com.asap.coach.entity.CoachVO"%>
 <%@page import="com.asap.coach.service.CoachService"%>
 <%@page import="com.asap.coach.service.CoachService_interface"%>
@@ -20,7 +23,11 @@
 		 closedDate = new java.sql.Date(System.currentTimeMillis());
 	}
 	
+	Integer courseNo = Integer.valueOf(request.getParameter("courseNo"));
+	CourseService_interface courseSvc = new CourseService();
+	CourseVO courseVO = courseSvc.findByPK(courseNo);
 	
+	pageContext.setAttribute("courseVO", courseVO);	
 
 	SportTypeService sportTypeSvc = new SportTypeService_interface();
 	List<SportTypeVO> sportTypeList = sportTypeSvc.getALL();
@@ -50,13 +57,13 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-<title>教練課程上架</title>
+<title>教練課程修改</title>
 
 
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
-	href="assets/images/icons/favicon.png">
+	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
 
 
 <script>
@@ -68,7 +75,7 @@
 	};
 	(function(d) {
 		var wf = d.createElement('script'), s = d.scripts[0];
-		wf.src = '/ASAP/assets/js/webfont.js';
+		wf.src = '${pageContext.request.contextPath}/assets/js/webfont.js';
 		wf.async = true;
 		s.parentNode.insertBefore(wf, s);
 	})(document);
@@ -85,9 +92,13 @@
 	href="/ASAP/assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
 	
 <!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
-<link   rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/course/datetimepicker/jquery.datetimepicker.css" />
-<script src="${pageContext.request.contextPath}/course/datetimepicker/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/course/datetimepicker/jquery.datetimepicker.full.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.css" />
+<script
+	src="${pageContext.request.contextPath}/court/datetimepicker/jquery.js"></script>
+<script
+	src="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.full.js"></script>
+
 <style>
     .outer-container {
         border: 1px solid rgba(0, 0, 0, 0.1); 
@@ -190,12 +201,12 @@
 					<nav aria-label="breadcrumb" class="breadcrumb-nav">
 						<div class="container">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">教練主頁</a></li>
-								<li class="breadcrumb-item active" aria-current="page">課程上架</li>
+								<li class="breadcrumb-item"><a href="listAllCourses_datatable.jsp">所有課程</a></li>
+								<li class="breadcrumb-item active" aria-current="page">課程修改</li>
 							</ol>
 						</div>
 					</nav>
-					<h1>課程上架</h1>
+					<h1>課程修改</h1>
 				</div>
 			</div>
 			
@@ -225,14 +236,15 @@
 									
 									<div class="form-group">
 										<label>課程名稱 </label><div style="color:red">${nameError}</div> <input type="text" class="form-control"
-											name="name" value=""  style="border-radius: 10px;">
+											name="name" value="${courseVO.courseName}"  style="border-radius: 10px;">
 									</div>
 
 									<div class="select-custom">
 										<label>運動種類<span class="required"></span></label> 
 										<select name="type" class="form-control" style="border-radius: 10px;">
 											<c:forEach var="sportTypeVO" items="${sportTypeList}">
-												<option value="${sportTypeVO.sportTypeNo}">${sportTypeVO.sportTypeName}
+												<option value="${sportTypeVO.sportTypeNo}"
+												${(courseVO.sportTypeVO.sportTypeNo == sportTypeVO.sportTypeNo)?'selected':'' }>${sportTypeVO.sportTypeName}
 											</c:forEach>
 										</select>
 									</div>
@@ -240,7 +252,7 @@
 									
 									<div class="form-group">
 										<label>上課地址 </label><div style="color:red">${addressError}</div> <input type="text" class="form-control" style="border-radius: 10px;" onblur="ShowLngLati()" id="getAddress"
-											name="address" value="">
+											name="address" value="${courseVO.courseAddress}">
 									</div>
 
 										
@@ -249,7 +261,7 @@
 											<div class="form-group">
 												<label>人數限制<span></span></label> <div style="color:red">${pplLimitError}</div><input type="text"
 													class="form-control" style="border-radius: 10px;" name="pplLimit"
-													value=""/>
+													value="${courseVO.coursePplLimit}"/>
 											</div>
 										</div>
 										
@@ -257,7 +269,7 @@
 											<div class="form-group">
 												<label>課程價格<span></span></label> <div style="color:red">${priceError}</div><input type="text"
 													class="form-control" style="border-radius: 10px;" name="price"
-													value=""/>
+													value="${courseVO.coursePrice}"/>
 											</div>
 										</div>
 									</div>
@@ -285,7 +297,7 @@
 										<label>課程介紹內文<span></span></label><div style="color:red">${textError}</div>
 										<textarea cols="30" rows="1" id="contact-message"
 											class="form-control" name="courseText" style="height: 30px; text-align: left; border-radius: 10px;"
-											onblur="courtTextAlert()"></textarea>
+											onblur="courtTextAlert()">${courseVO.courseText}</textarea>
 									</div>
 
 <!-- 									<div class="select-custom"> -->
@@ -303,16 +315,17 @@
 									            <label for="upFiles1" class="form-label">照片:</label><div style="color:red">${imgError}</div>
 									            <input id="upFiles1" name="upFiles1" class="form-control" style="border-radius: 10px;" type="file" 
 									            	onchange="previewImage('upFiles1', 'blob_holder1')">
-									            <div class="blob_holder" id="blob_holder1" ></div>
+									            <div class="blob_holder" id="blob_holder1"><img src="<%=request.getContextPath()%>/course/DBGifReader?courseNo=${courseVO.courseNo}" width="100px"></div>
 									        </div>
 									    </div>
 									</div>
 								
 									<div class="form-footer mb-0">
 											<div class="form-footer-right">
-											<input type="hidden" name="action" value="add">
+											<input type="hidden" name="action" value="update">
 											<input type="hidden" name="coachNo" value="${coachNo}">
-											<input type="submit" class="btn btn-dark py-4" value="新增" style="border-radius: 10px;">
+											<input type="hidden" name="courseNo" value="${courseVO.courseNo}">
+											<input type="submit" class="btn btn-dark py-4" value="修改" style="border-radius: 10px;">
 										</div>
 									</div>
 								</FORM>
@@ -414,11 +427,11 @@
 
 	<!-- Plugins JS File -->
 <!-- 	<script src="/ASAP/assets/js/jquery.min.js"></script> -->
-	<script src="/ASAP/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="/ASAP/assets/js/plugins.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 
 	<!-- Main JS File -->
-	<script src="/ASAP/assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<!-- header and footer template -->
 	<script>

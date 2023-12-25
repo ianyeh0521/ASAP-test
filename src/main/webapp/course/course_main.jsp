@@ -270,9 +270,11 @@ try {
 			<!-- 功能按鈕 -->
 			<div class="container"
 				style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
+				<a href="${pageContext.request.contextPath}/course/course_orderlist.jsp">
 				<button class="btn btn-primary btn-rounded btn-md">
-					<a href="#"></a>我的課程
+					我的預約
 				</button>
+				</a>
 			</div>
 
 
@@ -324,7 +326,7 @@ try {
 					<!-- End .toolbox-right -->
 				</nav>
 				<!-- 課程資訊 -->
-				<div class="outer-container" v-for="data in datas">
+				<div class="outer-container" v-for="data in datas" :key="data.courseNo">
 					<div class="row justify-content-center align-items-center">
 						<div
 							class="col-sm-12 col-6 product-default left-details product-list mb-2 d-flex justify-content-center">
@@ -336,14 +338,22 @@ try {
 							</figure>
 							<div class="product-details">
 								<div class="category-list">
-									<a href="" class="type">{{data.sportTypeVO.sportTypeName}}</a>
+									{{data.sportTypeVO.sportTypeName}}
 								</div>
 								<h3 class="product-title" class="name">
-									<a href="product.html"> {{data.courseName}}</a>
+									 {{data.courseName}}
 								</h3>
 								<p class="product-description" class="text">{{data.courseText}}</p>
 
 
+								<div class="price-box">
+									名額：
+									<span class="product-price" class="price"> 
+										{{ currentOrder[data.courseNo] }} / {{data.coursePplLimit}}
+									</span>
+									<span v-if="currentOrder[data.courseNo] === data.coursePplLimit" style="color: red;">已額滿!!!</span>
+								</div>
+								
 								<div class="price-box">
 									<span class="product-price" class="price"> $
 										{{data.coursePrice}} / 堂</span>
@@ -355,12 +365,14 @@ try {
 
 								<div class="product-action">
 									<div class="product">
-										<a
+										<a	
+											v-if="currentOrder[data.courseNo] !== data.coursePplLimit"
 											:href="'/ASAP/course/course_page.jsp?courseNo=' + data.courseNo"
 											class="btn btn-primary btn-rounded btn-md"
 											@click="writeCourt(data.courtNo)"> <span
 											style="color: white;">我要預約</span>
 										</a>
+										<span v-else style="color: gray;">無法預約</span>
 									</div>
 								</div>
 							</div>
@@ -499,13 +511,16 @@ try {
             data: function(){
                 return{
                     datas: [],
-                    recentlyViewDatas: [],
+                    currentOrder:{},
                     selectedSortOption: 'menu_order',
                     userlatitude: null,
                     userlongitude: null,
                     currentPage: 1,
                     totalPage: 0,
                 }
+            },
+            created(){
+            	this.fetchAdditionalData();
             },
             methods:{
                 
@@ -525,6 +540,8 @@ try {
                             this.totalPage = result2;
                             console.log(this.datas)
                             console.log(this.totalPage)
+                            
+                            this.fetchAdditionalData();
                         }))
                         .catch(function (reason) {
                             console.log(reason);
@@ -562,6 +579,24 @@ try {
                         behavior: 'smooth' 
                     });
                 },
+                
+                
+                // 抓報名人數
+                fetchAdditionalData() {
+             
+                   this.datas.forEach(data => {
+                	 const courseNo = data.courseNo;
+                	 console.log(courseNo)
+                     axios.get("mbrCourseServlet?action=checkInMain&courseNo="+courseNo)
+                       .then(response => {
+                         console.log(response)
+                         this.currentOrder = { ...this.currentOrder, [data.courseNo]: response.data };
+                       })
+                       .catch(error => {
+                         console.error(`Error fetching additional data for courseNo ${data.courseNo}:`, error);
+                       });
+                   });
+                 }
               
             	
             },
@@ -578,13 +613,13 @@ try {
 	$(document).ready(function() {
 		// 日期選擇
 		var somedate1 = new Date('<%=closedDate%>');
+		
 		$.datetimepicker.setLocale('zh'); 
         $('#f_date1').datetimepicker({
            theme: '',          
-           timepicker: false,   //timepicker: false,
+           timepicker: true,   //timepicker: false,
            step: 60,            
-	       format: 'Y-m-d',
-//		       value: somedate1,
+	       format: 'Y-m-d H:i',
 	       beforeShowDay: function(date) {
            	  if (  date.getYear() <  somedate1.getYear() || 
     		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
@@ -593,23 +628,21 @@ try {
                       return [false, ""]
                  }
                  return [true, ""];
-           }
+           },
+          
            //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
            //startDate:	        '2022/07/10',  // 起始日
            //minDate:           '-1970-01-01', // 去除今日(不含)之前
            //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
         });
-        $('#f_date1').attr("placeholder", "請選擇起始日期");
-		
+        $('#f_date1').attr("placeholder", "請選擇起始時間");
         
-        var somedate2 = new Date('<%=closedDate%>');
-		$.datetimepicker.setLocale('zh'); 
         $('#f_date2').datetimepicker({
            theme: '',          
-           timepicker: false,   //timepicker: false,
+           timepicker: true,   
            step: 60,            
-	       format: 'Y-m-d',
-//		       value: somedate2,
+	       format: 'Y-m-d H:i',
+	       minDate: somedate1,
 	       beforeShowDay: function(date) {
            	  if (  date.getYear() <  somedate1.getYear() || 
     		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
@@ -618,13 +651,38 @@ try {
                       return [false, ""]
                  }
                  return [true, ""];
-           }
+           },
+           
            //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
            //startDate:	        '2022/07/10',  // 起始日
            //minDate:           '-1970-01-01', // 去除今日(不含)之前
            //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
         });
-        $('#f_date2').attr("placeholder", "請選擇結束日期");
+        $('#f_date2').attr("placeholder", "請選擇結束時間");
+        
+        $('#f_date1').on('change', function(selected) {
+            var selectedDate = new Date(selected.target.value);
+            $('#f_date2').datetimepicker('setOptions', { minDate: selectedDate });
+        });
+        
+        $('#f_date2').on('blur', function() {
+            validateDatetimeInputs();
+        });
+        
+        function validateDatetimeInputs() {
+            var startDate = $('#f_date1').val();
+            var endDate = $('#f_date2').val();
+
+            if (startDate && endDate) {
+                if (new Date(startDate) > new Date(endDate)) {
+                    alert('結束時間必須晚於起始時間');
+                    $('#f_date2').val('');
+                }
+            } else if (!startDate && endDate) {
+                alert('請先選擇起始時間');
+                $('#f_date2').val('');
+            }
+        }
 
        
         

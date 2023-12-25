@@ -1,5 +1,6 @@
 package com.asap.court;
 
+import java.io.Console;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,8 +23,10 @@ public class BackgroundOrderManager implements ServletContextListener{
 		
 		// 初始時間設定
 		long initialDelay = calculateInitialDelayUntilMidnight();
+		System.out.println("initialDelay = "+initialDelay+" sec");
 		
-        scheduler.scheduleAtFixedRate(new OrderCheckRun(), initialDelay, 24, TimeUnit.HOURS);
+//        scheduler.scheduleAtFixedRate(new OrderCheckRun(), initialDelay, 24, TimeUnit.HOURS);
+        scheduler.scheduleAtFixedRate(new OrderCheckRun(), initialDelay, 24 * 60 * 60, TimeUnit.SECONDS);
 	}
 
 	@Override

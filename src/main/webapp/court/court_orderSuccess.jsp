@@ -88,7 +88,7 @@
                   	<p>
                     耶，你的場地預約成功啦！🎉
                     <br>
-                    請在預約後一天內完成付款，若超時將自動取消您的場地預約
+                    請在預約當天完成付款，若超時將自動取消您的場地預約
                     </p>
                    
                    <FORM METHOD="get" ACTION="<%=request.getContextPath()%>/court/courtOrderServlet.do" class="mb-2">
