@@ -51,6 +51,9 @@ public interface ItemInfoDAO_interface {
 	//找最高價
 	int getHighestPrice();
 	
+	// 計算特定分類的商品數量
+	int countItemsByCategory(String categoryType, int categoryId);
+	
 	public ItemInfoVO checkerFindByItemNo(Integer itemNo);
 	
 	Integer checkerUpdate(ItemInfoVO itemInfo);

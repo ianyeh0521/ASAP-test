@@ -360,5 +360,17 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 //
 //		}
 //	}
+	
+	public int countItemsByCategory(String categoryType, int categoryId) {
+		 int count = 0;
+		    Session session = factory.openSession();
+		    String hql = "SELECT COUNT(*) FROM ItemInfo WHERE " + categoryType + ".id = :categoryId";
+		    Query<Long> query = session.createQuery(hql, Long.class);
+		    query.setParameter("categoryId", categoryId);
+		    count = query.uniqueResult().intValue();
+		    session.close();
+		    return count;
+		}
+
 
 }
