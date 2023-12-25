@@ -67,25 +67,6 @@ public class OrderServlet extends HttpServlet {
 		res.setContentType("text/html; charset=UTF-8");
 	}
 
-	private void deleteOrder(HttpServletRequest req, HttpServletResponse res) {
-		Integer orderNo = Integer.valueOf(req.getParameter("orderNo"));
-		OrderVO orderVO= orderService.findByPK(orderNo);
-		orderVO.setOrderStat(4);
-		orderService.update(orderVO);
-		OrderDetailService_interface orderDetail= new OrderDetailService();
-
-		List <OrderDetailVO> orderdetails = orderDetail.findByOrderNo(orderNo);
-		for(OrderDetailVO orderitem: orderdetails) {
-			Integer itemno= orderitem.getItemInfoVO().getItemNo();
-			Integer itemqty= orderitem.getItemOrderQty();
-			ItemInfoVO itemInfoVO= itemInfoSvc.findByItemNo(itemno);
-			Integer inStock=itemInfoVO.getItemStockQty();
-			itemInfoVO.setItemStockQty(inStock+itemqty);
-			itemInfoSvc.update(itemInfoVO);
-		}
-		
-	}
-
 	private String insert(HttpServletRequest req, HttpServletResponse res) throws IOException {
 //			String mbrNo = req.getParameter("mbrNo"); 
 
@@ -98,36 +79,6 @@ public class OrderServlet extends HttpServlet {
 		System.out.println(zip);
 		String rcvraddr = req.getParameter("rcvraddr");
 		String rcvraddrdetail = req.getParameter("rcvraddrdetail");
-
-//		
-		OrderVO entity = new OrderVO();
-////			session.getAttribute("memberVo",mVo);
-		entity.setMbrNo("M1");
-		entity.setOrderPrice(total);
-		entity.setOrderStat(0);
-		entity.setRcvrName(rcvrname);
-		entity.setRcvrEmail(rcvremail);
-		entity.setRcvrPhone(rcvrphone);
-		entity.setRcvrAddr(zip + rcvraddr + rcvraddrdetail);
-		entity.setOrderCrtTime(new java.sql.Timestamp(System.currentTimeMillis()));
-		entity.setOrderCancelTime(null);
-
-		Integer orderno= orderService.insert(entity);
-
-//	    ItemInfoService_interface itemInfoSvc = new ItemInfoService();
-		// 檢查訂單是否成功創建
-	    if (orderno != null && orderno > 0) {
-	        // 刪除會員購物車內容
-	        String mbrNo = "M1"; // 或從某處獲取會員編號
-	        ShoppingCartService shoppingCartService = new ShoppingCartService();
-
-	        // 假設有一個方法可以獲取特定會員的所有購物車項目
-	        List<ShoppingCartVO> shoppingCartItems = shoppingCartService.findByMember(mbrNo);
-
-	        for (ShoppingCartVO item : shoppingCartItems) {
-	            shoppingCartService.delete(item);
-	        }
-	    }
 
 		Map<String, String[]> map = req.getParameterMap();
 		// map.keySet().stream().forEach(System.out::println);
@@ -142,6 +93,12 @@ public class OrderServlet extends HttpServlet {
 				
 				
 				OrderDetailVO orderDetail = new OrderDetailVO();
+				ItemInfoVO itemcheck = itemInfoSvc.findByItemNo(Integer.parseInt(product[0]));
+				Integer maxpurchase = itemcheck.getItemStockQty();
+				if(maxpurchase <= Integer.parseInt(product[2])) {
+					ShoppingCartService shoppingCartSvc = new ShoppingCartService();
+					ShoppinngCartVO = shoppingCartSvc.findByMemberAndItemNo();
+				}
 				ItemInfoVO itemInfoVO = new ItemInfoVO(Integer.parseInt(product[0]));
 				orderDetail.setItemOrderPrice(Integer.parseInt(product[1]));
 				orderDetail.setItemOrderQty(Integer.parseInt(product[2]));
@@ -163,8 +120,61 @@ public class OrderServlet extends HttpServlet {
 				
 		        }
 		    }
+		
+//		
+		OrderVO entity = new OrderVO();
+////			session.getAttribute("memberVo",mVo);
+		entity.setMbrNo("M1");
+		entity.setOrderPrice(total);
+		entity.setOrderStat(0);
+		entity.setRcvrName(rcvrname);
+		entity.setRcvrEmail(rcvremail);
+		entity.setRcvrPhone(rcvrphone);
+		entity.setRcvrAddr(zip + rcvraddr + rcvraddrdetail);
+		entity.setOrderCrtTime(new java.sql.Timestamp(System.currentTimeMillis()));
+		entity.setOrderCancelTime(null);
+
+		Integer orderno= orderService.insert(entity);
+
+		
+		
+//	    ItemInfoService_interface itemInfoSvc = new ItemInfoService();
+		// 檢查訂單是否成功創建
+	    if (orderno != null && orderno > 0) {
+	        // 刪除會員購物車內容
+	        String mbrNo = "M1"; // 或從某處獲取會員編號
+	        ShoppingCartService shoppingCartService = new ShoppingCartService();
+
+	        // 假設有一個方法可以獲取特定會員的所有購物車項目
+	        List<ShoppingCartVO> shoppingCartItems = shoppingCartService.findByMember(mbrNo);
+
+	        for (ShoppingCartVO item : shoppingCartItems) {
+	            shoppingCartService.delete(item);
+	        }
+	    }
+
+		
 		return "/ASAP/shop/PendingOrder.jsp";
 		}
+	
+	private void deleteOrder(HttpServletRequest req, HttpServletResponse res) {
+		Integer orderNo = Integer.valueOf(req.getParameter("orderNo"));
+		OrderVO orderVO= orderService.findByPK(orderNo);
+		orderVO.setOrderStat(4);
+		orderService.update(orderVO);
+		OrderDetailService_interface orderDetail= new OrderDetailService();
+
+		List <OrderDetailVO> orderdetails = orderDetail.findByOrderNo(orderNo);
+		for(OrderDetailVO orderitem: orderdetails) {
+			Integer itemno= orderitem.getItemInfoVO().getItemNo();
+			Integer itemqty= orderitem.getItemOrderQty();
+			ItemInfoVO itemInfoVO= itemInfoSvc.findByItemNo(itemno);
+			Integer inStock=itemInfoVO.getItemStockQty();
+			itemInfoVO.setItemStockQty(inStock+itemqty);
+			itemInfoSvc.update(itemInfoVO);
+		}
+		
+	}
 	
 	private void payOrder(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		System.out.println("進來ㄌ");
