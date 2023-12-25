@@ -6,7 +6,7 @@
 <%@ page import="com.asap.shop.service.ItemInfoService_interface"%>
 <%@ page import="com.asap.shop.service.ItemInfoService"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 
 <%
@@ -297,7 +297,7 @@
 
 
 											<div class="label-group">
-<!-- 												<span class="product-label label-sale">-50%</span> -->
+												<!-- 												<span class="product-label label-sale">-50%</span> -->
 											</div>
 
 											<a href="ProductQuickView.html" class="btn-quickview"
@@ -450,7 +450,7 @@
 												</div>
 											<li><a href="#widget-category-2" class="collapsed"
 												data-toggle="collapse" role="button" aria-expanded="false"
-												aria-controls="widget-category-2"> 服裝尺寸<span
+												aria-controls="widget-category-2"> 商品尺寸<span
 													class="products-count">(4)</span> <span class="toggle"></span>
 											</a>
 												<div class="collapse" id="widget-category-2">
@@ -559,8 +559,8 @@
 
 												<div class="slider-container">
 													<label for="max-price">最高價格:</label> <input type="range"
-														id="max-price" name="max-price" min="0" max="1000"
-														value="1000"> <span id="max-price-value"></span>
+														id="max-price" name="max-price" min="0" max="5000"
+														value="5000"> <span id="max-price-value"></span>
 												</div>
 
 												<p>
@@ -916,7 +916,7 @@ $(document).ready(function() {
     	$('.typetennis .products-count').text('(' + responseData.count + ')');
     
 
-    // 監聽服裝尺寸的點擊事件，同理...
+    // 監聽尺寸的點擊事件，同理...
     $('#item_size_select div').on('click', function() {
         if($(this).hasClass('selected')) {
             $(this).removeClass('selected');
@@ -926,7 +926,7 @@ $(document).ready(function() {
             $(this).addClass("selected");
             itemSizeNo = $(this).data('category');
         }
-        console.log("服裝尺寸編號:", itemSizeNo);
+        console.log("尺寸編號:", itemSizeNo);
     });
 
     // 監聽商品狀態的點擊事件，同理...
@@ -1081,14 +1081,13 @@ var state = {
 	function getPosts(paginationData) {
 		 var item_html = "";
 	  paginationData.querySet.forEach(function(item) {
-		  var label = item.itemStockQty == 0 
-		  ? '<span class="product-label label-sold-out">已完售</span>' 
-		  :  '<span class="product-label label-sale">熱銷中</span>';
+		    var soldOutLabel = item.itemStockQty == 0 ? `<div class="product-label label-hot">已完售</div>` : '';
+		    var hotSaleLabel = item.itemView > 20 ? `<span class="product-label label-sale">熱銷中</span>` : '';
 		  item_html += `<div class="col-6 col-sm-3">
         <div class="product-default inner-quickview inner-icon">
         <figure>
         <span style="display: flex; align-items: center; justify-content: center; height: 300px;">
-        <a href="AsapShopProduct.jsp?itemNo=\${item["itemNo"]}">
+        <a href="ItemInfoServlet?action=increaseViewItem&itemNo=\${item["itemNo"]}">
     	<img
 			src="ItemInfoServlet?action=getImg&itemNo=\${item["itemNo"]}""
 			alt="product" style="max-height: 100%;" />
@@ -1097,17 +1096,16 @@ var state = {
 
 
 		<div class="label-group">
-		<span id="product-label" class="product-label"></span>
+		` + soldOutLabel + hotSaleLabel + `
+	
 		</div>
             <a href="ProductQuickView.html" class="btn-quickview" title="快速查看">快速查看</a>
         </figure>
         <div class="product-details">
             <div class="category-wrap">
                 <div class="category-list">
-                    <span>\${item.itemName}</span>, <span>\${item.itemTypeVO.itemTypeName}</span>, <span>\${item.itemStatVO.itemStatText}</span>
+                <span>\${item.itemTypeVO.itemTypeName}</span>, <span>\${item.itemStatVO.itemStatText}</span>,尺寸: <span>\${item.itemSizeVO.itemSizeText}</span>
                     </div>
-                    <a href="AsapShopWish.jsp" class="btn-icon-wish"
-                      title="加入收藏"><i class="icon-heart"></i></a>
                   </div> 
             <h3 class="product-title">
                 <span>\${item.itemName}</span><br>
@@ -1129,10 +1127,10 @@ var state = {
         <div class="price-box">`;
 
     if (item.preItemPrice != 0) {
-    	item_html += `<del class="old-price">\${item.preItemPrice}</del>`;
+    	item_html += `<del class="old-price">$\${item.preItemPrice}</del>`;
     }
 
-    item_html += `<span class="product-price">\${item.itemPrice}</span>
+    item_html += `<span class="product-price">$\${item.itemPrice}</span>
         </div>
         </div>
     </div>
