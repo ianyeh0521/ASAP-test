@@ -36,7 +36,7 @@ import com.asap.util.MailFormat;
 import ecpay.payment.integration.AllInOne;
 
 @WebServlet("/shop/orderPayReturn.do")
-public class ShopecPayReturnServlet extends HttpServlet{
+public class ShopECPayReturnServlet extends HttpServlet{
 
 	public static AllInOne all;
 	private OrderService_interface orderSvc;
@@ -130,8 +130,10 @@ public class ShopecPayReturnServlet extends HttpServlet{
 			String result = mail.sendMail();
 			System.out.println("SendMail : " + result);
 		}else {
-
-
+			OrderVO orderVO= orderSvc.findByPK(ordNo);
+			System.out.println(orderVO);
+			orderVO.setOrderStat(4);
+			orderSvc.update(orderVO);
 		}
 			
 	}

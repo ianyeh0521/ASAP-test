@@ -13,7 +13,7 @@
 // String shoppingCart = request.getParameter("mbrNo");
 ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
 ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
-List<ShoppingCartVO> list = ShoppingCartSvc.findByMember("M1");
+List<ShoppingCartVO> list = ShoppingCartSvc.findByMember("M001");
 pageContext.setAttribute("list", list);
 
 System.out.println(list);
@@ -396,6 +396,9 @@ System.out.println(list);
 		$("footer").load("footer.html");
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
+		<c:if test="${not empty msg}">
+		alert("${msg}");
+		</c:if>
 	</script>
 
 </body>
