@@ -1,5 +1,6 @@
 package com.asap.member.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -24,8 +25,9 @@ public class MbrActivDAO implements MbrActivDAO_interface{
 	@Override
 	public int add(MbrActivVO mbrActiv) {
 		try {
-			Integer id = (Integer) getSession().save(mbrActiv);
 
+			Integer id = (Integer) getSession().save(mbrActiv);
+           
 			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,5 +78,4 @@ public class MbrActivDAO implements MbrActivDAO_interface{
 	}
 
 	
-
 }

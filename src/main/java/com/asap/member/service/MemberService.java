@@ -78,4 +78,12 @@ public class MemberService implements MemberService_interface {
 		return dao.update(vo);
 	}
 
+	@Override
+	public String updatePwd(MemberVO member) {
+		
+		// 密碼加密
+		member.setMbrPwd(hashPassword(member.getMbrPwd()));
+		return dao.update(member);
+	}
+
 }

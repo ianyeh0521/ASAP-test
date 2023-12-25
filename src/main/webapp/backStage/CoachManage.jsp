@@ -72,7 +72,16 @@
         '<label style="display: block; margin: 5px">個人照</label>'+
         '<img src="${pageContext.request.contextPath}/GifReader?action=getCoachImg&coachNo='+
          d.CoachNo +
-        '" alt="個人照" style="width: 60px; height: 80px; margin-left: 20%" />'+ 
+        '" alt="個人照" style="width: 60px; height: 80px; margin-left: 8%" />'+ 
+        '<img src="${pageContext.request.contextPath}/GifReader?action=getCoachCertImg&certImgNo='+
+         d.coachCertImg1 +
+        '" alt="個人照" style="width: 60px; height: 80px; margin-left: 8%" />'+ 
+        '<img src="${pageContext.request.contextPath}/GifReader?action=getCoachCertImg&certImgNo='+
+         d.coachCertImg2 +
+        '" alt="個人照" style="width: 60px; height: 80px; margin-left: 8%" />'+ 
+        '<img src="${pageContext.request.contextPath}/GifReader?action=getCoachCertImg&certImgNo='+
+         d.coachCertImg3 +
+        '" alt="個人照" style="width: 60px; height: 80px; margin-left: 8%" />'+ 
         ' </div></div>';
     }
  

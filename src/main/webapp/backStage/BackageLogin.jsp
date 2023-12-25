@@ -107,18 +107,13 @@
 		<main class="main">
 			<div class="page-header">
 				<div class="container d-flex flex-column align-items-center">
-					<h1>會員登入</h1>
+					<h1>後台人員登入</h1>
 				</div>
 			</div>
 
 			<div class="container login-container">
 				<div style="text-align: center;">
-					<c:if test="${not empty registerSuccess}">
-						<p style="color: blue; font-size: 12px;">${registerSuccess}</p>
-						<%
-						session.removeAttribute("registerSuccess");
-						%>
-					</c:if>
+					
 					<c:if test="${not empty errorMsgs}">
 						<c:forEach var="message" items="${errorMsgs}">
 							<p style="color: red; font-size: 12px;">${message}</p>
@@ -133,53 +128,20 @@
 								style="margin: 30px; box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
 
 
-								<form
-									action="${pageContext.request.contextPath}/MemberController"
-									method="post">
-									<label for="login-email" style="margin-top: 20px"> 會員帳號
+								<form action="${pageContext.request.contextPath}/BackStageController" method="post">
+									<label for="login-email" style="margin-top: 20px"> 後台帳號
 									</label> <input type="email" class="form-input form-wide"
-										id="login-email" required name="mbrEmail" placeholder="email" value="${mbrEmail}" />
-                                    <% session.removeAttribute("mbrEmail"); %>
-									<label for="login-password"> 會員密碼 </label> <input
+										id="login-email" required name="backEmail" placeholder="email" />
+                     
+									<label for="login-password"> 後台密碼 </label> <input
 										type="password" class="form-input form-wide"
-										id="login-password" required name="mbrPwd"
-										placeholder="password" /> <label for="input_ver"> 驗證碼
-									</label> <input class="form-input form-wide" id="input_ver" type="text"
-										name="verifycode" required />
-
-									<div
-										style="display: flex; align-items: center; flex-wrap: wrap; margin: 5px 0;">
-										<img id="verifycode"
-											src="${pageContext.request.contextPath}/AuthCode"
-											style="border: 2px white solid; margin-right: 15px; width: 150px; height: 40px" />
-										<button type="button"
-											style="border: 0; border-radius: 5px; margin: 0 6px 0 2px; background-color: lightgray;"
-											id="change_ver">更換</button>
-									</div>
-
-									<div class="form-footer"
-										style="margin: 5px 0 15px 0; justify-content: flex-end">
-										<div style="margin-right: 15px;">
-											<a
-												href="${pageContext.request.contextPath}/member/register.jsp"
-												class="forget-password text-dark form-footer-right"
-												style="text-decoration: underline;">註冊帳號</a>
-										</div>
-										<div>
-											<a
-												href="${pageContext.request.contextPath}/member/MemberForgetPwd.jsp"
-												class="forget-password text-dark form-footer-right"
-												style="text-decoration: underline">忘記密碼</a>
-										</div>
-									</div>
+										id="login-password" required name="backPwd"
+										placeholder="password" /> 
+		
 									<input type="hidden" name="action" value="login">
 									<button type="submit" class="btn btn-dark btn-md w-100"
 										id="btn_login">登入</button>
-									<hr style="margin: 15px 0" />
-									<button type="button"
-										class="btn btn-primary btn-ellipse btn-md w-100"
-										style="border-radius: 50px" id="btn_google">
-										使用Google帳號登入</button>
+									
 								</form>
 							</div>
 
@@ -294,22 +256,6 @@
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
-	<script>
-		$(window).on(
-				"load",
-				function() {
-
-					$("button#change_ver").on(
-							"click",
-							function() {
-								$("img#verifycode").attr(
-										"src",
-										"${pageContext.request.contextPath}/AuthCode?time="
-												+ new Date().getTime());
-							})
-
-				});
-	</script>
 
 </body>
 </html>

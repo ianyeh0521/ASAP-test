@@ -72,4 +72,10 @@ public class CoachService implements CoachService_interface {
 		return dao.getAll();
 	}
 
+	@Override
+	public String updatePwd(CoachVO coach) {
+		coach.setCoachPwd(hashPassword(coach.getCoachPwd()));
+		return dao.update(coach);
+	}
+
 }
