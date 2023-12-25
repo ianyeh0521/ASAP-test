@@ -24,19 +24,19 @@ public class ItemImgDAOtest {
 		Transaction tx = null;
 
 		try {
-//             1.新增商品照片
+//             1.新增商品照片 false
         	
-//            session = factory.getCurrentSession();
-//            tx = session.beginTransaction();
-//
-//            ItemImgVO itemImg = new ItemImgVO();
-//            itemImg.setItemNo(1004); // 商品編號
-//            itemImg.setItemImg(convertImageToByteArray("C:/Users/frank/OneDrive/桌面/basketball.jpg"));
-//            itemImg.setItemImgfront(false); // 是否為主圖片
-//            itemImg.setItemImgUpdTime(new Timestamp(System.currentTimeMillis()));
-//
-//            session.save(itemImg);
-//            tx.commit();
+            session = factory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            ItemImgVO itemImg = new ItemImgVO();
+            itemImg.setItemNo(1187); // 商品編號
+            itemImg.setItemImg(convertImageToByteArray("C:/Users/frank/OneDrive/桌面/Swimming Goggles 4.jpg"));
+            itemImg.setItemImgfront(false); // 是否為主圖片
+            itemImg.setItemImgUpdTime(new Timestamp(System.currentTimeMillis()));
+
+            session.save(itemImg);
+            tx.commit();
 
 			// 2.修改商品照片 	( 根據商品編號)
 //        	session = factory.getCurrentSession();
