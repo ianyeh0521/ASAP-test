@@ -47,18 +47,16 @@
 //					long timeDiff = nowTimestamp - sqlTimestamp;
 //					if(timeDiff>60*60*1000) {
 //						Integer orderNo= order.getOrderNo();
+////						System.out.println("this is orderno:"+orderNo);
 //						List <OrderDetailVO> orderdetails = ordDetailSvc.checkerFindByOrderNo(orderNo);
 //						for(OrderDetailVO orderitem: orderdetails) {
 //							Integer itemno= orderitem.getItemInfoVO().getItemNo();
-//							System.out.println("this is itemno:"+itemno);
 //							Integer itemqty= orderitem.getItemOrderQty();
-//							System.out.println("this is itemqty:"+itemqty);
 //							ItemInfoVO itemInfoVO= itemInfoSvc.checkerFindByItemNo(itemno);
-//							System.out.println("this is iteminfoVo:"+itemInfoVO);
 //							Integer inStock=itemInfoVO.getItemStockQty();
-//							System.out.println("this is instock:"+inStock);
 //							itemInfoVO.setItemStockQty(inStock+itemqty);
 //							itemInfoSvc.checkerUpdate(itemInfoVO);
+//							
 //						}
 //						order.setOrderStat(4);
 //						order.setOrderCancelTime(new java.sql.Timestamp(System.currentTimeMillis()));
@@ -75,7 +73,7 @@
 ////				count++;
 //			}
 //		};
-//		Calendar cal= new GregorianCalendar(2023, Calendar.DECEMBER,24,23,0,0);
+//		Calendar cal= new GregorianCalendar(2023, Calendar.DECEMBER,25,7,0,0);
 //		timer.scheduleAtFixedRate(task, cal.getTime(), 1*60*60*1000);
 //	}
 //	
