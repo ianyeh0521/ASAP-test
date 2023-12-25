@@ -1,6 +1,7 @@
 package com.asap.court.dao;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface CourtOrderDAO_interface{
 		
 	List<CourtOrderVO> getAll();
 	
-	List<CourtOrderVO> getAllUnPaidCourt(Date currentDate);
+	List<CourtOrderVO> getAllUnPaidCourt(Timestamp currentTimestamp);
 }

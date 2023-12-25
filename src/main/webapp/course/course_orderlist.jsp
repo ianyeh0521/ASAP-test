@@ -1,10 +1,6 @@
-<%@page import="com.asap.court.entity.CourtVO"%>
-<%@page import="com.asap.court.service.CourtService_interface"%>
-<%@page import="com.asap.court.service.CourtService"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.asap.court.*"%>
 <%@ page import="com.asap.util.*"%>
 <%
 	// 會員編號
@@ -198,7 +194,7 @@
             <div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
                 <nav aria-label="breadcrumb" class="breadcrumb-nav">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/court_main.jsp"><i class="icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/course/course_main.jsp"><i class="icon-home"></i></a></li>
                     <li class="breadcrumb-item">我的課程</li>
                   </ol>
                 </nav>       
@@ -301,29 +297,17 @@
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
         $(window).on("load", function(){
         	 $.ajax({
-                 type: "POST",
-                 url: 'courtOrderListAjax.do',
-                 contentType: 'application/json',
-                 dataType: 'json',
-                 data: JSON.stringify({
+                 type: "post",
+                 url: 'mbrCourseServlet',
+//                  dataType: 'application/json',
+                 data: {
                      action: "getByMember",
                      mbrNo: "M1206202300001"	// 記得更動
-                 }),
+                 },
                  success: function(response){
-                 	var courtOrderList = JSON.parse(response.courtOrderList);
-                 	var orderImgList = JSON.parse(response.orderImgList);
-                 	console.log(courtOrderList);
-                 	console.log(orderImgList);
-                 	console.log(courtOrderList[2]);
-                 	
-                 	let img = "img";
-                 	for(let i = 0; i < courtOrderList.length; i++){
-                 		courtOrderList[i][img] = 'data:image/jpg;base64,'+ orderImgList[i];
-                 	}
-                 	console.log(courtOrderList);
-                
+                	 console.log(response);
                  	 $("#table_id").DataTable({
-                 		 aaData: courtOrderList,
+                 		 aaData: response,
                  		 "scrollX": true,
                  		 "scrollY": true,
                  		 "language": {url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json"},
@@ -335,70 +319,62 @@
                               ['5', '10', '25', '所有'] // 定義每頁顯示筆數選項文字
                           ],
                  		 columns:[
-                			 	{
-                                 "data": "img",
-                                 "render": function (data, type, row) {
-                                     return '<img src="' + data + '" alt="圖片" style="width:90px;height:90px; border-radius: 5px">';
-                                 }
-                             },
-                          	
-                            {"data": "courtVO.courtName"},
-                          	{"data": "courtVO.courtAddress"},
-                          	{"data": "courtOrdCrtTime"},
-                          	{"data": "courtOrdDate"},
+                 			{
+               			        "data": "courseVO.courseNo",
+               			        "render": function(data, type, row) {
+               			            var imgUrl = "DBGifReader?courseNo=" + data;
+               			            return '<img src="' + imgUrl + '" alt="Course Image" width="300px" height="300px">';
+               			        }
+               			    },
+                            {"data": "courseVO.courseName"},
+                          	{"data": "courseVO.courseAddress"},
+                          	{"data": "coachVO.coachName"}, 
+                          	{
+                                "data": "mbrCourseTime",
+                                "render": function (data, type, row) {
+                                    return moment(data).format("YYYY-MM-DD HH:mm");
+                                }
+                            },
                           	{
                                 "data": null,
                                 "render": function (data, type, row) {
-                                    return row.courtOrdTime + ':00 ~ ' + row.courtOrdTimeEnd + ':00';
+                                    return moment(row.courseVO.courseStartTime).format("YYYY-MM-DD HH:mm") + ' ~ ' + moment(row.courseVO.courseEndTime).format("HH:mm");
                                 }
                             },
-                          	{"data": "totalPrice"},
+                          	{"data": "courseVO.coursePrice"},
                           	{
-                          	    "data": "courtOrdStat",
+                          	    "data": "mbrCourseStat",
                           	    "render": function (data, type, row) {
-                          	        var currentDate = moment();
-                          	        var courtOrdCrtTime = moment(row.courtOrdCrtTime);
-                          	        var ordDateTime = moment(row.courtOrdDate + ' ' + row.courtOrdTimeEnd, 'MM月 DD, YYYY HH');
-
-                          	        if (data) {
-                          	            return "已成立";
-                          	        } else {
-                          	            if (courtOrdCrtTime.isSame(currentDate, 'day')) {
-                          	            	return '<button type="button" class="btn btn-info btn-sm" style="border-radius:5px" data-id="' + row.courtOrdNo + '" onclick="submitForm(' + row.courtOrdNo + ', event'+ ')">付款</button>'
-                                            + '<form class="hidden-form" id="paymentForm' + row.courtOrdNo + '" method="get" action="<%=request.getContextPath()%>/court/courtOrderServlet.do">'
-                                            + '<input type="hidden" name="action" value="pay">'
-                                            + '<input type="hidden" name="mbrNo" value="' + "${mbrNo}" + '">'
-                                            + '<input type="hidden" name="courtOrdNo" value="' + row.courtOrdNo + '">'
-                                            + '<button type="submit"></button>'
-                                            + '</form>';
-                          	            } else {
-                          	                return "無法付款";
-                          	            }
-                          	        }
+                          	       if(data==true){
+                          	    	   return "已付款";
+                          	       }else{
+                          	    	   return "已取消";
+                          	       }
                           	    }
                           	},
                              {
-                                 "data": "courtOrdNo",
+                                 "data": "mbrCourseNo",
                                  "render": function(data, type, row) {
                                 	 var currentDate = moment();
-                                	 var ordDateTime = moment(row.courtOrdDate + ' ' + row.courtOrdTimeEnd, 'MM月 DD, YYYY HH');
+                                	 var ordDateTime = moment(row.courseVO.courseEndTime);
+//                                 	 console.log(ordDateTime);
                                 	 var isBeforeNow = ordDateTime.isBefore(currentDate);
-
+                                	 var checkPaid = row.mbrCourseStat;
                                 	 
-                                	 var buttonDisabledAttribute = isBeforeNow  ? 'disabled' : '';
+                                	 var buttonDisabledAttribute = isBeforeNow || !checkPaid ? 'disabled' : '';
                                 	 return '<button type="button" class="btn btn-danger btn-sm lookup" style="border-radius:5px" data-id="' + data + '" ' + buttonDisabledAttribute + '>取消</button>';
                                  }
                              }
                           ],
                           
                           "createdRow": function(row, data, dataIndex) {
-                              $(row).attr('id', data.courtOrdNo);
+                              $(row).attr('id', data.mbrCourseNo);
                            		
-                              // 點擊整列可以查看該場地資訊
+                              // 點擊整列可以查看該課程資訊
                               $(row).on('click', function() {
-                                  var courtNo = data.courtVO.courtNo;
+                                  var courseNo = data.courseVO.courseNo;
 
-                                  window.location.href = '/ASAP/court/court_page.jsp?courtNo=' + courtNo;
+                                  window.location.href = '/ASAP/course/course_page.jsp?courseNo=' + courseNo;
                               });
                               
                               // 點擊取消訂單
@@ -442,14 +418,13 @@
         	$("#alert_ok1").on("click", function(e){
 	             e.stopPropagation();
 	             $.ajax({
-	    	           url: 'courtOrderListAjax.do', 
+	    	           url: 'mbrCourseServlet', 
 	    	           type: 'POST',
-	    	           contentType: 'application/json',
-	    	           data: JSON.stringify({
+	    	           data: {
 	    	               action: "cancel",
 	    	               mbrNo: "M1206202300001",	
-	    	               courtOrdNo: clickedId
-	    	           }),
+	    	               mbrCourseNo: clickedId
+	    	           },
 	    	           success: function(response) {
 	    	               console.log('Server response:', response);
 	    	           },
@@ -476,9 +451,9 @@
             }
        }
         
-        function submitForm(courtOrdNo, event) {
+        function submitForm(mbrCourseNo, event) {
         	event.stopPropagation()
-            document.getElementById('paymentForm' + courtOrdNo).submit();
+            document.getElementById('paymentForm' + mbrCourseNo).submit();
         }
         
         

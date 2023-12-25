@@ -302,6 +302,7 @@
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
         $(window).on("load", function(){
+        	
         	 $.ajax({
                  type: "POST",
                  url: 'courtOrderListAjax.do',
@@ -314,17 +315,19 @@
                  success: function(response){
                  	var courtOrderList = JSON.parse(response.courtOrderList);
                  	var orderImgList = JSON.parse(response.orderImgList);
-                 	console.log(courtOrderList);
-                 	console.log(orderImgList);
-                 	console.log(courtOrderList[2]);
+//                  	console.log(courtOrderList);
+//                  	console.log(orderImgList);
+//                  	console.log(courtOrderList[2]);
                  	
                  	let img = "img";
                  	for(let i = 0; i < courtOrderList.length; i++){
                  		courtOrderList[i][img] = 'data:image/jpg;base64,'+ orderImgList[i];
                  	}
-                 	console.log(courtOrderList);
-                
-                 	 $("#table_id").DataTable({
+//                  	console.log(courtOrderList);
+
+					
+
+                 	var dataTable = $("#table_id").DataTable({
                  		 aaData: courtOrderList,
                  		 "scrollX": true,
                  		 "scrollY": true,
@@ -356,42 +359,48 @@
                             },
                           	{"data": "totalPrice"},
                           	{
-                          	    "data": "courtOrdStat",
-                          	    "render": function (data, type, row) {
-                          	        var currentDate = moment();
-                          	        var courtOrdCrtTime = moment(row.courtOrdCrtTime);
-                          	        var ordDateTime = moment(row.courtOrdDate + ' ' + row.courtOrdTimeEnd, 'MM月 DD, YYYY HH');
+                                "data": "courtOrdStat",
+                                "render": function (data, type, row) {
+                                    var currentDate = moment();
+                                    var courtOrdCrtTime = moment(row.courtOrdCrtTime);
+                                    var ordDateTime = moment(row.courtOrdDate + ' ' + row.courtOrdTimeEnd, 'MM月 DD, YYYY HH');
 
-                          	        if (data) {
-                          	            return "已成立";
-                          	        } else {
-                          	            if (courtOrdCrtTime.isSame(currentDate, 'day')) {
-                          	            	return '<button type="button" class="btn btn-info btn-sm" style="border-radius:5px" data-id="' + row.courtOrdNo + '" onclick="submitForm(' + row.courtOrdNo + ', event'+ ')">付款</button>'
+                                    if (data == 2) {
+                                        return "已成立";
+                                    } else {
+                                        if (courtOrdCrtTime.isSame(currentDate, 'day') && data == 0) {
+                                            return '<button type="button" class="btn btn-info btn-sm" style="border-radius:5px" data-id="' + row.courtOrdNo + '" onclick="submitForm(' + row.courtOrdNo + ', event' + ')">付款</button>'
                                             + '<form class="hidden-form" id="paymentForm' + row.courtOrdNo + '" method="get" action="<%=request.getContextPath()%>/court/courtOrderServlet.do">'
                                             + '<input type="hidden" name="action" value="pay">'
                                             + '<input type="hidden" name="mbrNo" value="' + "${mbrNo}" + '">'
                                             + '<input type="hidden" name="courtOrdNo" value="' + row.courtOrdNo + '">'
                                             + '<button type="submit"></button>'
-                                            + '</form>';
-                          	            } else {
-                          	                return "無法付款";
-                          	            }
-                          	        }
-                          	    }
-                          	},
+                                            + '</form>'; 
+                                        } else{
+                                        	return "訂單取消";
+                                        }
+                                    }
+                                },
+                            },
                              {
                                  "data": "courtOrdNo",
                                  "render": function(data, type, row) {
                                 	 var currentDate = moment();
                                 	 var ordDateTime = moment(row.courtOrdDate + ' ' + row.courtOrdTimeEnd, 'MM月 DD, YYYY HH');
-                                	 var isBeforeNow = ordDateTime.isBefore(currentDate);
-
+                                	 var isBeforeNow = ordDateTime.isBefore(currentDate); 
+									
+                                	 var crtTime = moment(row.courtOrdCrtTime);
+                                	 var crtisBeforeNow = crtTime.isBefore(currentDate)
+                                	                                 	 
                                 	 
-                                	 var buttonDisabledAttribute = isBeforeNow  ? 'disabled' : '';
+                                	 var buttonDisabledAttribute = isBeforeNow || row.courtOrdStat == 1 || row.courtOrdStat == 3 || (row.courtOrdStat == 0 && crtisBeforeNow)? 'disabled' : '';     
+                                
                                 	 return '<button type="button" class="btn btn-danger btn-sm lookup" style="border-radius:5px" data-id="' + data + '" ' + buttonDisabledAttribute + '>取消</button>';
                                  }
                              }
                           ],
+                          
+                          
                           
                           "createdRow": function(row, data, dataIndex) {
                               $(row).attr('id', data.courtOrdNo);
@@ -414,8 +423,12 @@
                               });
                           
                           
-                          }
+                          },
                  	 });
+                 	
+                 	 
+                 	 
+                 	 
                  	 
                  	
                  	 
@@ -424,8 +437,7 @@
                  	console.log(xhr);
                  }
               });
-           
-             
+
             
         })
         
@@ -440,7 +452,7 @@
         
         function handleClickedId(clickedId){
         	var clickedId = clickedId.toString();
-        	console.log(typeof(clickedId));
+
         	$("#alert_ok1").on("click", function(e){
 	             e.stopPropagation();
 	             $.ajax({

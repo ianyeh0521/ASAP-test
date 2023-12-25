@@ -2,8 +2,10 @@ package com.asap.course.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,13 +43,16 @@ public class CourseServlet extends HttpServlet{
 		
 		switch (action) {
 		case "add":
-			addCourse(req,res);
+			addCourse(req, res);
 			break;
 		case "update":
-			;
+			updateCourse(req, res);
 			break;
 		case "getAll":
-			getAll(req,res);
+			getAll(req, res);
+			break;
+		case "getByCoach":
+			getByCoach(req, res);
 			break;
 		default:
 			
@@ -60,6 +65,172 @@ public class CourseServlet extends HttpServlet{
 	
 	
 	
+	private void getByCoach(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		String coachNo = req.getParameter("coachNo");
+		
+		List<CourseVO> courseVOs = courseSvc.findByCoach(coachNo);
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        
+        GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+		Gson gson = builder.create();
+		
+		String purpose = req.getParameter("purpose");
+		if("finished".equals(purpose)) {
+			
+			List<CourseVO> beforeCurrentTime = courseVOs.stream()
+	                .filter(course -> course.getCourseEndTime().before(currentTimestamp))
+	                .collect(Collectors.toList());
+			
+			String beforeCurrentTimeString = gson.toJson(beforeCurrentTime);
+			res.setContentType("application/json");
+	        res.setCharacterEncoding("UTF-8");
+	        res.getWriter().write(beforeCurrentTimeString);
+	        
+		}else if("current".equals(purpose)) {
+			
+			List<CourseVO> afterCurrentTime = courseVOs.stream()
+	                .filter(course -> course.getCourseEndTime().after(currentTimestamp))
+	                .collect(Collectors.toList());
+			
+			String afterCurrentTimeString = gson.toJson(afterCurrentTime);
+			res.setContentType("application/json");
+	        res.setCharacterEncoding("UTF-8");
+	        res.getWriter().write(afterCurrentTimeString);
+	        
+		}
+		
+	}
+
+
+	private void updateCourse(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		Integer courseNo = Integer.valueOf(req.getParameter("courseNo"));
+		
+		String nameError = null;
+		String courseName = req.getParameter("name");
+		String enameReg = "^[\\u4e00-\\u9fa5a-zA-Z\\-]{2,20}$";
+		if (courseName == null || courseName.trim().length() == 0) {
+			nameError = "課程名稱: 請勿空白";
+		} else if(!courseName.trim().matches(enameReg)) { 
+			nameError = "課程名稱: 只能是中、英文字母和- , 且長度必需在2到20之間";
+        }
+		
+		Integer sportTypeNo = Integer.valueOf(req.getParameter("type"));
+		SportTypeVO sportTypeVO = new SportTypeVO();
+		sportTypeVO.setSportTypeNo(sportTypeNo);
+		
+		String addressError = null;
+		String courseAddress = req.getParameter("address");
+		if (courseAddress == null || courseAddress.trim().length() == 0) {
+			addressError = "地址請勿空白";
+		}		
+		
+		String pplLimitError = null;
+		Integer coursePplLimit = null;
+		try {
+			coursePplLimit = Integer.valueOf(req.getParameter("pplLimit"));
+			if(coursePplLimit<0) {
+				pplLimitError = "人數限制不可小於零";
+			}
+		} catch (NumberFormatException e) {
+			coursePplLimit = 0;
+			pplLimitError = "請填寫人數限制";
+		}
+		
+		String priceError = null;
+		Integer coursePrice = null;
+		try {
+			coursePrice = Integer.valueOf(req.getParameter("price"));
+			if(coursePrice<0) {
+				priceError = "價格不可小於零";
+			}
+		} catch (NumberFormatException e) {
+			coursePrice = 0;
+			priceError = "價格請填數字";
+		}
+		
+		String timeError = null;
+		String courseStart = null;
+		java.sql.Timestamp courseStartTime = null;
+		try {
+			courseStart = req.getParameter("start");
+			courseStartTime = java.sql.Timestamp.valueOf(courseStart);	
+		} catch (Exception e) {
+			timeError = "請填入時間";
+		}
+
+		String courseEnd = null;
+		java.sql.Timestamp courseEndTime = null;
+		try {
+			courseEnd = req.getParameter("end");
+			courseEndTime = java.sql.Timestamp.valueOf(courseEnd);	
+		} catch (Exception e) {
+			timeError = "請填入時間";
+		}
+		
+		String textError = null;
+		String courseText = req.getParameter("courseText");
+		if (courseText == null || courseText.trim().length() == 0) {
+			textError = "課程介紹請勿空白";
+		}
+		
+		Boolean courseStat = true;
+		
+		String imgError = null;
+		InputStream in1 = req.getPart("upFiles1").getInputStream();
+		byte[] upFiles1 = null;
+		if(in1.available()!=0){
+			upFiles1 = new byte[in1.available()];
+			in1.read(upFiles1);
+			in1.close();
+		}  else{
+			upFiles1 = courseSvc.findByPK(courseNo).getCourseImg();
+		}
+		
+		String coachNo = req.getParameter("coachNo");
+		CoachVO coachVO = new CoachVO();
+		coachVO.setCoachNo(coachNo);
+		
+		if(nameError == null && addressError == null && pplLimitError == null
+				&& priceError == null && timeError == null 
+				&& textError == null && imgError == null) {
+			CourseVO courseVO = new CourseVO();
+			courseVO.setCourseNo(courseNo);
+			courseVO.setCourseName(courseName);
+			courseVO.setSportTypeVO(sportTypeVO);
+			courseVO.setCourseAddress(courseAddress);
+			courseVO.setCoursePplLimit(coursePplLimit);
+			courseVO.setCoursePrice(coursePrice);
+			courseVO.setCourseStartTime(courseStartTime);
+			courseVO.setCourseEndTime(courseEndTime);
+			courseVO.setCourseText(courseText);
+			courseVO.setCourseStat(courseStat);
+			courseVO.setCourseImg(upFiles1);
+			courseVO.setCoachVO(coachVO);
+			
+			courseSvc.update(courseVO);
+			
+			
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/addCourse.jsp");
+			dispatcher.forward(req, res);
+		}else {
+			req.setAttribute("nameError", nameError);
+			req.setAttribute("addressError", addressError);
+			req.setAttribute("pplLimitError", pplLimitError);
+			req.setAttribute("priceError", priceError);
+			req.setAttribute("timeError", timeError);
+			req.setAttribute("textError", textError);
+			req.setAttribute("imgError", imgError);
+
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/addCourse.jsp");
+			dispatcher.forward(req, res);
+		}
+		
+	}
+
+
 	private void getAll(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
@@ -81,7 +252,6 @@ public class CourseServlet extends HttpServlet{
 		        
 		        
 		        List<CourseVO> courseList = courseSvc.getAll(currentPage);
-//		        System.out.println(courtList.size());;
 
 		        String json = gson.toJson(courseList);
 		        res.setContentType("application/json");
@@ -226,6 +396,9 @@ public class CourseServlet extends HttpServlet{
 
 		doPost(req, res);
 	}
+	
+	
+
 	
 	
 }

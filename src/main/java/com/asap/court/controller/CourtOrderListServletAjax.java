@@ -25,6 +25,7 @@ import com.asap.court.service.CourtImgService;
 import com.asap.court.service.CourtImgService_interface;
 import com.asap.court.service.CourtOrderService;
 import com.asap.court.service.CourtOrderService_interface;
+import com.asap.member.entity.MbrNewsVO;
 import com.asap.util.HibernateProxyTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -87,7 +88,7 @@ public class CourtOrderListServletAjax extends HttpServlet{
 		courtOrderVO.setCourtVO(courtOrderUpdate.getCourtVO());
 		courtOrderVO.setMemberVO(courtOrderUpdate.getMemberVO());
 		courtOrderVO.setTotalPrice(courtOrderUpdate.getTotalPrice());
-		courtOrderVO.setCourtOrdStat(false);
+		courtOrderVO.setCourtOrdStat(3);
 		courtOrderService_interface.update(courtOrderVO);
 		
 		// 2. 刪除不開放時間
@@ -108,6 +109,17 @@ public class CourtOrderListServletAjax extends HttpServlet{
 		for(Integer ele:closedTimeToDelete) {
 			courtClosedTimeService_interface.delete(ele);
 		}
+		
+		
+		// 寫入會員消息
+//		String memberNo = req.getParameter("mbrNo");
+//		MbrNewsVO vo2 = new MbrNewsVO();
+//		vo2.setMbrNo(memberNo);
+//		vo2.setNewsSubj("預約成功通知");
+//		vo2.setNewsText("您已成功預約場地，預約單編號" + merchantTradeNo);
+//		vo2.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
+//		
+//		mbrNewsService_interface.add(vo2);
 		
 	}
 

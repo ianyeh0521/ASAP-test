@@ -32,16 +32,20 @@ import com.asap.member.entity.MemberVO;
 import com.asap.member.service.MemberService;
 import com.asap.member.service.MemberService_interface;
 import com.asap.util.HibernateProxyTypeAdapter;
+import com.asap.util.JedisPoolUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/court/courtOrderServlet.do")
 public class CourtOrderServlet extends HttpServlet{
 
 	public static AllInOne all;
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 	private CourtOrderService_interface courtOrderService_interface;
 	private CourtClosedTimeService_interface courtClosedTimeService_interface;
 	
@@ -71,6 +75,7 @@ public class CourtOrderServlet extends HttpServlet{
 
 
 
+
 	private void placeOrder(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		String mbrNo = req.getParameter("mbrNo");	
 		MemberService_interface mbrSvc = new MemberService();
@@ -80,7 +85,7 @@ public class CourtOrderServlet extends HttpServlet{
 		CourtService_interface courtSvc = new CourtService();
 		CourtVO courtVO = courtSvc.getCourtByCourtNo(courtNo);
 		
-		Boolean courtOrdStat = false;		// 訂單一開始都是未付款狀態，交易結束仍為未付款，將會不會有不開放時間寫入的紀錄
+		Integer courtOrdStat = 0;		// 訂單一開始都是未付款狀態
 		
 		java.sql.Date courtOrdDate = java.sql.Date.valueOf(req.getParameter("courtOrdDate"));
 		
@@ -132,12 +137,16 @@ public class CourtOrderServlet extends HttpServlet{
 	
 	private void payOrder(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		String mbrNo = req.getParameter("mbrNo");
-		Integer courtOrdNo = Integer.valueOf(req.getParameter("courtOrdNo")) ;
+		Integer courtOrdNo = Integer.valueOf(req.getParameter("courtOrdNo"));
 		
 		CourtOrderVO courtOrderVO = courtOrderService_interface.findByPK(courtOrdNo);
 		Timestamp tradeDate = courtOrderVO.getCourtOrdCrtTime();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		String formattedTradeDate = dateFormat.format(tradeDate);
+		
+		// 更改訂單狀態為付款中
+		courtOrderVO.setCourtOrdStat(1);
+		courtOrderService_interface.update(courtOrderVO);
 		
 		// 呼叫綠界
 		AioCheckOutALL obj = new AioCheckOutALL();
@@ -152,7 +161,7 @@ public class CourtOrderServlet extends HttpServlet{
 		obj.setCustomField1(String.valueOf(courtOrderVO.getCourtVO().getCourtNo())); // 訂單成立接收到CourtNo
 		obj.setCustomField2(String.valueOf(courtOrdNo)); // 預約單編號（資料庫的）
 		obj.setCustomField4(mbrNo); // 會員編號
-		obj.setReturnURL("https://da60-114-24-167-99.ngrok-free.app/ASAP/court/ecPayReturn.do");	// 使用時要記得換成外網
+		obj.setReturnURL("https://99e7-1-164-235-76.ngrok-free.app/ASAP/court/ecPayReturn.do");	// 使用時要記得換成外網
 		obj.setOrderResultURL("http://localhost:8081/ASAP/court/court_paymentSuccess.jsp");  // 使用者付款完成跳轉頁面
 		obj.setNeedExtraPaidInfo("N");
 		String form = all.aioCheckOut(obj, null);
@@ -166,6 +175,20 @@ public class CourtOrderServlet extends HttpServlet{
 		
 	}
 	
+	
+	private int getCurrentYear() {
+        return LocalDate.now().getYear();
+    }
+	
+	private static long getMidnightTimestamp() {
+        
+        long currentTime = System.currentTimeMillis();
+
+        long midnightTimestamp = currentTime - (currentTime % (24 * 60 * 60 * 1000)) + (24 * 60 * 60 * 1000);
+
+        return midnightTimestamp;
+    }
+	
 
 
 	@Override
@@ -176,9 +199,6 @@ public class CourtOrderServlet extends HttpServlet{
 	
 	
 	
-	private int getCurrentYear() {
-        return LocalDate.now().getYear();
-    }
 	
 
 }

@@ -27,7 +27,7 @@ public class TestCRUD {
 			CourtDAO_interface dao = new CourtDAO();
 			courtOrderVO.setCourtVO(dao.getById(1));
 			courtOrderVO.setCourtOrdDate(Date.valueOf("2023-12-03"));
-			courtOrderVO.setCourtOrdStat(true);
+			courtOrderVO.setCourtOrdStat(0);
 			courtOrderVO.setCourtOrdTime(15);
 			courtOrderVO.setTotalPrice(1600);
 //			courtOrderVO.setMemberVO();

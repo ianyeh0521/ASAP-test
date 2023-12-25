@@ -1,6 +1,7 @@
 package com.asap.court.service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class CourtOrderService implements CourtOrderService_interface{
 			Integer courtOrdTimeEnd) {
 		CourtOrderVO courtOrderVO = dao.checkOrderExistence(courtNo, courtOrdDate, courtOrdTime, courtOrdTimeEnd);
 		
-		if(courtOrderVO == null || courtOrderVO.getCourtOrdStat() == false) {
+		if(courtOrderVO == null || courtOrderVO.getCourtOrdStat() == 3) {
 			// 資料庫沒有或訂單狀態是未付款，可以新增
 			return true;
 		}
@@ -68,7 +69,7 @@ public class CourtOrderService implements CourtOrderService_interface{
 			for(CourtOrderVO courtOrderVO: listByCourtNoAndDate) {
 				if(((courtOrderVO.getCourtOrdTime()<=courtOrdTime && courtOrderVO.getCourtOrdTimeEnd()>courtOrdTime)
 						|| (courtOrderVO.getCourtOrdTime()<courtOrdTimeEnd && courtOrderVO.getCourtOrdTimeEnd()>courtOrdTimeEnd)) 
-						&& courtOrderVO.getCourtOrdStat()==true) {	//已成立的訂單
+						&& courtOrderVO.getCourtOrdStat()==2) {	//已成立的訂單
 					getCount += 1;
 					break;
 				}
@@ -87,8 +88,8 @@ public class CourtOrderService implements CourtOrderService_interface{
 	}
 
 	@Override
-	public List<CourtOrderVO> getAllUnPaidCourt(Date currentDate) {
-		return dao.getAllUnPaidCourt(currentDate);
+	public List<CourtOrderVO> getAllUnPaidCourt(Timestamp currentTimestamp) {
+		return dao.getAllUnPaidCourt(currentTimestamp);
 	}
 	
 	
