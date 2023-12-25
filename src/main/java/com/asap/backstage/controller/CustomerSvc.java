@@ -16,11 +16,10 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.google.gson.Gson;
-
-import com.asap.util.JedisHandleMessage; 
 import com.asap.model.ChatMessage;
 import com.asap.model.State;
+import com.asap.util.JedisHandleMessage;
+import com.google.gson.Gson;
 
 @ServerEndpoint("/CustomerSvc/{userId}")//userName對應下面的userName和前端頁面
 public class CustomerSvc {

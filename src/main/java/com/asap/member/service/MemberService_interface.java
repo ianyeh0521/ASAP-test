@@ -14,4 +14,6 @@ public interface MemberService_interface {
 	MemberVO findByMbrEmail(String mbrEmail);
 
 	String addCmtByMbrNo(int cmtScore, String mbrNo);
+
+	String updatePwd(MemberVO member);
 }

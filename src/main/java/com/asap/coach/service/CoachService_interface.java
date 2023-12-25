@@ -17,4 +17,6 @@ public interface CoachService_interface {
 
 	List<CoachVO> getAll();
 	
+	String updatePwd(CoachVO coach);
+
 }

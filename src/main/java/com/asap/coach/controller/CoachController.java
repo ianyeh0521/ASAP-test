@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +28,7 @@ import com.asap.coach.service.CoachSportTypeService_interface;
 import com.asap.coach.service.SportCertService;
 import com.asap.coach.service.SportCertService_interface;
 import com.asap.member.entity.MemberVO;
+import com.asap.util.JavaMail;
 import com.asap.util.JedisPoolUtil;
 import com.asap.util.MailFormat;
 
@@ -45,7 +48,27 @@ public class CoachController extends HttpServlet {
 	private String phoneRegex = "09[0-9]{8}";
 	private String nameRegex = "^[(\u4e00-\u9fa5)(a-zA-Z)]{2,10}$";
 	private static JedisPool pool = JedisPoolUtil.getJedisPool();
-	
+
+	private static String getTempPwd() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 1; i <= 6; i++) {
+			int condition = (int) (Math.random() * 3) + 1;
+			switch (condition) {
+			case 1:
+				char c1 = (char) ((int) (Math.random() * 26) + 65);
+				sb.append(c1);
+				break;
+			case 2:
+				char c2 = (char) ((int) (Math.random() * 26) + 97);
+				sb.append(c2);
+				break;
+			case 3:
+				sb.append((int) (Math.random() * 10));
+			}
+		}
+		return sb.toString();
+	}
+
 	@Override
 	public void init() throws ServletException {
 		coachSvc = new CoachService();
@@ -110,7 +133,8 @@ public class CoachController extends HttpServlet {
 			}
 
 			// 驗證密碼
-			if ((coachPwd.trim()).length() == 0 || coachPwd == null || (coachPwd2.trim()).length() == 0 || coachPwd2 == null) {
+			if ((coachPwd.trim()).length() == 0 || coachPwd == null || (coachPwd2.trim()).length() == 0
+					|| coachPwd2 == null) {
 				errorMsgs.add("請輸入密碼");
 
 			} else {
@@ -287,7 +311,7 @@ public class CoachController extends HttpServlet {
 			String emailVerifyCode = req.getParameter("emailVerifyCode");
 			// 取得redis資料
 			Jedis jedis = pool.getResource();
-			String tempAuth = jedis.get("MailVerify:"+coachNo);
+			String tempAuth = jedis.get("MailVerify:" + coachNo);
 			jedis.close();
 
 			// 返回
@@ -482,7 +506,7 @@ public class CoachController extends HttpServlet {
 		}
 
 		// 更新資料
-		if (action.equals("updateInfo")) {
+		if ("updateInfo".equals(action)) {
 			List<String> errorMsgs = new LinkedList<>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
@@ -722,6 +746,131 @@ public class CoachController extends HttpServlet {
 
 			res.sendRedirect(req.getContextPath() + "/coach/CoachHome.jsp");
 			return;
+
+		}
+
+		// 忘記密碼
+		if ("forgetPwd".equals(action)) {
+			List<String> errorMsgs = new LinkedList<>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			// 取參數
+			String coachEmail = req.getParameter("coachEmail");
+
+			// 驗證Email
+			if (coachEmail == null || (coachEmail.trim()).length() == 0) {
+				errorMsgs.add("請輸入Email");
+			} else {
+				if (!(coachEmail.trim()).matches(emailRegex)) {
+					errorMsgs.add("Email格式不正確");
+				}
+			}
+
+			if (!errorMsgs.isEmpty()) {
+				req.getRequestDispatcher("/coach/CoachForgetPwd.jsp").forward(req, res);
+				return;// 程式中斷
+			}
+
+			// 尋找資料庫
+			CoachVO coachVO = coachSvc.findByCoachEmail(coachEmail.trim());
+			if (coachVO == null) {
+				errorMsgs.add("Email尚未註冊");
+				req.getRequestDispatcher("/coach/CoachForgetPwd.jsp").forward(req, res);
+				return;// 程式中斷
+			} else {
+				// 設定郵件細節
+				int minute = 30;
+				String newPwd = getTempPwd();
+				String coachName = coachVO.getCoachName();
+				String coachNo = coachVO.getCoachNo();
+				String coach_Email = coachVO.getCoachEmail();
+				// 新密碼郵件
+
+				String title = "ASAP忘記密碼信";
+				String content = "您的暫時性密碼為  " + newPwd + "  ,請於 " + minute + " 分鐘內輸入，謝謝。";
+				MailFormat mailFormat = new MailFormat(coachName, content);
+				InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
+				DataSource dataSource = new ByteArrayDataSource(in, "application/png");
+				// 存入redis
+				Jedis jedis = pool.getResource();
+				jedis.set("TemporaryPwd:" + coachNo, newPwd);
+				jedis.expire("TemporaryPwd:" + coachNo, minute * 60);
+				// 關閉redis
+				jedis.close();
+				// 寄出信件
+				JavaMail mail = new JavaMail(coach_Email, title, mailFormat.getMessageTextAndImg(), dataSource);
+				mail.sendMail();
+				HttpSession session = req.getSession();
+				session.setAttribute("coachNo", coachNo);
+				res.sendRedirect(req.getContextPath() + "/coach/CoachResetPwd.jsp");
+				return;
+
+			}
+
+		}
+
+		// 重設密碼
+		if ("resetPwd".equals(action)) {
+			List<String> errorMsgs = new LinkedList<>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			// 取參數
+			String coachNo = req.getParameter("coachNo");
+			String coachTempPwd = req.getParameter("coachTempPwd");
+			String coachPwd = req.getParameter("coachPwd");
+			String coachPwd2 = req.getParameter("coachPwd2");
+			// 確認資料
+			if (coachPwd == null || coachPwd2 == null || (coachPwd.trim()).length() == 0
+					|| (coachPwd2.trim()).length() == 0) {
+				errorMsgs.add("請輸入密碼");
+			} else {
+				if (!(coachPwd.trim()).matches(pwdRegex)) {
+					errorMsgs.add("密碼格式不正確");
+				}
+				if (!(coachPwd.trim()).equals(coachPwd2.trim())) {
+					errorMsgs.add("二次密碼不一致");
+				}
+			}
+
+			if (coachTempPwd == null || (coachTempPwd.trim()).length() == 0) {
+				errorMsgs.add("請輸入暫時性密碼");
+			}
+
+			if (!errorMsgs.isEmpty()) {
+				req.getRequestDispatcher("/coach/CoachResetPwd.jsp").forward(req, res);
+				return;// 程式中斷
+			}
+
+			// 取得redis資料
+			Jedis jedis = pool.getResource();
+			String tempAuth = jedis.get("TemporaryPwd:" + coachNo);
+			jedis.close();
+			// 驗證
+			if (tempAuth == null) {
+				errorMsgs.add("連結信已逾時，請重新申請");
+				req.getRequestDispatcher("/coach/CoachForgetPwd.jsp").forward(req, res);
+				return;
+			} else if (coachTempPwd.trim().equals(tempAuth)) {
+				System.out.println("驗證成功!");
+				CoachVO cVo = coachSvc.findByPK(coachNo);
+				// 更新資料庫
+				cVo.setCoachPwd(coachPwd.trim());
+				String upResult = coachSvc.updatePwd(cVo);
+				if ("更新成功".equals(upResult)) {
+					HttpSession session = req.getSession();
+					session.setAttribute("registerSuccess", "密碼更改成功，請登入。");
+					res.sendRedirect(req.getContextPath() + "/coach/CoachLogin.jsp");
+					return;
+				} else {
+					errorMsgs.add("系統錯誤，請稍後再試");
+					req.getRequestDispatcher("/coach/CoachResetPwd.jsp").forward(req, res);
+					return;
+				}
+
+			} else {
+//						System.out.println("驗證有誤，請重新申請");
+				errorMsgs.add("驗證有誤，請重新申請");
+				req.getRequestDispatcher("/coach/CoachForgetPwd.jsp").forward(req, res);
+				return;
+			}
 
 		}
 

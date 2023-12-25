@@ -28,9 +28,9 @@ public class CoachDAO implements CoachDAO_interface {
 	@Override
 	public String add(CoachVO coach) {
 		try {
-			
+//			getSession().beginTransaction();
 			Serializable id = getSession().save(coach);
-		
+//		    getSession().getTransaction().commit();
 			return String.valueOf(id);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,8 +132,8 @@ public class CoachDAO implements CoachDAO_interface {
 //		vo.setCoachStat(false);
 //		vo.setEmailStat(false);
 //		vo.setCoachPhone("0912345678");
-//		CoachVO vo2 = dao.findByCoachEmail("c@gmail.com");
-//		System.out.println(vo2);
+//		
+//		System.out.println(dao.add(vo));
 //	}
 
 }

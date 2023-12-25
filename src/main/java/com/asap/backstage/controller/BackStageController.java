@@ -3,6 +3,7 @@ package com.asap.backstage.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,9 +11,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 
 import com.asap.backstage.entity.BackAccessVO;
 import com.asap.backstage.entity.BackStageVO;
@@ -24,10 +27,13 @@ import com.asap.backstage.service.BackStageService;
 import com.asap.backstage.service.BackStageService_interface;
 import com.asap.coach.entity.CoachSportTypeVO;
 import com.asap.coach.entity.CoachVO;
+import com.asap.coach.entity.SportCertVO;
 import com.asap.coach.service.CoachService;
 import com.asap.coach.service.CoachService_interface;
 import com.asap.coach.service.CoachSportTypeService;
 import com.asap.coach.service.CoachSportTypeService_interface;
+import com.asap.coach.service.SportCertService;
+import com.asap.coach.service.SportCertService_interface;
 
 @WebServlet("/BackStageController")
 public class BackStageController extends HttpServlet {
@@ -37,6 +43,7 @@ public class BackStageController extends HttpServlet {
 	private BackAccessTypeService_interface bTypeService;
 	private CoachService_interface cService;
 	private CoachSportTypeService_interface coachSportTypeService;
+	private SportCertService_interface sportCertService;
 	private String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
 	private String pwdRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
 	private String phoneRegex = "09[0-9]{8}";
@@ -48,6 +55,7 @@ public class BackStageController extends HttpServlet {
 		bTypeService = new BackAccessTypeService();
 		cService = new CoachService();
 		coachSportTypeService = new CoachSportTypeService();
+		sportCertService = new SportCertService();
 	}
 
 	@Override
@@ -61,10 +69,10 @@ public class BackStageController extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		res.setContentType("application/json;charset=UTF-8");
 
 		/* dataTables 讀資料 */
 		if ("loadBack".equals(action)) {
+			res.setContentType("application/json;charset=UTF-8");
 			// 返回json
 			List<BackStageVO> backStageVOs = bService.getAllBack();
 			JSONObject json = new JSONObject();
@@ -127,6 +135,7 @@ public class BackStageController extends HttpServlet {
 		/* 新增人員 */
 
 		if ("add".equals(action)) {
+			res.setContentType("application/json;charset=UTF-8");
 			// 返回物件
 			JSONObject json = new JSONObject();
 
@@ -310,7 +319,7 @@ public class BackStageController extends HttpServlet {
 		/* 更新權限 */
 
 		if ("update".equals(action)) {
-
+			res.setContentType("application/json;charset=UTF-8");
 			// 返回物件
 			JSONObject json = new JSONObject();
 
@@ -434,6 +443,7 @@ public class BackStageController extends HttpServlet {
 		}
 
 		if ("delete".equals(action)) {
+			res.setContentType("application/json;charset=UTF-8");
 			// 返回物件
 			JSONObject json = new JSONObject();
 			// 取資料
@@ -487,6 +497,7 @@ public class BackStageController extends HttpServlet {
 
 		/* dataTables 讀資料 */
 		if ("loadCoach".equals(action)) {
+			res.setContentType("application/json;charset=UTF-8");
 			// 返回json
 			List<CoachVO> coachVOs = cService.getAll();
 			JSONObject json = new JSONObject();
@@ -496,7 +507,8 @@ public class BackStageController extends HttpServlet {
 
 				String coachNo = cVo.getCoachNo();
 				List<CoachSportTypeVO> sportTypeList = coachSportTypeService.findByCoachNo(coachNo);
-
+				List<SportCertVO>  sportCertList = sportCertService.findByCoachNo(coachNo);
+				
 				JSONObject item = new JSONObject();
 				item.put("CoachNo", cVo.getCoachNo());
 				item.put("CoachEmail", cVo.getCoachEmail());
@@ -505,8 +517,25 @@ public class BackStageController extends HttpServlet {
 				item.put("CoachExp", cVo.getCoachExp());
 				item.put("CoachStat", cVo.getCoachStat() ? "已啟用" : "未啟用");
 				item.put("EmailStat", cVo.getEmailStat() ? "已驗證" : "未驗證");
-//				item.put("CoachImg", );
-
+                //運動證照
+				if(sportCertList != null ) {
+					if(sportCertList.size() > 0 ) {
+						item.put("coachCertImg1", sportCertList.get(0).getSportCertNo());
+					}else {
+						item.put("coachCertImg1", " ");
+					}
+					if(sportCertList.size() > 1 ) {
+						item.put("coachCertImg2", sportCertList.get(1).getSportCertNo());
+					}else {
+						item.put("coachCertImg2", " ");
+					}
+					if(sportCertList.size() > 2 ) {
+						item.put("coachCertImg3", sportCertList.get(2).getSportCertNo());
+					}else {
+						item.put("coachCertImg3", " ");
+					}
+				}
+                //運動種類
 				StringBuffer sportType = new StringBuffer(" ");
 				if (sportTypeList != null && (!sportTypeList.isEmpty())) {
 
@@ -591,6 +620,7 @@ public class BackStageController extends HttpServlet {
 		// 更新教練權限
 		/* dataTables 讀資料 */
 		if ("startCoachAcct".equals(action)) {
+			res.setContentType("application/json;charset=UTF-8");
 			// 設定返回物件
 			JSONObject json = new JSONObject();
 
@@ -617,6 +647,60 @@ public class BackStageController extends HttpServlet {
 			out.flush();
 			return;
 
+		}
+
+		/* 後台登入 */
+		if ("login".equals(action)) {
+			res.setContentType("text/html; charset=UTF-8");
+			// 錯誤訊息
+			List<String> errorMsgs = new LinkedList<>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			// 取得參數
+			String backEmail = req.getParameter("backEmail");
+			String backPwd = req.getParameter("backPwd");
+			// 檢查
+			if (backEmail == null || backEmail.trim().length() == 0) {
+				errorMsgs.add("帳號不得為空值，請重新登入。");
+			}
+
+			if (backPwd == null || backPwd.trim().length() == 0) {
+				errorMsgs.add("密碼不得為空值，請重新登入。");
+			}
+
+			if (!errorMsgs.isEmpty()) {
+				req.getRequestDispatcher("/backStage/BackageLogin.jsp").forward(req, res);
+				return;// 程式中斷
+			}
+
+			// 尋找資料庫
+			BackStageVO vo = bService.findByBackEmail(backEmail.trim());
+
+			HttpSession session = req.getSession();
+			// 登入
+			if ("tha104asap@gmail.com".equals(backEmail.trim()) && "@asap2154".equals(backPwd.trim())) {
+				// 主帳號為root,密碼為123456
+				session.setAttribute("backVo", "root");
+				res.sendRedirect(req.getContextPath() + "/backStage/BackStage.jsp");
+				return;
+			} else if (vo != null) {
+				// 驗證密碼
+				String password = vo.getBackPwd();
+				if (BCrypt.checkpw(backPwd.trim(), password)) {
+					// 成功
+					session.setAttribute("backVo", vo);
+					res.sendRedirect(req.getContextPath() + "/backStage/BackageHome.jsp");
+					return;
+				} else {
+					errorMsgs.add("帳號或密碼錯誤，請重新登入。");
+					req.getRequestDispatcher("/backStage/BackageLogin.jsp").forward(req, res);
+					return;// 程式中斷
+				}
+			} else {
+				errorMsgs.add("帳號或密碼錯誤，請重新登入。");
+				req.getRequestDispatcher("/backStage/BackageLogin.jsp").forward(req, res);
+				return;// 程式中斷
+			}
 		}
 	}
 

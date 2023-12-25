@@ -24,8 +24,9 @@ public class CoachNewsDAO implements CoachNewsDAO_interface {
 	@Override
 	public int add(CoachNewsVO coachNews) {
 		try {
+//			getSession().beginTransaction();
 			Integer id = (Integer) getSession().save(coachNews);
-
+//			getSession().getTransaction().commit();;
 			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,7 +51,7 @@ public class CoachNewsDAO implements CoachNewsDAO_interface {
 	@Override
 	public List<CoachNewsVO> findByCoachNo(String coachNo) {
 		try {
-			Query<CoachNewsVO> query = getSession().createQuery("from CoachNewsVO where coachNo = :coachNo",
+			Query<CoachNewsVO> query = getSession().createQuery("from CoachNewsVO where coachNo = :coachNo order by newsTime desc",
 					CoachNewsVO.class);
 			query.setParameter("coachNo", coachNo);
 			List<CoachNewsVO> list = query.list();
@@ -74,5 +75,18 @@ public class CoachNewsDAO implements CoachNewsDAO_interface {
 			return null;
 		}
 	}
+	
+//	public static void main(String[] args) {
+//		CoachNewsDAO dao = new CoachNewsDAO();
+//		CoachNewsVO vo = new CoachNewsVO();
+//		
+//		vo.setCoachNo("C12042300001");
+//		vo.setNewsSubj("課程下架成功通知");
+//		vo.setNewsText("球課程下架成功。");
+//		vo.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
+//		
+//		dao.add(vo);
+//
+//	}
 
 }

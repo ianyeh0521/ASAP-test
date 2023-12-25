@@ -497,54 +497,7 @@
 						<button type="button" id="unfocus" class="btn btn-success btn-sm"
 							style="border-radius: 5px; margin-left: 10px">取消選取</button>
 					</div>
-					<table id="table_id" class="display compact hover stripe">
-						<!-- <thead>
-                <tr>
-                 
-                  <th width="10%">編號</th>
-                  <th width="10%">帳號</th>
-                  <th width="10%">姓名</th>
-                  <th width="10%">手機</th>
-                  <th width="5%">狀態</th>
-                  <th width="7.5%">建立時間</th>
-                  <th width="7.5%">更新時間</th>
-                  <th width="7%">購物平台管理</th>
-                  <th width="7%">教練會員資料管理</th>
-                  <th width="7%">場地管理</th>
-                  <th width="7%">論壇管理</th>
-                  <th width="7%">客服管理</th>
-                  <th width="5%">編輯</th>
-                </tr>
-              </thead> -->
-						<!-- <tbody id="table_body"> -->
-						<!-- 欄位內容 可以調整欄位數量但標題和內容要一起 也可以在欄位中加入需要的標籤img、buttom-->
-						<!-- 這裡轉成jsp時可用c:forEach方法 -->
-						<!-- <tr> -->
-						<!-- <td class="BackNo">B1110001</td>
-                  <td class="BackEmail">dan@gmail.com</td>
-                  <td class="BackName">AAA</td>
-                  <td class="BackPhone">0900000000</td> -->
-
-						<!-- <td class="BackSetTime">2023/22/29 20:08</td>
-                  <td class="BackUpdTime">2023/22/29 20:08</td>
-                  <td class="BackStat">正常</td>
-                  <td class="BackAceType1">V</td>
-                  <td class="BackAceType2">V</td>
-                  <td class="BackAceType3">V</td>
-                  <td class="BackAceType4">X</td>
-                  <td class="BackAceType5">X</td>
-                  <td>
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm update"
-                      style="border-radius: 5px"
-                    >
-                      編輯
-                    </button>
-                  </td> -->
-						<!-- </tr> -->
-						<!-- </tbody> -->
-					</table>
+					<table id="table_id" class="display compact hover stripe"></table>
 				</div>
 			</div>
 		</main>

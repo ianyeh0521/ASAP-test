@@ -1,7 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
 <%@ page import="com.asap.coach.entity.*"%>
+<%@ page import="com.asap.coach.service.*"%>
+
+<% 
+   CoachVO cVo = (CoachVO)session.getAttribute("coachVo");
+
+   CoachNewsService coachNewsSvc = new CoachNewsService();
+   List<CoachNewsVO> newslist = coachNewsSvc.findByCoachNo(cVo.getCoachNo());
+   pageContext.setAttribute("newslist", newslist);
+
+%>
 
 <!DOCTYPE html>
 <html lang="zh-tw">
@@ -157,7 +168,7 @@
             center: "title",
             right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
           },
-          initialDate: "2023-01-01",
+          initialDate : new Date(),
 
           navLinks: true, // can click day/week names to navigate views
           businessHours: true, // display business hours
@@ -166,57 +177,15 @@
           eventLimit: true,
           selectable: true,
           events: [
-            {
-              title: "Business Lunch",
-              start: "2023-01-03T13:00:00",
-              constraint: "businessHours",
-            },
-            {
-              title: "Meeting",
-              start: "2023-01-13T11:00:00",
-              constraint: "availableForMeeting", // defined below
-              color: "#257e4a",
-            },
-            {
-              title: "Conference",
-              start: "2023-01-18",
-              end: "2023-01-20",
-            },
-            {
-              title: "Party",
-              start: "2023-01-29T20:00:00",
-            },
-
-            // areas where "Meeting" must be dropped
-            {
-              groupId: "availableForMeeting",
-              start: "2023-01-11T10:00:00",
-              end: "2023-01-11T16:00:00",
-              display: "background",
-            },
-            {
-              groupId: "availableForMeeting",
-              start: "2023-01-13T10:00:00",
-              end: "2023-01-13T16:00:00",
-              display: "background",
-            },
-
-            // red areas where no events can be dropped
-            {
-              start: "2023-01-24",
-              end: "2023-01-28",
-              overlap: false,
-              display: "background",
-              color: "#ff9f89",
-            },
-            {
-              start: "2023-01-06",
-              end: "2023-01-08",
-              overlap: false,
-              display: "background",
-              color: "#ff9f89",
-            },
-          ],
+				<c:forEach var="activ" items="${allActiv}">
+				{
+					title: "${activ[0]}",
+					start: "${activ[1]}",
+					end: "${activ[2]}",
+					
+				},					
+		        </c:forEach>
+			],
         });
 
         calendar.render();
@@ -339,160 +308,19 @@
               "
             >
               <h3>最新消息</h3>
-              <div
-                style="
-                  height: 300px;
-                  border: 1px dashed lightgray;
-                  border-radius: 15px;
-                  padding: 10px;
-                "
-              >
-                <div
-                  class="scrollbar"
-                  style="overflow-y: scroll; overflow-x: hidden"
-                  id="newsList"
-                >
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      11111Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      22222Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      333333Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      44444Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      55555Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      margin-bottom: 5px;
-                      font-size: 1.5rem;
-                      padding: 2px 0;
-                      border-bottom: darkgray 1.5px dashed;
-                    "
-                  >
-                    <p
-                      style="
-                        display: block;
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      "
-                      class="news"
-                    >
-                      666666Lorem ipsum, dolor sit amet consectetur adipisicing
-                      elit. Magni non esse fugit illum eveniet adipisci corrupti
-                      libero, quo eius officia!
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+              
+              <div style="height: 300px; border: 1px dashed lightgray; border-radius: 15px; padding: 10px;">
+					<div class="scrollbar" style="overflow-y: scroll; overflow-x: hidden; max-height:250px" id="newsList">
+						<c:forEach var="news" items="${newslist}">
+								<div style="margin-bottom: 5px;font-size: 1.5rem;padding: 2px 0;border-bottom: darkgray 1.5px dashed;">
+                                      <p style="display: block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="news">
+                                           <b>${news.newsSubj}</b>&ensp;|&ensp;${news.newsText}&ensp;|&ensp;${news.newsTime}
+                                      </p>
+                                 </div>							
+						</c:forEach>
+					</div>
+			   </div>
+           </div>
 
             <div
               class="mbrinfo"
@@ -877,8 +705,10 @@
     <script>
       $(window).on("load", function () {
         $("#newsList").on("click","p.news", function () {
-          var p = $(this).text();
-          $("div.fs_alert_txt").text(p);
+        	 var p = $(this).text();
+	         var p_list = p.split("|");
+	         var context = '<div style="font-size: larger">'+ p_list[0] +'</div><br><div style="text-align: left;">'+ p_list[1] +'</div><br><div style="text-align: left;">'+ p_list[2] +'</div>';
+	         $("div.fs_alert_txt").html(context);
           $("#fs_alert").css("display", "block");
         });
         $("#alert_ok").on("click", function () {

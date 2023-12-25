@@ -24,8 +24,9 @@ public class MbrNewsDAO implements MbrNewsDAO_interface{
 	@Override
 	public int add(MbrNewsVO mbrNews) {
 		try {
+			
 			Integer id = (Integer) getSession().save(mbrNews);
-
+          
 			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,7 +51,7 @@ public class MbrNewsDAO implements MbrNewsDAO_interface{
 	@Override
 	public List<MbrNewsVO> findByMbrNo(String mbrNo) {
 		try {
-			Query<MbrNewsVO> query = getSession().createQuery("from MbrNewsVO where mbrNo = :mbrNo",
+			Query<MbrNewsVO> query = getSession().createQuery("from MbrNewsVO where mbrNo = :mbrNo order by newsTime desc",
 					MbrNewsVO.class);
 			query.setParameter("mbrNo", mbrNo);
 			List<MbrNewsVO> list = query.list();
