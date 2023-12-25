@@ -16,6 +16,7 @@ public class ItemImgService implements ItemImgService_interface {
 
 	@Override
 	public int insert(ItemImgVO itemImg) {
+		itemImg.setItemImgUpdTime(new java.sql.Timestamp(System.currentTimeMillis()));
 		return dao.insert(itemImg);
 	}
 

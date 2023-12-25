@@ -25,6 +25,7 @@ public class ItemInfoService implements ItemInfoService_interface {
 	@Override
 	public int insert(ItemInfoVO itemInfo) {
 		itemInfo.setItemAddTime(new java.sql.Timestamp(System.currentTimeMillis()));
+		itemInfo.setItemUpdTime(new java.sql.Timestamp(System.currentTimeMillis()));
 		return dao.insert(itemInfo);
 	}
 

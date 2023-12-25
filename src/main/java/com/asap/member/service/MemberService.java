@@ -38,7 +38,7 @@ public class MemberService implements MemberService_interface {
 		member.setCmtReScore(0);
 		member.setEmailStat(false);
 		String mbrNo = dao.add(member);
-	
+
 		return mbrNo;
 	}
 
@@ -65,7 +65,17 @@ public class MemberService implements MemberService_interface {
 
 		return dao.findByMbrEmail(mbrEmail);
 	}
-	
-	
+
+	@Override
+	public String addCmtByMbrNo(int cmtScore, String mbrNo) {
+		MemberVO vo = dao.findByPK(mbrNo);
+		int num = vo.getCmtReNum();
+		int score = vo.getCmtReScore();
+		num += 1;
+		score += cmtScore;
+		vo.setCmtReNum(num);
+		vo.setCmtReScore(score);
+		return dao.update(vo);
+	}
 
 }
