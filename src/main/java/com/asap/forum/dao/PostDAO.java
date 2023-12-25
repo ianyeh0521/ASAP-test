@@ -141,6 +141,8 @@ public class PostDAO implements PostDAO_interface {
 	@Override
 	public List<PostVO> getAlltoShow() {
 		return getSession().createQuery("from PostVO where postStatus=1", PostVO.class).list();
-	};
+	}
+
+	
 
 }

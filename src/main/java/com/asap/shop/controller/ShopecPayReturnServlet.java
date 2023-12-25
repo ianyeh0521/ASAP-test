@@ -61,6 +61,7 @@ public class ShopecPayReturnServlet extends HttpServlet{
 		String rtnCode = req.getParameter("RtnCode");
 		String mbrNo = req.getParameter("CustomField1");
 		Integer ordNo = Integer.valueOf(req.getParameter("CustomField2"));
+		System.out.println(ordNo);
 //		String courtOrdTimeAndEnd = req.getParameter("CustomField3");
 //		String memberNo = req.getParameter("CustomField4");
 		

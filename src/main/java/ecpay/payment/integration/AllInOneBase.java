@@ -71,7 +71,7 @@ public class AllInOneBase {
 			if(HashKey == null){
 				throw new EcpayException(ErrorMessage.MInfo_NOT_SETTING);
 			}
-		} catch(UnsupportedEncodingException e){
+		 }catch(UnsupportedEncodingException e){
 			e.printStackTrace();
 		}
 	}
