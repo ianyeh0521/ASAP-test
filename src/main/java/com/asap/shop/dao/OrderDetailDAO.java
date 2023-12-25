@@ -127,7 +127,10 @@ public class OrderDetailDAO implements OrderDetailDAO_interface {
 	public List<OrderDetailVO> checkerFindByOrderNo(Integer orderNo) {
 		Session session = factory.openSession();
 		try {
-			List<OrderDetailVO> list = session.createQuery("from OrderDetailVO", OrderDetailVO.class).list();
+			String hql = "FROM OrderDetailVO WHERE orderNo = :orderNo";
+			Query<OrderDetailVO> query = session.createQuery(hql);
+			query.setParameter("orderNo", orderNo);
+			List<OrderDetailVO> list = query.list();
 			return list;
 		} finally {
 			if (session != null) {

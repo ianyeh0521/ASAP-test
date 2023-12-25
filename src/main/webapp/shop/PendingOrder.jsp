@@ -10,7 +10,7 @@
 
 <%
 OrderService_interface orderSvc=new OrderService();
-List <OrderVO> list =orderSvc.findUnPaid("M1");
+List <OrderVO> list =orderSvc.findUnPaid("M001");
 pageContext.setAttribute("list", list);
 %>
 
@@ -237,10 +237,19 @@ $(document).ready(function () {
 													class="btn btn-danger btn-sm deleteorder"
 													style="border-radius: 5px; margin-bottom: 10px" data-orderno="${list.orderNo}"
 													>取消訂單</button></td>
-											<td><button type="button"
-													class="btn btn-primary btn-sm post-manage"
-													style="border-radius: 5px; margin-bottom: 10px" data-orderno="${list.orderNo}"
-													>訂單付款</button></td>
+											<td>
+											<form METHOD="post" ACTION="<%=request.getContextPath()%>/shop/OrderServlet" style="margin-bottom:0">
+											<input type="hidden" name="action" value="payorder">
+<!-- 											記得改 -->
+											<input type="hidden" name="MbrNo" value="M001">
+											<input type="hidden" name="orderNo" value="${list.orderNo}">
+											<input type="hidden" name="totalPrice" value="${list.orderPrice}">
+											<button type="submit"
+													class="btn btn-primary btn-sm"
+													style="border-radius: 5px;margin-bottom:10px; font-size:1.1rem" data-orderno="${list.orderNo}"
+													>訂單付款</button>
+											</form>
+											</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -290,7 +299,7 @@ $(document).ready(function () {
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
 		$("footer").load("footer.html");
-
+		
 		$("button.fordetail").on("click", function () {
 		      var orderNo = $(this).attr('data-orderno');
 		      console.log(orderNo)
