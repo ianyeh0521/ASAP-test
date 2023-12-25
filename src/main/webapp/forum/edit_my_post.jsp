@@ -362,6 +362,7 @@
 			     },  
 		  dataType:"json",
 		  success: function(data){      
+			  console.log(data);
 			  $("input.posttitle").val(data.postTitle);
 		      $("select#category").val(data.postTypeVO.postTypeNo);
 		      $("input[name='postno']").val(data.postNo);

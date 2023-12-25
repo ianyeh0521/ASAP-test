@@ -175,7 +175,7 @@ public class PostServlet extends HttpServlet {
 	private void getPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		res.setContentType("application/json;charset=UTF-8");
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
-		PostVO post=postVOService.findbyPK(postno);
+		PostVO post=postVOService.backstageFindbyPK(postno);
 		Gson gson= new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 		String jsonString=gson.toJson(post);
 		PrintWriter out = res.getWriter();
