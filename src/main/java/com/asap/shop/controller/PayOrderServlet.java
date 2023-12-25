@@ -84,12 +84,11 @@ public class PayOrderServlet extends HttpServlet {
 		obj.setItemName(items);
 		obj.setCustomField1(mbrNo);// 會員編號
 		obj.setCustomField2(String.valueOf(ordNo)); // 訂單編號（資料庫的）
-		obj.setReturnURL("https://acac-1-164-235-76.ngrok-free.app/ASAP/shop/orderPayReturn.do");
+		obj.setReturnURL("https://ee5b-2001-b400-e292-d668-8ceb-e052-fcb2-38c.ngrok-free.app/ASAP/shop/orderPayReturn.do");
 		obj.setOrderResultURL("http://localhost:8081/ASAP/shop/BuyerOrderManage.jsp");
 		obj.setNeedExtraPaidInfo("N");
 		String form = all.aioCheckOut(obj, null);
-		
-		
+
 		
 		
 		

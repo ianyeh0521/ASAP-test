@@ -10,7 +10,7 @@
 
 <%
 OrderService_interface orderSvc=new OrderService();
-List <OrderVO> list =orderSvc.findUnPaid("M1");
+List <OrderVO> list =orderSvc.findUnPaid("M001");
 pageContext.setAttribute("list", list);
 %>
 
