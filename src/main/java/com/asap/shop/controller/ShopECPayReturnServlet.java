@@ -1,5 +1,5 @@
 package com.asap.shop.controller;
-  
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -32,26 +32,24 @@ import com.asap.shop.service.OrderService_interface;
 import com.asap.util.JavaMail;
 import com.asap.util.MailFormat;
 
-
 import ecpay.payment.integration.AllInOne;
 
 @WebServlet("/shop/orderPayReturn.do")
-public class ShopECPayReturnServlet extends HttpServlet{
+public class ShopECPayReturnServlet extends HttpServlet {
 
 	public static AllInOne all;
 	private OrderService_interface orderSvc;
 	private MbrNewsService_interface mbrNewsSvc;
 
-	
 	public void init() throws ServletException {
 		all = new AllInOne("");
 		orderSvc = new OrderService();
 		mbrNewsSvc = new MbrNewsService();
 
 	}
-	
+
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		System.out.println("進來囉!");
 		String merchantID = req.getParameter("MerchantID");
@@ -64,20 +62,16 @@ public class ShopECPayReturnServlet extends HttpServlet{
 		System.out.println(ordNo);
 //		String courtOrdTimeAndEnd = req.getParameter("CustomField3");
 //		String memberNo = req.getParameter("CustomField4");
-		
-		
+
 		MemberService_interface memberSvc = new MemberService();
 		MemberVO memberVO = memberSvc.findByMbrNo(mbrNo);
 
-		System.out.println(merchantTradeNo + " " + RtnMsg + " RtnCode=" + rtnCode 				
-				+"memberNo="+mbrNo);
-		
+		System.out.println(merchantTradeNo + " " + RtnMsg + " RtnCode=" + rtnCode + "memberNo=" + mbrNo);
+
 //		String[] stringArray = courtOrdDateAndTimeAndEnd.split(",");
 //		Date courtOrdDate = java.sql.Date.valueOf(stringArray[0].trim());
 //		Integer courtOrdTime = Integer.valueOf(stringArray[1].trim());
 //		Integer courtOrdTimeEnd = Integer.valueOf(stringArray[2].trim());
-		
-		
 
 		if ("1".equals(rtnCode)) {
 			// 付款成功
@@ -87,12 +81,12 @@ public class ShopECPayReturnServlet extends HttpServlet{
 			dict.put("CheckMacValue", checkMacValue);
 			res.setCharacterEncoding("UTF-8");
 			res.setContentType("text/html");
-			if(all.compareCheckMacValue(dict)) {
+			if (all.compareCheckMacValue(dict)) {
 				res.getWriter().write("1|OK");
 			}
-			
+
 			// 更改訂單狀態成已付款
-			//（拆解 MerchantTradeNo）
+			// （拆解 MerchantTradeNo）
 //			String trimmedString = merchantTradeNo.substring(6);
 //			Integer remainInteger = Integer.valueOf(trimmedString);
 //			Integer orderNo = remainInteger - 10000;
@@ -100,16 +94,13 @@ public class ShopECPayReturnServlet extends HttpServlet{
 			OrderVO order = orderSvc.findByPK(ordNo);
 			order.setOrderStat(1);
 			orderSvc.update(order);
-			 
-			
+
 			// 寫入不開放時間
 //			for(int i = courtOrdTime; i < courtOrdTimeEnd;i++) {
 //				CourtClosedTimeVO courtClosedTimeVO = new CourtClosedTimeVO(courtVO, courtOrdDate, i);
 //				courtClosedTimeService_interface.insert(courtClosedTimeVO);
 //			}
-			
-			
-			
+
 			// 寫入會員消息
 			MbrNewsVO vo2 = new MbrNewsVO();
 			vo2.setMbrNo(mbrNo);
@@ -117,27 +108,27 @@ public class ShopECPayReturnServlet extends HttpServlet{
 			vo2.setNewsText("您已成功付款，訂單編號" + ordNo);
 			vo2.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
 			mbrNewsSvc.add(vo2);
-			
+
 			// 預約成功通知信
-			String title = "ASAP商城付款成功通知第"+ordNo+"號訂單";
+			String title = "ASAP商城付款成功通知第" + ordNo + "號訂單";
 			String content = "親愛的會員您好，您已成功付款。您所購買的商品將在近日寄出，謝謝。如有任何問題或需要進一步協助，請隨時聯繫我們的客服部門。";
 			MailFormat mailFormat = new MailFormat(memberVO.getMbrName(), content);
 			InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
 			DataSource dataSource = new ByteArrayDataSource(in, "application/png");
-			
+
 			// 寄出信件
 			JavaMail mail = new JavaMail(memberVO.getMbrEmail(), title, mailFormat.getMessageTextAndImg(), dataSource);
 			String result = mail.sendMail();
 			System.out.println("SendMail : " + result);
-		}else {
-			OrderVO orderVO= orderSvc.findByPK(ordNo);
+		} else {
+			OrderVO orderVO = orderSvc.findByPK(ordNo);
 			System.out.println(orderVO);
 			orderVO.setOrderStat(4);
 			orderSvc.update(orderVO);
 		}
-			
+
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
