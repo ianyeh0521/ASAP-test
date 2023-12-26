@@ -37,7 +37,7 @@ pageContext.setAttribute("list", list);
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>ASAP</title>
+<title>ASAP論壇-我的收藏</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />

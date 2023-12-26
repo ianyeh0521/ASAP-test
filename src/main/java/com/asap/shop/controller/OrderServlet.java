@@ -90,11 +90,17 @@ public class OrderServlet extends HttpServlet {
 				ItemInfoVO itemcheck = itemInfoSvc.findByItemNo(Integer.parseInt(product[0]));
 				Integer maxpurchase = itemcheck.getItemStockQty();
 				if (maxpurchase < Integer.parseInt(product[2])) {
-					ShoppingCartService shoppingCartSvc = new ShoppingCartService();
-					ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M001",
-							Integer.parseInt(product[0]));
-					modifyCart.setItemShopQty(maxpurchase);
 					exceed = true;
+					ShoppingCartService shoppingCartSvc = new ShoppingCartService();
+					if(maxpurchase==0) {
+						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M001",Integer.parseInt(product[0]));
+						shoppingCartSvc.delete(modifyCart);
+					}else {
+						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M001",Integer.parseInt(product[0]));
+						modifyCart.setItemShopQty(maxpurchase);
+					}
+					
+					
 				}
 			}
 		}

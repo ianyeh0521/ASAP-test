@@ -21,7 +21,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <title>發布貼文</title>
+  <title>ASAP論壇-編輯貼文</title>
 
   <meta name="keywords" content="HTML5 Template" />
   <meta name="description" content="Porto - Bootstrap eCommerce Template" />

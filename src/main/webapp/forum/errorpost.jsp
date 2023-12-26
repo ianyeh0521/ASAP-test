@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <title>Porto - Bootstrap eCommerce Template</title>
+  <title>該貼文已被移除</title>
 
   <meta name="keywords" content="HTML5 Template" />
   <meta name="description" content="Porto - Bootstrap eCommerce Template" />
