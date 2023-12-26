@@ -11,7 +11,23 @@
 Integer postNo = Integer.valueOf(request.getParameter("postNo"));
 PostVOService postSvc = new PostVOServiceImpl();
 PostVO post = postSvc.findbyPK(postNo);
-pageContext.setAttribute("post", post);
+if(post==null){
+	response.sendRedirect("errorpost.jsp");
+}else{
+	pageContext.setAttribute("post", post);
+}
+
+
+// 會員編號
+/*
+String memberNo = session.getAttribute("memberVO").getMbrNo();
+pageContext.setAttribute("memberNo",memberNo);
+*/
+
+String mbrNo = "M001";
+pageContext.setAttribute("mbrNo",mbrNo);
+
+
 %>
 
 
@@ -280,7 +296,9 @@ label {
   		  data: {"action": "reportpost",
   			  	 "postno": ${post.postNo},
 				 "rpttype": rpttype,
-				 "rpttext": rpttext},                         
+				 "rpttext": rpttext,
+				 "mbrNo": "${mbrNo}"
+  		  		},                         
   		  success: function(){      
   		    alert("檢舉成功");
   		  	window.location.replace("${pageContext.request.contextPath}/forum/forum_article.jsp?postNo=${post.postNo}");

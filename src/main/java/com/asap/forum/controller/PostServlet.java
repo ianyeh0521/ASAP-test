@@ -115,7 +115,7 @@ public class PostServlet extends HttpServlet {
 		String posttitle =req.getParameter("posttitle");
 		String posttext=req.getParameter("posttext");
 		PostTypeVO postTypeVO=new PostTypeVO(posttypeno);
-		PostVO post=postVOService.findbyPK(postno);
+		PostVO post=postVOService.backstageFindbyPK(postno);
 		post.setPostStatus(1);
 		post.setPostTitle(posttitle);
 		post.setPostText(posttext);
@@ -257,6 +257,7 @@ public class PostServlet extends HttpServlet {
 		res.setContentType("text/html; charset=UTF-8");
 		Integer posttypeno = Integer.parseInt(req.getParameter("posttypeno"));
 		String posttitle =req.getParameter("posttitle");
+		String mbrNo =req.getParameter("mbrNo");
 		String posttext=req.getParameter("posttext");
 		PostTypeVO postTypeVO=new PostTypeVO(posttypeno);
 
@@ -268,7 +269,7 @@ public class PostServlet extends HttpServlet {
 		postvo.setPostViews(0);
 		
 //		--------待刪-----------
-		postvo.setMbrNo("M001");
+		postvo.setMbrNo(mbrNo);
 //		--------待刪-----------
 		PostVOService postVOService= new PostVOServiceImpl();
 		postVOService.addPost(postvo);

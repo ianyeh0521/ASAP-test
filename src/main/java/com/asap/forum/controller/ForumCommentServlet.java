@@ -70,15 +70,12 @@ public class ForumCommentServlet extends HttpServlet {
 	private void addcomment(HttpServletRequest req, HttpServletResponse res) {
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
 		String commenttext =req.getParameter("comment");
+		String mbrNo =req.getParameter("mbrNo");
 		ForumCommentVO commentVO=new ForumCommentVO();
 		commentVO.setPostNo(postno);
 		commentVO.setCmtText(commenttext);
 		commentVO.setCmtStatus(true);
-		
-//		--------待刪-----------
-		commentVO.setMbrNo("M002");
-//		--------待刪-----------
-		
+		commentVO.setMbrNo(mbrNo);		
 		forumCommentVOService.addComment(commentVO);
 		
 	}

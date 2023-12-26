@@ -1,5 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
+<%
+	// 會員編號
+	/*
+	String memberNo = session.getAttribute("memberVO").getMbrNo();
+	pageContext.setAttribute("mbrNo",memberNo);
+	*/
+	
+	String mbrNo = "M002";
+	pageContext.setAttribute("mbrNo",mbrNo);
+
+%>
+
+
 <html lang="zh-Hant">
 
 <head>
@@ -44,9 +58,9 @@
 <%--   <link rel="stylesheet" href="${pageContext.request.contextPath}/forum/style1.min.css" />  --%>
 
  <!-- Main CSS File (style.min.css 10166 style.css 8837)   -->
-   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style1.css" />
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style_summernote.css" />
 
-  <link rel="stylesheet" href="/${pageContext.request.contextPath}/assets/css/style1.min.css" /> 
+  <link rel="stylesheet" href="/${pageContext.request.contextPath}/assets/css/style_summernote.min.css" /> 
 
 
 
@@ -234,7 +248,7 @@
         <button type="button" id="cancel-button" class="btn btn-default btn-rounded btn-md"><a href="${pageContext.request.contextPath}/forum/forum_home.jsp"
             style="color:black">取消</a></button>
         <button type="submit" id="submit-button" class="btn btn-default btn-rounded btn-md" name="action" value="addnewpost">送出</button>
-      <!--	<input type="hidden" name="action" value="addnewpost"> -->
+      	<input type="hidden" name="mbrNo" value="${mbrNo}">
       </div>
     </div>
   </form>

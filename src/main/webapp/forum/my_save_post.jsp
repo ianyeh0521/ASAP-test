@@ -11,8 +11,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
+
+// 會員編號
+/*
+String memberNo = session.getAttribute("memberVO").getMbrNo();
+pageContext.setAttribute("mbrNo",memberNo);
+*/
+
+String mbrNo = "M001";
+pageContext.setAttribute("mbrNo",mbrNo);
+
 SavePostVOService savePostSvc = new SavePostVOServiceImpl();
-List<SavePostVO> list = savePostSvc.getByMbrNo("M001");
+List<SavePostVO> list = savePostSvc.getByMbrNo(mbrNo);
 System.out.println(list);
 pageContext.setAttribute("list", list);
 %>
