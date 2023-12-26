@@ -702,6 +702,16 @@ public class BackStageController extends HttpServlet {
 				return;// 程式中斷
 			}
 		}
+		
+		/*登出*/
+		if("logout".equals(action)) {
+			
+			HttpSession session = req.getSession();
+			session.invalidate();
+			res.sendRedirect(req.getContextPath() + "/backStage/BackageLogin.jsp");
+			return;
+			
+		}
 	}
 
 }
