@@ -11,6 +11,9 @@
 <%@ page import="com.asap.shop.entity.ItemImgVO"%>
 <%@ page import="com.asap.shop.service.ItemImgService_interface"%>
 <%@ page import="com.asap.shop.service.ItemImgService"%>
+<%@ page import="com.asap.member.entity.MemberVO"%>
+<%@ page import="com.asap.member.service.MemberService_interface"%>
+<%@ page import="com.asap.member.service.MemberService"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.util.Date"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -27,6 +30,12 @@ System.out.println(list);
 OrderDetailService_interface OrderDetailSvc = new OrderDetailService();
 List<OrderDetailVO> orderdetail = OrderDetailSvc.findByMbrNo("M1");
 pageContext.setAttribute("cmtlist", orderdetail);
+
+MemberService_interface MemberSvc = new MemberService();
+MemberVO member = MemberSvc.findByMbrNo("M1");
+pageContext.setAttribute("member", member);
+
+
 
 ItemImgService_interface itemImgSvc = new ItemImgService();
 List<String> itemImgBase64 = new ArrayList<>();
@@ -56,8 +65,8 @@ if (list.getItemAddTime() != null) {
 <meta name="author" content="SW-THEMES">
 
 <!-- Favicon -->
-<link rel="icon" type="../image/x-icon"
-	href="../assets/images/icons/favicon.png">
+<link rel="icon" type="${pageContext.request.contextPath}/image/x-icon"
+	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
 
 
 <script>
@@ -70,19 +79,19 @@ if (list.getItemAddTime() != null) {
 	};
 	(function(d) {
 		var wf = d.createElement('script'), s = d.scripts[0];
-		wf.src = '../assets/js/webfont.js';
+		wf.src = '${pageContext.request.contextPath}/assets/js/webfont.js';
 		wf.async = true;
 		s.parentNode.insertBefore(wf, s);
 	})(document);
 </script>
 
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="../assets/css/demo41.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/demo41.min.css">
 <link rel="stylesheet" type="text/css"
-	href="../assets/vendor/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 </head>
 
 <body>
@@ -99,7 +108,7 @@ if (list.getItemAddTime() != null) {
 							<i class="fas fa-bars"></i>
 						</button>
 						<a href="#" width="222" height="88"> <img
-							src="../newImg/logo2.png" alt="Logo" />
+							src="${pageContext.request.contextPath}/newImg/logo2.png" alt="Logo" />
 						</a>
 					</div>
 					<!-- End .header-left -->
@@ -227,7 +236,7 @@ if (list.getItemAddTime() != null) {
 							<hr class="short-divider">
 
 							<div class="price-box">
-								<c:if test="${list.preItemPrice != 0}">
+								<c:if test="${list.preItemPrice > list.itemPrice}">
 									<del class="old-price">$${list.preItemPrice}</del>
 								</c:if>
 								<span class="product-price">$${list.itemPrice}</span>
@@ -345,10 +354,9 @@ if (list.getItemAddTime() != null) {
 								</h3>
 
 								<div class="comment-list">
-									<c:forEach var="OrderDetailVO" items="${cmtlist}">
 										<div class="comments">
 											<figure class="img-thumbnail">
-												<img src="../assets/images/blog/author.jpg" alt="author"
+												<img src="${pageContext.request.contextPath}/newImg/user.png" alt="author"
 													width="80" height="80">
 											</figure>
 
@@ -359,7 +367,7 @@ if (list.getItemAddTime() != null) {
 													<div class="ratings-container float-sm-right">
 														<div class="product-ratings">
 															<c:set var="ratingPercentage"
-																value="${OrderDetailVO.cmtScore * 20}" />
+																value="${member.cmtReScore/member.cmtReNum*20}" />
 															<!-- 計算百分比 -->
 															<span class="ratings" style="width: ${ratingPercentage}%"></span>
 															<!-- 應用百分比 -->
@@ -369,17 +377,16 @@ if (list.getItemAddTime() != null) {
 														<!-- End .product-ratings -->
 													</div>
 
-													<span class="comment-by"> <strong>${OrderDetailVO.mbrNo}</strong>
-														${OrderDetailVO.cmtTime}
+													<span class="comment-by"> <strong>${member.mbrName}</strong>
+														${member.mbrNo}
 													</span>
 												</div>
 
 												<div class="comment-content">
-													<p>${OrderDetailVO.cmtText}</p>
+													<p>${member.sellerIntro}</p>
 												</div>
 											</div>
 										</div>
-									</c:forEach>
 								</div>
 
 
@@ -424,21 +431,23 @@ if (list.getItemAddTime() != null) {
 		class="icon-angle-up"></i></a>
 
 	<!-- Plugins JS File -->
-	<script src="../assets/js/jquery.min.js"></script>
-	<script src="../assets/js/bootstrap.bundle.min.js"></script>
-	<script src="../assets/js/optional/isotope.pkgd.min.js"></script>
-	<script src="../assets/js/plugins.min.js"></script>
-	<script src="../assets/js/jquery.appear.min.js"></script>
-	<script src="../assets/js/jquery.plugin.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/optional/isotope.pkgd.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.appear.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.plugin.min.js"></script>
 
 	<!-- Main JS File -->
-	<script src="../assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<script>
 		$("footer").load("footer.html");
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
 
+		
+		//確認已加入收藏
 		var itemNo = $(".product-title").attr("data-itemno");
 		var mbrNo = "M001";
 		$
@@ -461,6 +470,7 @@ if (list.getItemAddTime() != null) {
 
 				})
 
+		//加入購物車
 		$(".add-cart").on("click", function() {
 			var addCart = $(".product-title").attr("data-itemno");
 			var max = $(".product-qty").text();
@@ -496,6 +506,8 @@ if (list.getItemAddTime() != null) {
 			})
 		})
 
+		
+		//加入收藏
 		$("span.addwish")
 				.on(
 						"click",
