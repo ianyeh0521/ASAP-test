@@ -50,24 +50,6 @@ public class ForumReportServlet extends HttpServlet {
 	
 	res.setContentType("text/html; charset=UTF-8");
 		
-		
-		//		req.setCharacterEncoding("UTF-8");
-//		resp.setContentType("application/json; charset=UTF-8");
-//		String type= req.getParameter("reporttype");
-//		String text= req.getParameter("reporttext");
-//		ForumReportVO forumReportVO= new ForumReportVO();
-//		forumReportVO.setfRptMsg(text);
-//		forumReportVO.setfRptTypeNo(Integer.parseInt(type));
-//		forumReportVO.setMbrNo("M001");
-//		forumReportVO.setPostNo(1);
-//		
-//		ForumReportVOService forumReportVOService= new ForumReportVOServiceImpl();
-//		forumReportVOService.add(forumReportVO);
-//		
-//		System.out.println("success");
-//		resp.getWriter().write("Success: true");
-//		System.out.println("reporttype "+type);
-//		System.out.println("reporttext "+text);
 	}
 
 	private void cmtRptMgmt(HttpServletRequest req, HttpServletResponse res) {
@@ -75,6 +57,8 @@ public class ForumReportServlet extends HttpServlet {
 		String  replyText =req.getParameter("replyText");
 		String  mbrNo =req.getParameter("mbrNo");
 		ForumReportVO forumReportVO= forumreportVOService.findByPK(fRptno);
+//		String  backNo =req.getParameter("backNo");
+//		forumReportVO.setBackNo(backNo);		
 		forumReportVO.setfRptReply(replyText);
 		forumReportVO.setfRptReplyTime(Timestamp.valueOf(LocalDateTime.now()));
 		forumreportVOService.update(forumReportVO);
@@ -91,6 +75,8 @@ public class ForumReportServlet extends HttpServlet {
 		String  replyText =req.getParameter("replyText");
 		String  mbrNo =req.getParameter("mbrNo");
 		ForumReportVO forumReportVO= forumreportVOService.findByPK(fRptno);
+//		String  backNo =req.getParameter("backNo");
+//		forumReportVO.setBackNo(backNo);
 		forumReportVO.setfRptReply(replyText);
 		forumReportVO.setfRptReplyTime(Timestamp.valueOf(LocalDateTime.now()));
 		forumreportVOService.update(forumReportVO);
@@ -106,6 +92,7 @@ public class ForumReportServlet extends HttpServlet {
 	private void reportPost(HttpServletRequest req, HttpServletResponse res) {
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
 		Integer rpttype = Integer.parseInt(req.getParameter("rpttype"));
+		String mbrNo =req.getParameter("mbrNo");
 		String rpttext =req.getParameter("rpttext");
 		res.setContentType("application/json; charset=UTF-8");
 		ForumReportVO forumReportVO= new ForumReportVO();
@@ -113,17 +100,12 @@ public class ForumReportServlet extends HttpServlet {
 		ForumReportTypeVO fRptTypeVO= new ForumReportTypeVO(rpttype);
 		forumReportVO.setForumReportTypeVO(fRptTypeVO);
 		forumReportVO.setPostNo(postno);
-		
-		//待刪
-		forumReportVO.setMbrNo("M001");
-		//待刪
-		
-		
+		forumReportVO.setMbrNo(mbrNo);
 		Integer fRptno=forumreportVOService.add(forumReportVO);
 		MbrNewsVO mbrNews= new MbrNewsVO();
-		mbrNews.setMbrNo("M001");
+		mbrNews.setMbrNo(mbrNo);
 		mbrNews.setNewsSubj("檢舉結果通知：檢舉單編號"+fRptno);
-		mbrNews.setNewsText("您好，我們已經收到您的檢舉，若有近一步消息會再通知您，謝謝。ASAP團隊敬上");
+		mbrNews.setNewsText("您好，我們已經收到您的檢舉，若有近一步消息將再通知您，謝謝。ASAP團隊敬上");
 		MbrNewsService_interface mbrNewsSvc= new MbrNewsService();
 	    mbrNewsSvc.add(mbrNews);
 		
@@ -133,21 +115,19 @@ public class ForumReportServlet extends HttpServlet {
 		Integer cmtno = Integer.parseInt(req.getParameter("cmtno"));
 		Integer rpttype = Integer.parseInt(req.getParameter("rpttype"));
 		String rpttext =req.getParameter("rpttext");
+		String mbrNo =req.getParameter("mbrNo");
 		res.setContentType("application/json; charset=UTF-8");
 		ForumReportVO forumReportVO= new ForumReportVO();
 		forumReportVO.setfRptMsg(rpttext);
 		ForumReportTypeVO fRptTypeVO= new ForumReportTypeVO(rpttype);
 		forumReportVO.setForumReportTypeVO(fRptTypeVO);
 		forumReportVO.setCmtNo(cmtno);
-		
-		//待刪
-		forumReportVO.setMbrNo("M001");
-		//待刪
+		forumReportVO.setMbrNo(mbrNo);
 		Integer fRptno=forumreportVOService.add(forumReportVO);
 		MbrNewsVO mbrNews= new MbrNewsVO();
-		mbrNews.setMbrNo("M001");
+		mbrNews.setMbrNo(mbrNo);
 		mbrNews.setNewsSubj("檢舉成功通知：檢舉單編號"+fRptno);
-		mbrNews.setNewsText("您好，我們已經收到您的檢舉，若有近一步消息會再通知您，謝謝。ASAP團隊敬上");
+		mbrNews.setNewsText("您好，我們已經收到您的檢舉，若有近一步消息將再通知您，謝謝。ASAP團隊敬上");
 		MbrNewsService_interface mbrNewsSvc= new MbrNewsService();
 	    mbrNewsSvc.add(mbrNews);
 	}

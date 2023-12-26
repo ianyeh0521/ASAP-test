@@ -58,9 +58,10 @@ public class SavePostServlet extends HttpServlet {
 
 	private void checkSave(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		String mbrNo= req.getParameter("mbrNo");
 		PostVO postVO=new PostVO(postno);
-		Integer status=savePostVOService.saveCheck("M001", postVO);
-				Map<String, Integer> data = new HashMap<>();
+		Integer status=savePostVOService.saveCheck(mbrNo, postVO);
+		Map<String, Integer> data = new HashMap<>();
 		data.put("status", status);
 		Gson gson= new Gson();
 		String statusJson=gson.toJson(data);
@@ -72,8 +73,8 @@ public class SavePostServlet extends HttpServlet {
 	private void savePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
 		PostVO postVO=new PostVO(postno);
-//		M001要改
-		Integer status=savePostVOService.save("M001", postVO);
+		String mbrNo= req.getParameter("mbrNo");
+		Integer status=savePostVOService.save(mbrNo, postVO);
 		Map<String, Integer> data = new HashMap<>();
 		data.put("status", status);
 		Gson gson= new Gson();

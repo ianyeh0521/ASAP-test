@@ -7,8 +7,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
+
+	// 會員編號
+	/*
+	String memberNo = session.getAttribute("memberVO").getMbrNo();
+	pageContext.setAttribute("mbrNo",memberNo);
+	*/
+	
+	String mbrNo = "M002";
+	pageContext.setAttribute("mbrNo",mbrNo);
+
     PostVOService postSvc = new PostVOServiceImpl();
-	List<PostVO> post = postSvc.getMyPosts("M002");
+	List<PostVO> post = postSvc.getMyPosts(mbrNo);
     pageContext.setAttribute("post", post);
 %>
 

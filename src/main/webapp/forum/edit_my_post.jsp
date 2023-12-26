@@ -2,6 +2,20 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 
+<%
+	// 會員編號
+	/*
+	String memberNo = session.getAttribute("memberVO").getMbrNo();
+	pageContext.setAttribute("mbrNo",memberNo);
+	*/
+	
+// 	String mbrNo = "M002";
+// 	pageContext.setAttribute("mbrNo",mbrNo);
+
+%>
+
+
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -44,9 +58,9 @@
 <%--   <link rel="stylesheet" href="${pageContext.request.contextPath}/forum/style1.min.css" />  --%>
 
 <!-- Main CSS File (style.min.css 10166 style.css 8837)   -->
-   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style1.css" />
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style_summernote.css" />
 
-  <link rel="stylesheet" href="/${pageContext.request.contextPath}/assets/css/style1.min.css" /> 
+  <link rel="stylesheet" href="/${pageContext.request.contextPath}/assets/css/style_summernote.min.css" /> 
 
 
 
@@ -210,7 +224,7 @@
         </ol>
       </div><!-- End .container -->
     </nav>
-    <form action="post.do" method="post">
+    <form action="${pageContext.request.contextPath}/forum/post.do" method="post">
     <div class="post-container">
       <div>
         <label for="category" style="font-size: 14px;">選擇文章分類：</label>
@@ -369,7 +383,7 @@
 		      if(data.postStatus==1){
 		    	  $("#draft-button").prop('disabled', true);
 		      }else if(data.postStatus==0){
-		    	  $('#submit-button').val('updatetime');
+		    	  $('#submit-button').val("updatetime");
 		      }
 		      $('#summernote').summernote({
 	    	        tabsize: 2,
