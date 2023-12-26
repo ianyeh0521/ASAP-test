@@ -47,7 +47,8 @@ public class ForumLikeServlet extends HttpServlet {
 
 	private void loadlike(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
-		Integer status = forumLikeVOService.postLikecheck("M001", postno);
+		String mbrNo=req.getParameter("mbrNo");
+		Integer status = forumLikeVOService.postLikecheck(mbrNo, postno);
 		Map<String, Integer> data = new HashMap<>();
 		data.put("status", status);
 		Gson gson= new Gson();
@@ -59,10 +60,8 @@ public class ForumLikeServlet extends HttpServlet {
 
 	private void likepost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
-		
-//		M001要改
-		Integer status=forumLikeVOService.postLike("M001", postno);
-		
+		String mbrNo=req.getParameter("mbrNo");
+		Integer status=forumLikeVOService.postLike(mbrNo, postno);
 		Map<String, Integer> data = new HashMap<>();
 		data.put("status", status);
 		Gson gson= new Gson();
@@ -74,9 +73,8 @@ public class ForumLikeServlet extends HttpServlet {
 
 	private void likecmt(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		Integer cmtno = Integer.parseInt(req.getParameter("cmtno"));
-		
-//		M002要改
-		Integer status=forumLikeVOService.cmtLike("M002", cmtno);
+		String mbrNo=req.getParameter("mbrNo");
+		Integer status=forumLikeVOService.cmtLike(mbrNo, cmtno);
 		Map<String, Integer> data = new HashMap<>();
 		data.put("status", status);
 		Gson gson= new Gson();

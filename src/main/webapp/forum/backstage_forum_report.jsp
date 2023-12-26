@@ -12,6 +12,15 @@
 ForumReportVOService forumReportSvc = new ForumReportVOServiceImpl();
 List<ForumReportVO> list = forumReportSvc.getAll();
 pageContext.setAttribute("list", list);
+
+// String backNo = session.getAttribute("backVo").getBackNo();
+// pageContext.setAttribute("backNo",backNo);
+
+
+// String backNo = "B1206202301070";
+// pageContext.setAttribute("backNo",backNo);
+
+
 %>
 
 <!DOCTYPE html>
@@ -571,7 +580,8 @@ $(document).ready(function () {
 										"action" : "postrptmgmt",
 										"frptNo" : frptNo,
 										"replyText" : replyText,
-										 "mbrNo" : mbrNo
+										 "mbrNo" : mbrNo,
+//						 				"backNo": "${backNo}"
 									},
 									success : function(data) {
 										alert("檢舉處理完成");
@@ -590,6 +600,7 @@ $(document).ready(function () {
 			        			  	 "frptNo": frptNo,
 			        			  	 "replyText": replyText,
 			        			  	"mbrNo" : mbrNo
+//			     					"backNo": "${backNo}"
 			    				     }, 
 			        		  success: function(data){      
 			        			  alert("檢舉處理完成");
@@ -627,7 +638,8 @@ $(document).ready(function () {
 										"action" : "cmtrptmgmt",
 										"frptNo" : frptNo,
 										"replyText" : replyText,
-										"mbrNo": mbrNo
+										"mbrNo": mbrNo,
+//					 					"backNo": "${backNo}"
 									},
 									success : function(data) {
 										alert("檢舉處理完成");
@@ -645,7 +657,8 @@ $(document).ready(function () {
 			        		  data: {"action": "cmtrptmgmt",
 			        			  	 "frptNo": frptNo,
 			        			  	 "replyText": replyText,
-			        			  	"mbrNo" : mbrNo
+			        			  	"mbrNo" : mbrNo,
+//			     					"backNo":"${backNo}"
 			    				     }, 
 			        		  success: function(data){      
 			        			  alert("檢舉處理完成");

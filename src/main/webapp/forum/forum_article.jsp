@@ -22,6 +22,15 @@
 	postSvc.updatePost(post);
     pageContext.setAttribute("post", post);
     
+    /*
+	String memberNo = session.getAttribute("memberVO").getMbrNo();
+	pageContext.setAttribute("mbrNo",memberNo);
+	*/
+	
+	String mbrNo = "M001";
+	pageContext.setAttribute("mbrNo",mbrNo);
+    
+    
     ForumCommentVOService commentSvc= new ForumCommentVOServiceImpl();
     List<ForumCommentVO> comments=commentSvc.getComments(postNo);
     pageContext.setAttribute("comments", comments);
@@ -30,7 +39,7 @@
     ForumLikeVOService likeSvc= new ForumLikeVOServiceImpl();
     for (ForumCommentVO comment : comments) {
        Integer cmtNo=comment.getCmtNo();
-       statuslist.add(likeSvc.cmtLikecheck("M002", cmtNo));
+       statuslist.add(likeSvc.cmtLikecheck(mbrNo, cmtNo));
     } 	
     pageContext.setAttribute("statuslist", statuslist);
     
@@ -473,7 +482,7 @@
       $.ajax({
           url: "${pageContext.request.contextPath}/forum/forumlike.do",
           type: "POST",
-          data: { "action": "loadlike", "postno": postno },
+          data: { "action": "loadlike", "postno": postno, "mbrNo":"${mbrNo}" },
           dataType: "json",
           success: function (data) {
         	  console.log(data)
@@ -491,7 +500,9 @@
 		  url: "${pageContext.request.contextPath}/forum/savepost.do",          
 		  type: "POST",                  
 		  data: {"action": "checksave",
-			  	 "postno": postno    },
+			  	 "postno": postno,
+			  	 "mbrNo":"${mbrNo}"
+			  	},
 		  dataType:"json",
 		  success: function(data){      
 		    if(data.status==1){
@@ -510,7 +521,8 @@
     		  url: "${pageContext.request.contextPath}/forum/forumlike.do",          
     		  type: "POST",                  
     		  data: {"action": "likepost",
-    			  	 "postno": postno    },
+    			  	 "postno": postno,
+    			  	"mbrNo":"${mbrNo}"},
     		  dataType:"json",
     		  success: function(data){      
     		    if(data.status==1){
@@ -540,7 +552,8 @@
     		  url: "${pageContext.request.contextPath}/forum/savepost.do",          
     		  type: "POST",                  
     		  data: {"action": "savepost",
-    			  	 "postno": postno    },
+    			  	 "postno": postno,
+    			  	"mbrNo":"${mbrNo}"},
     		  dataType:"json",
     		  success: function(data){      
     		    if(data.status==1){
@@ -573,7 +586,9 @@
         		  type: "POST",                  
         		  data: {"action": "addcomment",
         			  	 "postno": postno,
-					     "comment": new_comment },                         
+					     "comment": new_comment,
+					     "mbrNo":"${mbrNo}"
+					     },                         
         		  success: function(){      
         		    alert("新增成功");
         		    document.location.reload()
@@ -599,7 +614,8 @@
     		  data: {"action": "reportcomment",
     			  	 "cmtno": cmtno,
 				     "rpttype": rpttype,
-				     "rpttext": rpttext},                         
+				     "rpttext": rpttext,
+				     "mbrNo":"${mbrNo}"},                         
     		  success: function(){      
     		    alert("檢舉成功");
     		    $(e.target).closest(".modal").find("input[name='report-type']").prop('checked', false);
@@ -620,7 +636,8 @@
     		  url: "${pageContext.request.contextPath}/forum/forumlike.do",          
     		  type: "POST",                  
     		  data: {"action": "likecmt",
-    			  	 "cmtno": cmtno},
+    			  	 "cmtno": cmtno,
+    			  	"mbrNo":"${mbrNo}"},
     		  dataType:"json",
     		  success: function(data){  
     			  if(data.status==1){
