@@ -394,7 +394,7 @@
 											<li><a href="#widget-category-1" data-toggle="collapse"
 												role="button" aria-expanded="true"
 												aria-controls="widget-category-1"> 產品類型<span
-													class="products-count">(3)</span> <span class="toggle"></span>
+													class="products-count"></span> <span class="toggle"></span>
 											</a>
 												<div class="collapse show" id="widget-category-1">
 													<div class="row" id="item_type_select">
@@ -402,11 +402,11 @@
 															<ul class="cat-sublist">
 																<li><div class="typeswim " data-category="1"
 																		data-column="itemTypeNo " style="cursor: pointer">
-																		帽子<span class="products-count">(1)</span>
+																		帽子<span class="products-count"></span>
 																	</div></li>
 																<li><div class="typebaseball " data-category="2"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		男上衣<span class="products-count">(1)</span>
+																		男上衣<span class="products-count"></span>
 																	</div></li>
 																<li><div class="typetennis " data-category="3"
 																		data-column="itemTypeNo" style="cursor: pointer">
@@ -414,15 +414,15 @@
 																	</div></li>
 																<li><div class="typehandball " data-category="4"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		男鞋<span class="products-count">(1)</span>
+																		男鞋<span class="products-count"></span>
 																	</div></li>
 																<li><div class="typebasketball " data-category="5"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		女上衣<span class="products-count">(1)</span>
+																		女上衣<span class="products-count"></span>
 																	</div></li>
 																<li><div class="typevolleyball " data-category="6"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		女下身<span class="products-count">(1)</span>
+																		女下身<span class="products-count"></span>
 																	</div></li>
 															</ul>
 														</div>
@@ -430,23 +430,23 @@
 															<ul class="cat-sublist">
 																<li><div class="typepingpong " data-category="7"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		女鞋<span class="products-count">(1)</span>
+																		女鞋<span class="products-count"></span>
 																	</div></li>
 																<li><div class="typebanminton" data-category="8"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		配件<span class="products-count">(1)</span>
+																		配件<span class="products-count"></span>
 																	</div></li>
 																<li><div class="typerun" data-category="9"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		球類<span class="products-count">(1)</span>
+																		球類<span class="products-count"></span>
 																	</div></li>
 																<li><div class="typebike " data-category="10"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		健身器材<span class="products-count">(1)</span>
+																		健身器材<span class="products-count"></span>
 																	</div></li>
 																<li><div class="typesoccer " data-category="11"
 																		data-column="itemTypeNo" style="cursor: pointer">
-																		其他<span class="products-count">(1)</span>
+																		其他<span class="products-count"></span>
 																	</div></li>
 
 
@@ -457,34 +457,34 @@
 											<li><a href="#widget-category-2" class="collapsed"
 												data-toggle="collapse" role="button" aria-expanded="false"
 												aria-controls="widget-category-2"> 商品尺寸<span
-													class="products-count">(4)</span> <span class="toggle"></span>
+													class="products-count"></span> <span class="toggle"></span>
 											</a>
 												<div class="collapse" id="widget-category-2">
 													<div class="row" id="item_size_select">
 														<ul class="cat-sublist">
 															<li><div class="sizenone" data-category="1"
 																	data-column="itemSizeNo" style="cursor: pointer">
-																	無<span class="products-count">(1)</span>
+																	無<span class="products-count"></span>
 																</div></li>
 															<li><div class="sizexs" data-category="2"
 																	data-column="itemSizeNo" style="cursor: pointer">
-																	XS<span class="products-count">(2)</span>
+																	XS<span class="products-count"></span>
 																</div></li>
 															<li><div class="sizes" data-category="3"
 																	data-column="itemSizeNo" style="cursor: pointer">
-																	S<span class="products-count">(3)</span>
+																	S<span class="products-count"></span>
 																</div></li>
 															<li><div class="sizem" data-category="4"
 																	data-column="itemSizeNo" style="cursor: pointer">
-																	M<span class="products-count">(4)</span>
+																	M<span class="products-count"></span>
 																</div></li>
 															<li><div class="sizel" data-category="5"
 																	data-column="itemSizeNo" style="cursor: pointer">
-																	L<span class="products-count">(5)</span>
+																	L<span class="products-count"></span>
 																</div></li>
 															<li><div class="sizexl" data-category="6"
 																	data-column="itemSizeNo" style="cursor: pointer">
-																	XL<span class="products-count">(6)</span>
+																	XL<span class="products-count"></span>
 																</div></li>
 
 														</ul>
@@ -494,7 +494,7 @@
 											<li><a href="#widget-category-3" class="collapsed"
 												data-toggle="collapse" role="button" aria-expanded="false"
 												aria-controls="widget-category-3"> 商品狀態<span
-													class="products-count">(4)</span> <span class="toggle"></span>
+													class="products-count"></span> <span class="toggle"></span>
 											</a>
 												<div class="collapse" id="widget-category-3">
 													<div class="row" id="item_stat_select">
@@ -502,25 +502,25 @@
 															<li>
 																<div class="brandnew " data-category="1"
 																	data-column="itemStatNo" style="cursor: pointer">
-																	全新<span class="products-count">(1)</span>
+																	全新<span class="products-count"></span>
 																</div>
 															</li>
 															<li>
 																<div class="almostnew " data-category="2"
 																	data-column="itemStatNo" style="cursor: pointer">
-																	幾乎全新<span class="products-count">(1)</span>
+																	幾乎全新<span class="products-count"></span>
 																</div>
 															</li>
 															<li>
 																<div class="good " data-category="3"
 																	data-column="itemStatNo" style="cursor: pointer">
-																	狀況良好<span class="products-count">(1)</span>
+																	狀況良好<span class="products-count"></span>
 																</div>
 															</li>
 															<li>
 																<div class="soso" data-category="4"
 																	data-column="itemStatNo" style="cursor: pointer">
-																	狀況尚可<span class="products-count">(1)</span>
+																	狀況尚可<span class="products-count"></span>
 																</div>
 															</li>
 														</ul>
@@ -1009,26 +1009,36 @@ $(document).on("click", ".btn-icon-cart", function() {
     )
 });
   
-//發起ajax請求，獲取特定商品類別的數量
-function countItemsByCategory(categoryType, categoryId) {
-        $.ajax({
-            url: 'YourServlet', // Servlet 的 URL
-            type: 'POST',
-            data: {
-                action: 'countByCategory',
-                categoryType: categoryType,
-                categoryId: categoryId
-            },
-            success: function(count) {
-                // 在這裡更新頁面上的內容
-                console.log("Count: " + count);
-                // 例如：$("#categoryCount").text(count);
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    }
+  
+  
+$(document).ready(function() {
+   
+    updateCategoryCount('itemTypeNo', 4, 'typehandball');
+}); 
+
+function updateCategoryCount(categoryType, categoryId, elementClass) {
+    $.ajax({
+        url: 'ItemInfoServlet',
+        type: 'POST',
+        data: {
+            action: 'countByCategory',
+            categoryType: categoryType,
+            categoryId: categoryId
+        },
+        success: function(count) {
+           
+            $('.' + elementClass + ' .products-count').text('(' + count + ')');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching category count:', error);
+        }
+    });
+}
+
+
+$(document).ready(function() {
+    updateCategoryCount('itemTypeNo', 4, 'typehandball'); 
+});
 
   //價格範圍功能
 document.addEventListener('DOMContentLoaded', function () {
@@ -1109,7 +1119,7 @@ var state = {
 		` + soldOutLabel + hotSaleLabel + `
 	
 		</div>
-            <a href="ProductQuickView.html" class="btn-quickview" title="快速查看">快速查看</a>
+            <a href="ProductQuickView.jsp?itemNo=\${item["itemNo"]}" class="btn-quickview" title="快速查看">快速查看</a>
         </figure>
         <div class="product-details">
             <div class="category-wrap">
