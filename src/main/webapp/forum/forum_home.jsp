@@ -35,7 +35,7 @@ response.flushBuffer();
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>Porto - Bootstrap eCommerce Template</title>
+<title>ASAP論壇首頁</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />

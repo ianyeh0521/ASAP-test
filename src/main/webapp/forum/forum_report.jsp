@@ -41,7 +41,7 @@ pageContext.setAttribute("mbrNo",mbrNo);
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>Porto - Bootstrap eCommerce Template</title>
+<title>ASAP論壇-文章檢舉</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
