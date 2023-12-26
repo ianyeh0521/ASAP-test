@@ -47,6 +47,7 @@ pageContext.setAttribute("list", list);
 <script src="https://kit.fontawesome.com/2bd4419edb.js"
 	crossorigin="anonymous"></script>
 <<<<<<< Upstream, based on 97d5aebefce8cd2f9d307721d9b3a428eba681bc
+<<<<<<< Upstream, based on 97d5aebefce8cd2f9d307721d9b3a428eba681bc
 
 
 <!-- Plugins CSS File -->
@@ -189,6 +190,9 @@ $(document).ready(function () {
 		s.parentNode.insertBefore(wf, s);
 	})(document);
 </script>
+=======
+
+>>>>>>> 56d0d94 Add backStage homepage.
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" type="text/css"
@@ -297,11 +301,8 @@ $(document).ready(function () {
 				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
 				<div class="container">
 					<div class="header-left col-lg-2 w-auto pl-0">
-						<button class="mobile-menu-toggler text-primary mr-2"
-							type="button">
-							<i class="fas fa-bars"></i>
-						</button>
-						<a href="#" width="222" height="88"> <img
+						
+						<a href="${pageContext.request.contextPath}/backStage/BackageHome.jsp" width="222" height="88"> <img
 							src="${pageContext.request.contextPath}/newImg/logo2.png"
 							alt="Logo" />
 						</a>
@@ -317,6 +318,7 @@ $(document).ready(function () {
 				<div class="container">
 					<nav class="main-nav w-100">
 						<ul class="menu" style="display: flex; justify-content: flex-end">
+<<<<<<< Upstream, based on 97d5aebefce8cd2f9d307721d9b3a428eba681bc
 							<li><a href="#">論壇</a>
 								<ul>
 									<li><a href="#">論壇首頁</a></li>
@@ -352,6 +354,9 @@ $(document).ready(function () {
 							<li><a href="">商城</a></li>
 							<li><a href="" style="color: red">登入</a></li>
 >>>>>>> a276b8c modify forum
+=======
+							 <li><a><form action="${pageContext.request.contextPath}/BackStageController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
+>>>>>>> 56d0d94 Add backStage homepage.
 						</ul>
 					</nav>
 				</div>
