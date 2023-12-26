@@ -26,10 +26,18 @@ import com.asap.court.service.CourtImgService_interface;
 import com.asap.court.service.CourtOrderService;
 import com.asap.court.service.CourtOrderService_interface;
 import com.asap.member.entity.MbrNewsVO;
+import com.asap.member.service.MbrActivService;
+import com.asap.member.service.MbrActivService_interface;
+import com.asap.member.service.MbrNewsService;
+import com.asap.member.service.MbrNewsService_interface;
 import com.asap.util.HibernateProxyTypeAdapter;
+import com.asap.util.JedisPoolUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/court/courtOrderListAjax.do")
 public class CourtOrderListServletAjax extends HttpServlet{
@@ -37,12 +45,18 @@ public class CourtOrderListServletAjax extends HttpServlet{
 	private CourtOrderService_interface courtOrderService_interface;
 	private CourtImgService_interface courtImgService_interface;
 	private CourtClosedTimeService_interface courtClosedTimeService_interface;
+	private MbrNewsService_interface mbrNewsSvc;
+	private MbrActivService_interface mbrActivService_interface;
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
+
 	
 	@Override
 	public void init() throws ServletException{
 		courtOrderService_interface = new CourtOrderService();
 		courtImgService_interface = new CourtImgService();
 		courtClosedTimeService_interface = new CourtClosedTimeService();
+		mbrActivService_interface = new MbrActivService();
+		mbrNewsSvc = new MbrNewsService();
 	}
 
 
@@ -69,7 +83,7 @@ public class CourtOrderListServletAjax extends HttpServlet{
 		if("getByMember".equals(action)) {
 			getByMember(req, res, mbrNo);
 		}else if("cancel".equals(action)) {
-			cancel(req,res,courtOrdNo);
+			cancel(req,res,courtOrdNo,mbrNo );
 		}
 		
 		
@@ -77,19 +91,11 @@ public class CourtOrderListServletAjax extends HttpServlet{
 	
 	
 	
-	private void cancel(HttpServletRequest req, HttpServletResponse res, Integer courtOrdNo) {
+	private void cancel(HttpServletRequest req, HttpServletResponse res, Integer courtOrdNo, String mbrNo) {
 		// 1. 更改預約單
 		CourtOrderVO courtOrderUpdate = courtOrderService_interface.findByPK(courtOrdNo);
-		CourtOrderVO courtOrderVO = new CourtOrderVO();
-		courtOrderVO.setCourtOrdNo(courtOrderUpdate.getCourtOrdNo());
-		courtOrderVO.setCourtOrdDate(courtOrderUpdate.getCourtOrdDate());
-		courtOrderVO.setCourtOrdTime(courtOrderUpdate.getCourtOrdTime());
-		courtOrderVO.setCourtOrdTimeEnd(courtOrderUpdate.getCourtOrdTimeEnd());
-		courtOrderVO.setCourtVO(courtOrderUpdate.getCourtVO());
-		courtOrderVO.setMemberVO(courtOrderUpdate.getMemberVO());
-		courtOrderVO.setTotalPrice(courtOrderUpdate.getTotalPrice());
-		courtOrderVO.setCourtOrdStat(3);
-		courtOrderService_interface.update(courtOrderVO);
+		courtOrderUpdate.setCourtOrdStat(3);
+		courtOrderService_interface.update(courtOrderUpdate);
 		
 		// 2. 刪除不開放時間
 		Integer courtNo = courtOrderUpdate.getCourtVO().getCourtNo();
@@ -112,15 +118,19 @@ public class CourtOrderListServletAjax extends HttpServlet{
 		
 		
 		// 寫入會員消息
-//		String memberNo = req.getParameter("mbrNo");
-//		MbrNewsVO vo2 = new MbrNewsVO();
-//		vo2.setMbrNo(memberNo);
-//		vo2.setNewsSubj("預約成功通知");
-//		vo2.setNewsText("您已成功預約場地，預約單編號" + merchantTradeNo);
-//		vo2.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
-//		
-//		mbrNewsService_interface.add(vo2);
+		MbrNewsVO vo2 = new MbrNewsVO();
+		vo2.setMbrNo(mbrNo);
+		vo2.setNewsSubj("場地取消預約通知");
+		vo2.setNewsText("您已取消預約單編號：" + courtOrdNo + "之「" + courtOrderUpdate.getCourtVO().getCourtName() + "」場地" );
+		vo2.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
 		
+		mbrNewsSvc.add(vo2);
+		
+		// 移除會員活動
+		Jedis jedis = pool.getResource();
+		jedis.select(2);
+		Integer mbrActivNo = Integer.valueOf(jedis.get("court"+courtOrdNo));
+		mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));		
 	}
 
 

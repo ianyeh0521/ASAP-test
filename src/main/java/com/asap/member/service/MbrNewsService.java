@@ -33,7 +33,7 @@ public class MbrNewsService implements MbrNewsService_interface{
 	}
 
 	@Override
-	public MbrNewsVO findByPK(String mbrNewsNo) {
+	public MbrNewsVO findByPK(Integer mbrNewsNo) {
 		
 		return dao.findByPK(mbrNewsNo);
 	}

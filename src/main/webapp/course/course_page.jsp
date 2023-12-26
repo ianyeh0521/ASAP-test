@@ -166,7 +166,54 @@
 	    cursor: pointer;
 	}
 	
+	.coach-image {
+	    width: 100px;
+	    height: 100px;
+	    border-radius: 50%;
+	    overflow: hidden;
+	    margin-left: 10px; 
+	    display: inline-block;
+	}
+
+	.coach-image img {
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	    object-position: center center;
+	}
 	
+	.coach-info-container {
+	    display: flex;
+	    align-items: center;
+	}
+
+	.coach-details {
+	    margin-left: 0px; 
+	}
+	
+	.course-info-container {
+/* 	    border-left: 1px solid #ccc;  */
+	    padding-left: 20px; 
+	}
+	
+	.info-container {
+	    display: flex;
+	}
+
+	.coach-info,
+	.course-info {
+	    flex: 1;
+	    padding: 0 20px;
+	}
+	
+	.coach-info {
+/* 	    border-right: 1px solid #ccc; */
+	}
+	.coach-details ul li {
+	    margin-bottom: 10px; 
+	}
+		
+		
       
       
     
@@ -327,24 +374,52 @@
 							</div><!-- End .product-desc -->
 							<hr class="divider mb-0 mt-0">
 							<br>
-							<ul class="single-info-list">
-								<li>
-									教練姓名: <strong><a class="product-category" style="margin-right: 200px;">${courseVO.coachVO.coachName}</a></strong>
-									課程編號: <strong><a class="product-category">${courseVO.courseNo}</a></strong>
-								</li>
-								<li>
-									課程種類: <strong><a class="product-category" style="margin-right: 200px;">${courseVO.sportTypeVO.sportTypeName}</a></strong>
-									時間: <strong><a class="product-category" id = "courseTime">${start} ~ ${end}</a></strong>				
-								</li>
-								<li>
-									地點: <strong><a class="product-category">${courseVO.courseAddress}</a></strong>
-								</li>
-								<li>
-									人數上限: <strong><a class="product-category">${courseVO.coursePplLimit}</a></strong>
-								</li>
-							</ul>
 							
-<!-- 							<hr class="divider mb-0 mt-0"> -->
+							<div class="info-container">
+							    <div class="coach-info">
+							        <div class="coach-details">
+							            <ul>  
+							                <li>
+							                    課程編號: <strong><a class="product-category">${courseVO.courseNo}</a></strong>
+							                </li>
+							                <li>
+							                    課程種類: <strong><a class="product-category">${courseVO.sportTypeVO.sportTypeName}</a></strong>
+							                </li>
+							                <li>
+							                    時間: <strong><a class="product-category" id = "courseTime">${start} ~ ${end}</a></strong>
+							                </li>
+							                <li>
+							                    地點: <strong><a class="product-category">${courseVO.courseAddress}</a></strong>
+							                </li>
+							                <li>
+							                    人數上限: <strong><a class="product-category">${courseVO.coursePplLimit}</a></strong>
+							                </li>
+							                
+							            </ul>
+							        </div>
+							    </div>
+							    
+							    <div class="coach-info">
+							        <div class="coach-details">
+							            <ul>  
+							                <li> 
+							                <div class="coach-image">
+									            <img src="${pageContext.request.contextPath}/coach/CoachGifReader?action=getCertImg&coachNo=${courseVO.coachVO.coachNo}" alt="Coach Image" width="50" height="50">
+									        </div>
+							            </li>
+							            <li>
+						                    教練姓名: <strong><a class="product-category">${courseVO.coachVO.coachName}</a></strong>
+						                </li>
+							                
+							            </ul>
+							        </div>
+							    </div>
+							
+							    
+							</div>
+							
+						
+						
 							
 							
 							<div class="product-filters-container custom-product-filters" style="padding-bottom: 2px; margin-bottom:0px">
@@ -510,15 +585,65 @@
 			            e.preventDefault();
 			            alert('課程已額滿!');
 			        } else {
-			            var url = 'course_checkout.jsp?courseNo=' + encodeURIComponent(courseNo)
-			                + '&courseTime=' + encodeURIComponent(courseTime);
+			        	
+			        	$.ajax({
+			                url: 'mbrCourseServlet?action=getByMember&mbrNo=${mbrNo}',
+			                type: 'get',
+			                success: function (response) {
+			                    console.log(response)
+			                    if (response.length != 0) {
+			                        for (let i = 0; i < response.length; i++) {
+			                            if (response[i]['mbrCourseStat'] == true) {
+			                            	e.preventDefault();
+			        			            alert('您已預約過了!');
+			                            }
+			                            else{
+			                            	var url = 'course_checkout.jsp?courseNo=' + encodeURIComponent(courseNo)
+			    			                + '&courseTime=' + encodeURIComponent(courseTime);
+			                            	
+			                            	window.location.href = url;
+			                            }
+			                        }
+			                    }else{
+			                    	var url = 'course_checkout.jsp?courseNo=' + encodeURIComponent(courseNo)
+	    			                + '&courseTime=' + encodeURIComponent(courseTime);
+	                            	
+	                            	window.location.href = url;
+			                    }
+			                },
+			                error: function () {
+			                    console.log('Error in AJAX request');
+			                }
+			            });
+			            
 			
-			            window.location.href = url;
+			            
 			        }
 			    } catch (error) {
 			        console.error('Error in AJAX call:', error);
 			    }
 			});
+			
+// 			$.ajax({
+// 	            url: 'mbrCourseServlet?action=getByMember&mbrNo=${mbrNo}', 
+// 	            type: 'get',
+// 	            success: function(response) {
+// 	            	console.log(response)
+// 					if(response.length != 0){
+// 						for(let i = 0; i < response.length;i++){
+// 							if(response[i]['mbrCourseStat']==true){
+// 								$("#reservationLink").remove();
+// 								$("#lookup").remove();
+								
+								
+// 							}
+// 						}
+// 					}
+// 	            },
+// 	            error: function() {
+// 	                console.log('Error in AJAX request');
+// 	            }
+// 	        });
 			        
 			
 			

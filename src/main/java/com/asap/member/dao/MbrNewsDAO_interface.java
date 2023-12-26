@@ -33,5 +33,5 @@ public interface MbrNewsDAO_interface {
 	 * 輸出成功 : 會員消息VO表單
 	 * 輸出失敗 : null
 	 * */ 
-	MbrNewsVO findByPK(String mbrNewsNo);
+	MbrNewsVO findByPK(Integer mbrNewsNo);
 }

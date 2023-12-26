@@ -472,10 +472,6 @@
 	    	           }
 	    	    });
 	            
-	             
-	            $('#' + clickedId).fadeOut(500, function(){
-		            $('#' + clickedId).remove();
-	            });
 	            	
 	            $("#fs_alert1").css("display", "none");
 	              setTimeout(openDelete, 500);

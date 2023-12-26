@@ -36,15 +36,19 @@ import com.asap.member.service.MbrNewsService_interface;
 import com.asap.member.service.MemberService;
 import com.asap.member.service.MemberService_interface;
 import com.asap.util.JavaMail;
+import com.asap.util.JedisPoolUtil;
 import com.asap.util.MailFormat;
 
 
 import ecpay.payment.integration.AllInOne;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/court/ecPayReturn.do")
 public class ecPayReturnServlet extends HttpServlet{
 
 	public static AllInOne all;
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 	private CourtClosedTimeService_interface courtClosedTimeService_interface;
 	private CourtOrderService_interface courtOrderService_interface;
 	private MbrActivService_interface mbrActivService_interface;
@@ -110,26 +114,10 @@ public class ecPayReturnServlet extends HttpServlet{
 //			Integer orderNo = remainInteger - 10000;
 //			System.out.println(orderNo);
 			CourtOrderVO courtOrder = courtOrderService_interface.findByPK(courtOrderNo);
-			
-//			CourtOrderVO courtOrderUpdate = courtOrderService_interface.findByPK(courtOrderNo);
-//			
-//			CourtOrderVO courtOrderVO = new CourtOrderVO();
-//			courtOrderVO.setCourtOrdNo(courtOrderUpdate.getCourtOrdNo());
-//			courtOrderVO.setCourtOrdDate(courtOrderUpdate.getCourtOrdDate());
-//			courtOrderVO.setCourtOrdTime(courtOrderUpdate.getCourtOrdTime());
-//			courtOrderVO.setCourtOrdTimeEnd(courtOrderUpdate.getCourtOrdTimeEnd());
-//			courtOrderVO.setCourtVO(courtOrderUpdate.getCourtVO());
-//			courtOrderVO.setMemberVO(courtOrderUpdate.getMemberVO());
-//			courtOrderVO.setTotalPrice(courtOrderUpdate.getTotalPrice());
 			courtOrder.setCourtOrdStat(2);
 			System.out.println(courtOrder.toString());
 			System.out.println(courtOrderService_interface.update(courtOrder)); 
 			
-			// 寫入不開放時間
-//			for(int i = courtOrdTime; i < courtOrdTimeEnd;i++) {
-//				CourtClosedTimeVO courtClosedTimeVO = new CourtClosedTimeVO(courtVO, courtOrdDate, i);
-//				courtClosedTimeService_interface.insert(courtClosedTimeVO);
-//			}
 			
 			// 寫入會員活動
 			MbrActivVO vo = new MbrActivVO();
@@ -147,7 +135,15 @@ public class ecPayReturnServlet extends HttpServlet{
 			Timestamp timestamp2 = Timestamp.valueOf(localDateTime2);
 			vo.setActivEndTime(timestamp2);
 			
-			mbrActivService_interface.add(vo);
+			int mbrActivNo = mbrActivService_interface.add(vo);
+			String mbrActivNoStr = String.valueOf(mbrActivNo); 
+			
+			// 會員活動編號存入 Redis 
+			Jedis jedis = pool.getResource();
+			String courtOrdNoStr = "court" + courtOrder.getCourtOrdNo(); 
+			jedis.select(2);
+			jedis.append(courtOrdNoStr, mbrActivNoStr);
+			jedis.close();
 			
 			// 寫入會員消息
 			MbrNewsVO vo2 = new MbrNewsVO();

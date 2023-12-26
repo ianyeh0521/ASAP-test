@@ -12,5 +12,5 @@ public interface MbrNewsService_interface {
 
 	List<MbrNewsVO> findByMbrNo(String mbrNo);
 
-	MbrNewsVO findByPK(String mbrNewsNo);
+	MbrNewsVO findByPK(Integer mbrNewsNo);
 }

@@ -33,7 +33,7 @@ public class MbrActivService implements MbrActivService_interface{
 	}
 
 	@Override
-	public MbrActivVO findByPK(String mbrActivNo) {
+	public MbrActivVO findByPK(Integer mbrActivNo) {
 		
 		return dao.findByPK(mbrActivNo);
 	}

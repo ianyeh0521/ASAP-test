@@ -161,7 +161,7 @@ public class CourtOrderServlet extends HttpServlet{
 		obj.setCustomField1(String.valueOf(courtOrderVO.getCourtVO().getCourtNo())); // 訂單成立接收到CourtNo
 		obj.setCustomField2(String.valueOf(courtOrdNo)); // 預約單編號（資料庫的）
 		obj.setCustomField4(mbrNo); // 會員編號
-		obj.setReturnURL("https://99e7-1-164-235-76.ngrok-free.app/ASAP/court/ecPayReturn.do");	// 使用時要記得換成外網
+		obj.setReturnURL("https://86e1-118-232-113-169.ngrok-free.app/ASAP/court/ecPayReturn.do");	// 使用時要記得換成外網
 		obj.setOrderResultURL("http://localhost:8081/ASAP/court/court_paymentSuccess.jsp");  // 使用者付款完成跳轉頁面
 		obj.setNeedExtraPaidInfo("N");
 		String form = all.aioCheckOut(obj, null);

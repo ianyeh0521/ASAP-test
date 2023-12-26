@@ -79,7 +79,7 @@ public class MbrCourseDAO implements MbrCourseDAO_interface{
 
 	@Override
 	public List<MbrCourseVO> findByCourseNo(Integer courseNo) {
-		String hql = "from MbrCourseVO mbrcs where mbrcs.courseVO.courseNo = :getno";
+		String hql = "from MbrCourseVO mbrcs where mbrcs.courseVO.courseNo = :getno and mbrcs.mbrCourseStat = true";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("getno", courseNo);
 		return query.list();
