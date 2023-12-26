@@ -53,19 +53,21 @@ public class CourtDAO implements CourtDAO_interface {
 	public int update(CourtVO entity) {
 		//	成功更新回傳 1，失敗回傳 -1
 		try {
-			CourtVO courtUpdate = new CourtVO();
-			courtUpdate.setCourtNo(entity.getCourtNo());
-			courtUpdate.setCourtName(entity.getCourtName());
-			courtUpdate.setCourtAddress(entity.getCourtAddress());
-			courtUpdate.setCourtLat(entity.getCourtLat());
-			courtUpdate.setCourtLong(entity.getCourtLong());
-			courtUpdate.setCourtPplLimit(entity.getCourtPplLimit());
-			courtUpdate.setCourtPrice(entity.getCourtPrice());
-			courtUpdate.setCourtStat(entity.getCourtStat());
-			courtUpdate.setCourtText(entity.getCourtText());
-			courtUpdate.setCourtTypeVO(entity.getCourtTypeVO());
-			courtUpdate.setSiteVO(entity.getSiteVO());
-			courtUpdate.setIndoor(entity.getIndoor());
+			CourtVO courtUpdate = (CourtVO) getSession().get(CourtVO.class,entity.getCourtNo());
+			if(courtUpdate != null) {
+				courtUpdate.setCourtNo(entity.getCourtNo());
+				courtUpdate.setCourtName(entity.getCourtName());
+				courtUpdate.setCourtAddress(entity.getCourtAddress());
+				courtUpdate.setCourtLat(entity.getCourtLat());
+				courtUpdate.setCourtLong(entity.getCourtLong());
+				courtUpdate.setCourtPplLimit(entity.getCourtPplLimit());
+				courtUpdate.setCourtPrice(entity.getCourtPrice());
+				courtUpdate.setCourtStat(entity.getCourtStat());
+				courtUpdate.setCourtText(entity.getCourtText());
+				courtUpdate.setCourtTypeVO(entity.getCourtTypeVO());
+				courtUpdate.setSiteVO(entity.getSiteVO());
+				courtUpdate.setIndoor(entity.getIndoor());
+			}			
 			getSession().update(courtUpdate);
 			return 1;
 		} catch (Exception e) {

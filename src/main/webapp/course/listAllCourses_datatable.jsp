@@ -120,21 +120,20 @@
 		
         <script>
           $(document).ready(function () {
+        	  
         	  // 進行中課程
-        	  $.ajax({
-                type: "get",
-                url: 'course.do?action=getByCoach&purpose=current&coachNo=${coachNo}',
-                contentType: 'application/json',
-                success: function(result){
-                	console.log(result);
-                	 $("#table_id").DataTable({
-                		 data: result,
+                	let table = $("#table_id").DataTable({
+                		 "ajax":{
+                			 url: 'course.do?action=getByCoach&purpose=current&coachNo=${coachNo}',
+                			 dataSrc: "data",
+                		 },
                 		 "scrollX": true,
                 		 "responsive": true,
                        		language: {
                          		url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json"},
                          "columnDefs": [
-                             {"className": "dt-center", "targets": "_all"}
+                             {"className": "dt-center", "targets": "_all"},
+              
                          ],
                          "lengthMenu": [
                              [5, 10, 25, -1], // 定義每頁顯示筆數選項
@@ -142,13 +141,19 @@
                          ],
                 		 columns:[
                 			 {
+               		            className: 'dt-control',
+               		            orderable: false,
+               		            data: null,
+               		            defaultContent: '' 	
+               		         },
+                			 {"data":"courseNo"},
+                			 {
                			        "data": "courseNo",
                			        "render": function(data, type, row) {
                			            var imgUrl = "DBGifReader?courseNo=" + data;
                			            return '<img src="' + imgUrl + '" alt="Course Image" width="300px" height="300px">';
                			        }
-               			    },
-                         	{"data":"courseNo"},
+               			    },	
                          	{"data":"courseName"},
                          	{
                                 "data": null,
@@ -156,7 +161,7 @@
                                     return moment(row.courseStartTime).format("YYYY-MM-DD HH:mm") + ' ~ ' + moment(row.courseEndTime).format("HH:mm");
                                 }
                             },
-                            {"data":"sportTypeVO.sportTypeName"},
+                            {"data":"sportTypeName"},
                             {"data":"courseAddress"},
                             {"data": "courseText"},
                             {"data": "coursePrice"},
@@ -183,7 +188,7 @@
                             {
                          		"data": "courseStat",
                        			"render": function(data, type, row, meta){
-                           			if(row.courseStat == true){
+                           			if(data == true){
                            				return "上架中";
                            			}else{
                            				return "已下架";
@@ -200,26 +205,32 @@
                          	               
                          	    }
                          	},
-                            {
-                            	"data": null,
-                         	    "render": function(data, type, row) {
-                         	        return '<form method="post" action="/ASAP/course/course.do" style="margin-bottom: 0px;">' +
-                         	               '<button type="submit" class="btn btn-danger btn-sm" style="border-radius:5px" id="lookup">刪除</button>' +
-                         	               '<input type="hidden" name="courseNo" value="' + row.courseNo + '">' +
-                         	               '<input type="hidden" name="action" value="delete">' +
-                         	               '</form>';
-                         	    }
-                            }
-                         ]
+                         ],
+
+                   	   
                 	 });
-                	 
                 	
+                	$("#table_id").on('click', 'td.dt-control', function (e) {
+                	    let tr = e.target.closest('tr');
+                	    let row = table.row(tr);
                 	 
-                },
-                error:function(xhr){
-                	console.log(xhr);
-                }
-             });
+                	    if (row.child.isShown()) {
+                	        row.child.hide();
+                	    }
+                	    else {
+                	        row.child(format(row.data())).show();
+                	    }
+                	});
+                	
+                	// 創建要展開的內容
+                    function format(d) {
+	                      return d.head + d.htmlString;
+                    }
+                	
+                	
+	                
+                	
+                	
         	  
         	  // 過往的課程
         	  $.ajax({
@@ -271,6 +282,8 @@
                 	console.log(xhr);
                 }
              });
+        	  
+        	 
           });
         </script>
         <style>
@@ -340,6 +353,13 @@
           .btn_s:hover {
             background-color: rgb(76, 139, 150);
           }
+          
+         
+		    .login-container form .btn {
+			    font-family: "Open Sans",sans-serif;
+			    font-size: 1.1rem;
+			}
+
         </style>
 </head>
     
@@ -415,21 +435,6 @@
       <!-- End .header -->
  
           <main class="main">
-            <div class="page-header">
-              <div class="container d-flex flex-column align-items-center">
-                  <nav aria-label="breadcrumb" class="breadcrumb-nav">
-                      <div class="container">
-                          <ol class="breadcrumb">
-                              <li class="breadcrumb-item"><a href="demo4.html">場地管理</a></li>
-                              <li class="breadcrumb-item active" aria-current="page">所有場地</li>
-                          </ol>
-                      </div>
-                  </nav>
-
-                  <h1>所有場地</h1>
-              </div>
-            </div>
-
             <div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
               <a href="/ASAP/course/addCourse.jsp">
               <button class="btn btn-primary btn-rounded btn-md" >上架課程</button>
@@ -445,8 +450,9 @@
                 <table id="table_id" class="display" >
                   <thead>
                     <tr>
-                      <th width="70px">課程圖片</th>
+                      <th width="30px"></th>
                       <th width="70px">課程編號</th>
+                      <th width="70px">課程圖片</th>
                       <th width="80px">課程名稱</th>
                       <th width="100px">課程日期</th>
                       <th width="80px">運動種類</th>
@@ -456,11 +462,12 @@
                       <th width="70px">報名狀況</th>
                       <th width="70px">課程狀態</th>
                       <th width="80px"></th>
-                      <th width="80px"></th>
+<!--                       <th width="80px"></th> -->
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
+                      <td></td>
                       <td></td>
                       <td></td>
                       <td></td>
@@ -471,7 +478,7 @@
                       <td></td>
                       <td></td>
                       <td></td>
-                      <td></td>
+<!--                       <td></td> -->
                     </tr>
                   </tbody>
                 </table>

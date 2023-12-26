@@ -63,7 +63,7 @@ public class MbrNewsDAO implements MbrNewsDAO_interface{
 	}
 
 	@Override
-	public MbrNewsVO findByPK(String mbrNewsNo) {
+	public MbrNewsVO findByPK(Integer mbrNewsNo) {
 		try {
 			Query<MbrNewsVO> query = getSession().createQuery("from MbrNewsVO where mbrNewsNo = :mbrNewsNo",
 					MbrNewsVO.class);

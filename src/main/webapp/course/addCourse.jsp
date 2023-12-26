@@ -288,14 +288,6 @@
 											onblur="courtTextAlert()"></textarea>
 									</div>
 
-<!-- 									<div class="select-custom"> -->
-<!-- 										<label>課程狀態<span></span></label> <select name="stat" -->
-<!-- 											class="form-control" style="border-radius: 10px;"> -->
-<!-- 											<option value="true" selected="selected">開課中</option> -->
-<!-- 											<option value="false">已額滿</option> -->
-<!-- 										</select> -->
-<!-- 									</div> -->
-
 										
 									<div class="mb-3">
 									    <div class="row">
@@ -537,6 +529,9 @@
 	        
 	        $('#f_date2').on('blur', function() {
 	            validateDatetimeInputs();
+	            console.log($('#f_date2').val());
+	            console.log($('#f_date1').val());
+	            
 	        });
 	        
 	        function validateDatetimeInputs() {
@@ -553,6 +548,8 @@
 	                $('#f_date2').val('');
 	            }
 	        }
+	        
+	        
 	       
 		})
 	

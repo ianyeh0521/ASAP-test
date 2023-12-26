@@ -18,6 +18,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.asap.course.entity.CourseVO;
+import com.asap.course.entity.MbrCourseVO;
 import com.asap.court.entity.CourtVO;
 import com.asap.util.HibernateUtil;
 
@@ -38,19 +39,21 @@ public class CourseDAO implements CourseDAO_interface{
 	public int update(CourseVO courseVO) {
 		// 成功更新回傳 1，失敗回傳 -1
 		try {
-			CourseVO courseUpdate = new CourseVO();
-			courseUpdate.setCourseNo(courseVO.getCourseNo());
-			courseUpdate.setCoachVO(courseVO.getCoachVO());
-			courseUpdate.setCourseAddress(courseVO.getCourseAddress());
-			courseUpdate.setCourseImg(courseVO.getCourseImg());
-			courseUpdate.setCourseName(courseVO.getCourseName());
-			courseUpdate.setCoursePplLimit(courseVO.getCoursePplLimit());
-			courseUpdate.setCoursePrice(courseVO.getCoursePrice());
-			courseUpdate.setCourseStat(courseVO.getCourseStat());
-			courseUpdate.setCourseText(courseVO.getCourseText());
-			courseUpdate.setCourseStartTime(courseVO.getCourseStartTime());
-			courseUpdate.setCourseEndTime(courseVO.getCourseEndTime());
-			courseUpdate.setSportTypeVO(courseVO.getSportTypeVO());
+			CourseVO courseUpdate = (CourseVO) getSession().get(CourseVO.class, courseVO.getCourseNo());
+			if(courseUpdate != null) {
+				courseUpdate.setCourseNo(courseVO.getCourseNo());
+				courseUpdate.setCoachVO(courseVO.getCoachVO());
+				courseUpdate.setCourseAddress(courseVO.getCourseAddress());
+				courseUpdate.setCourseImg(courseVO.getCourseImg());
+				courseUpdate.setCourseName(courseVO.getCourseName());
+				courseUpdate.setCoursePplLimit(courseVO.getCoursePplLimit());
+				courseUpdate.setCoursePrice(courseVO.getCoursePrice());
+				courseUpdate.setCourseStat(courseVO.getCourseStat());
+				courseUpdate.setCourseText(courseVO.getCourseText());
+				courseUpdate.setCourseStartTime(courseVO.getCourseStartTime());
+				courseUpdate.setCourseEndTime(courseVO.getCourseEndTime());
+				courseUpdate.setSportTypeVO(courseVO.getSportTypeVO());
+			}
 			getSession().update(courseUpdate);
 			return 1;
 		} catch (Exception e) {
@@ -177,13 +180,13 @@ public class CourseDAO implements CourseDAO_interface{
 	@Override
 	public List<CourseVO> getAll(int currentPage) {
 		int first = (currentPage - 1) * PAGE_MAX_RESULT;
-		return getSession().createQuery("from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP", CourseVO.class).setFirstResult(first)
+		return getSession().createQuery("from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true", CourseVO.class).setFirstResult(first)
 				.setMaxResults(PAGE_MAX_RESULT).list();
 	}
 
 	@Override
 	public long getTotal() {
-		return getSession().createQuery("select count(*) from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP", Long.class).uniqueResult();
+		return getSession().createQuery("select count(*) from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true", Long.class).uniqueResult();
 	}
 	
 	

@@ -1,3 +1,6 @@
+<%@page import="com.asap.course.service.MbrCourseService"%>
+<%@page import="com.asap.course.service.MbrCourseService_interface"%>
+<%@page import="com.asap.course.entity.MbrCourseVO"%>
 <%@page import="com.asap.course.service.CourseService"%>
 <%@page import="com.asap.course.service.CourseService_interface"%>
 <%@page import="com.asap.course.entity.CourseVO"%>
@@ -10,7 +13,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.asap.court.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 
 <%
@@ -36,6 +40,8 @@
 	CoachService_interface coachSvc = new CoachService();
 	List<CoachVO> coachList = coachSvc.getAll();
 	pageContext.setAttribute("coachList", coachList);
+	
+	
 	
 	// 教練編號
 	/*
@@ -231,22 +237,23 @@
 							<div class="address account-content mt-0 pt-2">
 								
 
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/course/course.do" class="mb-2" enctype="multipart/form-data">
+								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/course/course.do" class="mb-2" enctype="multipart/form-data" id="upForm">
 									
 									
 									<div class="form-group">
 										<label>課程名稱 </label><div style="color:red">${nameError}</div> <input type="text" class="form-control"
-											name="name" value="${courseVO.courseName}"  style="border-radius: 10px;">
+											name="name" value="${courseVO.courseName}"  style="border-radius: 10px;" readonly>
 									</div>
 
 									<div class="select-custom">
 										<label>運動種類<span class="required"></span></label> 
-										<select name="type" class="form-control" style="border-radius: 10px;">
+										<select name="type" class="form-control" style="border-radius: 10px;" disabled>
 											<c:forEach var="sportTypeVO" items="${sportTypeList}">
 												<option value="${sportTypeVO.sportTypeNo}"
 												${(courseVO.sportTypeVO.sportTypeNo == sportTypeVO.sportTypeNo)?'selected':'' }>${sportTypeVO.sportTypeName}
 											</c:forEach>
 										</select>
+										<input type="hidden" name="selectedType" value="${courseVO.sportTypeVO.sportTypeNo}">
 									</div>
 
 									
@@ -261,7 +268,7 @@
 											<div class="form-group">
 												<label>人數限制<span></span></label> <div style="color:red">${pplLimitError}</div><input type="text"
 													class="form-control" style="border-radius: 10px;" name="pplLimit"
-													value="${courseVO.coursePplLimit}"/>
+													value="${courseVO.coursePplLimit}" readonly/>
 											</div>
 										</div>
 										
@@ -269,25 +276,27 @@
 											<div class="form-group">
 												<label>課程價格<span></span></label> <div style="color:red">${priceError}</div><input type="text"
 													class="form-control" style="border-radius: 10px;" name="price"
-													value="${courseVO.coursePrice}"/>
+													value="${courseVO.coursePrice}" readonly/>
 											</div>
 										</div>
 									</div>
 									
 									<label>課程時間<span></span></label>
 									<div style="color:red">${timeError}</div>
+									<fmt:formatDate value="${courseVO.courseStartTime}" pattern="yyyy-MM-dd HH:mm" var="formattedStartTime" />
+									<fmt:formatDate value="${courseVO.courseEndTime}" pattern="yyyy-MM-dd HH:mm" var="formattedEndTime" />								
 									<div class="row">
 										<div class="col-md-6">
 											<!--起始時間選擇-->
 											<div class="select-custom" style="display:flex;justify-content:center;align-items:center">
-												<input name="start" id="f_date1" type="text" onkeydown="return false" style="width: 100%; box-sizing: border-box;" autocomplete="off">
+												<input name="start" id="f_date1" type="text" onkeydown="return false" style="width: 100%; box-sizing: border-box;" autocomplete="off" value="${formattedStartTime}" readonly>
 											</div>
 										</div>
 										
 										<div class="col-md-6">
 											<!--結束時間選擇-->
 											<div class="select-custom" style="display:flex;justify-content:center;align-items:center">
-												<input name="end" id="f_date2" type="text" onkeydown="return false" style="width: 100%; box-sizing: border-box;" autocomplete="off">
+												<input name="end" id="f_date2" type="text" onkeydown="return false" style="width: 100%; box-sizing: border-box;" autocomplete="off" value="${formattedEndTime}" readonly>
 											</div>
 										</div>
 									</div>
@@ -300,13 +309,21 @@
 											onblur="courtTextAlert()">${courseVO.courseText}</textarea>
 									</div>
 
-<!-- 									<div class="select-custom"> -->
-<!-- 										<label>課程狀態<span></span></label> <select name="stat" -->
-<!-- 											class="form-control" style="border-radius: 10px;"> -->
-<!-- 											<option value="true" selected="selected">開課中</option> -->
-<!-- 											<option value="false">已額滿</option> -->
-<!-- 										</select> -->
-<!-- 									</div> -->
+									<div class="select-custom">
+										<label>課程狀態<span></span></label> <select name="stat"
+											class="form-control" style="border-radius: 10px;" id="checkPaidOrder">
+											<c:choose>
+									            <c:when test="${courseVO.courseStat eq true}">
+									                <option value="true" selected="selected">上架</option>
+									                <option value="false">下架</option>
+									            </c:when>
+									            <c:otherwise>
+									                <option value="true">上架</option>
+									                <option value="false" selected="selected">下架</option>
+									            </c:otherwise>
+									        </c:choose>
+										</select>
+									</div>
 
 										
 									<div class="mb-3">
@@ -566,6 +583,24 @@
 	                $('#f_date2').val('');
 	            }
 	        }
+	        
+	        $.ajax({
+                url: 'mbrCourseServlet?action=checkInMain&courseNo=${courseVO.courseNo}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (orderCounts) {
+                    if(orderCounts > 0){
+                    	$('#checkPaidOrder').attr("disabled", true);
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                }
+            });
+	        
+	        $('form').submit(function() {
+	            $("#checkPaidOrder").prop("disabled", false);
+	        });
 	       
 		})
 	

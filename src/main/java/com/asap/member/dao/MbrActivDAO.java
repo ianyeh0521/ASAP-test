@@ -64,7 +64,7 @@ public class MbrActivDAO implements MbrActivDAO_interface{
 	}
 
 	@Override
-	public MbrActivVO findByPK(String mbrActivNo) {
+	public MbrActivVO findByPK(Integer mbrActivNo) {
 		try {
 			Query<MbrActivVO> query = getSession().createQuery("from MbrActivVO where mbrActivNo = :mbrActivNo",
 					MbrActivVO.class);

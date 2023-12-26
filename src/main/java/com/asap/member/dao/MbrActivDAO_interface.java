@@ -33,5 +33,5 @@ public interface MbrActivDAO_interface {
 	 * 輸出成功 : 會員活動VO表單
 	 * 輸出失敗 : null
 	 * */ 
-	MbrActivVO findByPK(String mbrActivNo);
+	MbrActivVO findByPK(Integer mbrActivNo);
 }

@@ -12,5 +12,5 @@ public interface MbrActivService_interface {
 
 	List<MbrActivVO> findByMbrNo(String mbrNo);
 
-	MbrActivVO findByPK(String mbrActivNo);
+	MbrActivVO findByPK(Integer mbrActivNo);
 }
