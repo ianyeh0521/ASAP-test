@@ -17,6 +17,13 @@ public class CourtImgService implements CourtImgService_interface{
 	public int insert(CourtImgVO courtimgVO) {
 		return dao.insert(courtimgVO);
 	}
+	
+	
+
+	@Override
+	public int update(CourtImgVO courtimgVO) {
+		return dao.update(courtimgVO);
+	}
 
 	@Override
 	public void delete(Integer courtImgNo) {

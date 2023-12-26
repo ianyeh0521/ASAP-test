@@ -7,6 +7,7 @@ import com.asap.court.entity.CourtImgVO;
 public interface CourtImgDAO_interface {
 
 	int insert(CourtImgVO courtimgVO);
+	int update(CourtImgVO courtimgVO);
 	int delete(Integer courtImgNo);
 	
 	// Find courtImg by PK

@@ -13,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.asap.court.entity.CourtImgVO;
+import com.asap.court.entity.CourtVO;
 import com.asap.util.HibernateUtil;
 
 public class CourtImgDAO implements CourtImgDAO_interface {
@@ -38,6 +39,23 @@ public class CourtImgDAO implements CourtImgDAO_interface {
 			
 		}
 		
+	}
+
+
+	@Override
+	public int update(CourtImgVO courtimgVO) {
+		try {
+			CourtImgVO courtImgUpdate = (CourtImgVO) getSession().get(CourtImgVO.class,courtimgVO.getCourtImgNo());
+			if(courtImgUpdate != null) {
+				courtImgUpdate.setCourtImg(courtimgVO.getCourtImg());
+				courtImgUpdate.setCourtImgNo(courtimgVO.getCourtImgNo());
+				courtImgUpdate.setCourtVO(courtimgVO.getCourtVO());
+			}
+			getSession().update(courtImgUpdate);
+			return 1;
+		}catch (Exception e) {
+			return -1;
+		}
 	}
 
 	@Override
