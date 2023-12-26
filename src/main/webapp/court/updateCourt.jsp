@@ -54,39 +54,25 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>場地後台-修改</title>
+<title>ASAP</title>
 
 
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
-	href="/ASAP/assets/images/icons/favicon.png">
+	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
 
 
-<script>
-	WebFontConfig = {
-		google : {
-			families : [ 'Open+Sans:300,400,600,700,800',
-					'Poppins:300,400,500,600,700', 'Shadows+Into+Light:400' ]
-		}
-	};
-	(function(d) {
-		var wf = d.createElement('script'), s = d.scripts[0];
-		wf.src = '/ASAP/assets/js/webfont.js';
-		wf.async = true;
-		s.parentNode.insertBefore(wf, s);
-	})(document);
-</script>
 
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="/ASAP/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="/ASAP/assets/css/style.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/ASAP/assets/vendor/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/ASAP/assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
+	href="${pageContext.request.contextPath}/assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
 	
 <style>
     .outer-container {
@@ -102,7 +88,43 @@
 
 <body>
 	<div class="page-wrapper">
-		<header class="header"></header>
+		<header class="header">
+		   <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}" style="
+          height: 75px;
+          background: rgb(255, 250, 85);
+          background: linear-gradient(
+            90deg,
+            rgba(255, 250, 85, 0.9081757703081232) 0%,
+            rgba(9, 34, 121, 0.8773634453781513) 35%,
+            rgba(0, 212, 255, 1) 100%
+          );
+        ">
+                <div class="container">
+                    <div class="header-left col-lg-2 w-auto pl-0">
+                       
+                        <a href="${pageContext.request.contextPath}/backStage/BackageHome.jsp" width="222" height="88">
+                            <img src="${pageContext.request.contextPath}/newImg/logo2.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <!-- End .header-left -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header d-none d-lg-block" data-sticky-options="{'mobile': false}">
+                <div class="container">
+                    <nav class="main-nav w-100">
+                        <ul class="menu" style="display: flex; justify-content: flex-end">
+                             <li><a><form action="${pageContext.request.contextPath}/BackStageController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-bottom -->
+		
+		</header>
 		<!-- End .header -->
 
 		<main class="main">
@@ -112,9 +134,9 @@
 					<nav aria-label="breadcrumb" class="breadcrumb-nav">
 						<div class="container">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/court_index.jsp">場地管理</a></li>
-								<li class="breadcrumb-item"><a href="/ASAP/court/listAllCourt.jsp">所有場地</a></li>
-								<li class="breadcrumb-item active" aria-current="page">修改</li>
+<%-- 								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/court_index.jsp">場地管理</a></li> --%>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/listAllCourts_datatable_Ajax.html">所有場地</a></li>
+								<li class="breadcrumb-item active" aria-current="page">修改場地</li>
 							</ol>
 						</div>
 					</nav>
@@ -123,7 +145,7 @@
 			</div>
 			
 			 <div class="container" style="margin-top: 20px; margin-bottom: 10px !important; text-align: left !important;">
-				<a href="/ASAP/court/listAllCourts_datatable_Ajax.html">
+				<a href="${pageContext.request.contextPath}/court/listAllCourts_datatable_Ajax.html">
 				<button class="btn btn-primary btn-rounded btn-md">返回所有場地</button>
 				</a>
 			</div>
@@ -269,7 +291,76 @@
 	</main>
 	<!-- End .main -->
 
-	<footer class="footer bg-dark"></footer>
+	<footer class="footer bg-dark">
+	<div class="footer-middle">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-3 col-sm-6">
+							<div class="widget">
+								<h4 class="widget-title">Contact Info</h4>
+								<ul class="contact-info">
+									<li><span class="contact-info-label">Address:</span>5F.,
+										No. 219, Sec. 3, Nanjing E. Rd., Zhongshan Dist., Taipei City
+										104, Taiwan (R.O.C.)</li>
+									<li><span class="contact-info-label">Phone:</span><a
+										href="tel:">(02) 2712-0589</a></li>
+									<li><span class="contact-info-label">Email:</span> <a
+										href="mailto:mail@example.com">business@tibame.com</a></li>
+									<li><span class="contact-info-label">Working
+											Days/Hours:</span> Mon - Sun / 8:00 AM - 9:30 PM</li>
+								</ul>
+								<div class="social-icons">
+									<a href="#" class="social-icon social-facebook icon-facebook"
+										target="_blank" title="Facebook"></a> <a href="#"
+										class="social-icon social-twitter icon-twitter"
+										target="_blank" title="Twitter"></a> <a href="#"
+										class="social-icon social-instagram icon-instagram"
+										target="_blank" title="Instagram"></a>
+								</div>
+								<!-- End .social-icons -->
+							</div>
+							<!-- End .widget -->
+						</div>
+						<!-- End .col-lg-3 -->
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="widget">
+								<h4 class="widget-title">SiteMap</h4>
+
+								<ul class="links">
+									<li><a>Account</a></li>
+									<li><a>Course</a></li>
+									<li><a>Forum</a></li>
+									<li><a>Group</a></li>
+									<li><a>Court</a></li>
+									<li><a>Seller</a></li>
+									<li><a>Mall</a></li>
+								</ul>
+							</div>
+							<!-- End .widget -->
+						</div>
+						<!-- End .col-lg-3 -->
+
+					</div>
+					<!-- End .row -->
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .footer-middle -->
+
+			<div class="container">
+				<div class="footer-bottom">
+					<div class="container d-sm-flex align-items-center">
+						<div class="footer-left">
+							<span class="footer-copyright">© Tibame. 2023. All Rights
+								Reserved</span>
+						</div>
+					</div>
+				</div>
+				<!-- End .footer-bottom -->
+			</div>
+			<!-- End .container -->
+	</footer>
 	<!-- End .footer -->
 	</div>
 	<!-- End .page-wrapper -->
@@ -282,13 +373,13 @@
 		</div>
 	</div>
 
-	<div class="mobile-menu-overlay"></div>
+<!-- 	<div class="mobile-menu-overlay"></div> -->
 	<!-- End .mobil-menu-overlay -->
 
-	<div class="mobile-menu-container"></div>
+<!-- 	<div class="mobile-menu-container"></div> -->
 	<!-- End .mobile-menu-container -->
 
-	<div class="sticky-navbar"></div>
+<!-- 	<div class="sticky-navbar"></div> -->
 
 
 
@@ -296,20 +387,16 @@
 		class="icon-angle-up"></i></a>
 
 	<!-- Plugins JS File -->
-	<script src="/ASAP/assets/js/jquery.min.js"></script>
-	<script src="/ASAP/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="/ASAP/assets/js/plugins.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 
 	<!-- Main JS File -->
-	<script src="/ASAP/assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<!-- header and footer template -->
 	<script>
-		$("header").load("backstage_header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
-		
+			
 		 function ShowLngLati(){
 	            
 			 if($('#getAddress').val()!=''){  

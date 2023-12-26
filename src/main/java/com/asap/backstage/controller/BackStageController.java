@@ -679,7 +679,7 @@ public class BackStageController extends HttpServlet {
 			HttpSession session = req.getSession();
 			// 登入
 			if ("tha104asap@gmail.com".equals(backEmail.trim()) && "@asap2154".equals(backPwd.trim())) {
-				// 主帳號為root,密碼為123456
+				// 主帳號為tha104asap@gmail.com,密碼為@asap2154
 				session.setAttribute("backVo", "root");
 				res.sendRedirect(req.getContextPath() + "/backStage/BackStage.jsp");
 				return;

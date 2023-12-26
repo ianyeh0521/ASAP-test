@@ -11,7 +11,34 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 	
+	<!-- session濾器 -->
+	<filter>
+		<filter-name>OpenSessionFilter</filter-name>
+		<filter-class>com.asap.filter.OpenSessionInViewFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>OpenSessionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	
-	
+	<!-- back單種濾器 -->
+	<filter>
+		<filter-name>BackLoginFilter</filter-name>
+		<filter-class>com.asap.filter.BackLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>BackLoginFilter</filter-name>
+<!-- 		<url-pattern>/BackStageController</url-pattern> -->
+		<url-pattern>/backStage/*</url-pattern>
+		<url-pattern>/forum/backstage_forum_report.jsp</url-pattern>
+		<url-pattern>/court/addCourt.jsp</url-pattern>
+		<url-pattern>/court/updateCourt.jsp</url-pattern>
+		<url-pattern>/court/listAllCourts_datatable_Ajax.html</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
 
 </web-app>
