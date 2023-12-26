@@ -8,17 +8,14 @@
         content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       
       <title>ASAP</title>
-      
-      <meta name="keywords" content="HTML5 Template" />
-      <meta name="description" content="Porto - Bootstrap eCommerce Template" />
-      <meta name="author" content="SW-THEMES" />
+
  
       <!-- Plugins CSS File -->
       <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet" media="all" />
       
       <!-- Main CSS File -->
-      <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.min.css" rel="stylesheet" media="all"/>
-      <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" media="all"/>
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet" media="all"/>
+      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" media="all"/>
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
       <style>
       * {
@@ -128,7 +125,7 @@
                 <button class="mobile-menu-toggler text-primary mr-2" type="button">
                   <i class="fas fa-bars"></i>
                 </button>
-                <a href="#" width="222" height="88">
+                <a href="${pageContext.request.contextPath}/ASAPwelcome.jsp" width="222" height="88">
                   <img src="newImg/logo2.png" style="max-width: 200px; height: auto; vertical-align: middle; border-style: none;">
                 </a>
               </div>
@@ -146,49 +143,14 @@
               <nav class="main-nav w-100" >
                 <ul class="menu" style="display: flex; justify-content: flex-end">
                   <li>
-                    <a href="#">論壇</a>
-                    <ul>
-                      <li><a href="#">論壇首頁</a></li>
-                      <li><a href="#">發佈貼文</a></li>
-                      <li><a href="#">我的貼文</a></li>
-                      <li><a href="#">收藏貼文</a></li>
-                    </ul>
+                    <a href="${pageContext.request.contextPath}/member/MemberLogin.jsp">會員登入</a>
+                    
                   </li>
                   <li>
-                    <a href="#">揪團</a>
-                    <ul>
-                      <li><a href="#">揪團首頁</a></li>
-                      <li><a href="#">發起揪團</a></li>
-                      <li><a href="#">我的揪團</a></li>
-                    </ul>
+                    <a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp">教練登入</a>
+                    
                   </li>
-                  <li>
-                    <a href="#">找課程</a>
-                    <ul>
-                      <li><a href="#">查詢課程</a></li>
-                      <li><a href="#">我的課程</a></li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="#">找場地</a>
-                    <ul>
-                      <li><a href="#">詢找場地</a></li>
-                      <li><a href="#">我的預約</a></li>
-                      <li><a href="#">我的收藏</a></li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="#">賣家入口</a>
-                    <ul>
-                      <li><a href="#">所有訂單</a></li>
-                      <li><a href="#">所有商品</a></li>
-                      <li><a href="#">新增商品</a></li>
-                      <li><a href="#">商品評論</a></li>
-                    </ul>
-                  </li>
-  
-                  <li><a href="">商城</a></li>
-                  <li><a href="" style="color: red">登入</a></li>
+                
                 </ul>
               </nav>
             </div>
@@ -204,7 +166,7 @@
                 <h1>
                   <span>ASAP</span> Find the Boundaries. Push Through!
                 </h1>
-                <a href="${pageContext.request.contextPath}/group/home.jsp" class="btn btn-dark"><strong>START!</strong></a>
+                <a href="${pageContext.request.contextPath}/member/MemberLogin.jsp" class="btn btn-dark"><strong>START!</strong></a>
               </div>
               <!-- End .container -->
             </div>
@@ -313,13 +275,13 @@
                       <h4 class="widget-title">SiteMap</h4>
           
                       <ul class="links">
-                        <li><a href="#">Account</a></li>
-                        <li><a href="#">Course</a></li>
-                        <li><a href="#">Forum</a></li>
-                        <li><a href="#">Group</a></li>
-                        <li><a href="#">Court</a></li>
-                        <li><a href="#">Seller</a></li>
-                        <li><a href="#">Mall</a></li>
+                        <li><a>Account</a></li>
+                        <li><a>Course</a></li>
+                        <li><a>Forum</a></li>
+                        <li><a>Group</a></li>
+                        <li><a>Court</a></li>
+                        <li><a>Seller</a></li>
+                        <li><a>Mall</a></li>
                       </ul>
                     </div>
                     <!-- End .widget -->
@@ -338,7 +300,7 @@
                 <div class="container d-sm-flex align-items-center">
                   <div class="footer-left">
                     <span class="footer-copyright"
-                      >© Porto eCommerce. 2021. All Rights Reserved</span
+                      >© Tibame. 2023. All Rights Reserved</span
                     >
                   </div>
                 </div>
@@ -367,56 +329,8 @@
             <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
             <nav class="mobile-nav">
               <ul class="mobile-menu">
-                <li><a href="#">首頁</a></li>
-                <li>
-                  <a href="#">論壇</a>
-                  <ul>
-                    <li><a href="#">論壇首頁</a></li>
-                    <li>
-                      <a href="#">發佈貼文</a>
-                    </li>
-                    <li>
-                      <a href="#">我的貼文</a>
-                    </li>
-                    <li><a href="#">收藏貼文</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#">揪團</a>
-                  <ul>
-                    <li><a href="#">揪團首頁</a></li>
-                    <li><a href="#">發起揪團</a></li>
-                    <li><a href="#">我的揪團</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#">找課程</a>
-                  <ul>
-                    <li><a href="#">查詢課程</a></li>
-                    <li><a href="#">我的課程</a></li>
-                  </ul>
-                </li>
-          
-                <li>
-                  <a href="#">找場地</a>
-                  <ul>
-                    <li><a href="#">詢找場地</a></li>
-                    <li><a href="#">我的預約</a></li>
-                    <li><a href="#">我的收藏</a></li>
-                  </ul>
-                </li>
-          
-                <li>
-                  <a href="#">賣家入口</a>
-                  <ul>
-                    <li><a href="#">所有訂單</a></li>
-                    <li><a href="#">所有商品</a></li>
-                    <li><a href="#">新增商品</a></li>
-                    <li><a href="#">商品評論</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">商城</a></li>
-                <li><a href="#">登入</a></li>
+                <li><a href="${pageContext.request.contextPath}/member/MemberLogin.jsp">會員登入</a></li>
+                <li><a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp">教練登入</a></li>
               </ul>
             </nav>
             <!-- End .mobile-nav -->
@@ -426,42 +340,37 @@
         </div>
         <!-- End .mobile-menu-container -->
       
-        <div class="sticky-navbar">
-          <div class="sticky-info">
-            <a href="#"> <i class="icon-home"></i>Home </a>
-          </div>
-          <div class="sticky-info">
-            <a href="#" class=""> <i class="icon-edit"></i>Forum </a>
-          </div>
-          <div class="sticky-info">
-            <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a>
-          </div>
-          <div class="sticky-info">
-            <a href="#" class="">
-              <i class="icon-shopping-cart position-relative"> </i>Mall
-            </a>
-          </div>
-          <div class="sticky-info">
-            <a href="#" class=""> <i class="icon-user-2"></i>Account </a>
-          </div>
-        </div>
+<!--         <div class="sticky-navbar"> -->
+<!--           <div class="sticky-info"> -->
+<!--             <a href="#"> <i class="icon-home"></i>Home </a> -->
+<!--           </div> -->
+<!--           <div class="sticky-info"> -->
+<!--             <a href="#" class=""> <i class="icon-edit"></i>Forum </a> -->
+<!--           </div> -->
+<!--           <div class="sticky-info"> -->
+<!--             <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a> -->
+<!--           </div> -->
+<!--           <div class="sticky-info"> -->
+<!--             <a href="#" class=""> -->
+<!--               <i class="icon-shopping-cart position-relative"> </i>Mall -->
+<!--             </a> -->
+<!--           </div> -->
+<!--           <div class="sticky-info"> -->
+<!--             <a href="#" class=""> <i class="icon-user-2"></i>Account </a> -->
+<!--           </div> -->
+<!--         </div> -->
       
         <a id="scroll-top" href="#top" title="Top" role="button"><i
           class="icon-angle-up"></i></a>
       
         <!-- Plugins JS File -->
-        <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/jquery.min.js"></script>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/plugins.min.js"></script>
-      	<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/plugins/jquery.countTo.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+      	<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/plugins/jquery.countTo.js"></script>
         <!-- Main JS File -->
-        <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/main.min.js"></script>
-        <script>
-          // $("header").load("header.html");
-          // $("div.sticky-navbar").load("sticky-navbar.html");
-          // $("div.mobile-menu-container").load("mobile-menu-container.html");
-          // $("footer").load("footer.html");
-        </script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
+
       </body>
       </html>
 

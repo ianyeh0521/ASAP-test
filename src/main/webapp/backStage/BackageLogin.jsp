@@ -14,7 +14,7 @@
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
-	href="assets/images/icons/favicon.png" />
+	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
 <link rel="stylesheet"
 	href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
 	integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5"
@@ -45,7 +45,7 @@
 							type="button">
 							<i class="fas fa-bars"></i>
 						</button>
-						<a href="#" style="width: 222; height: 88;"> <img
+						<a href="${pageContext.request.contextPath}/backStage/BackageLogin.jsp" style="width: 222; height: 88;"> <img
 							src="${pageContext.request.contextPath}/newImg/logo2.png"
 							alt="Logo" />
 						</a>
@@ -56,50 +56,50 @@
 			</div>
 			<!-- End .header-middle -->
 
-			<div class="header-bottom sticky-header d-none d-lg-block"
-				data-sticky-options="{'mobile': false}">
-				<div class="container">
-					<nav class="main-nav w-100">
-						<ul class="menu" style="display: flex; justify-content: flex-end">
-							<li><a href="#">論壇</a>
-								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
-								</ul></li>
-							<li><a href="#">揪團</a>
-								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
-								</ul></li>
-							<li><a href="#">找課程</a>
-								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
-								</ul></li>
-							<li><a href="#">找場地</a>
-								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
-								</ul></li>
-							<li><a href="#">賣家入口</a>
-								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
+<!-- 			<div class="header-bottom sticky-header d-none d-lg-block" -->
+<!-- 				data-sticky-options="{'mobile': false}"> -->
+<!-- 				<div class="container"> -->
+<!-- 					<nav class="main-nav w-100"> -->
+<!-- 						<ul class="menu" style="display: flex; justify-content: flex-end"> -->
+<!-- 							<li><a href="#">論壇</a> -->
+<!-- 								<ul> -->
+<!-- 									<li><a href="#">論壇首頁</a></li> -->
+<!-- 									<li><a href="#">發佈貼文</a></li> -->
+<!-- 									<li><a href="#">我的貼文</a></li> -->
+<!-- 									<li><a href="#">收藏貼文</a></li> -->
+<!-- 								</ul></li> -->
+<!-- 							<li><a href="#">揪團</a> -->
+<!-- 								<ul> -->
+<!-- 									<li><a href="#">揪團首頁</a></li> -->
+<!-- 									<li><a href="#">發起揪團</a></li> -->
+<!-- 									<li><a href="#">我的揪團</a></li> -->
+<!-- 								</ul></li> -->
+<!-- 							<li><a href="#">找課程</a> -->
+<!-- 								<ul> -->
+<!-- 									<li><a href="#">查詢課程</a></li> -->
+<!-- 									<li><a href="#">我的課程</a></li> -->
+<!-- 								</ul></li> -->
+<!-- 							<li><a href="#">找場地</a> -->
+<!-- 								<ul> -->
+<!-- 									<li><a href="#">詢找場地</a></li> -->
+<!-- 									<li><a href="#">我的預約</a></li> -->
+<!-- 									<li><a href="#">我的收藏</a></li> -->
+<!-- 								</ul></li> -->
+<!-- 							<li><a href="#">賣家入口</a> -->
+<!-- 								<ul> -->
+<!-- 									<li><a href="#">所有訂單</a></li> -->
+<!-- 									<li><a href="#">所有商品</a></li> -->
+<!-- 									<li><a href="#">新增商品</a></li> -->
+<!-- 									<li><a href="#">商品評論</a></li> -->
+<!-- 								</ul></li> -->
 
-							<li><a href="">商城</a></li>
-							<li><a href="login.jsp" style="color: red">登入</a></li>
-						</ul>
-					</nav>
-				</div>
+<!-- 							<li><a href="">商城</a></li> -->
+<!-- 							<li><a href="login.jsp" style="color: red">登入</a></li> -->
+<!-- 						</ul> -->
+<!-- 					</nav> -->
+<!-- 				</div> -->
 				<!-- End .container -->
-			</div>
+<!-- 			</div> -->
 			<!-- End .header-bottom -->
 		</header>
 		<!-- End .header -->
@@ -189,13 +189,13 @@
 								<h4 class="widget-title">SiteMap</h4>
 
 								<ul class="links">
-									<li><a href="#">Account</a></li>
-									<li><a href="#">Course</a></li>
-									<li><a href="#">Forum</a></li>
-									<li><a href="#">Group</a></li>
-									<li><a href="#">Court</a></li>
-									<li><a href="#">Seller</a></li>
-									<li><a href="#">Mall</a></li>
+									<li><a>Account</a></li>
+									<li><a>Course</a></li>
+									<li><a>Forum</a></li>
+									<li><a>Group</a></li>
+									<li><a>Court</a></li>
+									<li><a>Seller</a></li>
+									<li><a>Mall</a></li>
 								</ul>
 							</div>
 							<!-- End .widget -->
@@ -234,13 +234,13 @@
 		</div>
 	</div>
 
-	<div class="mobile-menu-overlay"></div>
+<!-- 	<div class="mobile-menu-overlay"></div> -->
 	<!-- End .mobil-menu-overlay -->
 
-	<div class="mobile-menu-container"></div>
+<!-- 	<div class="mobile-menu-container"></div> -->
 	<!-- End .mobile-menu-container -->
 
-	<div class="sticky-navbar"></div>
+<!-- 	<div class="sticky-navbar"></div> -->
 
 	<a id="scroll-top" href="#top" title="Top" role="button"><i
 		class="icon-angle-up"></i></a>

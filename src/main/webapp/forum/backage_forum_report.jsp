@@ -37,20 +37,7 @@ pageContext.setAttribute("list", list);
 	crossorigin="anonymous" />
 <script src="https://kit.fontawesome.com/2bd4419edb.js"
 	crossorigin="anonymous"></script>
-<script>
-	WebFontConfig = {
-		google : {
-			families : [ "Open+Sans:300,400,600,700,800",
-					"Poppins:300,400,500,600,700", "Shadows+Into+Light:400", ],
-		},
-	};
-	(function(d) {
-		var wf = d.createElement("script"), s = d.scripts[0];
-		wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
-		wf.async = true;
-		s.parentNode.insertBefore(wf, s);
-	})(document);
-</script>
+
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" type="text/css"
@@ -159,11 +146,8 @@ $(document).ready(function () {
 				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
 				<div class="container">
 					<div class="header-left col-lg-2 w-auto pl-0">
-						<button class="mobile-menu-toggler text-primary mr-2"
-							type="button">
-							<i class="fas fa-bars"></i>
-						</button>
-						<a href="#" width="222" height="88"> <img
+						
+						<a href="${pageContext.request.contextPath}/backStage/BackageHome.jsp" width="222" height="88"> <img
 							src="${pageContext.request.contextPath}/newImg/logo2.png"
 							alt="Logo" />
 						</a>
@@ -179,40 +163,7 @@ $(document).ready(function () {
 				<div class="container">
 					<nav class="main-nav w-100">
 						<ul class="menu" style="display: flex; justify-content: flex-end">
-							<li><a href="#">論壇</a>
-								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
-								</ul></li>
-							<li><a href="#">揪團</a>
-								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
-								</ul></li>
-							<li><a href="#">找課程</a>
-								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
-								</ul></li>
-							<li><a href="#">找場地</a>
-								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
-								</ul></li>
-							<li><a href="#">賣家入口</a>
-								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
-
-							<li><a href="">商城</a></li>
-							<li><a href="" style="color: red">登入</a></li>
+							 <li><a><form action="${pageContext.request.contextPath}/BackStageController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
 						</ul>
 					</nav>
 				</div>
