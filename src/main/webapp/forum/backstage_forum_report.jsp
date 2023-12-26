@@ -1,25 +1,22 @@
 <%@page import="com.asap.forum.service.ForumReportVOServiceImpl"%>
 <%@page import="com.asap.forum.service.ForumReportVOService"%>
 <%@page import="com.asap.forum.entity.ForumReportVO"%>
+<%@page import="com.asap.backstage.entity.*"%>
 <%@page import="com.asap.util.*"%>
 <%@page import="java.util.*"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
 ForumReportVOService forumReportSvc = new ForumReportVOServiceImpl();
 List<ForumReportVO> list = forumReportSvc.getAll();
 pageContext.setAttribute("list", list);
 
-// String backNo = session.getAttribute("backVo").getBackNo();
-// pageContext.setAttribute("backNo",backNo);
-
-
-// String backNo = "B1206202301070";
-// pageContext.setAttribute("backNo",backNo);
-
+BackStageVO backVo = (BackStageVO)session.getAttribute("backVo");
+String backNo = backVo.getBackNo();
+pageContext.setAttribute("backNo",backNo);
 
 %>
 
@@ -33,9 +30,6 @@ pageContext.setAttribute("list", list);
 
 <title>ASAP</title>
 
-<meta name="keywords" content="HTML5 Template" />
-<meta name="description" content="Porto - Bootstrap eCommerce Template" />
-<meta name="author" content="SW-THEMES" />
 
 <!-- Favicon -->
 <link rel="icon" type="image/png"
@@ -46,8 +40,7 @@ pageContext.setAttribute("list", list);
 	crossorigin="anonymous" />
 <script src="https://kit.fontawesome.com/2bd4419edb.js"
 	crossorigin="anonymous"></script>
-<<<<<<< Upstream, based on 97d5aebefce8cd2f9d307721d9b3a428eba681bc
-<<<<<<< Upstream, based on 97d5aebefce8cd2f9d307721d9b3a428eba681bc
+
 
 
 <!-- Plugins CSS File -->
@@ -175,188 +168,6 @@ $(document).ready(function () {
 					<nav class="main-nav w-100">
 						<ul class="menu" style="display: flex; justify-content: flex-end">
 							 <li><a><form action="${pageContext.request.contextPath}/BackStageController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
-=======
-<script>
-	WebFontConfig = {
-		google : {
-			families : [ "Open+Sans:300,400,600,700,800",
-					"Poppins:300,400,500,600,700", "Shadows+Into+Light:400", ],
-		},
-	};
-	(function(d) {
-		var wf = d.createElement("script"), s = d.scripts[0];
-		wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
-		wf.async = true;
-		s.parentNode.insertBefore(wf, s);
-	})(document);
-</script>
-=======
-
->>>>>>> 56d0d94 Add backStage homepage.
-
-<!-- Plugins CSS File -->
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
-
-<!-- Main CSS File -->
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/assets/css/style.min.css" />
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
-<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
-
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
-<script>
-$(document).ready(function () {
-    $("#table_id").DataTable({
-      language: {
-        url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json",
-      },
-      scrollX: true,
-    });
-  });
-</script>
-<style>
-.fs_alert_bg {
-	width: 100vw;
-	height: 100vh;
-	background-color: rgba(0, 0, 0, 0.671);
-	position: fixed;
-	top: 0;
-}
-
-#fs_alert {
-	width: 100vw;
-	height: 100vh;
-	position: absolute;
-	top: 0;
-	/* display: block; */
-	display: none;
-	z-index: 999;
-}
-
-.fs_alert_show {
-	width: 50%;
-	background-color: white;
-	position: absolute;
-	top: 120px;
-	left: 0;
-	right: 0;
-	margin: auto;
-	z-index: 2;
-	border-radius: 8px;
-	text-align: center;
-}
-
-.fs_alert_title {
-	font-size: 36px;
-	text-align: center;
-	margin: 35px;
-	font-weight: bold;
-}
-
-.fs_alert_title_suc {
-	color: rgb(85, 184, 201);
-}
-
-.fs_alert_txt {
-	width: 80%;
-	word-wrap: break-word;
-	font-size: 16px;
-	padding: 0 20px;
-	text-align: center;
-	margin: 0px auto 15px auto;
-}
-
-#alert_ok {
-	margin: 20px auto 45px auto;
-}
-
-.btn_s {
-	width: 100px;
-	border-radius: 8px;
-	font-size: 16px;
-	text-align: center;
-	padding: 10px;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	background-color: rgb(85, 184, 201);
-	margin: 10px;
-}
-
-.btn_s:hover {
-	background-color: rgb(76, 139, 150);
-}
-</style>
-</head>
-
-<body>
-	<div class="page-wrapper">
-		<header class="header">
-			<div class="header-middle sticky-header"
-				data-sticky-options="{'mobile': true}"
-				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
-				<div class="container">
-					<div class="header-left col-lg-2 w-auto pl-0">
-						
-						<a href="${pageContext.request.contextPath}/backStage/BackageHome.jsp" width="222" height="88"> <img
-							src="${pageContext.request.contextPath}/newImg/logo2.png"
-							alt="Logo" />
-						</a>
-					</div>
-					<!-- End .header-left -->
-				</div>
-				<!-- End .container -->
-			</div>
-			<!-- End .header-middle -->
-
-			<div class="header-bottom sticky-header d-none d-lg-block"
-				data-sticky-options="{'mobile': false}">
-				<div class="container">
-					<nav class="main-nav w-100">
-						<ul class="menu" style="display: flex; justify-content: flex-end">
-<<<<<<< Upstream, based on 97d5aebefce8cd2f9d307721d9b3a428eba681bc
-							<li><a href="#">論壇</a>
-								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
-								</ul></li>
-							<li><a href="#">揪團</a>
-								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
-								</ul></li>
-							<li><a href="#">找課程</a>
-								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
-								</ul></li>
-							<li><a href="#">找場地</a>
-								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
-								</ul></li>
-							<li><a href="#">賣家入口</a>
-								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
-
-							<li><a href="">商城</a></li>
-							<li><a href="" style="color: red">登入</a></li>
->>>>>>> a276b8c modify forum
-=======
-							 <li><a><form action="${pageContext.request.contextPath}/BackStageController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
->>>>>>> 56d0d94 Add backStage homepage.
 						</ul>
 					</nav>
 				</div>
@@ -560,7 +371,77 @@ $(document).ready(function () {
 		</main>
 		<!-- End .main -->
 
-		<footer class="footer bg-dark"></footer>
+		<footer class="footer bg-dark">
+		  <div class="footer-middle">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-3 col-sm-6">
+							<div class="widget">
+								<h4 class="widget-title">Contact Info</h4>
+								<ul class="contact-info">
+									<li><span class="contact-info-label">Address:</span>5F.,
+										No. 219, Sec. 3, Nanjing E. Rd., Zhongshan Dist., Taipei City
+										104, Taiwan (R.O.C.)</li>
+									<li><span class="contact-info-label">Phone:</span><a
+										href="tel:">(02) 2712-0589</a></li>
+									<li><span class="contact-info-label">Email:</span> <a
+										href="mailto:mail@example.com">business@tibame.com</a></li>
+									<li><span class="contact-info-label">Working
+											Days/Hours:</span> Mon - Sun / 8:00 AM - 9:30 PM</li>
+								</ul>
+								<div class="social-icons">
+									<a href="#" class="social-icon social-facebook icon-facebook"
+										target="_blank" title="Facebook"></a> <a href="#"
+										class="social-icon social-twitter icon-twitter"
+										target="_blank" title="Twitter"></a> <a href="#"
+										class="social-icon social-instagram icon-instagram"
+										target="_blank" title="Instagram"></a>
+								</div>
+								<!-- End .social-icons -->
+							</div>
+							<!-- End .widget -->
+						</div>
+						<!-- End .col-lg-3 -->
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="widget">
+								<h4 class="widget-title">SiteMap</h4>
+
+								<ul class="links">
+									<li><a>Account</a></li>
+									<li><a>Course</a></li>
+									<li><a>Forum</a></li>
+									<li><a>Group</a></li>
+									<li><a>Court</a></li>
+									<li><a>Seller</a></li>
+									<li><a>Mall</a></li>
+								</ul>
+							</div>
+							<!-- End .widget -->
+						</div>
+						<!-- End .col-lg-3 -->
+
+					</div>
+					<!-- End .row -->
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .footer-middle -->
+
+			<div class="container">
+				<div class="footer-bottom">
+					<div class="container d-sm-flex align-items-center">
+						<div class="footer-left">
+							<span class="footer-copyright">© Tibame. 2023. All Rights
+								Reserved</span>
+						</div>
+					</div>
+				</div>
+				<!-- End .footer-bottom -->
+			</div>
+			<!-- End .container -->
+		
+		</footer>
 		<!-- End .footer -->
 	</div>
 	<!-- End .page-wrapper -->
@@ -574,13 +455,13 @@ $(document).ready(function () {
 	</div>
 
 
-	<div class="mobile-menu-overlay"></div>
+<!-- 	<div class="mobile-menu-overlay"></div> -->
 	<!-- End .mobil-menu-overlay -->
 
-	<div class="mobile-menu-container"></div>
+<!-- 	<div class="mobile-menu-container"></div> -->
 	<!-- End .mobile-menu-container -->
 
-	<div class="sticky-navbar"></div>
+<!-- 	<div class="sticky-navbar"></div> -->
 
 	<a id="scroll-top" href="#top" title="Top" role="button"><i
 		class="icon-angle-up"></i></a>
@@ -596,11 +477,7 @@ $(document).ready(function () {
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<script>
-		//$("header").load("header.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
-		$("footer").load("footer.html");
-
+	
 		$("button.getcomment").on("click", function() {
 			var cmtNo = $(this).attr('data-cmtno');
 			$.ajax({

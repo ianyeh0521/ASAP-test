@@ -136,7 +136,7 @@
                            <c:if test="${backAce == 4}">
                             <div class="col-6 col-md-4">
                               <div class="feature-box text-center pb-4">
-                               <a href="${pageContext.request.contextPath}/forum/backage_forum_report.jsp" class="link-to-tab"><i class="fa-solid fa-bullhorn"></i></a>
+                               <a href="${pageContext.request.contextPath}/forum/backstage_forum_report.jsp" class="link-to-tab"><i class="fa-solid fa-bullhorn"></i></a>
                                <div class=" feature-box-content">
                                 <h3>論壇管理</h3>
                                </div>
