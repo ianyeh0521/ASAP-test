@@ -98,7 +98,7 @@ public class CourtServlet extends HttpServlet {
 	}
 	
 	// 修改
-	private String updateCourt(HttpServletRequest req, HttpServletResponse res) {
+	private String updateCourt(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
 
@@ -191,6 +191,53 @@ public class CourtServlet extends HttpServlet {
         
         Integer courtNo = Integer.valueOf(req.getParameter("courtNo"));
         
+        // 照片修改
+        List<CourtImgVO> courtImgVOs = courtImgService_interface.findByCourtNo(courtNo);
+        // 照片1
+        InputStream in1 = req.getPart("upFiles1").getInputStream();
+		byte[] upFiles1 = null;
+		if(in1.available()!=0){
+			upFiles1 = new byte[in1.available()];
+			in1.read(upFiles1);
+			in1.close();
+		}  else{
+			upFiles1 = courtImgVOs.get(0).getCourtImg();
+		}
+		
+		// 照片2
+		InputStream in2 = req.getPart("upFiles2").getInputStream();
+		byte[] upFiles2 = null;
+		if(in2.available()!=0){
+			upFiles2 = new byte[in2.available()];
+			in2.read(upFiles2);
+			in2.close();
+		}  else{
+			upFiles2 = courtImgVOs.get(1).getCourtImg();
+		}
+		
+		// 照片3
+		InputStream in3 = req.getPart("upFiles3").getInputStream();
+		byte[] upFiles3 = null;
+		if(in3.available()!=0){
+			upFiles3 = new byte[in3.available()];
+			in3.read(upFiles3);
+			in3.close();
+		}  else{
+			upFiles3 = courtImgVOs.get(2).getCourtImg();
+		}
+		
+		// 照片4
+		InputStream in4 = req.getPart("upFiles4").getInputStream();
+		byte[] upFiles4 = null;
+		if(in4.available()!=0){
+			upFiles4 = new byte[in4.available()];
+			in4.read(upFiles4);
+			in4.close();
+		}  else{
+			upFiles4 = courtImgVOs.get(3).getCourtImg();
+		}
+		
+		
         
 		 
         CourtVO courtVO = new CourtVO(courtNo, name, courtTypeVO, indoor, address, siteVO, lng, lati, courtText, pplLimit, price, stat);
@@ -201,6 +248,19 @@ public class CourtServlet extends HttpServlet {
 		}else {
 			req.setAttribute("courtNoPass", courtNo);
 			courtService_interface.update(courtVO);
+			
+			courtImgVOs.get(0).setCourtImg(upFiles1);
+			courtImgService_interface.update(courtImgVOs.get(0));
+			
+			courtImgVOs.get(1).setCourtImg(upFiles2);
+			courtImgService_interface.update(courtImgVOs.get(1));
+			
+			courtImgVOs.get(2).setCourtImg(upFiles3);
+			courtImgService_interface.update(courtImgVOs.get(2));
+			
+			courtImgVOs.get(3).setCourtImg(upFiles4);
+			courtImgService_interface.update(courtImgVOs.get(3));
+			
 			System.out.println(courtVO.toString());
 			return "/court/listOneCourt.jsp";		
 		}

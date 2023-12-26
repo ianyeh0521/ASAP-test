@@ -9,6 +9,8 @@ public interface CourtImgService_interface {
 
 	int insert(CourtImgVO courtimgVO);
 	
+	int update(CourtImgVO courtimgVO);
+	
 	void delete(Integer courtImgNo);
 	
 	CourtImgVO findByPK(Integer courtImgNo);

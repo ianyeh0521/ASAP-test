@@ -101,7 +101,7 @@
         ">
                 <div class="container">
                     <div class="header-left col-lg-2 w-auto pl-0">
-                       
+
                         <a href="${pageContext.request.contextPath}/backStage/BackageHome.jsp" width="222" height="88">
                             <img src="${pageContext.request.contextPath}/newImg/logo2.png" alt="Logo" />
                         </a>
@@ -123,7 +123,7 @@
                 <!-- End .container -->
             </div>
             <!-- End .header-bottom -->
-		
+
 		</header>
 		<!-- End .header -->
 
@@ -135,8 +135,8 @@
 						<div class="container">
 							<ol class="breadcrumb">
 <%-- 								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/court_index.jsp">場地管理</a></li> --%>
-								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/listAllCourts_datatable_Ajax.html">所有場地</a></li>
-								<li class="breadcrumb-item active" aria-current="page">修改場地</li>
+									<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/court/listAllCourts_datatable_Ajax.html">所有場地</a></li>
+									<li class="breadcrumb-item active" aria-current="page">修改場地</li>
 							</ol>
 						</div>
 					</nav>
@@ -263,6 +263,35 @@
 											<option value="true" selected="selected">營運中</option>
 											<option value="false">暫停營運</option>
 										</select>
+									</div>
+									
+									<div class="mb-3">
+									    <div class="row">
+									        <div class="col-md-3">
+									            <label for="upFiles1" class="form-label">照片1:</label>
+									            <input id="upFiles1" name="upFiles1" class="form-control" style="border-radius: 10px;" type="file" 
+									            	onchange="previewImage('upFiles1', 'blob_holder1')">
+									            <div class="blob_holder" id="blob_holder1"></div>
+									        </div>
+									        <div class="col-md-3">
+									            <label for="upFiles2" class="form-label">照片2:</label>
+									            <input id="upFiles2" name="upFiles2" class="form-control" style="border-radius: 10px;" type="file"
+									            	onchange="previewImage('upFiles2', 'blob_holder2')">
+									            <div class="blob_holder" id="blob_holder2"></div>
+									        </div>
+									        <div class="col-md-3">
+									            <label for="upFiles3" class="form-label">照片3:</label>
+									            <input id="upFiles3" name="upFiles3" class="form-control" style="border-radius: 10px;" type="file"
+									            	onchange="previewImage('upFiles3', 'blob_holder3')">
+									            <div class="blob_holder" id="blob_holder3"></div>
+									        </div>
+									        <div class="col-md-3">
+									            <label for="upFiles4" class="form-label">照片4:</label>
+									            <input id="upFiles4" name="upFiles4" class="form-control" style="border-radius: 10px;" type="file"
+									            	onchange="previewImage('upFiles4', 'blob_holder4')">
+									            <div class="blob_holder" id="blob_holder4"></div>
+									        </div>
+									    </div>
 									</div>
 									
 	
@@ -396,7 +425,7 @@
 
 	<!-- header and footer template -->
 	<script>
-			
+
 		 function ShowLngLati(){
 	            
 			 if($('#getAddress').val()!=''){  
@@ -444,6 +473,43 @@
 			}
 			
 		}
+		
+	 	function previewBase64Image(base64, blobHolderId) {
+	        var blobHolder = document.getElementById(blobHolderId);
+	        var img = document.createElement('img');
+	        img.src = 'data:image/png;base64,' + base64; 
+	        img.style.maxWidth = '100%'; 
+	        blobHolder.innerHTML = ''; 
+	        blobHolder.appendChild(img);
+	    }
+	 	
+	 	function previewImage(inputId, blobHolderId) {
+		    const input = document.getElementById(inputId);
+		    const blobHolder = document.getElementById(blobHolderId);
+
+		    if (input.files && input.files[0]) {
+		        const reader = new FileReader();
+
+		        reader.onload = function (e) {
+		            
+		            const img = document.createElement('img');
+		            img.src = e.target.result;
+		            img.alt = '照片預覽';
+		            img.style.maxWidth = '100%';
+
+		            blobHolder.innerHTML = '';
+
+		            blobHolder.appendChild(img);
+		        };
+
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+
+	    previewBase64Image('${pic1}', 'blob_holder1');
+	    previewBase64Image('${pic2}', 'blob_holder2');
+	    previewBase64Image('${pic3}', 'blob_holder3');
+	    previewBase64Image('${pic4}', 'blob_holder4');
 		
 	</script>
 </body>
