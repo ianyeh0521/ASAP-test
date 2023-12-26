@@ -46,6 +46,7 @@ pageContext.setAttribute("list", list);
 	crossorigin="anonymous" />
 <script src="https://kit.fontawesome.com/2bd4419edb.js"
 	crossorigin="anonymous"></script>
+<<<<<<< Upstream, based on 97d5aebefce8cd2f9d307721d9b3a428eba681bc
 
 
 <!-- Plugins CSS File -->
@@ -173,6 +174,184 @@ $(document).ready(function () {
 					<nav class="main-nav w-100">
 						<ul class="menu" style="display: flex; justify-content: flex-end">
 							 <li><a><form action="${pageContext.request.contextPath}/BackStageController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
+=======
+<script>
+	WebFontConfig = {
+		google : {
+			families : [ "Open+Sans:300,400,600,700,800",
+					"Poppins:300,400,500,600,700", "Shadows+Into+Light:400", ],
+		},
+	};
+	(function(d) {
+		var wf = d.createElement("script"), s = d.scripts[0];
+		wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
+		wf.async = true;
+		s.parentNode.insertBefore(wf, s);
+	})(document);
+</script>
+
+<!-- Plugins CSS File -->
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
+
+<!-- Main CSS File -->
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/css/style.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
+<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready(function () {
+    $("#table_id").DataTable({
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json",
+      },
+      scrollX: true,
+    });
+  });
+</script>
+<style>
+.fs_alert_bg {
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.671);
+	position: fixed;
+	top: 0;
+}
+
+#fs_alert {
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	/* display: block; */
+	display: none;
+	z-index: 999;
+}
+
+.fs_alert_show {
+	width: 50%;
+	background-color: white;
+	position: absolute;
+	top: 120px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	z-index: 2;
+	border-radius: 8px;
+	text-align: center;
+}
+
+.fs_alert_title {
+	font-size: 36px;
+	text-align: center;
+	margin: 35px;
+	font-weight: bold;
+}
+
+.fs_alert_title_suc {
+	color: rgb(85, 184, 201);
+}
+
+.fs_alert_txt {
+	width: 80%;
+	word-wrap: break-word;
+	font-size: 16px;
+	padding: 0 20px;
+	text-align: center;
+	margin: 0px auto 15px auto;
+}
+
+#alert_ok {
+	margin: 20px auto 45px auto;
+}
+
+.btn_s {
+	width: 100px;
+	border-radius: 8px;
+	font-size: 16px;
+	text-align: center;
+	padding: 10px;
+	cursor: pointer;
+	color: rgb(255, 255, 255);
+	background-color: rgb(85, 184, 201);
+	margin: 10px;
+}
+
+.btn_s:hover {
+	background-color: rgb(76, 139, 150);
+}
+</style>
+</head>
+
+<body>
+	<div class="page-wrapper">
+		<header class="header">
+			<div class="header-middle sticky-header"
+				data-sticky-options="{'mobile': true}"
+				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
+				<div class="container">
+					<div class="header-left col-lg-2 w-auto pl-0">
+						<button class="mobile-menu-toggler text-primary mr-2"
+							type="button">
+							<i class="fas fa-bars"></i>
+						</button>
+						<a href="#" width="222" height="88"> <img
+							src="${pageContext.request.contextPath}/newImg/logo2.png"
+							alt="Logo" />
+						</a>
+					</div>
+					<!-- End .header-left -->
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .header-middle -->
+
+			<div class="header-bottom sticky-header d-none d-lg-block"
+				data-sticky-options="{'mobile': false}">
+				<div class="container">
+					<nav class="main-nav w-100">
+						<ul class="menu" style="display: flex; justify-content: flex-end">
+							<li><a href="#">論壇</a>
+								<ul>
+									<li><a href="#">論壇首頁</a></li>
+									<li><a href="#">發佈貼文</a></li>
+									<li><a href="#">我的貼文</a></li>
+									<li><a href="#">收藏貼文</a></li>
+								</ul></li>
+							<li><a href="#">揪團</a>
+								<ul>
+									<li><a href="#">揪團首頁</a></li>
+									<li><a href="#">發起揪團</a></li>
+									<li><a href="#">我的揪團</a></li>
+								</ul></li>
+							<li><a href="#">找課程</a>
+								<ul>
+									<li><a href="#">查詢課程</a></li>
+									<li><a href="#">我的課程</a></li>
+								</ul></li>
+							<li><a href="#">找場地</a>
+								<ul>
+									<li><a href="#">詢找場地</a></li>
+									<li><a href="#">我的預約</a></li>
+									<li><a href="#">我的收藏</a></li>
+								</ul></li>
+							<li><a href="#">賣家入口</a>
+								<ul>
+									<li><a href="#">所有訂單</a></li>
+									<li><a href="#">所有商品</a></li>
+									<li><a href="#">新增商品</a></li>
+									<li><a href="#">商品評論</a></li>
+								</ul></li>
+
+							<li><a href="">商城</a></li>
+							<li><a href="" style="color: red">登入</a></li>
+>>>>>>> a276b8c modify forum
 						</ul>
 					</nav>
 				</div>
