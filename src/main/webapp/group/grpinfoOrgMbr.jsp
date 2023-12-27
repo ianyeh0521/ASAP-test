@@ -15,7 +15,11 @@
 <%@ page import="com.asap.member.dao.MemberDAO" %>
 <%@ page import="com.asap.member.service.MemberService" %>
 <%@ page import="com.asap.member.service.MemberService_interface" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%-- <%@ page import="java.time.LocalDateTime" %> --%>
 
+<%-- <%! LocalDateTime currentDateTime = LocalDateTime.now(); %> --%>
 
 <%
 	SportTypeService grpSportSvc = new SportTypeService_interface();
@@ -32,6 +36,7 @@
 // 	MemberVO V = memberDAO.findByPK("M1206202300001");
 // 	System.out.println("======TESTVVV=========="+V);
 // 	pageContext.setAttribute("memberList", memberList);
+
 	
 %>
 
@@ -45,11 +50,15 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>詳細資訊 | ASAP</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
 <meta name="author" content="SW-THEMES" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="../assets/images/icons/favicon.png" />
 
 <script>
 	WebFontConfig = {
@@ -85,54 +94,67 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 <script>
-          $(document).ready(function () {
-            $.ajax({
-                type: "POST",
-                url: 'GrpJoinInfoAjax.do',
-                contentType: 'application/json',
-                success: function(result){
-                	console.log(result);
-                	 $("#table_id").DataTable({
-                		 data: result,
-                		 "autoWidth": false,
-//                 		 "scrollX": true,
-                		 "responsive": true,
-                       		language: {
-                         		url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json"},
-                         "columnDefs": [
-                             {"className": "dt-center", "targets": "_all"}
-                         ],
-                         "lengthMenu": [
-                             [5, 10, 25, -1], // 定義每頁顯示筆數選項
-                             ['5', '10', '25', '所有'] // 定義每頁顯示筆數選項文字
-                         ],   
-                		 "columns": [
-                	            {
-                	                data: null,
-                	                render: function (data, type, row, meta) {
-                	                    // 使用 meta.row 來取得行數，然後加 1 作為序號
-                	                    return meta.row + 1;
-                	                }
-                	            },
-	                         	{"data":"partiMbrNo", "width": "100px"},
-		                     	{"data": "partiMbrNo", "width": "100px"}, 	//先用現有資料測試
-		                     	{"data": "partiMbrNo", "width": "100px"},	//先用現有資料測試
-		                     	{"data":"partiMbrNo", "width": "100px"}		//先用現有資料測試
-	// 							{"data": "MemberVO.mbrName", "width": "100px"},
-	//                          {"data": "MemberVO.mbrPhone", "width": "100px"},
-	//                          {"data":"MemberVO.MbrEmail", "width": "100px"}
-                        
-
-]
-                	 });
-                },
-                error:function(xhr){
-                	console.log(xhr);
-                }
-             });
-          });
-          
-        </script>
+	$(document).ready(function () {
+	    var TypedataToSend = {
+	        QueryType: "1",
+	    };
+	    $.ajax({
+	        type: "POST",
+	        url: 'Grpinfo.do?' + $.param(TypedataToSend),
+	        contentType: 'application/json',
+	        success: function(Res) {
+	            var m_GrpNo = Res.m_GrpNo;
+	            var dataToSend = {
+	                GrpNo: Res.m_GrpNo,
+	            };
+	            $.ajax({
+	                type: "POST",
+	                url: 'GrpJoinInfoAjax.do?' + $.param(dataToSend),
+	                contentType: 'application/json',
+	                success: function(result) {
+	                    $("#table_id").DataTable({
+	                        data: result,
+	                        "autoWidth": false,
+	                        "responsive": true,
+	                        language: {
+	                            url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json"
+	                        },
+	                        "columnDefs": [{
+	                            "className": "dt-center",
+	                            "targets": "_all"
+	                        }],
+	                        "lengthMenu": [
+	                            [5, 10, 25, -1], // 定義每頁顯示筆數選項
+	                            ['5', '10', '25', '所有'] // 定義每頁顯示筆數選項文字
+	                        ],
+	                        "columns": [{
+	                                data: null,
+	                                render: function(data, type, row, meta) {
+	                                    return meta.row + 1;
+	                                }
+	                            },
+	                            {"data":"partiMbrNo", "width": "100px"},
+	                            {"data": "partiMbrNo", "width": "100px"},
+	                            {"data": "partiMbrNo", "width": "100px"},
+	                            {"data": "partiMbrNo", "width": "100px"}
+// 								{"data": "MemberVO.mbrName", "width": "100px"},
+//                          	{"data": "MemberVO.mbrPhone", "width": "100px"},
+//                          	{"data":"MemberVO.MbrEmail", "width": "100px"}
+	                        ]
+	                    });
+	                },
+	                error: function(xhr) {
+	                    console.log(xhr);
+	                }
+	            });
+	        },
+	        error: function(xhr) {
+	            console.log(xhr);
+	        }
+	    });
+	});
+ 
+</script>
 <style>
 .createform {
 	width: 70%;
@@ -211,11 +233,6 @@ b.Joinqty {
   right:100px;
   
 }
-
-#Btn_signup{
-
-}
-
 
 @media ( max-width :1280px) {
 	.createform {
@@ -472,15 +489,19 @@ b.Joinqty {
 		<c:set var="MemberVoDetail" value="${MemberVoDetail}" />
 		<c:set var="partiMbrNoCount" value="${partiMbrNoCount}" />
 		
+
+
+
 		<main class="main">
 			<h2 class="creategrptitle">詳細資訊</h2>
 			<div class="createform">
 				<div class="createform_main">
 					<div>
-					<!-- 測試用帳號 -->
-					<c:set var="TestActNo" value="M1206202300001" />
+					<!-- 測試用登入帳號 -->
+					<!-- 報名參加 -->
+					<c:set var="LoginActNo" value="M1206202300004" />
 					
-					<c:if test="${grpVODetail.orgMbrNo eq TestActNo}">
+					<c:if test="${grpVODetail.orgMbrNo eq LoginActNo}">
 						<c:if test="${not empty partiMbrNoCount}">
 						<i class="fas fa-chevron-down" id="fas_fa"
 							style="position: relative; left: 690px;"></i><b class="Joinqty">目前參加人數 <b>${partiMbrNoCount}</b> 人</b>
@@ -490,11 +511,7 @@ b.Joinqty {
 							style="position: relative; left: 690px;"></i><b class="Joinqty">目前參加人數 <b>1</b> 人</b>
 						</c:if>
 					</c:if>
-
-					
-					
-					
-						
+	
 					</div>
 					
 						<!-- 發起人資訊 -->
@@ -609,20 +626,35 @@ b.Joinqty {
 							<!-- 判斷他是不是參與人,宣告一個IsPartiMbr = false -->
 							<c:set var="IsPartiMbr" value="false" />
 							<c:forEach var="grpJoInfoList" items="${grpJoInfoList}">
-								<c:if test="${grpJoInfoList.partiMbrNo eq TestActNo and grpJoInfoList.grpJoinStat}">
+								<c:if test="${grpJoInfoList.partiMbrNo eq LoginActNo and grpJoInfoList.grpJoinStat}">
 									<c:set var="IsPartiMbr" value="true" />
 						    	</c:if>
 							</c:forEach>
 							
-							<c:if test="${grpVODetail.orgMbrNo eq TestActNo and grpVODetail.grpStat eq '0'}">
+							<c:if test="${grpVODetail.orgMbrNo eq LoginActNo and grpVODetail.grpStat eq '0'}">
 								<c:set var="IsPartiMbr" value="true" />
 						    </c:if>
+<% 
+		// 抓伺服器時間
+		Date serverDateTime = new Date();
+		//預設時間格式
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //轉換對應時間格式
+		String formattedDateTime = sdf.format(serverDateTime);
+        //設定 formattedDateTime
+        pageContext.setAttribute("formattedDateTime", formattedDateTime);
+%>		
+							<c:set var="SignEndTime" value="${grpVODetail.grpSignEndTime}" />
 							
-							
+							<!-- 判斷 現在時間(formattedDateTime) 超過 報名截止時間(SignEndTime) -->
+							<c:if test="${formattedDateTime gt SignEndTime}">
+							    <c:set var="IsPartiMbr" value="true" />
+							</c:if>		
+						
 							<c:if test="${IsPartiMbr eq 'false'}">
 							    <FORM METHOD="post" class="Btn_allgrpJoin"   ACTION="<%=request.getContextPath()%>/GrpJoinInfo.do?action=insertGrpJoinInfoNo" style="margin-bottom: 0px;">
 								<div>						
-									<!-- 如果沒有滿 -->
+									<!-- 如果沒有額滿 -->
 									<c:set var="Isfull" value="false" />
 									<c:if test="${partiMbrNoCount eq grpVODetail.grpPplLimit}">
 										<c:set var="Isfull" value="true" />
@@ -650,7 +682,7 @@ b.Joinqty {
 						                    <input type="submit" class="btn_s" id="joinalert_yes" value="確定">
 						                    <input type="hidden" name="GrpNo" value="${grpVODetail.grpNo}">
 						                    <input type="hidden" name="OrgMbrNo" value="${grpVODetail.orgMbrNo}">
-						                    <input type="hidden" name="PartiMbrNo" value="${TestActNo}">
+						                    <input type="hidden" name="PartiMbrNo" value="${LoginActNo}">
 						                    <input type="hidden" name="action" value="insertGrpJoinInfoNo">
 						                    <input type="button" class="btn_s" id="joinalert_no" value="取消">
 						                </div> 
@@ -661,7 +693,7 @@ b.Joinqty {
 						    </c:if>
 						    
 							<c:forEach var="grpJoInfoList" items="${grpJoInfoList}">
-								<c:if test="${grpJoInfoList.partiMbrNo eq TestActNo}">
+								<c:if test="${grpJoInfoList.partiMbrNo eq LoginActNo}">
 									<c:if test="${grpJoInfoList.grpJoinStat}">
 										<FORM METHOD="post" class="Btn_allgrpJoin" style="background-color:#EA0000;"  ACTION="<%=request.getContextPath()%>/GrpJoinInfo.do?action=updateGrpJoinInfoNo" style="margin-bottom: 0px;">
 										<div>
@@ -676,7 +708,7 @@ b.Joinqty {
 												<div class="Btn_yesorno">
 													<input type="submit" class="btn_s" id="Xjoinalert_yes" value="確定">
 													<input type="hidden" name="GrpNo" value="${grpVODetail.grpNo}">
-													<input type="hidden" name="PartiMbrNo" value="${TestActNo}">
+													<input type="hidden" name="PartiMbrNo" value="${LoginActNo}">
 													<input type="hidden" name="action" value="updateGrpJoinInfoNo">
 													<input type="button" class="btn_s" id="Xjoinalert_no" value="取消">
 												</div> 
@@ -688,7 +720,7 @@ b.Joinqty {
 								</c:if>
 							</c:forEach>	
 							
-							<c:if test="${grpVODetail.orgMbrNo eq TestActNo}">
+							<c:if test="${grpVODetail.orgMbrNo eq LoginActNo}">
 								<c:if test="${grpVODetail.grpStat eq '0'}">
 								<FORM METHOD="post" class="Btn_allgrpJoin"   ACTION="<%=request.getContextPath()%>/Grpinfo.do?action=creategroup" style="margin-bottom: 0px;">
 									<input type="submit" value="編輯" style=" width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;">
@@ -708,6 +740,7 @@ b.Joinqty {
 												<div class="Btn_yesorno">
 													<input type="submit" class="btn_s" id="delalert_yes" value="確定">
 													<input type="hidden" name="GrpNo" value="${grpVODetail.grpNo}">
+													<input type="hidden" name="GrpName" value="${grpVODetail.grpName}">
 													<input type="hidden" name="action" value="updatestatGrp">
 													<input type="button" class="btn_s" id="delalert_no" value="取消">
 												</div> 
@@ -1072,4 +1105,3 @@ b.Joinqty {
 	</script>
 
 </body>
-</html>

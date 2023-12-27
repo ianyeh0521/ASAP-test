@@ -5,14 +5,16 @@
 <%@ page import="com.asap.member.entity.MemberVO" %>
 <%@ page import="com.asap.member.service.MemberService" %>
 <%@ page import="com.asap.member.service.MemberService_interface" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 <%
 	MemberService memberSvc = new MemberService();
 
-	//登入帳號
-	String sActNo = "M1206202300001";
+	//登入帳號->發起人
+	String LoginActNo = "M1206202300004";
 	MemberVO MemberVoDetail = new MemberVO();
-	MemberVoDetail = memberSvc.findByMbrNo(sActNo);
+	MemberVoDetail = memberSvc.findByMbrNo(LoginActNo);
 	pageContext.setAttribute("MemberVoDetail", MemberVoDetail);
 	
 %>
@@ -26,15 +28,15 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>發起揪團 | ASAP</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
 <meta name="author" content="SW-THEMES" />
 
-<!-- Favicon 網站圖示 -->
-<!-- <link rel="icon" type="image/x-icon" -->
-<!-- 	href="assets/images/icons/asapLOGO.png" /> -->
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="../assets/images/icons/favicon.png" />
 
 <script>
 	WebFontConfig = {
@@ -314,7 +316,7 @@
 						</select> <label for="Grp_Date">
 						<a class="x">*</a>活動日期：</label> 
 						<input type="date" id="GrpDate" name="GrpDate" required /> 
-						<label for="selectstrtime"><a class="x">*</a>開始時間：</label> 
+						<label for="GrpStartTime"><a class="x">*</a>開始時間：</label> 
 						<input type="time" id="GrpStartTime" name="GrpStartTime" required  />
 						<br /> 
 						<label for="GrpEndTime"><a class="x">*</a>結束時間：</label> 
@@ -345,11 +347,25 @@
 						</div>
 						<textarea id="GrpNote" name="GrpNote" rows="5" cols="33"></textarea>
 						<br />
+						
+						
 						<div class="Grp_Btnsrr">
+						<c:set var="grpVO" value="${grpVO}" />
+						<c:set var="type" value="${type}" />
+						
+						<c:if test="${type == null or type eq '0'}">
 							<input class="Btn_creategrp_sm" id="InsertBtn" value="送出">
+						</c:if>
+						
+						<c:if test="${type eq '1'}">
+							<input class="Btn_creategrp_sm" id="InsertBtn" value="修改">
+						</c:if>
+							
+							
 							<a href="${pageContext.request.contextPath}/group/AllGroup.jsp" class="return-link" id="return_link">返回</a>						
 							<button type="reset">清空</button>
 						</div>
+						
 						<!--彈窗畫面 -->
 						<div id="creategrpfsfs_alert">
 						    <div class="creategrpfsfs_alert_bg"></div>
@@ -358,6 +374,8 @@
 						        <div class="creategrpfsfs_alert_txt">確定要送出嗎?</div>
 						        <div class="Btn_yesorno">
 						            <input type="submit" class="btn_s" id="alert_yes" value="確定">
+						            <input type="hidden" name="GrpNo" value="${grpVO.grpNo}">
+									<input type="hidden" name="type" value="${type}">
 							   	    <input type="hidden" name="action" value="insertgrpInfo">
 							   	    <input type="button" class="btn_s" id="alert_no" value="取消">
 						        </div> 
@@ -580,157 +598,170 @@
 <!-- // 		$("div.mobile-menu-container").load("mobile-menu-container.html"); -->
 <!-- 	</script> -->
 
-	<script>
-	 var form = document.getElementById("creategrpform");
-	 var submitBtn = document.getElementById('InsertBtn');
-	 var alertYesBtn = document.getElementById('alert_yes');
-	 var alertNoBtn = document.getElementById('alert_no');
+<% 
+		// 抓伺服器時間
+		Date serverDateTime = new Date();
+		//預設時間格式
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //轉換對應時間格式
+		String formattedDateTime = sdf.format(serverDateTime);
+%>		
+
+<script>
+	var form = document.getElementById("creategrpform");
+	var submitBtn = document.getElementById('InsertBtn');
+	var alertYesBtn = document.getElementById('alert_yes');
+	var alertNoBtn = document.getElementById('alert_no');
 	 
-	 submitBtn.addEventListener('click', function(e) {
-		 e.preventDefault();
-		 if (form.reportValidity()) {
-		     creategrpfsfs_alert();
-		    }
+	submitBtn.addEventListener('click', function(e) {
+		e.preventDefault();
+		// 錯誤處理
+		var MbrName = document.getElementById("MbrName");
+		var MbrPhone = document.getElementById("MbrPhone");
+		var MbrGrpName = document.getElementById("GrpName");
+		var GrpPplMin = document.getElementById("GrpPplMin");
+		var GrpPplLimit = document.getElementById("GrpPplLimit");
+		 
+		
+// 		MbrName.addEventListener("input", function () {
+		var regex = /^(?=.*[\u4E00-\u9FFFa-zA-Z])[\u4E00-\u9FFFa-zA-Z\s]*$/;
+		if (!regex.test(MbrName.value)) {
+			MbrName.setCustomValidity("只能輸入中文和英文");
+		} 
+		else {
+			MbrName.setCustomValidity("");
+		}
+// 		});
+		
+// 		MbrPhone.addEventListener("input", function () {
+		var regex = /^(09\d{8}|02\d{8})$/;
+		if (!regex.test(MbrPhone.value)) {
+		    MbrPhone.setCustomValidity("必須以09或02開頭並為10位數字");
+	 	} 
+		else {
+	   		MbrPhone.setCustomValidity("");
+	 	}
+// 		});
+		
+// 		GrpPplMin.addEventListener("input", function () {
+		if (GrpPplMin.value <= 1) {
+	      	GrpPplMin.setCustomValidity("人數請包含自己(預設為2),也不得設定為負數");
+    	} 
+		else {
+	      	GrpPplMin.setCustomValidity("");
+    	}
+// 		});
+		
+// 		GrpPplLimit.addEventListener("input", function () {
+		var limit = parseInt(GrpPplLimit.value);
+		var min = parseInt(GrpPplMin.value);
+		if (limit <= 1 ) {
+		    GrpPplLimit.setCustomValidity("人數請包含自己(預設為2)，也不得設定為負數");
+	    } 
+		else if (limit < min) {
+	        GrpPplLimit.setCustomValidity("最高人數不得小於最低人數");
+	    } 
+		else {
+	        GrpPplLimit.setCustomValidity("");
+		}
+// 		});
+		
+// 		MbrGrpName.addEventListener("input", function () {
+		var chineseCharacters = MbrGrpName.value.match(/[\u4E00-\u9FFF]/g);
+		var englishCharacters = MbrGrpName.value.match(/[a-zA-Z]/g);
+		var chineseCount = chineseCharacters ? chineseCharacters.length : 0;
+		var englishCount = englishCharacters ? englishCharacters.length : 0;
+		
+		if (chineseCount > 10 || englishCount > 30) {
+		    MbrGrpName.setCustomValidity("中文不得超過10個字, 英文不得超過30個字元");
+		    
+		} 
+		else {
+		    MbrGrpName.setCustomValidity("");
+		}
+// 		});
+		   			
+		// 時間處理
+		
+		//活動日期
+		var GrpDate = document.getElementById("GrpDate");
+		//活動開始時間
+		var GrpStartTime = document.getElementById("GrpStartTime");
+		//活動結束時間
+		var GrpEndTime = document.getElementById("GrpEndTime");
+		//報名開始日期
+		var GrpSignStartDate = document.getElementById("GrpSignStrTime1");
+		//報名結束日期
+		var GrpSignEndDate = document.getElementById("GrpSignEndTime1");
+		//報名開始時間
+		var GrpSignStartTime = document.getElementById("GrpSignStrTime2");
+		//報名結束時間
+		var GrpSignEndTime = document.getElementById("GrpSignEndTime2");
+
+		console.log("活動日期:", GrpDate.value);
+		console.log("活動開始時間:", GrpStartTime.value);
+		console.log("活動結束時間:", GrpEndTime.value);
+		console.log("報名開始日期:", GrpSignStartDate.value);
+		console.log("報名結束日期:", GrpSignEndDate.value);
+		console.log("報名開始時間:", GrpSignEndDate.value);
+		console.log("報名結束時間:", GrpSignEndTime.value);
+	 
+	
+		var formattedDateTime = new Date("<%= formattedDateTime %>");
+		formattedDateTime.setDate(formattedDateTime.getDate() + 1);
+		formattedDateTime.setHours(0, 0, 0, 0);
+		
+		var GrpStartDateTime = new Date(GrpDate.value + 'T' + GrpStartTime.value);
+		var GrpEndDateTime = new Date(GrpDate.value + 'T' + GrpEndTime.value);
+		var GrpSignStartDateTime = new Date(GrpSignStartDate.value + 'T' + GrpSignStartTime.value);
+		var GrpSignEndDateTime = new Date(GrpSignEndDate.value + 'T' + GrpSignEndTime.value);
+		
+		// 判斷活動開始時間不可晚於今日
+		if (formattedDateTime > GrpStartDateTime) {
+		    
+			GrpDate.setCustomValidity("活動開始時間需大於今日");
+		}
+		// 判斷活動開始時間不可晚於活動結束時間
+		else if (GrpStartDateTime > GrpEndDateTime) {
+		    
+			GrpEndTime.setCustomValidity("活動開始時間不可晚於活動結束時間");
+		}
+		// 判斷報名結束日期時間不可晚於活動開始日期時間
+		else if (GrpSignEndDateTime > GrpStartDateTime) {
+		    
+			GrpSignEndTime.setCustomValidity("報名結束日期不可晚於活動開始日期");
+		}
+		// 判斷報名開始時間不可晚於報名結束時間
+		else if (GrpSignStartDateTime > GrpSignEndDateTime) {
+		    
+			GrpSignEndTime.setCustomValidity("報名結束日期不可晚於活動開始日期");
+		}
+		else{
+			GrpDate.setCustomValidity("");
+			GrpEndTime.setCustomValidity("");
+			GrpSignEndTime.setCustomValidity("");
+		}
+		
+		if (form.reportValidity()) {
+		    creategrpfsfs_alert();
+		   }
 	 });
 	 
-	 // 錯誤處理
-// 	 var MbrName = document.getElementById("MbrName");
-	 var MbrPhone = document.getElementById("MbrPhone");
-	 var MbrGrpName = document.getElementById("GrpName");
-     var GrpPplMin = document.getElementById("GrpPplMin");
-     var GrpPplLimit = document.getElementById("GrpPplLimit");
-     var preview_el = document.getElementById("preview");
-     var GrpImg_el = document.getElementById("GrpImg");
-	 
-// 	 MbrName.addEventListener("input", function () {
-//      	var regex = /^(?=.*[\u4E00-\u9FFFa-zA-Z])[\u4E00-\u9FFFa-zA-Z\s]*$/;
-//         if (!regex.test(MbrName.value)) {
-//         	MbrName.setCustomValidity("只能輸入中文和英文");
-//            } else {
-//             MbrName.setCustomValidity("");
-//            }
-//      });
-	 
-     MbrPhone.addEventListener("input", function () {
-     	var regex = /^(09\d{8}|02\d{8})$/;
-        if (!regex.test(MbrPhone.value)) {
-            MbrPhone.setCustomValidity("必須以09或02開頭並為10位數字");
-         	} else {
-           	MbrPhone.setCustomValidity("");
-         	}
-     });
-	 
-     GrpPplMin.addEventListener("input", function () {
-     	if (GrpPplMin.value <= 1) {
-           	GrpPplMin.setCustomValidity("人數請包含自己(預設為2),也不得設定為負數");
-         	} else {
-           	GrpPplMin.setCustomValidity("");
-         	}
-     });
-
-     GrpPplLimit.addEventListener("input", function () {
-    	var limit = parseInt(GrpPplLimit.value);
-    	var min = parseInt(GrpPplMin.value);
-    	if (limit <= 1 ) {
-    	    GrpPplLimit.setCustomValidity("人數請包含自己(預設為2)，也不得設定為負數");
-    	    } else if (limit < min) {
-    	        GrpPplLimit.setCustomValidity("最高人數不得小於最低人數");
-    	    } else {
-    	        GrpPplLimit.setCustomValidity("");
-    	    }
-    	});
-     
-     MbrGrpName.addEventListener("input", function () {
-    	var chineseCharacters = MbrGrpName.value.match(/[\u4E00-\u9FFF]/g);
-    	var englishCharacters = MbrGrpName.value.match(/[a-zA-Z]/g);
-    	var chineseCount = chineseCharacters ? chineseCharacters.length : 0;
-    	var englishCount = englishCharacters ? englishCharacters.length : 0;
-
-    	if (chineseCount > 10 || englishCount > 30) {
-    	    MbrGrpName.setCustomValidity("中文不得超過10個字, 英文不得超過30個字元");
-    	} else {
-    	    MbrGrpName.setCustomValidity("");
-    	}
-     });
-     			
-// 	 // 時間處理
-//         //報名開始日期
-//         var GrpSignStartDate = document.getElementById("GrpSignStrTime1");
-//         //報名結束日期
-//         var GrpSignEndDate = document.getElementById("GrpSignEndTime1");
-//         //報名開始時間
-//         var GrpSignStartTime = document.getElementById("GrpSignStrTime2");
-//         //報名結束時間
-//         var GrpSignEndTime = document.getElementById("GrpSignEndTime2");
-//         //活動日期
-//         var GrpDate = document.getElementById("GrpDate");
-//         //活動開始時間
-//         var GrpStartTime = document.getElementById("GrpStartTime");
-//         //活動結束時間
-//         var GrpEndTime = document.getElementById("GrpEndTime");
-	 
-	 
-// 	 // 在設定事件監聽器時，使用 addEventListener 這個方法，已經把事件與 GrpDate 元素連結起來了
-// 	 GrpDate.addEventListener("input", function () {
-// 	  	validateSignUpPeriod();
-// 	 });
-// 	 GrpSignStartDate.addEventListener("input", function () {
-// 	  	validateSignUpPeriod();
-// 	 });
-// 	 GrpStartTime.addEventListener("input", function () {
-// 		validateSignUpPeriod();
-// 	 });
-// 	 GrpEndTime.addEventListener("input", function () {
-// 		validateSignUpPeriod();
-// 	 });
-// 	 GrpSignEndDate.addEventListener("input", function () {
-// 	  	validateSignUpPeriod();
-// 	 });
-// 	 GrpSignStartTime.addEventListener("input", function () {
-// 	  	validateSignUpPeriod();
-// 	 });
-// 	 GrpSignEndTime.addEventListener("input", function () {
-// 	  	validateSignUpPeriod();
-// 	 });
-
-	
-// 	 function validateSignUpPeriod() {
-// 		var dt_GrpDate = new Date(GrpDate.value);
-// 		var tm_GrpStartTime = new Date(GrpStartTime.value).getTime();
-// 		var tm_GrpEndTime = new Date(GrpEndTime.value).getTime();
-// 	    var dt_GrpSignStartDate = new Date(GrpSignStartDate.value);
-// 	    var dt_GrpSignEndDate = new Date(GrpSignEndDate.value);
-// 	    var tm_GrpSignStartTime = new Date(GrpSignStartTime.value).getTime();
-// 	    var tm_GrpSignEndTime = new Date(GrpSignEndTime.value).getTime();
-
-	
-		
-// 	 if (tm_GrpStartTime > tm_GrpEndTime) {
-// 	    GrpEndTime.setCustomValidity("活動結束時間需大於活動開始時間");
-	    
-// 	 } else if (dt_GrpSignEndDate > dt_GrpDate) {
-// 	    GrpSignEndTime1.setCustomValidity("報名結束日期需小於活動日期");
-// 	   // 如果報名結束日期等於活動日期
-// 	 } else if (dt_GrpSignEndDate === dt_GrpDate && tm_GrpSignEndTime > tm_GrpStartTime) {
-// 	    GrpSignEndTime2.setCustomValidity("若報名結束日期等於活動日期，報名結束時間需小於活動開始時間");
-// 	 } else if (dt_GrpSignStartDate > dt_GrpSignEndDate) {
-// 	    GrpSignEndTime1.setCustomValidity("報名結束日期需大於報名開始日期");
-// 	    // 如果報名結束日期等於報名開始日期
-// 	 } else if (dt_GrpSignStartDate === dt_GrpSignEndDate && tm_GrpSignEndTime < tm_GrpSignStartTime) {
-// 		GrpSignEndTime2.setCustomValidity("若報名結束日期等於報名開始日期，報名結束時間需大於報名起始時間");
-// 	 } else {
-// 	    GrpSignEndTime1.setCustomValidity("");
-// 	    GrpSignEndTime2.setCustomValidity("");
-// 	   }
-// 	} 
+	  var preview_el = document.getElementById("preview");
+	  var GrpImg_el = document.getElementById("GrpImg");
 	 
 	 // 透過 File 取得預覽圖
      var preview_img = function (file) {
-	 var reader = new FileReader(); // 用來讀取檔案
+		 
+    	 console.log("file" + file);
+	 	var reader = new FileReader(); // 用來讀取檔案
 	    reader.readAsDataURL(file); // 讀取檔案
 	    reader.addEventListener("load", function () {
-	    var img_str ='<img src="' + reader.result + '" class="preview_img">';
+	    	
+	    	console.log("reader.result" + reader.result);
+	    	var img_str ='<img src="' + reader.result + '" class="preview_img">';
 	    	preview_el.innerHTML = img_str;
+	    	console.log("reader.result:"+reader.result);
         });
      };
 
@@ -782,17 +813,22 @@
 	 }
 	</script>
 	
+<% String base64Image = (String) request.getAttribute("base64Image"); %>
+    
 	<script>
-
+		// 編輯type是1
 		var type = "${type}";
 		
 		if (type === '1'){
             
+			document.getElementById('SportTypeName').disabled = true;
            	reserveText = "${grpVO.sportTypeNo}";
             document.getElementById('SportTypeName').value = reserveText;
             
+            document.getElementById('GrpName').disabled = true;
             reserveText = "${grpVO.grpName}";
             document.getElementById('GrpName').value = reserveText;
+            
             
             var reserveDate = "${grpVO.grpDate}"; 
           	//2023-12-17 00:00:00.0 取第0個位置開始10個數字
@@ -808,71 +844,56 @@
          	reserveText = "${grpVO.grpAddress}";
          	document.getElementById('GrpAddress2').value = reserveText;
          	
+         	document.getElementById('GrpPplLimit').disabled = true;
          	var reserveValue = "${grpVO.grpPplLimit}";
          	document.getElementById('GrpPplLimit').value = reserveValue;
+         	
 
          	var previousValue = "${grpVO.grpPplMin}";
          	document.getElementById('GrpPplMin').value = previousValue;
          	
          	//報名開始日期
+         	document.getElementById('GrpSignStrTime1').disabled = true;
          	reserveDate = "${grpVO.grpSignStrTime}"; 
             datePart = reserveDate.substring(0, 10); 
          	document.getElementById('GrpSignStrTime1').value = datePart;
          	
+         	
          	//報名開始時間
+         	document.getElementById('GrpSignStrTime2').disabled = true;
          	reserveDate = "${grpVO.grpSignStrTime}"; 
             datePart = reserveDate.substring(11, 19); 
          	document.getElementById('GrpSignStrTime2').value = datePart;
+         	
   
          	//報名結束日期
+         	document.getElementById('GrpSignEndTime1').disabled = true;
 			reserveDate = "${grpVO.grpSignEndTime}"; 
             datePart = reserveDate.substring(0, 10); 
          	document.getElementById('GrpSignEndTime1').value = datePart;
          	
+         	
          	//報名結束時間
+         	document.getElementById('GrpSignEndTime2').disabled = true;
          	reserveDate = "${grpVO.grpSignEndTime}"; 
             datePart = reserveDate.substring(11, 19); 
          	document.getElementById('GrpSignEndTime2').value = datePart;
          	
+         	
          	// 注意事項
          	reserveText = "${grpVO.grpNote}";
             document.getElementById('GrpNote').value = reserveText;
-            
-			// 圖片
-//          	var imagePath = "${grpVO.grpImg}";
-// 			document.getElementById('GrpImg').src = imagePath;  
 
-// 			var previousImage = "${grpVO.grpImg}"; // 儲存先前的預覽圖片路徑
+			var base64Image = '<%= base64Image %>';
+			var preview_el = document.getElementById("preview");
+			preview_el.src = 'data:image/png;base64,' + base64Image; // 更換 'jpeg' 依據實際圖片格式更改
 			
-// 			var preview_img = function (file) {
-// 				var reader = new FileReader();
-// 				reader.readAsDataURL(file);
-// 				reader.addEventListener("load", function () {
-// 			    var img_str = '<img src="' + reader.result + '" class="preview_img">';
-// 			    preview_el.innerHTML = img_str;
-// 			    previousImage = reader.result; // 儲存目前預覽的圖片路徑
-// 			  	});
-// 			};
-			
-// 			GrpImg_el.addEventListener("change", function (e) {
-// 				if (this.files.length > 0) {
-// 			    preview_img(this.files[0]);
-// 			 	} else {
-// 			    preview_el.innerHTML = '<span class="text">預覽圖</span>';
-// 			    previousImage = "${grpVO.grpImg}"; // 清除先前儲存的圖片路徑
-// 			  	}
-// 			});
-
-// // 假設使用者進入編輯模式時，先前已有預覽圖片路徑 previousImage
-// if (previousImage !== "") {
-//   // 在預覽區域顯示先前的預覽圖片
-//   var img_str = '<img src="' + previousImage + '" class="preview_img">';
-//   preview_el.innerHTML = img_str;
-// } else {
-//   preview_el.innerHTML = '<span class="text">預覽圖</span>';
-// }
+	    	var img_str ='<img src="' + preview_el.src + '" class="preview_img">';
+	    	preview_el.innerHTML = img_str;
+				
+ 
         }
 	</script>
-	
+	  
 </body>
 </html>

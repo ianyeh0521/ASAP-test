@@ -17,8 +17,8 @@
 <%@ page import="com.asap.member.dao.MemberDAO" %>
 <%@ page import="com.asap.member.service.MemberService" %>
 <%@ page import="com.asap.member.service.MemberService_interface" %>
-
-
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%
 	Boolean bIsSkip = (Boolean) request.getAttribute("Skip");
 	if(bIsSkip == null || !bIsSkip){
@@ -46,13 +46,15 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>揪團 | ASAP</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
 <meta name="author" content="SW-THEMES" />
 
-
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="../assets/images/icons/favicon.png" />
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
@@ -135,9 +137,10 @@
                 <li>
                   <a href="#">揪團</a>
                   <ul>
-                    <li><a href="#">揪團首頁</a></li>
-                    <li><a href="#">發起揪團</a></li>
-                    <li><a href="#">我的揪團</a></li>
+                    <li><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
+                    <li><a href="${pageContext.request.contextPath}/Grpinfo.do?action=creategroup&type=0">發起揪團</a></li>
+                    <li><a href="${pageContext.request.contextPath}/group/mycreateGroup.jsp">我的揪團－發起的揪團</a></li>
+                    <li><a href="${pageContext.request.contextPath}/group/myJoinGroup.jsp">我的揪團－參加的揪團</a></li>
                   </ul>
                 </li>
                 <li>
@@ -189,7 +192,7 @@
 				data-sticky-options="{'mobile': true}">
 				<div class="toolbox-right">
 					<div class="search_bar d-flex justify-content-between align-items-center">
-						<a href="${pageContext.request.contextPath}/group/mygroupchoose.jsp" class="Btn_mygroup" id="mygroup_Btn" style="width:68px;margin-left: 5px;">我的揪團</a>
+<%-- 						<a href="${pageContext.request.contextPath}/group/mygroupchoose.jsp" class="Btn_mygroup" id="mygroup_Btn" style="width:68px;margin-left: 5px;">我的揪團</a> --%>
 						<a href="${pageContext.request.contextPath}/Grpinfo.do?action=creategroup&type=0" class="Btn_creategroup" id="creategroup_Btn" style="width:68px; margin-left: 5px;">發起揪團</a>
 						<form id="search_formid" class="search_c" action="<%=request.getContextPath()%>/Grpinfo.do" method="post">
 						<input type="text" name="grpInfoKeyword" id="search" class="search"  placeholder="搜尋" value="${param.grpInfoKeyword}" style="margin-left: 5px;"> 
@@ -206,11 +209,32 @@
 			
 			<div class="row_products-group">
 				<!-- 活動列表 -->
-				
+<% 
+		// 抓伺服器時間
+		Date serverDateTime = new Date();
+		//預設時間格式
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //轉換對應時間格式
+		String formattedDateTime = sdf.format(serverDateTime);
+        //設定 formattedDateTime
+        pageContext.setAttribute("formattedDateTime", formattedDateTime);
+%>		
 				<c:forEach var="grpInfoVO" items="${grpVOList}">
 				<c:set var="MemberVoDetail" value="${MemberVoDetail}" />
-				<c:set var="grpVODetail" value="${grpVODetail}" />
-					<c:if test="${grpInfoVO.grpStat != 1}">
+				<c:set var="IsOverDate" value="false" />
+				
+				<fmt:formatDate value="${grpInfoVO.grpDate}" pattern="yyyy-MM-dd" var="time1" />
+				<fmt:formatDate value="${grpInfoVO.grpEndTime}" pattern="HH:mm:ss" var="time2" />
+				<c:set var="combinedDateTime" value="${time1} ${time2}" />
+				
+				<!-- 判斷 現在時間(formattedDateTime) 超過 活動結束時間(combinedDateTime) -->
+				<c:if test="${formattedDateTime gt combinedDateTime}">
+				    <c:set var="IsOverDate" value="true" />
+				</c:if>		
+								
+								
+					<!-- 判斷是否狀態為正常就會顯示 -->
+					<c:if test="${grpInfoVO.grpStat != 1 and IsOverDate eq 'false'}">
 						<div class="col-6_col-sm-4">
 							<div class="product-default inner-quickview inner-icon">
 								<figure class="img-effect">
@@ -224,11 +248,11 @@
 									</FORM>
 								</figure>
 									
-									<!-- 測試用帳號 -->
-									<c:set var="TestActNo" value="M1206202300001" />
+									<!-- 測試用登入帳號 -->
+									<c:set var="LoginActNo" value="M1206202300004" />
 							
 									<!-- 發起人icon -->
-									<c:if test="${grpInfoVO.orgMbrNo eq TestActNo}">
+									<c:if test="${grpInfoVO.orgMbrNo eq LoginActNo}">
 										<div class="orgmbr_grp" style="background-color:#003D79 ; color:white;">
 										<i class="fas fa-flag" id="fas_fa_flag" style="color:white;"></i>我發起的揪團</div>
 									</c:if>
@@ -308,28 +332,28 @@
 			</div>
 			<!-- End .row_products-group -->
 			<!-- 頁數 -->
-			<div class="toolbox toolbox-pagination">
-				<div class="toolbox-item_toolbox-show">
-					<label>頁數:</label>
-					<!-- End .select-custom -->
-				</div>
-				<!-- End .toolbox-item -->
+<!-- 			<div class="toolbox toolbox-pagination""> -->
+<!-- 				<div class="toolbox-item_toolbox-show"> -->
+<!-- 					<label>頁數:</label> -->
+<!-- 					End .select-custom -->
+<!-- 				</div> -->
+<!-- 				End .toolbox-item -->
 				
-				<ul class="pagination toolbox-item">
-					<li class="page-item disabled"><a
-						class="page-link page-link-btn" href="#"><i
-							class="icon-angle-left"></i></a></li>
-					<li class="page-item active"><a class="page-link" href="#">1
-							<span class="sr-only">(current)</span>
-					</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><span class="page-link">...</span></li>
-					<li class="page-item"><a class="page-link page-link-btn"
-						href="#"><i class="icon-angle-right"></i></a>
-					</li>
-				</ul>
-			</div>
+<!-- 				<ul class="pagination toolbox-item"> -->
+<!-- 					<li class="page-item disabled"><a -->
+<!-- 						class="page-link page-link-btn" href="#"><i -->
+<!-- 							class="icon-angle-left"></i></a></li> -->
+<!-- 					<li class="page-item active"><a class="page-link" href="#">1 -->
+<!-- 							<span class="sr-only">(current)</span> -->
+<!-- 					</a></li> -->
+<!-- 					<li class="page-item"><a class="page-link" href="#">2</a></li> -->
+<!-- 					<li class="page-item"><a class="page-link" href="#">3</a></li> -->
+<!-- 					<li class="page-item"><span class="page-link">...</span></li> -->
+<!-- 					<li class="page-item"><a class="page-link page-link-btn" -->
+<!-- 						href="#"><i class="icon-angle-right"></i></a> -->
+<!-- 					</li> -->
+<!-- 				</ul> -->
+<!-- 			</div> -->
 			<!-- End .頁數 -->
 		</div>
 		<!-- End .container -->
@@ -339,7 +363,7 @@
 		<!-- End .main -->
 	
 	<!-- End .page-wrapper -->
-	<footer class="footer bg-dark position-relative">
+	<footer class="footer bg-dark position-relative" style="margin-top:20px;">
 	<div class="footer-middle">
     <div class="container">
       <div class="row">

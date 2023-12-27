@@ -14,6 +14,8 @@
 <%@ page import="com.asap.group.entity.SportTypeVO" %>
 <%@ page import="com.asap.group.service.SportTypeService" %>
 <%@ page import="com.asap.group.service.SportTypeService_interface" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 <%
 	Boolean bIsSkip = (Boolean) request.getAttribute("Skip");
@@ -47,12 +49,12 @@
 		
 		List<GrpJoinInfoVO> grpJoinVOList = grpJoinInfoSvc.getALL();
 		List<GrpInfoVO> GrpInfoVOList = new ArrayList<>();
-		String sActNo = "M1206202300003";
+		String LoginActNo = "M1206202300004";
 		for (GrpJoinInfoVO JoinVo : grpJoinVOList) {
 			String PartiMbrNo = JoinVo.getPartiMbrNo();
 			//當參與人資訊裡面的參與人編號等於目前登入的帳號
 			//要抓揪團編號出來，再去查揪團資訊
-			if (PartiMbrNo.equals(sActNo) && JoinVo.getGrpJoinStat()) {
+			if (PartiMbrNo.equals(LoginActNo) && JoinVo.getGrpJoinStat()) {
 				GrpInfoVO grpVODetail = grpInfoSvc.getGrpInfoVOBygrpNo(JoinVo.getGrpNo());
 				GrpInfoVOList.add(grpVODetail);
 			}
@@ -75,11 +77,15 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>揪團 | ASAP</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
 <meta name="author" content="SW-THEMES" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="../assets/images/icons/favicon.png" />
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
@@ -109,32 +115,32 @@
 
 	<div class="page-wrapper">
 		<header class="header">
-		    <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}" style="
-	            padding-top: 0;
-	            padding-bottom: 0;
-	            height: 75px;
-	            background: rgb(255, 250, 85);
-	            background: linear-gradient(
-	              90deg,
-	              rgba(255, 250, 85, 0.9081757703081232) 0%,
-	              rgba(9, 34, 121, 0.8773634453781513) 35%,
-	              rgba(0, 212, 255, 1) 100%
-	            );
-	              position: relative; /* Set position to relative for the parent */
-	              display: flex;
-	              align-items: center;">
-          <div class="container" style="position: relative;">
+		   <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}" style="
+              padding-top: 0;
+              padding-bottom: 0;
+              height: 75px;
+              background: rgb(255, 250, 85);
+              background: linear-gradient(
+              90deg,
+              rgba(255, 250, 85, 0.9081757703081232) 0%,
+              rgba(9, 34, 121, 0.8773634453781513) 35%,
+              rgba(0, 212, 255, 1) 100%
+           	  );
+	          position: relative; /* Set position to relative for the parent */
+	          display: flex;
+	          align-items: center;">
+         <div class="container" style="position: relative;">
             <div class="header-left col-lg-2 w-auto pl-0"
               style="
-                position: absolute;
-                top: 50%; /* Move 50% from the top */
-                transform: translateY(-50%);
-                z-index: 999;
-                left: 20px; /* Adjust distance from the left */
+              position: absolute;
+              top: 50%; /* Move 50% from the top */
+              transform: translateY(-50%);
+              z-index: 999;
+              left: 20px; /* Adjust distance from the left */
               ">
-              <button class="mobile-menu-toggler text-primary mr-2" type="button">
-                <i class="fas fa-bars"></i>
-              </button>
+          <button class="mobile-menu-toggler text-primary mr-2" type="button">
+              <i class="fas fa-bars"></i>
+          </button>
               <a href="#" width="222" height="88">
                 <img src="${pageContext.request.contextPath}/newImg/logo2.png" style="max-width: 200px; height: auto; vertical-align: middle; border-style: none;">
               </a>
@@ -145,10 +151,8 @@
         </div>
         <!-- End .header-middle -->
 
-        <div
-          class="header-bottom sticky-header d-none d-lg-block"
-          data-sticky-options="{'mobile': false}" 
-        >
+        <div class="header-bottom sticky-header d-none d-lg-block"
+          data-sticky-options="{'mobile': false}">
           <div class="container">
             <nav class="main-nav w-100" >
               <ul class="menu" style="display: flex; justify-content: flex-end">
@@ -164,9 +168,10 @@
                 <li>
                   <a href="#">揪團</a>
                   <ul>
-                    <li><a href="#">揪團首頁</a></li>
-                    <li><a href="#">發起揪團</a></li>
-                    <li><a href="#">我的揪團</a></li>
+                    <li><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
+                    <li><a href="${pageContext.request.contextPath}/Grpinfo.do?action=creategroup&type=0">發起揪團</a></li>
+                    <li><a href="${pageContext.request.contextPath}/group/mycreateGroup.jsp">我的揪團－發起的揪團</a></li>
+                    <li><a href="${pageContext.request.contextPath}/group/myJoinGroup.jsp">我的揪團－參加的揪團</a></li>
                   </ul>
                 </li>
                 <li>
@@ -211,7 +216,6 @@
 			<div class="container d-flex flex-column align-items-center">
 				<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
-				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/group/mygroupchoose.jsp">我的揪團</a></li>
 				<li class="breadcrumb-item active" aria-current="page">我參加的揪團</li>
 				</ol>
 				<h1>我參加的揪團</h1>
@@ -241,8 +245,29 @@
 		
 			<div class="row_products-group">
 				<!-- 活動列表 -->
+<% 
+	// 抓伺服器時間
+	Date serverDateTime = new Date();
+	//預設時間格式
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //轉換對應時間格式
+	String formattedDateTime = sdf.format(serverDateTime);
+    //設定 formattedDateTime
+    pageContext.setAttribute("formattedDateTime", formattedDateTime);
+%>
 				<c:forEach var="grpInfoVO" items="${grpVOList}">
-					<c:if test="${grpInfoVO.grpStat != 1}">
+				<c:set var="MemberVoDetail" value="${MemberVoDetail}" />
+				<c:set var="IsOverDate" value="false" />
+				
+				<fmt:formatDate value="${grpInfoVO.grpDate}" pattern="yyyy-MM-dd" var="time1" />
+				<fmt:formatDate value="${grpInfoVO.grpEndTime}" pattern="HH:mm:ss" var="time2" />
+				<c:set var="combinedDateTime" value="${time1} ${time2}" />
+				
+				<!-- 判斷 現在時間(formattedDateTime) 超過 活動結束時間(combinedDateTime) -->
+				<c:if test="${formattedDateTime gt combinedDateTime}">
+				    <c:set var="IsOverDate" value="true" />
+				</c:if>	
+					<c:if test="${grpInfoVO.grpStat != 1 and IsOverDate eq 'false'}">
 						<div class="col-6_col-sm-4">
 							<div class="product-default inner-quickview inner-icon">
 								<figure class="img-effect">
@@ -331,28 +356,28 @@
 				</c:forEach>
 			</div>
 			<!-- End .row_products-group -->
-			<div class="toolbox toolbox-pagination">
-				<div class="toolbox-item_toolbox-show">
-					<label>頁數:</label>
-					<!-- End .select-custom -->
-				</div>
-				<!-- End .toolbox-item -->
+<!-- 			<div class="toolbox toolbox-pagination"> -->
+<!-- 				<div class="toolbox-item_toolbox-show"> -->
+<!-- 					<label>頁數:</label> -->
+<!-- 					End .select-custom -->
+<!-- 				</div> -->
+<!-- 				End .toolbox-item -->
 				
-				<ul class="pagination toolbox-item">
-					<li class="page-item disabled"><a
-						class="page-link page-link-btn" href="#"><i
-							class="icon-angle-left"></i></a></li>
-					<li class="page-item active"><a class="page-link" href="#">1
-							<span class="sr-only">(current)</span>
-					</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><span class="page-link">...</span></li>
-					<li class="page-item"><a class="page-link page-link-btn"
-						href="#"><i class="icon-angle-right"></i></a>
-					</li>
-				</ul>
-			</div>
+<!-- 				<ul class="pagination toolbox-item"> -->
+<!-- 					<li class="page-item disabled"><a -->
+<!-- 						class="page-link page-link-btn" href="#"><i -->
+<!-- 							class="icon-angle-left"></i></a></li> -->
+<!-- 					<li class="page-item active"><a class="page-link" href="#">1 -->
+<!-- 							<span class="sr-only">(current)</span> -->
+<!-- 					</a></li> -->
+<!-- 					<li class="page-item"><a class="page-link" href="#">2</a></li> -->
+<!-- 					<li class="page-item"><a class="page-link" href="#">3</a></li> -->
+<!-- 					<li class="page-item"><span class="page-link">...</span></li> -->
+<!-- 					<li class="page-item"><a class="page-link page-link-btn" -->
+<!-- 						href="#"><i class="icon-angle-right"></i></a> -->
+<!-- 					</li> -->
+<!-- 				</ul> -->
+<!-- 			</div> -->
 			<!-- End .row -->
 		  </div>
 		  <!-- End .container -->
@@ -362,7 +387,7 @@
 		<!-- End .main -->
 
 	<!-- End .page-wrapper -->
-	<footer class="footer bg-dark position-relative">
+	<footer class="footer bg-dark position-relative" style="margin-top:20px;">
 	<div class="footer-middle">
     <div class="container">
       <div class="row">
