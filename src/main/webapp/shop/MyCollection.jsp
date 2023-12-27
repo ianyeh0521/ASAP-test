@@ -1,16 +1,17 @@
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="java.util.*"%>
 <%@page import="com.asap.shop.entity.ItemCollectVO"%>
 <%@page import="com.asap.shop.service.ItemCollectService"%>
 <%@page import="com.asap.shop.service.ItemCollectService_interface"%>
-
+<%@ page import="com.asap.member.entity.MemberVO"%>
 <%@page import="com.asap.util.*"%>
-<%@page import="java.util.*"%>
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 
 <%
+MemberVO member = (MemberVO)session.getAttribute("memberVo");
+String mbrNo = member.getMbrNo();
 ItemCollectService_interface itemcollectSvc = new ItemCollectService();
-List <ItemCollectVO> collectList= itemcollectSvc.findByMbrNo("M1");
+List <ItemCollectVO> collectList= itemcollectSvc.findByMbrNo(mbrNo);
 pageContext.setAttribute("list", collectList);
 %>
 

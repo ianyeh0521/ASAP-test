@@ -5,6 +5,7 @@
 <%@ page import="com.asap.shop.entity.ItemInfoVO"%>
 <%@ page import="com.asap.shop.service.ItemInfoService_interface"%>
 <%@ page import="com.asap.shop.service.ItemInfoService"%>
+<%@ page import="com.asap.member.entity.MemberVO"%>
 <%@ page import="com.asap.shop.entity.ShoppingCartVO"%>
 <%@ page import="com.asap.shop.service.ShoppingCartService_interface"%>
 <%@ page import="com.asap.shop.service.ShoppingCartService"%>
@@ -20,10 +21,12 @@ List<ItemInfoVO> list = ItemSvc.getAll();
 pageContext.setAttribute("list", list);
 System.out.println(list);
 
-// String shoppingCart = request.getParameter("mbrNo");
+MemberVO member = (MemberVO)session.getAttribute("memberVo");
+String mbrNo = member.getMbrNo();
+pageContext.setAttribute("mbrNo", mbrNo);
 ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
 ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
-List<ShoppingCartVO> cartlist = ShoppingCartSvc.findByMember("M1");
+List<ShoppingCartVO> cartlist = ShoppingCartSvc.findByMember(mbrNo);
 pageContext.setAttribute("cartlist", cartlist);
 System.out.println(cartlist);
 %>
@@ -831,7 +834,6 @@ $(document).on("click", ".btn-icon-cart", function() {
     var productCard = $(this).closest('.product-default'); // 定位到商品卡片
     var max = productCard.find("span.itemstockqty").text(); // 從商品卡片中獲取庫存量
     var quantity = $(this).siblings(".product-quantity").val(); // 獲取數量框的值
-    var mbrNo = "M1"; // 會員號碼
     console.log(max);
     console.log(quantity);
  // 檢查選擇的數量是否超過庫存
@@ -848,7 +850,7 @@ $(document).on("click", ".btn-icon-cart", function() {
             itemNo: itemNo,
             max:max,
             itemqty: quantity,
-            mbrNo: mbrNo, //將會員號作為參數傳入後端
+            mbrNo: "${mbrNo}", //將會員號作為參數傳入後端
             action: "addcart"
         },
         dataType: "json",
@@ -911,7 +913,7 @@ function fetchItemCount() {
 function updateItemCount(itemCountMap) {
     console.log(itemCountMap); // 打印以檢查數據
     for (const [typeNo, count] of Object.entries(itemCountMap)) {
-        $(`div[data-category='\${typeNo}'] .products-count`).text(`(\${count})`);
+        $(`div[data-category='\${typeNo}'] .products-count`).text(`\${count}`);
     }
 }
 

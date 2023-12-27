@@ -1,6 +1,7 @@
 <%@page import="com.asap.shop.entity.OrderVO"%>
 <%@page import="com.asap.shop.service.OrderService"%>
 <%@page import="com.asap.shop.service.OrderService_interface"%>
+<%@ page import="com.asap.member.entity.MemberVO"%>
 <%@page import="com.asap.util.*"%>
 <%@page import="java.util.*"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
@@ -9,8 +10,10 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
+MemberVO member = (MemberVO)session.getAttribute("memberVo");
+String mbrNo = member.getMbrNo();
 OrderService_interface orderSvc=new OrderService();
-List <OrderVO> list =orderSvc.findUnPaid("M1");
+List <OrderVO> list =orderSvc.findUnPaid(mbrNo);
 pageContext.setAttribute("list", list);
 %>
 

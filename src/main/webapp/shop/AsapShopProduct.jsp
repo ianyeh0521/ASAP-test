@@ -27,12 +27,11 @@ ItemInfoVO list = ItemSvc.findByItemNo(itemInfo);
 pageContext.setAttribute("list", list);
 System.out.println(list);
 
-OrderDetailService_interface OrderDetailSvc = new OrderDetailService();
-List<OrderDetailVO> orderdetail = OrderDetailSvc.findByMbrNo("M1");
-pageContext.setAttribute("cmtlist", orderdetail);
-
+MemberVO membervo = (MemberVO)session.getAttribute("memberVo");
+String mbrNo = membervo.getMbrNo();
+pageContext.setAttribute("mbrNo", mbrNo);
 MemberService_interface MemberSvc = new MemberService();
-MemberVO member = MemberSvc.findByMbrNo("M1");
+MemberVO member = MemberSvc.findByMbrNo(list.getMbrNo());
 pageContext.setAttribute("member", member);
 
 ItemImgService_interface itemImgSvc = new ItemImgService();
@@ -461,14 +460,14 @@ if (list.getItemAddTime() != null) {
 
 		//確認已加入收藏
 		var itemNo = $(".product-title").attr("data-itemno");
-		var mbrNo = "M1";
+
 		$
 				.ajax({
 					url : "${pageContext.request.contextPath}/shop/ItemCollectController",
 					type : "POST",
 					data : {
 						"itemNo" : itemNo,
-						"mbrNo" : mbrNo,
+						"mbrNo" : "${mbrNo}",
 						"action" : "checkwishlist"
 					},
 					dataType : "json",
@@ -487,7 +486,6 @@ if (list.getItemAddTime() != null) {
 			var addCart = $(".product-title").attr("data-itemno");
 			var max = $(".product-qty").text();
 			var cartQty = $(".horizontal-quantity").val();
-			var mbrNo = "M1";
 
 			if (cartQty <= 0) {
 				alert("無效的商品數量！");
@@ -502,7 +500,7 @@ if (list.getItemAddTime() != null) {
 					itemNo : addCart,
 					max : max,
 					itemqty : cartQty,
-					mbrNo : mbrNo,
+					"mbrNo" : "${mbrNo}",
 					"action" : "addcart"
 				},
 				//         	            dataType: "json",
@@ -525,14 +523,13 @@ if (list.getItemAddTime() != null) {
 						function() {
 							var itemNo = $(".product-title")
 									.attr("data-itemno");
-							var mbrNo = "M1";
 							$
 									.ajax({
 										url : "${pageContext.request.contextPath}/shop/ItemCollectController",
 										type : "POST",
 										data : {
 											"itemNo" : itemNo,
-											"mbrNo" : mbrNo,
+											"mbrNo" : "${mbrNo}",
 											"action" : "wishlist"
 										},
 										success : function(data) {

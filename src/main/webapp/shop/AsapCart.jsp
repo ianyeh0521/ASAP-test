@@ -5,6 +5,7 @@
 <%@ page import="com.asap.shop.entity.ShoppingCartVO"%>
 <%@ page import="com.asap.shop.service.ShoppingCartService_interface"%>
 <%@ page import="com.asap.shop.service.ShoppingCartService"%>
+<%@ page import="com.asap.member.entity.MemberVO"%>
 <%@ page import="com.asap.shop.entity.ItemInfoVO"%>
 <%@ page import="com.asap.shop.service.ItemInfoService_interface"%>
 <%@ page import="com.asap.shop.service.ItemInfoService"%>
@@ -12,10 +13,12 @@
 <html lang="en">
 
 <%
-// String shoppingCart = request.getParameter("mbrNo");
+MemberVO member = (MemberVO)session.getAttribute("memberVo");
+String mbrNo = member.getMbrNo();
+
 ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
 ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
-List<ShoppingCartVO> list = ShoppingCartSvc.findByMember("M001");
+List<ShoppingCartVO> list = ShoppingCartSvc.findByMember(mbrNo);
 pageContext.setAttribute("list", list);
 
 System.out.println(list);
