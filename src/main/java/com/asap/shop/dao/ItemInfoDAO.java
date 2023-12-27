@@ -108,7 +108,7 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 				query = getSession().createQuery("FROM ItemInfoVO", ItemInfoVO.class);
 			} else {
 				query = getSession().createQuery(
-						"FROM ItemInfoVO WHERE ItemName LIKE :keyword OR ItemText LIKE :keyword", ItemInfoVO.class);
+						"FROM ItemInfoVO WHERE ItemName LIKE :keyword OR ItemText LIKE :keyword OR ItemTypeNo LIKE :keyword", ItemInfoVO.class);
 				query.setParameter("keyword", "%" + itemInfoKeyword + "%");
 			}
 			List<ItemInfoVO> resultList = query.getResultList();
@@ -361,16 +361,27 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
 //		}
 //	}
 	
-	public int countItemsByCategory(String categoryType, int categoryId) {
-		 int count = 0;
-		    Session session = factory.openSession();
-		    String hql = "SELECT COUNT(*) FROM ItemInfo WHERE " + categoryType + ".id = :categoryId";
-		    Query<Long> query = session.createQuery(hql, Long.class);
-		    query.setParameter("categoryId", categoryId);
-		    count = query.uniqueResult().intValue();
-		    session.close();
-		    return count;
-		}
+	 public List<ItemTypeVO> getAllItemTypes() {
+	        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+	            Query<ItemTypeVO> query = session.createQuery("FROM ItemTypeVO", ItemTypeVO.class);
+	            return query.list();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return new ArrayList<>();
+	        }
+	    }
+
+    public int countItemsByType(Integer itemTypeNo) {
+        try (Session session = factory.openSession()) {
+            String hql = "SELECT COUNT(*) FROM ItemInfoVO WHERE itemTypeVO.itemTypeNo = :typeNo";
+            Query<Long> query = session.createQuery(hql, Long.class);
+            query.setParameter("typeNo", itemTypeNo);
+            return query.uniqueResult().intValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
 
 }

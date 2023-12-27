@@ -13,7 +13,7 @@
 // String shoppingCart = request.getParameter("mbrNo");
 ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
 ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
-List<ShoppingCartVO> list = ShoppingCartSvc.findByMember("M001");
+List<ShoppingCartVO> list = ShoppingCartSvc.findByMember("M1");
 pageContext.setAttribute("list", list);
 
 System.out.println(list);
@@ -29,7 +29,7 @@ System.out.println(list);
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>AsapOrderCheck</title>
+<title>Asap</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />

@@ -93,10 +93,10 @@ public class OrderServlet extends HttpServlet {
 					exceed = true;
 					ShoppingCartService shoppingCartSvc = new ShoppingCartService();
 					if(maxpurchase==0) {
-						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M001",Integer.parseInt(product[0]));
+						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M1",Integer.parseInt(product[0]));
 						shoppingCartSvc.delete(modifyCart);
 					}else {
-						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M001",Integer.parseInt(product[0]));
+						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M1",Integer.parseInt(product[0]));
 						modifyCart.setItemShopQty(maxpurchase);
 					}
 					
@@ -107,7 +107,7 @@ public class OrderServlet extends HttpServlet {
 		if (exceed == false) {
 			OrderVO entity = new OrderVO();
 ////		session.getAttribute("memberVo",mVo);
-			entity.setMbrNo("M001");
+			entity.setMbrNo("M1");
 			entity.setOrderPrice(total);
 			entity.setOrderStat(0);
 			entity.setRcvrName(rcvrname);
@@ -131,7 +131,7 @@ public class OrderServlet extends HttpServlet {
 					orderDetail.setItemOrderQty(Integer.parseInt(product[2]));
 
 					orderDetail.setOrderNo(orderno);
-					orderDetail.setMbrNo("M001");
+					orderDetail.setMbrNo("M1");
 					orderDetail.setDelyStat(false);
 
 					orderDetail.setItemInfoVO(itemInfoVO);
@@ -149,7 +149,7 @@ public class OrderServlet extends HttpServlet {
 			}
 			ItemInfoService_interface itemInfoSvc = new ItemInfoService();
 		    if (orderno != null) {
-		        String mbrNo = "M001";
+		        String mbrNo = "M1";
 		        ShoppingCartService shoppingCartService = new ShoppingCartService();
 		        List<ShoppingCartVO> shoppingCartItems = shoppingCartService.findByMember(mbrNo);
 		        for (ShoppingCartVO item : shoppingCartItems) {

@@ -10,7 +10,7 @@
 
 <%
 ItemCollectService_interface itemcollectSvc = new ItemCollectService();
-List <ItemCollectVO> collectList= itemcollectSvc.findByMbrNo("M001");
+List <ItemCollectVO> collectList= itemcollectSvc.findByMbrNo("M1");
 pageContext.setAttribute("list", collectList);
 %>
 

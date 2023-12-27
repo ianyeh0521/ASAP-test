@@ -45,7 +45,7 @@ public class ItemInfoServlet extends HttpServlet {
 		case "view_order":
 			orderByItemView(req, res);
 			break;
-			
+
 		case "new_order":
 			orderByItemAddTime(req, res);
 			break;
@@ -65,13 +65,14 @@ public class ItemInfoServlet extends HttpServlet {
 		case "getImg":
 			getImgByItemNo(req, res);
 			break;
+			
 		case "page":
 			getpage(req, res);
 			break;
-		case "countByCategory":
-            countItemsByCategory(req, res);
-            break;
-
+			
+		 case "getItemCountByType":
+	            getItemCountByType(req, res);
+	            break;
 		}
 
 		res.setContentType("text/html; charset=UTF-8");
@@ -80,38 +81,52 @@ public class ItemInfoServlet extends HttpServlet {
 	}
 
 	private void increaseViewItem(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        Integer itemId = Integer.valueOf(req.getParameter("itemNo"));
-        ItemInfoVO iteminfo = itemInfoService.findByItemNo(itemId);
-        itemInfoService.increaseItemView(iteminfo);
+		Integer itemId = Integer.valueOf(req.getParameter("itemNo"));
+		ItemInfoVO iteminfo = itemInfoService.findByItemNo(itemId);
+		itemInfoService.increaseItemView(iteminfo);
 
-        // 更新會話中的近期瀏覽列表
-        updateRecentlyViewed(req, iteminfo);
+		// 更新會話中的近期瀏覽列表
+		updateRecentlyViewed(req, iteminfo);
 
-        res.sendRedirect("AsapShopProduct.jsp?itemNo=" + itemId);
-    }
-	
-	 private void updateRecentlyViewed(HttpServletRequest req, ItemInfoVO iteminfo) {
-	        HttpSession session = req.getSession();
-	        LinkedList<ItemInfoVO> recentlyViewed = (LinkedList<ItemInfoVO>) session.getAttribute("recentlyViewed");
+		res.sendRedirect("AsapShopProduct.jsp?itemNo=" + itemId);
+	}
 
-	        if (recentlyViewed == null) {
-	            recentlyViewed = new LinkedList<>();
+	private void updateRecentlyViewed(HttpServletRequest req, ItemInfoVO iteminfo) {
+	    HttpSession session = req.getSession();
+	    LinkedList<ItemInfoVO> recentlyViewed = (LinkedList<ItemInfoVO>) session.getAttribute("recentlyViewed");
+
+	    if (recentlyViewed == null) {
+	        recentlyViewed = new LinkedList<>();
+	    }
+
+	    // 檢查商品是否已經存在於列表中
+	    int existingIndex = -1;
+	    for (int i = 0; i < recentlyViewed.size(); i++) {
+	        if (recentlyViewed.get(i).getItemNo().equals(iteminfo.getItemNo())) {
+	            existingIndex = i;
+	            break;
+	        }
+	    }
+
+	    // 如果商品不在列表的前三個位置
+	    if (existingIndex > 2 || existingIndex == -1) {
+	        // 如果商品已經在列表中，先移除它
+	        if (existingIndex != -1) {
+	            recentlyViewed.remove(existingIndex);
 	        }
 
-	        // 如果商品已存在於列表中，則先移除
-	        recentlyViewed.remove(iteminfo);
-
-	        // 將新瀏覽的商品添加到列表開頭
+	        // 將商品添加到列表開頭
 	        recentlyViewed.addFirst(iteminfo);
 
-	        // 保持列表只有最新的10個商品
-	        if (recentlyViewed.size() > 3) {
+	        // 保持列表只有最新的6個商品
+	        if (recentlyViewed.size() > 6) {
 	            recentlyViewed.removeLast();
 	        }
-
-	        session.setAttribute("recentlyViewed", recentlyViewed);
 	    }
-	
+
+	    session.setAttribute("recentlyViewed", recentlyViewed);
+	}
+
 	private void orderByItemAddTime(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
 		res.setContentType("text/html; charset=UTF-8");
@@ -123,7 +138,6 @@ public class ItemInfoServlet extends HttpServlet {
 		out.close();
 		System.out.println(jsonString);
 	}
-	
 
 	private void orderByItemPrice(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
@@ -212,18 +226,13 @@ public class ItemInfoServlet extends HttpServlet {
 		}
 
 	}
-	
-	private void countItemsByCategory(HttpServletRequest req, HttpServletResponse res) throws IOException {
-	    String categoryType = req.getParameter("categoryType");
-	    int categoryId = Integer.parseInt(req.getParameter("categoryId"));
 
-	    int count = itemInfoService.countItemsByCategory(categoryType, categoryId);
-
-	    res.setContentType("application/json; charset=UTF-8");
-	    PrintWriter out = res.getWriter();
-	    out.write(new Gson().toJson(count));
-	    out.close();
-	}
+	 private void getItemCountByType(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	        Map<Integer, Integer> itemCountMap = itemInfoService.getItemCountByType();
+	        String json = new Gson().toJson(itemCountMap);
+	        res.setContentType("application/json; charset=UTF-8");
+	        res.getWriter().write(json);
+	    }
 
 	private void getpage(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		List<ItemInfoVO> list = itemInfoService.getAll();
