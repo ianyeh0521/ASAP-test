@@ -13,7 +13,7 @@ import com.asap.court.service.CourtClosedTimeService_interface;
 import com.asap.court.service.CourtOrderService;
 import com.asap.court.service.CourtOrderService_interface;
 
-public class OrderCheckRun implements Runnable{
+public class OrderCheckByDay implements Runnable{
 
 	private CourtOrderService_interface courtOrderSvc;
 	private CourtClosedTimeService_interface courtClosedTimeSvc;

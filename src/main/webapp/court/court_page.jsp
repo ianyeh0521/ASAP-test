@@ -1,3 +1,4 @@
+<%@page import="com.asap.member.entity.MemberVO"%>
 <%@page import="com.asap.court.entity.CourtImgVO"%>
 <%@page import="com.asap.court.service.CourtImgService"%>
 <%@page import="com.asap.court.entity.SiteVO"%>
@@ -46,8 +47,8 @@
    	pageContext.setAttribute("getCourtTypePage",getCourtTypePage);
    	pageContext.setAttribute("courtImgBase64", courtImgBase64);
    	
-	// 先設一個 member，之後會是 session.getAttribute 得到 memberVO
-	String mbrNo = "M1206202300001";
+   	MemberVO mbrVO = (MemberVO)session.getAttribute("memberVo");
+	String mbrNo = mbrVO.getMbrNo();
 	pageContext.setAttribute("mbrNo",mbrNo);
 	
  	
@@ -65,7 +66,7 @@
 	<meta property="og:description"   content="${getCourtPage.courtText}" />
 <!-- 	<meta property="og:image"         content="https://www.your-domain.com/path/image.jpg" /> -->
 
-	<title>場地-個別資訊</title>
+	<title>ASAP</title>
 
 	<meta name="keywords" content="HTML5 Template" />
 	<meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -455,14 +456,10 @@
 	
 
 	<!-- Main JS File -->
-	<script src="/ASAP/assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
-	<!-- header and footer template -->
+
 	<script>
-		$("header").load("header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
 		
 		$(window).on("load", function(){
 			// datetimepicker 

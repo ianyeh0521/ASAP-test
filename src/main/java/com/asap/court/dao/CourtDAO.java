@@ -139,7 +139,13 @@ public class CourtDAO implements CourtDAO_interface {
 		for (Map.Entry<String, String> row : map.entrySet()) {
 			// 用名稱模糊比對查詢
 			if ("searchCourt".equals(row.getKey()) && !(row.getValue().equals(""))) {
-				predicates.add(builder.like(root.get("courtName"), "%" + row.getValue() + "%"));
+				Predicate courtNamePredicate = builder.like(root.get("courtName"), "%" + row.getValue() + "%");
+			    Predicate courtTextPredicate = builder.like(root.get("courtText"), "%" + row.getValue() + "%");
+			    Predicate courtAddressPredicate = builder.like(root.get("courtAddress"), "%" + row.getValue() + "%");
+
+			    Predicate orPredicate = builder.or(courtNamePredicate, courtTextPredicate, courtAddressPredicate);
+			    
+			    predicates.add(orPredicate);
 			}
 			// 用場地類別查詢
 			if ("courtType".equals(row.getKey()) && !(row.getValue().equals(""))) {
@@ -154,46 +160,11 @@ public class CourtDAO implements CourtDAO_interface {
 		}
 
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
-//		criteria.orderBy(builder.asc(root.get("courtNo")));
 		TypedQuery<CourtVO> query = getSession().createQuery(criteria);
 
 		return query.getResultList();
 	}
 	
-
-//	@Override
-//	public long getCountByCompositeQuery(Map<String, String> map) {
-//		if (map.size() == 0)
-//			return getAll().size();
-//
-//		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-//	    CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
-//	    Root<CourtVO> root = countCriteria.from(CourtVO.class);
-//
-//		List<Predicate> predicates = new ArrayList<>();
-//		
-//		for (Map.Entry<String, String> row : map.entrySet()) {
-//			// 用名稱模糊比對查詢
-//			if ("searchCourt".equals(row.getKey()) && !(row.getValue().equals(""))) {
-//				predicates.add(builder.like(root.get("courtName"), "%" + row.getValue() + "%"));
-//			}
-//			// 用場地類別查詢
-//			if ("courtType".equals(row.getKey()) && !(row.getValue().equals(""))) {
-//				System.out.println(row.getValue());
-//				predicates.add(builder.equal(root.get("courtTypeVO").get("courtTypeNo"), row.getValue()));
-//			}
-//			// 用地點編號（地區）查詢
-//			if ("regions".equals(row.getKey()) && !(row.getValue().equals(""))) {
-//				System.out.println(row.getValue());
-//				predicates.add(builder.equal(root.get("siteVO").get("siteNo"), row.getValue()));
-//			}
-//		}
-//		
-//		countCriteria.select(builder.count(root));
-//		countCriteria.where(builder.and(predicates.toArray(new Predicate[0])));
-//
-//		return getSession().createQuery(countCriteria).getSingleResult();
-//	}
 
 	@Override
 	public List<CourtVO> getAll(int currentPage) {

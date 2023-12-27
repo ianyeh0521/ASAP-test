@@ -25,8 +25,8 @@ public class BackgroundOrderManager implements ServletContextListener{
 		long initialDelay = calculateInitialDelayUntilMidnight();
 		System.out.println("initialDelay = "+initialDelay+" sec");
 		
-//        scheduler.scheduleAtFixedRate(new OrderCheckRun(), initialDelay, 24, TimeUnit.HOURS);
-        scheduler.scheduleAtFixedRate(new OrderCheckRun(), initialDelay, 24 * 60 * 60, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(new OrderCheckByDay(), initialDelay, 24 * 60 * 60, TimeUnit.SECONDS);
+        
 	}
 
 	@Override

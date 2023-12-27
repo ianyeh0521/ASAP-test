@@ -51,13 +51,11 @@ public class CourtServletAjax extends HttpServlet{
 			res.getWriter().write(jsonTotalPageString);
 		}else {
 			try {				
-				String page = req.getParameter("page");
-				int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+//				String page = req.getParameter("page");
+//				int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		        
-//		        System.out.println("page in controller ="+page);
-		        
-		        List<CourtVO> courtList = courtService_interface.getAllCourts(currentPage);
-//		        System.out.println(courtList.size());;
+
+		        List<CourtVO> courtList = courtService_interface.getAllCourts();
 
 		        String json = gson.toJson(courtList);
 		        res.setContentType("application/json");

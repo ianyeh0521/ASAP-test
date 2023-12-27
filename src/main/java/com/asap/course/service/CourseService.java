@@ -1,7 +1,9 @@
 package com.asap.course.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.asap.course.dao.CourseDAO;
 import com.asap.course.dao.CourseDAO_interface;
@@ -46,9 +48,28 @@ public class CourseService implements CourseService_interface{
 	}
 
 	@Override
-	public List<CourseVO> getByCompositeQuery(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<CourseVO> getByCompositeQuery(Map<String, String[]> map) {
+		Map<String, String> query = new HashMap<>();
+		
+		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+		
+		for (Map.Entry<String, String[]> row : entry) {
+			String key = row.getKey();
+			// 因為請求參數裡包含了action，做個去除動作
+			if ("action".equals(key)) {
+				continue;
+			}
+			// 若是value為空即代表沒有查詢條件，做個去除動作
+			String value = row.getValue()[0]; // getValue拿到一個String陣列, 接著[0]取得第一個元素檢查
+			if (value == null || value.isEmpty()) {
+				continue;
+			}
+			query.put(key, value);
+		}
+		
+		System.out.println(query);
+		
+		return dao.getByCompositeQuery(query);
 	}
 
 	@Override

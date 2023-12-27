@@ -1,3 +1,4 @@
+<%@page import="com.asap.member.entity.MemberVO"%>
 <%@page import="com.asap.court.entity.CourtVO"%>
 <%@page import="com.asap.court.service.CourtService_interface"%>
 <%@page import="com.asap.court.service.CourtService"%>
@@ -22,7 +23,8 @@
 	pageContext.setAttribute("memberNo",memberNo);
 	*/
 	
-	String mbrNo = "M1206202300001";
+	MemberVO mbrVO = (MemberVO)session.getAttribute("memberVo");
+	String mbrNo = mbrVO.getMbrNo();
 	pageContext.setAttribute("mbrNo",mbrNo);
 %>
 
@@ -31,7 +33,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>尋找場地</title>
+	<title>ASAP</title>
 
 	<meta name="keywords" content="HTML5 Template" />
 	<meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -107,33 +109,7 @@
 	    	
 	    }
 	    
-/* 	    近期瀏覽 */
-/* 		#recentlyViewedContainer { */
-/* 			border-radius: 5px; */
-/* 		    position: fixed; */
-/* 		    top: 276px;  */
-/* 		    right: 20px;  */
-/* 		    height: 400px; */
-/* 		    width: 300px;  */
-/* 		    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
-/* 		    overflow-y: auto; */
-/* 		} */
-		
-/* 		#recentlyViewedContainer.initial-position { */
-/* 		    position: relative; */
-/* 		} */
-		
-/* 		#recentlyViewedContainer.fixed { */
-/* 		    position: fixed; */
-/* 		    top: 0px;  */
-/* 		    right: 20px;  */
-/* 		    height: 400px; */
-/* 		    width: 300px; */
-/* 		    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
-/* 		    overflow-y: auto;  */
-/* 		} */
-		
-       
+
        
        
 	</style>
@@ -145,73 +121,7 @@
 	<div class="page-wrapper">
 
 	<!-- header -->
-	<header class="header">
-      	<div class="header-middle sticky-header"
-				data-sticky-options="{'mobile': true}"
-				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
-				<div class="container">
-					<div class="header-left col-lg-2 w-auto pl-0">
-						<button class="mobile-menu-toggler text-primary mr-2"
-							type="button">
-							<i class="fas fa-bars"></i>
-						</button>
-						<a href="#" style="width: 222; height: 88;"> <img
-							src="${pageContext.request.contextPath}/newImg/logo2.png"
-							alt="Logo" />
-						</a>
-					</div>
-					<!-- End .header-left -->
-				</div>
-				<!-- End .container -->
-			</div>
-			<!-- End .header-middle -->
-
-			<div class="header-bottom sticky-header d-none d-lg-block"
-				data-sticky-options="{'mobile': false}">
-				<div class="container">
-					<nav class="main-nav w-100">
-						<ul class="menu" style="display: flex; justify-content: flex-end">
-							<li><a href="#">論壇</a>
-								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
-								</ul></li>
-							<li><a href="#">揪團</a>
-								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
-								</ul></li>
-							<li><a href="#">找課程</a>
-								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
-								</ul></li>
-							<li><a href="#">找場地</a>
-								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
-								</ul></li>
-							<li><a href="#">賣家入口</a>
-								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
-
-							<li><a href="">商城</a></li>
-							<li><a href="login.jsp" style="color: blue">登出</a></li>
-						</ul>
-					</nav>
-				</div>
-				<!-- End .container -->
-			</div>
-			<!-- End .header-bottom -->
-      </header>
+	<header class="header"></header>
       <!-- End .header -->
 
 		<main class="main" >
@@ -288,29 +198,8 @@
 			<!-- main container -->
 			<div class="container mt-6" style="margin-top: 0px !important;" id="divTest">
 				<!-- 整個 row -->
-				
-				<!-- 原本的側邊欄近期瀏覽改到這裡 (先改回去)-->
-<!-- 					<div class="col-lg-3" id="recentlyViewedContainer"  class="initial-position" style="height: 400px;"> -->
-<!-- 							<h4 class="text-uppercase heading-bottom-border mt-6 mt-lg-4" style="margin-top: 30px !important;">近期瀏覽</h4> -->
-<!-- 							<div class="product-default left-details product-widget" v-for="data in recentlyViewDatas"> -->
-<!-- 								<figure> -->
-<!-- 									<a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtVO.courtNo" @click="writeCourt(data.courtVO.courtNo)"> -->
-<!-- 										<img :src="'data:image/jpeg;base64,' + data.img.img" width="84" height="84" -->
-<!-- 											alt="圖片"> -->
-<!-- 									</a> -->
-<!-- 								</figure> -->
-<!-- 								<div class="product-details"> -->
-<!-- 									<h3 class="product-title"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtVO.courtNo" class="name" @click="writeCourt(data.courtVO.courtNo)">{{data.courtVO.courtName}}</a> </h3> -->
-<!-- 									<div class="ratings-container"> -->
-<!-- 									</div>End .product-container -->
-<!-- 									<div class="price-box"> -->
-<!-- 										<span class="product-price">{{data.courtVO.courtPrice}}</span> -->
-<!-- 									</div>End .price-box -->
-<!-- 								</div>End .product-details -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-				
-				
+
+
 				<div class="row mb-8" >
 
 					<!-- court list -->
@@ -369,7 +258,7 @@
 					
 						<!-- 場地資訊 -->
 						
-						<div v-for="data in datas">
+						<div v-for="data in paginatedData" :key="data.courtNo">
 <!-- 						<div class="outer-container"> -->
 						<div class="row" >
 							<div class="col-sm-12 col-6 product-default left-details product-list mb-2">
@@ -404,10 +293,16 @@
 						
 						
 						<!-- 分頁按鈕 -->
-						<div class="pagination-buttons">
-							<button v-for="page in totalPage" :key="page" @click="changePage(page)" 
-							:class="{ 'selected-page': page === currentPage }" 
-							:disabled="page === currentPage">{{ page }}</button>
+<!-- 						<div class="pagination-buttons"> -->
+<!-- 							<button v-for="page in totalPage" :key="page" @click="changePage(page)"  -->
+<!-- 							:class="{ 'selected-page': page === currentPage }"  -->
+<!-- 							:disabled="page === currentPage">{{ page }}</button> -->
+<!-- 						</div> -->
+						<div class="pagination-buttons" style="text-align: center; margin-bottom: 20px">
+						    <button v-for="page in Math.ceil(datas.length / itemsPerPage)" :key="page"
+						            @click="changePage(page)"
+						            :class="{ 'selected-page': page === currentPage }"
+						            :disabled="page === currentPage">{{ page }}</button>
 						</div>
 					</div>
 					
@@ -473,13 +368,6 @@
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
-	<!-- header and footer template -->
-	<script>
-// 		$("header").load("header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
-	</script>
 	
 	<script>
 		window.onload=function(){
@@ -489,12 +377,14 @@
 	            data: function(){
 	                return{
 	                    datas: [],
+	                    paginatedData:[],
 	                    recentlyViewDatas: [],
 	                    selectedSortOption: 'menu_order',
 	                    userlatitude: null,
 	                    userlongitude: null,
 	                    currentPage: 1,
 	                    totalPage: 0,
+	                    itemsPerPage: 5,
 	                }
 	            },
 	            methods:{
@@ -529,7 +419,7 @@
 	                
 	                // 場地資料初始化
 	            	fetchInitialData: function () {
-	                    const request1 = { url: 'courtAjax.do', method: 'get', params: { page: this.currentPage } };;
+	                    const request1 = { url: 'courtAjax.do', method: 'get'};
 	                    const request2 = { url: 'courtImgAjax.do', method: 'get' };
 	                    const request3 = { url: 'courtAjax.do', method: 'get', params: { getTotalPage: true } };
 
@@ -559,6 +449,7 @@
 
 	                            this.datas = result1;
 	                            this.totalPage = result3;
+	                            this.updatePaginatedData();
 	                            console.log(this.datas)
 	                            console.log(this.totalPage)
 	                        }))
@@ -617,6 +508,9 @@
 				            default:
 				                break;
 				        }
+	                    
+				        this.updatePaginatedData();
+
 				    },
 				
 				    getNumericPrice: function (product) {
@@ -657,8 +551,7 @@
 	                // 換頁按鈕
 	                changePage: function (page) {
 	                    this.currentPage = page;
-	                    this.fetchInitialData();
-	                    
+	                    this.updatePaginatedData();
 	                    window.scrollTo({
 	                        top: 230,
 	                        behavior: 'smooth' 
@@ -682,7 +575,18 @@
 	                    .catch(error => {
 	                      console.error(error);
 	                    });
-	                }
+	                },
+	                
+	                // 分頁
+	                updatePaginatedData() {
+	                	 const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+	                     const endIndex = startIndex + this.itemsPerPage;
+	                     this.paginatedData = this.datas.slice(startIndex, endIndex);
+
+	                     if (this.currentPage > this.totalPage) {
+	                         this.currentPage = 1;
+	                     }
+	                },
 	            	
 	            },
 	            mounted: function(){
@@ -729,20 +633,6 @@
 	        });
 	        $('#f_date1').attr("placeholder", "請選擇日期");
 	        
-	        
-	        // 側邊欄
-// 	        var container = $("recentlyViewedContainer");
-// 	        var initialPosition = container.offsetTop;
-
-// 	        window.addEventListener("scroll", function () {
-// 	            if (window.pageYOffset >= initialPosition) {
-// 	                container.classList.add("fixed");
-// 	                container.classList.remove("initial-position");
-// 	            } else {
-// 	                container.classList.remove("fixed");
-// 	                container.classList.add("initial-position");
-// 	            }
-// 	        });
 	       
 	        
 	        

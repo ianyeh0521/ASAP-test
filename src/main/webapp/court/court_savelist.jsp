@@ -1,3 +1,4 @@
+<%@page import="com.asap.member.entity.MemberVO"%>
 <%@page import="com.asap.court.entity.CourtVO"%>
 <%@page import="com.asap.court.service.CourtService_interface"%>
 <%@page import="com.asap.court.service.CourtService"%>
@@ -6,14 +7,19 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.asap.court.*"%>
 <%@ page import="com.asap.util.*"%>
-<html lang="en">
+<%
+	MemberVO mbrVO = (MemberVO)session.getAttribute("memberVo");
+	String mbrNo = mbrVO.getMbrNo();
+	pageContext.setAttribute("mbrNo",mbrNo);
+%>
 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>場地-我的收藏</title>
+    <title>ASAP</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -272,10 +278,6 @@
 
     <!-- header and footer template -->
     <script>
-		$("header").load("header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
         $(window).on("load", function(){
         	 $.ajax({
                  type: "POST",
@@ -284,7 +286,7 @@
                  dataType: 'json',
                  data: JSON.stringify({
                      action: "getByMember",
-                     mbrNo: "M1206202300001"
+                     mbrNo: ${mbrNo},
                  }),
                  success: function(response){
                  	var courtSaveList = JSON.parse(response.courtSaveList);
@@ -397,7 +399,7 @@
 	    	           contentType: 'application/json',
 	    	           data: JSON.stringify({
 	    	               action: "delete",
-	    	               mbrNo: "M1206202300001",	
+	    	               mbrNo: ${mbrNo},	
 	    	               courtNo: clickedId
 	    	           }),
 	    	           success: function(response) {

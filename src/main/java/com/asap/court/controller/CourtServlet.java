@@ -52,53 +52,53 @@ public class CourtServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		String forwardPath = "";
 		switch (action) {
 			case "getAll":
-				forwardPath = getAllCourts(req, res);
+				getAllCourts(req, res);
 				break;
 			case "compositeQuery":
-				forwardPath = getCompositeCourtsQuery(req, res);
+				getCompositeCourtsQuery(req, res);
 				break;
 			case "add":
-				forwardPath = addCourt(req, res);
+				addCourt(req, res);
 				break;
 			case "delete":
-				forwardPath = deleteCourt(req, res);
+				deleteCourt(req, res);
 				break;
 			case "getOne_For_Update":
-				forwardPath = getOneForUpdate(req, res);
+				getOneForUpdate(req, res);
 				break;
 			case "update":
-				forwardPath = updateCourt(req, res);
+				updateCourt(req, res);
 				break;
 			case "namesearch":
-				forwardPath = getCourtsByName(req, res);
+				getCourtsByName(req, res);
 				break;
 			default:
-				forwardPath = "/court_index.jsp";	
+					
 		}
-		
-		res.setContentType("text/html; charset=UTF-8");
-		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-		dispatcher.forward(req, res);
+
 	}
 
 
 
 	// 選擇一筆修改
-	private String getOneForUpdate(HttpServletRequest req, HttpServletResponse res) {
+	private void getOneForUpdate(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
 		
 		Integer courtNo = Integer.valueOf(req.getParameter("courtNo"));
 		req.setAttribute("courtVO", courtService_interface.getCourtByCourtNo(courtNo)); 	
 		
-		return "/court/updateCourt.jsp";
+		
+		res.setContentType("text/html; charset=UTF-8");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/court/updateCourt.jsp");
+		dispatcher.forward(req, res);
+		
 	}
 	
 	// 修改
-	private String updateCourt(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+	private void updateCourt(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
 
@@ -244,7 +244,10 @@ public class CourtServlet extends HttpServlet {
 		
 		if (!errorMsgs.isEmpty()) {
 			req.setAttribute("courtVO", courtVO); // 含有輸入格式錯誤的courtVO物件,也存入req
-			return "/court/updateCourt.jsp"; //程式中斷
+			
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/court/updateCourt.jsp");
+			dispatcher.forward(req, res);
 		}else {
 			req.setAttribute("courtNoPass", courtNo);
 			courtService_interface.update(courtVO);
@@ -262,12 +265,16 @@ public class CourtServlet extends HttpServlet {
 			courtImgService_interface.update(courtImgVOs.get(3));
 			
 			System.out.println(courtVO.toString());
-			return "/court/listOneCourt.jsp";		
+			
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/court/listOneCourt.jsp");
+			dispatcher.forward(req, res);
+				
 		}
 	}
 
 	// 刪除
-	private String deleteCourt(HttpServletRequest req, HttpServletResponse res) {
+	private void deleteCourt(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Integer courtNo = Integer.valueOf(req.getParameter("courtNo"));
 		System.out.println(courtNo);
 		
@@ -277,11 +284,14 @@ public class CourtServlet extends HttpServlet {
 		}
 		courtService_interface.delete(courtNo);
 		
-		return "/court/listAllCourts_datatable_Ajax.html";
+		res.setContentType("text/html; charset=UTF-8");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/court/listAllCourts_datatable_Ajax.html");
+		dispatcher.forward(req, res);
+		
 	}
 
 	// 新增
-	private String addCourt(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+	private void addCourt(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
 		
@@ -402,7 +412,9 @@ public class CourtServlet extends HttpServlet {
         
         
         if (!errorMsgs.isEmpty()) {
-			return "/court/addCourt.jsp"; //程式中斷
+        	res.setContentType("text/html; charset=UTF-8");
+    		RequestDispatcher dispatcher = req.getRequestDispatcher("/court/addCourt.jsp");
+    		dispatcher.forward(req, res);
 		}else {
 			Integer courtNO = courtService_interface.add(courtVO);
 			CourtVO courtVOnew = new CourtVO(courtNO);
@@ -415,13 +427,17 @@ public class CourtServlet extends HttpServlet {
 			CourtImgVO courtImgVO4 = new CourtImgVO(courtVOnew, upFiles4);
 			courtImgService_interface.insert(courtImgVO4);
 			req.setAttribute("courtNoPass", courtNO);
-			return "/court/listOneCourt.jsp";
+			
+			res.setContentType("text/html; charset=UTF-8");
+    		RequestDispatcher dispatcher = req.getRequestDispatcher("/court/listOneCourt.jsp");
+    		dispatcher.forward(req, res);
+			
 		}
         
 	}
 
 	// 查全部、分頁
-	private String getAllCourts(HttpServletRequest req, HttpServletResponse res) {
+	private void getAllCourts(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		
@@ -435,11 +451,14 @@ public class CourtServlet extends HttpServlet {
 		req.setAttribute("courtList", courtList);
 		req.setAttribute("currentPage", currentPage);
 		
-		return "/court/listAllCourt.jsp";	
+		
+		res.setContentType("text/html; charset=UTF-8");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/court/listAllCourt.jsp");
+		dispatcher.forward(req, res);
 	}
 	
 	// 複合查詢
-	private String getCompositeCourtsQuery(HttpServletRequest req, HttpServletResponse res){
+	private void getCompositeCourtsQuery(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		Map<String, String[]> map = req.getParameterMap();
 		// 搜尋條件顯示
 		String searchCon = "";
@@ -552,13 +571,18 @@ public class CourtServlet extends HttpServlet {
 
 		}else {	// 全部沒填
 			System.out.println("4");
-			return "/court/court_main.jsp";	
+			
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/court/court_main.jsp");
+			dispatcher.forward(req, res);
 		}
-		return "/court/court_main_search.jsp";	
+		res.setContentType("text/html; charset=UTF-8");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/court/court_main_search.jsp");
+		dispatcher.forward(req, res);	
 	}
 	
 	// 用名稱找場地
-	private String getCourtsByName(HttpServletRequest req, HttpServletResponse res) {
+	private void getCourtsByName(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
 		
@@ -569,11 +593,17 @@ public class CourtServlet extends HttpServlet {
 		
 		
 		if (!errorMsgs.isEmpty()) {
-			return "/court/listAllCourt.jsp";
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/court/listAllCourt.jsp");
+			dispatcher.forward(req, res);
 		}else {
 			List<CourtVO> courtList = courtService_interface.getCourtsByCourtName(nameStr);
 			req.setAttribute("courtList", courtList);
-			return "/court/listSpecificCourts.jsp";	
+			
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/court/listSpecificCourts.jsp");
+			dispatcher.forward(req, res);
+			
 		}
 		
 	}

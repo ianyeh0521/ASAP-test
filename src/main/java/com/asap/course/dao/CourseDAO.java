@@ -132,16 +132,22 @@ public class CourseDAO implements CourseDAO_interface{
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (map.containsKey("startTime") && map.containsKey("endTime"))
-			predicates.add(builder.between(root.get("courseTime"), Timestamp.valueOf(map.get("startTime")), Timestamp.valueOf(map.get("endTime"))));
+			predicates.add(builder.between(root.get("courseEndTime"), Timestamp.valueOf(map.get("startTime")), Timestamp.valueOf(map.get("endTime"))));
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
 			if ("courseSearch".equals(row.getKey())) {
-				predicates.add(builder.like(root.get("courseName"), "%" + row.getValue() + "%"));
+					Predicate courseNamePredicate = builder.like(root.get("courseName"), "%" + row.getValue() + "%");
+				    Predicate courseTextPredicate = builder.like(root.get("courseText"), "%" + row.getValue() + "%");
+				    Predicate courseAddressPredicate = builder.like(root.get("courseAddress"), "%" + row.getValue() + "%");
+
+				    Predicate orPredicate = builder.or(courseNamePredicate, courseTextPredicate, courseAddressPredicate);
+				    
+				    predicates.add(orPredicate);
 			}
 
 			if ("startTime".equals(row.getKey())) {
 				if (!map.containsKey("endTime"))
-					predicates.add(builder.greaterThanOrEqualTo(root.get("courseTime"), Timestamp.valueOf(row.getValue())));
+					predicates.add(builder.greaterThanOrEqualTo(root.get("courseStartTime"), Timestamp.valueOf(row.getValue())));
 			}
 
 			if ("endTime".equals(row.getKey())) {
@@ -153,14 +159,13 @@ public class CourseDAO implements CourseDAO_interface{
 				predicates.add(builder.equal(root.get("sportTypeVO").get("sportTypeNo"), row.getValue()));
 			}
 			
-			if ("site".equals(row.getKey())) {
-				predicates.add(builder.like(root.get("courseAddress"), "%" + row.getValue() + "%"));
-			}
+//			if ("site".equals(row.getKey())) {
+//				predicates.add(builder.like(root.get("courseAddress"), "%" + row.getValue() + "%"));
+//			}
 
 		}
 
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
-//		criteria.orderBy(builder.asc(root.get("courseNo")));
 		TypedQuery<CourseVO> query = getSession().createQuery(criteria);
 
 		return query.getResultList();
@@ -170,7 +175,7 @@ public class CourseDAO implements CourseDAO_interface{
 	public List<CourseVO> getAll() {
 		// 取得全部的 CourseVO List，成功回傳 List，失敗回傳空值
 		try {
-			return getSession().createQuery("from CourseVO", CourseVO.class).list();
+			return getSession().createQuery("from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true", CourseVO.class).list();
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			return null;

@@ -16,10 +16,7 @@ try {
 } catch (Exception e) {
 	closedDate = new java.sql.Date(System.currentTimeMillis());
 }
-// 	CourseService_interface courseSvc = new CourseService();
-// 	List<CourseVO> courseList = courseSvc.getAll();
 
-// 	pageContext.setAttribute("courseList", courseList);
 %>
 
 <head>
@@ -28,7 +25,7 @@ try {
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>課程</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -125,98 +122,32 @@ try {
 <body>
 	<div class="page-wrapper">
 
-		<header class="header">
-			<div class="header-middle sticky-header"
-				data-sticky-options="{'mobile': true}"
-				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
-				<div class="container">
-					<div class="header-left col-lg-2 w-auto pl-0">
-						<button class="mobile-menu-toggler text-primary mr-2"
-							type="button">
-							<i class="fas fa-bars"></i>
-						</button>
-						<a href="#" style="width: 222; height: 88;"> <img
-							src="${pageContext.request.contextPath}/newImg/logo2.png"
-							alt="Logo" />
-						</a>
-					</div>
-					<!-- End .header-left -->
-				</div>
-				<!-- End .container -->
-			</div>
-			<!-- End .header-middle -->
-
-			<div class="header-bottom sticky-header d-none d-lg-block"
-				data-sticky-options="{'mobile': false}">
-				<div class="container">
-					<nav class="main-nav w-100">
-						<ul class="menu" style="display: flex; justify-content: flex-end">
-							<li><a href="#">論壇</a>
-								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
-								</ul></li>
-							<li><a href="#">揪團</a>
-								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
-								</ul></li>
-							<li><a href="#">找課程</a>
-								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
-								</ul></li>
-							<li><a href="#">找場地</a>
-								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
-								</ul></li>
-							<li><a href="#">賣家入口</a>
-								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
-
-							<li><a href="">商城</a></li>
-							<li><a href="login.jsp" style="color: blue">登出</a></li>
-						</ul>
-					</nav>
-				</div>
-				<!-- End .container -->
-			</div>
-			<!-- End .header-bottom -->
-		</header>
+		<header class="header"></header>
 		<!-- End .header -->
 
-		<main class="main">
+		<main class="main" id="divTest">
 			<!-- 搜尋列 -->
 			<div class="container" style="margin-top: 20px !important;">
 				<div
 					class="header-icon header-search header-search-inline header-search-category w-lg-max text-right mt-0">
 					<a href="#" class="search-toggle" role="button"><i
 						class="icon-search-3"></i></a>
-					<form action="#" method="get">
+					<form action="#" method="post" id="searchForm" @submit.prevent="submitForm">
 						<div class="header-search-wrapper">
-							<input type="search" class="form-control" name="courseSearch"
+							<input type="courseSearch" class="form-control" name="courseSearch"
 								placeholder="搜尋課程...">
 
 							<!--日期選擇-->
 							<div class="select-custom"
 								style="display: flex; justify-content: center; align-items: center; padding-right: 5px">
-								<input name="chooseStartDate" id="f_date1" type="text"
+								<input name="startTime" id="f_date1" type="text"
 									onkeydown="return false"
 									style="width: 100%; box-sizing: border-box;" autocomplete="off">
 							</div>
 
 							<div class="select-custom"
 								style="display: flex; justify-content: center; align-items: center; padding-left: 5px">
-								<input name="chooseEndtDate" id="f_date2" type="text"
+								<input name="endTime" id="f_date2" type="text"
 									onkeydown="return false"
 									style="width: 100%; box-sizing: border-box;" autocomplete="off">
 							</div>
@@ -239,27 +170,8 @@ try {
 								</select>
 							</div>
 							<!-- End .select-custom -->
-
-							<div class="select-custom">
-								<select name="site">
-									<option value="">選擇地區</option>
-									<option value="松山區">- 松山區</option>
-									<option value="信義區">- 信義區</option>
-									<option value="大安區">- 大安區</option>
-									<option value="中山區">- 中山區</option>
-									<option value="中正區">- 中正區</option>
-									<option value="大同區">- 大同區</option>
-									<option value="萬華區">- 萬華區</option>
-									<option value="文山區">- 文山區</option>
-									<option value="南港區">- 南港區</option>
-									<option value="內湖區">- 內湖區</option>
-									<option value="士林區">- 士林區</option>
-									<option value="北投區">- 北投區</option>
-								</select>
-							</div>
-							<!-- End .select-custom -->
-							<button class="btn icon-magnifier p-0" type="submit"
-								title="search"></button>
+							<input type="hidden" name="action" value="getByCompositeQuery">
+							<button class="btn icon-magnifier p-0" type="submit" title="search"></button>
 						</div>
 						<!-- End .header-search-wrapper -->
 					</form>
@@ -278,7 +190,12 @@ try {
 			</div>
 
 
-			<div class="container" id="divTest">
+			<div class="container">
+			
+				<h4 v-if="formSubmitted" class="text-uppercase heading-bottom-border mt-4" style="margin-top: 30px !important;">
+				  搜尋結果：
+				</h4>	
+						
 				<!-- 排序按鈕 -->
 				<nav class="toolbox sticky-header"
 					data-sticky-options="{'mobile': true}" style="margin-bottom: 0px;">
@@ -326,7 +243,8 @@ try {
 					<!-- End .toolbox-right -->
 				</nav>
 				<!-- 課程資訊 -->
-				<div class="outer-container" v-for="data in datas" :key="data.courseNo">
+<!-- 				<div class="outer-container" v-for="data in datas" :key="data.courseNo"> -->
+				<div class="outer-container" v-for="data in paginatedData" :key="data.courseNo">
 					<div class="row justify-content-center align-items-center">
 						<div
 							class="col-sm-12 col-6 product-default left-details product-list mb-2 d-flex justify-content-center">
@@ -381,12 +299,11 @@ try {
 					<!-- 課程資訊結束 -->
 				</div>
 				<!-- 分頁按鈕 -->
-				<div class="pagination-buttons"
-					style="text-align: center; margin-bottom: 20px">
-					<button v-for="page in totalPage" :key="page"
-						@click="changePage(page)"
-						:class="{ 'selected-page': page === currentPage }"
-						:disabled="page === currentPage">{{ page }}</button>
+				<div class="pagination-buttons" style="text-align: center; margin-bottom: 20px">
+				    <button v-for="page in Math.ceil(datas.length / itemsPerPage)" :key="page"
+				            @click="changePage(page)"
+				            :class="{ 'selected-page': page === currentPage }"
+				            :disabled="page === currentPage">{{ page }}</button>
 				</div>
 			</div>
 			<!-- End .container -->
@@ -394,76 +311,7 @@ try {
 		</main>
 		<!-- End .main -->
 
-		<footer class="footer bg-dark">
-			<div class="footer-middle">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-3 col-sm-6">
-							<div class="widget">
-								<h4 class="widget-title">Contact Info</h4>
-								<ul class="contact-info">
-									<li><span class="contact-info-label">Address:</span>5F.,
-										No. 219, Sec. 3, Nanjing E. Rd., Zhongshan Dist., Taipei City
-										104, Taiwan (R.O.C.)</li>
-									<li><span class="contact-info-label">Phone:</span><a
-										href="tel:">(02) 2712-0589</a></li>
-									<li><span class="contact-info-label">Email:</span> <a
-										href="mailto:mail@example.com">business@tibame.com</a></li>
-									<li><span class="contact-info-label">Working
-											Days/Hours:</span> Mon - Sun / 8:00 AM - 9:30 PM</li>
-								</ul>
-								<div class="social-icons">
-									<a href="#" class="social-icon social-facebook icon-facebook"
-										target="_blank" title="Facebook"></a> <a href="#"
-										class="social-icon social-twitter icon-twitter"
-										target="_blank" title="Twitter"></a> <a href="#"
-										class="social-icon social-instagram icon-instagram"
-										target="_blank" title="Instagram"></a>
-								</div>
-								<!-- End .social-icons -->
-							</div>
-							<!-- End .widget -->
-						</div>
-						<!-- End .col-lg-3 -->
-
-						<div class="col-lg-3 col-sm-6">
-							<div class="widget">
-								<h4 class="widget-title">SiteMap</h4>
-
-								<ul class="links">
-									<li><a href="#">Account</a></li>
-									<li><a href="#">Course</a></li>
-									<li><a href="#">Forum</a></li>
-									<li><a href="#">Group</a></li>
-									<li><a href="#">Court</a></li>
-									<li><a href="#">Seller</a></li>
-									<li><a href="#">Mall</a></li>
-								</ul>
-							</div>
-							<!-- End .widget -->
-						</div>
-						<!-- End .col-lg-3 -->
-
-					</div>
-					<!-- End .row -->
-				</div>
-				<!-- End .container -->
-			</div>
-			<!-- End .footer-middle -->
-
-			<div class="container">
-				<div class="footer-bottom">
-					<div class="container d-sm-flex align-items-center">
-						<div class="footer-left">
-							<span class="footer-copyright">© Tibame. 2023. All Rights
-								Reserved</span>
-						</div>
-					</div>
-				</div>
-				<!-- End .footer-bottom -->
-			</div>
-			<!-- End .container -->
-		</footer>
+		<footer class="footer bg-dark"></footer>
 	</div>
 	<!-- End .page-wrapper -->
 
@@ -484,7 +332,7 @@ try {
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 	<!-- Plugins JS File -->
-	<%-- 	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script> --%>
+<%-- 		<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script> --%>
 	<script
 		src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 	<script
@@ -499,11 +347,6 @@ try {
 
 
 	<script>
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
-	</script>
-
-	<script>
 	window.onload=function(){
 		
 		// vue 初始化
@@ -511,12 +354,14 @@ try {
             data: function(){
                 return{
                     datas: [],
+                    paginatedData:[],
                     currentOrder:{},
                     selectedSortOption: 'menu_order',
-                    userlatitude: null,
-                    userlongitude: null,
                     currentPage: 1,
                     totalPage: 0,
+                    itemsPerPage: 5,
+                    searchData: '',
+                    formSubmitted: false,
                 }
             },
             created(){
@@ -526,7 +371,7 @@ try {
                 
                 // 課程資料初始化
             	fetchInitialData: function () {
-                    const request1 = { url: 'course.do?action=getAll', method: 'get', params: { page: this.currentPage } };;
+                    const request1 = { url: 'course.do?action=getAll', method: 'get' };
                     const request2 = { url: 'course.do?action=getAll', method: 'get', params: { getTotalPage: true } };
 
                     axios.all([axios(request1), axios(request2)])
@@ -542,10 +387,12 @@ try {
                             console.log(this.totalPage)
                             
                             this.fetchAdditionalData();
+                            this.updatePaginatedData();
                         }))
                         .catch(function (reason) {
                             console.log(reason);
                         });
+            		
             	},
             	
 				// 排序
@@ -562,6 +409,8 @@ try {
 			            default:
 			                break;
 			        }
+			        
+			        this.updatePaginatedData();
 			    },
 			
 			    getNumericPrice: function (product) {
@@ -572,8 +421,7 @@ try {
                 // 換頁按鈕
                 changePage: function (page) {
                     this.currentPage = page;
-                    this.fetchInitialData();
-                    
+                    this.updatePaginatedData();
                     window.scrollTo({
                         top: 230,
                         behavior: 'smooth' 
@@ -596,11 +444,119 @@ try {
                          console.error(`Error fetching additional data for courseNo ${data.courseNo}:`, error);
                        });
                    });
-                 }
+                 },
+                
+                // 分頁
+                updatePaginatedData() {
+                	 const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+                     const endIndex = startIndex + this.itemsPerPage;
+                     this.paginatedData = this.datas.slice(startIndex, endIndex);
+
+                     if (this.currentPage > this.totalPage) {
+                         this.currentPage = 1;
+                     }
+                },
+                
+                // 複合查詢
+                submitForm: function () {
+                    const formData = new FormData(document.getElementById('searchForm'));
+
+                    axios.post('course.do', formData)
+                        .then(response => {
+                            this.datas = response.data;
+                            this.updatePaginatedData();
+                            
+                            this.searchData = formData.get('courseSearch') || '';
+                            this.formSubmitted = true; 
+
+                            window.scrollTo({
+                                top: 230,
+                                
+                                behavior: 'smooth'
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error submitting form:', error);
+                        });
+                },
               
             	
             },
             mounted: function(){
+            	// 日期選擇
+        		var somedate1 = new Date('<%=closedDate%>');
+        		
+        		$.datetimepicker.setLocale('zh'); 
+                $('#f_date1').datetimepicker({
+                   theme: '',          
+                   timepicker: true,   //timepicker: false,
+                   step: 60,            
+        	       format: 'Y-m-d H:i:s',
+        	       beforeShowDay: function(date) {
+                   	  if (  date.getYear() <  somedate1.getYear() || 
+            		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+            		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+                         ) {
+                              return [false, ""]
+                         }
+                         return [true, ""];
+                   },
+                
+                  
+                   //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
+                   //startDate:	        '2022/07/10',  // 起始日
+                   //minDate:           '-1970-01-01', // 去除今日(不含)之前
+                   //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+                });
+                $('#f_date1').attr("placeholder", "請選擇起始時間");
+                
+                $('#f_date2').datetimepicker({
+                   theme: '',          
+                   timepicker: true,   
+                   step: 60,            
+        	       format: 'Y-m-d H:i:s',
+        	       minDate: somedate1,
+        	       beforeShowDay: function(date) {
+                   	  if (  date.getYear() <  somedate1.getYear() || 
+            		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+            		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+                         ) {
+                              return [false, ""]
+                         }
+                         return [true, ""];
+                   },
+                   
+                   //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
+                   //startDate:	        '2022/07/10',  // 起始日
+                   //minDate:           '-1970-01-01', // 去除今日(不含)之前
+                   //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+                });
+                $('#f_date2').attr("placeholder", "請選擇結束時間");
+                
+                $('#f_date1').on('change', function(selected) {
+                    var selectedDate = new Date(selected.target.value);
+                    $('#f_date2').datetimepicker('setOptions', { minDate: selectedDate });
+                });
+                
+                $('#f_date2').on('blur', function() {
+                    validateDatetimeInputs();
+                });
+                
+                function validateDatetimeInputs() {
+                    var startDate = $('#f_date1').val();
+                    var endDate = $('#f_date2').val();
+
+                    if (startDate && endDate) {
+                        if (new Date(startDate) > new Date(endDate)) {
+                            alert('結束時間必須晚於起始時間');
+                            $('#f_date2').val('');
+                        }
+                    } else if (!startDate && endDate) {
+                        alert('請先選擇起始時間');
+                        $('#f_date2').val('');
+                    }
+                }
+            	
                 this.fetchInitialData();
                 
             },
@@ -610,85 +566,6 @@ try {
 		
 	}
 	
-	$(document).ready(function() {
-		// 日期選擇
-		var somedate1 = new Date('<%=closedDate%>');
-		
-		$.datetimepicker.setLocale('zh'); 
-        $('#f_date1').datetimepicker({
-           theme: '',          
-           timepicker: true,   //timepicker: false,
-           step: 60,            
-	       format: 'Y-m-d H:i',
-	       beforeShowDay: function(date) {
-           	  if (  date.getYear() <  somedate1.getYear() || 
-    		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
-    		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
-                 ) {
-                      return [false, ""]
-                 }
-                 return [true, ""];
-           },
-          
-           //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
-           //startDate:	        '2022/07/10',  // 起始日
-           //minDate:           '-1970-01-01', // 去除今日(不含)之前
-           //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
-        });
-        $('#f_date1').attr("placeholder", "請選擇起始時間");
-        
-        $('#f_date2').datetimepicker({
-           theme: '',          
-           timepicker: true,   
-           step: 60,            
-	       format: 'Y-m-d H:i',
-	       minDate: somedate1,
-	       beforeShowDay: function(date) {
-           	  if (  date.getYear() <  somedate1.getYear() || 
-    		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
-    		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
-                 ) {
-                      return [false, ""]
-                 }
-                 return [true, ""];
-           },
-           
-           //disabledDates:    ['2022/06/08','2022/06/09','2022/06/10'], // 去除特定不含
-           //startDate:	        '2022/07/10',  // 起始日
-           //minDate:           '-1970-01-01', // 去除今日(不含)之前
-           //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
-        });
-        $('#f_date2').attr("placeholder", "請選擇結束時間");
-        
-        $('#f_date1').on('change', function(selected) {
-            var selectedDate = new Date(selected.target.value);
-            $('#f_date2').datetimepicker('setOptions', { minDate: selectedDate });
-        });
-        
-        $('#f_date2').on('blur', function() {
-            validateDatetimeInputs();
-        });
-        
-        function validateDatetimeInputs() {
-            var startDate = $('#f_date1').val();
-            var endDate = $('#f_date2').val();
-
-            if (startDate && endDate) {
-                if (new Date(startDate) > new Date(endDate)) {
-                    alert('結束時間必須晚於起始時間');
-                    $('#f_date2').val('');
-                }
-            } else if (!startDate && endDate) {
-                alert('請先選擇起始時間');
-                $('#f_date2').val('');
-            }
-        }
-
-       
-        
-        
-       
-	})
 	
            
         
