@@ -20,7 +20,7 @@ public class OpenSessionInViewFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		try {
-			System.out.println("filter open transaction");
+//			System.out.println("filter open transaction");
 			factory.getCurrentSession().beginTransaction();
 			chain.doFilter(req, res);
 			factory.getCurrentSession().getTransaction().commit();

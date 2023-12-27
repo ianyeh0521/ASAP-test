@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-public class BackLoginFilter implements Filter {
+//@WebFilter(urlPatterns = { "/*" })
+public class NoCacheFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -21,24 +21,12 @@ public class BackLoginFilter implements Filter {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		// 開放的頁面
-		String openPath = "/backStage/BackageLogin.jsp";
-		String path = req.getServletPath();
-        
-		//session有值
-		HttpSession session = req.getSession();
-		Object backVo = session.getAttribute("backVo");
+		// 取消快取
+		res.setHeader("Cache-Control", "no-store");
+		res.setHeader("Pragma", "no-cache");
+		res.setDateHeader("Expires", 0);
 
-		if (path.equals(openPath)) {
-			//開放頁
-			chain.doFilter(req, res);
-		}else if (backVo != null) {
-			//有登入
-			chain.doFilter(req, res);
-		}else {
-			res.sendRedirect(req.getContextPath()+"/backStage/BackageLogin.jsp");
-			return;
-		}
+		chain.doFilter(req, res);
 
 	}
 
