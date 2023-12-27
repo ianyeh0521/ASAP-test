@@ -3,22 +3,19 @@
 <%@page import="com.asap.forum.service.PostVOServiceImpl"%>
 <%@page import="com.asap.forum.service.PostVOService"%>
 <%@page import="com.asap.forum.entity.PostVO"%>
+<%@page import="com.asap.member.entity.MemberVO"%>
 <%@page import="java.util.*"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
 
 	// 會員編號
-	/*
-	String memberNo = session.getAttribute("memberVO").getMbrNo();
+	MemberVO memberVO = (MemberVO)session.getAttribute("memberVo");
+	String memberNo= memberVO.getMbrNo();
 	pageContext.setAttribute("mbrNo",memberNo);
-	*/
-	
-	String mbrNo = "M002";
-	pageContext.setAttribute("mbrNo",mbrNo);
 
     PostVOService postSvc = new PostVOServiceImpl();
-	List<PostVO> post = postSvc.getMyPosts(mbrNo);
+	List<PostVO> post = postSvc.getMyPosts(memberNo);
     pageContext.setAttribute("post", post);
 %>
 
@@ -32,7 +29,7 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <title>ASAP論壇-我的貼文</title>
+    <title>ASAP</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template" />
@@ -171,85 +168,7 @@
 
   <body>
     <div class="page-wrapper">
-      <header class="header"> <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}" style="
-        height: 75px;
-        background: rgb(255, 250, 85);
-        background: linear-gradient(
-          90deg,
-          rgba(255, 250, 85, 0.9081757703081232) 0%,
-          rgba(9, 34, 121, 0.8773634453781513) 35%,
-          rgba(0, 212, 255, 1) 100%
-        );
-      ">
-      <div class="container">
-        <div class="header-left col-lg-2 w-auto pl-0">
-          <button class="mobile-menu-toggler text-primary mr-2" type="button">
-            <i class="fas fa-bars"></i>
-          </button>
-          <a href="#" width="222" height="88">
-            <img src="${pageContext.request.contextPath}/newImg/logo2.png" alt="Logo" />
-          </a>
-        </div>
-        <!-- End .header-left -->
-      </div>
-      <!-- End .container -->
-    </div>
-    <!-- End .header-middle -->
-
-    <div class="header-bottom sticky-header d-none d-lg-block" data-sticky-options="{'mobile': false}">
-      <div class="container">
-        <nav class="main-nav w-100">
-          <ul class="menu" style="display: flex; justify-content: flex-end">
-            <li>
-              <a href="#">論壇</a>
-              <ul>
-                <li><a href="#">論壇首頁</a></li>
-                <li><a href="#">發佈貼文</a></li>
-                <li><a href="#">我的貼文</a></li>
-                <li><a href="#">收藏貼文</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#">揪團</a>
-              <ul>
-                <li><a href="#">揪團首頁</a></li>
-                <li><a href="#">發起揪團</a></li>
-                <li><a href="#">我的揪團</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#">找課程</a>
-              <ul>
-                <li><a href="#">查詢課程</a></li>
-                <li><a href="#">我的課程</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#">找場地</a>
-              <ul>
-                <li><a href="#">詢找場地</a></li>
-                <li><a href="#">我的預約</a></li>
-                <li><a href="#">我的收藏</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#">賣家入口</a>
-              <ul>
-                <li><a href="#">所有訂單</a></li>
-                <li><a href="#">所有商品</a></li>
-                <li><a href="#">新增商品</a></li>
-                <li><a href="#">商品評論</a></li>
-              </ul>
-            </li>
-
-            <li><a href="">商城</a></li>
-            <li><a href="" style="color: red">登入</a></li>
-          </ul>
-        </nav>
-      </div>
-      <!-- End .container -->
-    </div>
-    <!-- End .header-bottom --></header>
+      <header class="header"> </header>
       <!-- End .header -->
 
 
@@ -351,10 +270,7 @@
     <script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
     <script>
-      //$("header").load("header.html");
-      $("div.sticky-navbar").load("sticky-navbar.html");
-      $("div.mobile-menu-container").load("mobile-menu-container.html");
-      $("footer").load("footer.html");
+
       $("button.edit").on("click", function(){
     	  var postNo = $(this).attr('data-postno');
     	  sessionStorage.setItem("postNo", postNo);

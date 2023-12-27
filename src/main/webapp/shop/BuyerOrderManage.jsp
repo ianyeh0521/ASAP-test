@@ -77,7 +77,7 @@
 			"ajax" : {
 				url : "${pageContext.request.contextPath}/shop/BuyerOrder.do", //要抓哪個地方的資料
 				type : "GET", //使用什麼方式抓
-				data : {"action" : "getOrder","mbrNo" : "${memberVo.mbrNo}",},
+				data : {"action" : "getOrder","mbrNo": "${memberVo.mbrNo}",},
 			    cache : false,
 				dataType : "json", //回傳資料的類型
 				error : function() {console.log("資料取得失敗 回去檢討檢討");//失敗事件
