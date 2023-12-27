@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+<web-app version="4.0"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
    http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
 
 	<welcome-file-list>
@@ -10,8 +11,8 @@
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	
-	<!-- session濾器 -->
+
+	<!-- 1.hibernate session濾器 -->
 	<filter>
 		<filter-name>OpenSessionFilter</filter-name>
 		<filter-class>com.asap.filter.OpenSessionInViewFilter</filter-class>
@@ -20,20 +21,63 @@
 		<filter-name>OpenSessionFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	<!-- back單種濾器 -->
+
+	<!-- 2.取消快取濾器 -->
+	<filter>
+		<filter-name>NoCacheFilter</filter-name>
+		<filter-class>com.asap.filter.NoCacheFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>NoCacheFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 3. back登入濾器 -->
 	<filter>
 		<filter-name>BackLoginFilter</filter-name>
 		<filter-class>com.asap.filter.BackLoginFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>BackLoginFilter</filter-name>
-<!-- 		<url-pattern>/BackStageController</url-pattern> -->
-		<url-pattern>/backStage/*</url-pattern>
+	    <url-pattern>/backStage/*</url-pattern>
 		<url-pattern>/forum/backstage_forum_report.jsp</url-pattern>
-		<url-pattern>/court/addCourt.jsp</url-pattern>
-		<url-pattern>/court/updateCourt.jsp</url-pattern>
-		<url-pattern>/court/listAllCourts_datatable_Ajax.html</url-pattern>
+<!-- 		<url-pattern>/court/addCourt.jsp</url-pattern> -->
+<!-- 		<url-pattern>/court/updateCourt.jsp</url-pattern> -->
+<!-- 		<url-pattern>/court/listAllCourts_datatable_Ajax.html</url-pattern> -->
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	
+	<!-- 3. coach登入濾器(補) -->
+	<filter>
+		<filter-name>CoachLoginFilter</filter-name>
+		<filter-class>com.asap.filter.CoachLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CoachLoginFilter</filter-name>
+		<url-pattern>/coach/CoachChat.jsp</url-pattern>
+		<url-pattern>/coach/CoachHome.jsp</url-pattern>
+		<url-pattern>/coach/CoachUpdateInfo.jsp</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	
+	<!-- 3. member登入濾器(補) -->
+	<filter>
+		<filter-name>MemberLoginFilter</filter-name>
+		<filter-class>com.asap.filter.MemberLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>MemberLoginFilter</filter-name>
+		<url-pattern>/member/MemberChat.jsp</url-pattern>
+		<url-pattern>/member/MemberHome.jsp</url-pattern>
+		<url-pattern>/member/MemberUpdateInfo.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
@@ -41,4 +85,16 @@
 		<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>
 
+	<!-- <error-page> -->
+	<!-- <error-code>400</error-code> -->
+	<!-- <location>/指專案</location> -->
+	<!-- </error-page> -->
+	<!-- <error-page> -->
+	<!-- <error-code>404</error-code> -->
+	<!-- <location>/指專案</location> -->
+	<!-- </error-page> -->
+	<!-- <error-page> -->
+	<!-- <error-code>500</error-code> -->
+	<!-- <location>/指專案</location> -->
+	<!-- </error-page> -->
 </web-app>
