@@ -29,6 +29,7 @@ public class CoachLoginFilter implements Filter {
 		if (coachVo != null) {
 			//有登入
 			chain.doFilter(req, res);
+			return;
 		}else {
 			res.sendRedirect(req.getContextPath()+"/coach/CoachLogin.jsp");
 			return;

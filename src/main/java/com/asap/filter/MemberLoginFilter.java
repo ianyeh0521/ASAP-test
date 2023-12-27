@@ -38,11 +38,13 @@ public class MemberLoginFilter implements Filter {
 		if (memberVo != null) {
 			// 有登入
 			chain.doFilter(req, res);
+			return;
 		}
 
 		for (String open : openPath) {
 			if (path.equals(open)) {
 				chain.doFilter(request, response);
+				return;
 			}
 		}
 
