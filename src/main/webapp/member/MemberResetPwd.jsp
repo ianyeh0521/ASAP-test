@@ -111,8 +111,8 @@
 									</label> <input type="password" class="form-input form-wide"
 										id="login-pwd2" required name="mbrPwd2" placeholder="password" />
 
-									<input type="hidden" name="memberNo" value="${memberNo}">
-									<% session.removeAttribute("memberNo"); %>
+<%-- 									<input type="hidden" name="memberNo" value="${memberNo}"> --%>
+<%-- 									<% session.removeAttribute("memberNo"); %> --%>
 									<input type="hidden" name="action" value="resetPwd">
 									<button type="submit" class="btn btn-dark btn-md w-100"
 										id="btn_login">送出</button>

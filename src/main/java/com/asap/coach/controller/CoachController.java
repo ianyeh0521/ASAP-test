@@ -115,7 +115,7 @@ public class CoachController extends HttpServlet {
 
 			// 驗證資料
 			// 驗證Email
-			if ((coachEmail.trim()).length() == 0 || coachEmail == null) {
+			if (coachEmail == null || (coachEmail.trim()).length() == 0) {
 				errorMsgs.add("請輸入Email");
 			} else {
 				if (!(coachEmail.trim()).matches(emailRegex)) {
@@ -133,8 +133,8 @@ public class CoachController extends HttpServlet {
 			}
 
 			// 驗證密碼
-			if ((coachPwd.trim()).length() == 0 || coachPwd == null || (coachPwd2.trim()).length() == 0
-					|| coachPwd2 == null) {
+			if (coachPwd == null || coachPwd2 == null || (coachPwd.trim()).length() == 0
+					|| (coachPwd2.trim()).length() == 0) {
 				errorMsgs.add("請輸入密碼");
 
 			} else {
@@ -142,7 +142,7 @@ public class CoachController extends HttpServlet {
 					errorMsgs.add("密碼格式不正確");
 				}
 
-				if (!(coachPwd.trim()).equals(coachPwd2)) {
+				if (!(coachPwd.trim()).equals(coachPwd2.trim())) {
 					errorMsgs.add("二次密碼不一致");
 				}
 			}
@@ -153,7 +153,7 @@ public class CoachController extends HttpServlet {
 			}
 
 			// 驗證名字
-			if ((coachName.trim()).length() == 0 || coachName == null) {
+			if (coachName == null || (coachName.trim()).length() == 0) {
 				errorMsgs.add("請輸入姓名");
 			} else {
 				if (!(coachName.trim()).matches(nameRegex)) {
@@ -168,7 +168,7 @@ public class CoachController extends HttpServlet {
 			}
 
 			// 驗證電話
-			if ((coachPhone.trim()).length() == 0 || coachPhone == null) {
+			if (coachPhone == null || (coachPhone.trim()).length() == 0) {
 				errorMsgs.add("請輸入手機號碼");
 			} else {
 				if (!(coachPhone.trim()).matches(phoneRegex)) {
@@ -198,7 +198,7 @@ public class CoachController extends HttpServlet {
 			}
 
 			// 驗證教學經驗
-			if ((coachExp.trim()).length() == 0 || coachExp == null) {
+			if (coachExp == null || (coachExp.trim()).length() == 0) {
 				errorMsgs.add("請輸入教學經驗");
 			} else {
 				if (Integer.parseInt(coachExp.trim()) < 0 || Integer.parseInt(coachExp.trim()) > 100) {
@@ -230,7 +230,7 @@ public class CoachController extends HttpServlet {
 			coachVO.setCoachPhone(coachPhone.trim());
 			coachVO.setCoachExp(Integer.parseInt(coachExp.trim()));
 
-			if (coachIntro.trim().length() != 0 && coachIntro != null) {
+			if (coachIntro != null && coachIntro.trim().length() != 0) {
 
 				coachVO.setCoachIntro(coachIntro.trim());
 			} else {
@@ -309,6 +309,12 @@ public class CoachController extends HttpServlet {
 			String coachNo = req.getParameter("coachNo");
 //			String coachEmail = req.getParameter("coachEmail");
 			String emailVerifyCode = req.getParameter("emailVerifyCode");
+			// 驗證資料
+			if (emailVerifyCode == null || emailVerifyCode.trim().length() == 0) {
+				req.setAttribute("errorMsg", "連結信已逾時，請重新申請。");
+				req.getRequestDispatcher("/coach/CoachEmailVerify.jsp").forward(req, res);
+				return;
+			}
 			// 取得redis資料
 			Jedis jedis = pool.getResource();
 			String tempAuth = jedis.get("MailVerify:" + coachNo);
@@ -320,7 +326,7 @@ public class CoachController extends HttpServlet {
 				req.setAttribute("errorMsg", "連結信已逾時，請重新申請。");
 				req.getRequestDispatcher("/coach/CoachEmailVerify.jsp").forward(req, res);
 				return;
-			} else if (emailVerifyCode.equals(tempAuth)) {
+			} else if ((emailVerifyCode.trim()).equals(tempAuth)) {
 				System.out.println("驗證成功!");
 				CoachVO cVo = coachSvc.findByPK(coachNo);
 //				String coachEmail = cVo.getCoachEmail();
@@ -372,9 +378,9 @@ public class CoachController extends HttpServlet {
 //			System.out.println(inputEmail);
 
 			// 設定返回值
-			req.setAttribute("coachEmail", inputEmail);
+			req.setAttribute("coachEmail", inputEmail.trim());
 
-			if ((inputVerCode.trim()).length() == 0 || inputVerCode == null) {
+			if (inputVerCode == null || (inputVerCode.trim()).length() == 0) {
 				errorMsgs.add("請輸入驗證碼。");
 
 			} else {
@@ -390,7 +396,8 @@ public class CoachController extends HttpServlet {
 				return;// 程式中斷
 			}
 
-			if ((inputEmail.trim()).length() == 0 || (inputPwd.trim()).length() == 0) {
+			if (inputEmail == null || inputPwd == null || (inputEmail.trim()).length() == 0
+					|| (inputPwd.trim()).length() == 0) {
 				errorMsgs.add("帳號或密碼不可為空，請重新登入。");
 
 			}
@@ -402,11 +409,11 @@ public class CoachController extends HttpServlet {
 
 			// 尋找資料庫
 
-			CoachVO cVo = coachSvc.findByCoachEmail(inputEmail);
+			CoachVO cVo = coachSvc.findByCoachEmail(inputEmail.trim());
 			// 未註冊
 			if (cVo == null) {
 				session.setAttribute("noRegister", "尚未註冊，請註冊後再登入。");
-				session.setAttribute("coachEmail", inputEmail);
+				session.setAttribute("coachEmail", inputEmail.trim());
 				res.sendRedirect(req.getContextPath() + "/coach/CoachRegister.jsp");
 				return;// 程式中斷
 			}
@@ -422,13 +429,12 @@ public class CoachController extends HttpServlet {
 
 			// 登入失敗
 			String password = cVo.getCoachPwd();
-			if (!BCrypt.checkpw(inputPwd, password)) {
+			if (!BCrypt.checkpw(inputPwd.trim(), password)) {
 				errorMsgs.add("密碼錯誤，請重新登入。");
 				req.getRequestDispatcher("/coach/CoachLogin.jsp").forward(req, res);
 				return;// 程式中斷
 			} else {
 				// 登入成功
-				// 確定email是否有驗證
 
 				// 取得運動種類
 				List<CoachSportTypeVO> sportTypeList = coachSportTypeSvc.findByCoachNo(cVo.getCoachNo());
@@ -533,7 +539,7 @@ public class CoachController extends HttpServlet {
 
 			// 驗證資料
 			// 驗證名字
-			if ((coachName.trim()).length() == 0 || coachName == null) {
+			if (coachName == null || (coachName.trim()).length() == 0) {
 				errorMsgs.add("請輸入姓名");
 			} else {
 				if (!(coachName.trim()).matches(nameRegex)) {
@@ -548,7 +554,7 @@ public class CoachController extends HttpServlet {
 			}
 
 			// 驗證電話
-			if ((coachPhone.trim()).length() == 0 || coachPhone == null) {
+			if (coachPhone == null || (coachPhone.trim()).length() == 0) {
 				errorMsgs.add("請輸入手機號碼");
 			} else {
 				if (!(coachPhone.trim()).matches(phoneRegex)) {
@@ -581,7 +587,7 @@ public class CoachController extends HttpServlet {
 			}
 
 			// 驗證教學經驗
-			if ((coachExp.trim()).length() == 0 || coachExp == null) {
+			if (coachExp == null || (coachExp.trim()).length() == 0) {
 				errorMsgs.add("請輸入教學經驗");
 			} else {
 				if (Integer.parseInt(coachExp.trim()) < 0 || Integer.parseInt(coachExp.trim()) > 100) {
@@ -604,11 +610,11 @@ public class CoachController extends HttpServlet {
 			}
 
 			// 設置CoachVo
-			coachVO.setCoachName(coachName);
-			coachVO.setCoachPhone(coachPhone);
+			coachVO.setCoachName(coachName.trim());
+			coachVO.setCoachPhone(coachPhone.trim());
 			coachVO.setCoachExp(Integer.parseInt(coachExp.trim()));
-			if (coachIntro.trim().length() != 0 && coachIntro != null) {
-				coachVO.setCoachIntro(coachIntro);
+			if (coachIntro != null && coachIntro.trim().length() != 0) {
+				coachVO.setCoachIntro(coachIntro.trim());
 			} else {
 				coachVO.setCoachIntro(null);
 			}
@@ -644,7 +650,7 @@ public class CoachController extends HttpServlet {
 				sportCertVo.setSportCertImg(coachCertImg1File);
 				sportCertVo.setSportType(Integer.parseInt(certSportType1));
 				sportCertSvc.add(sportCertVo);
-			} else if ((sportCertList != null && sportCertList.size() >= 1)) {
+			} else if (sportCertList != null && (sportCertList.size()) >= 1) {
 				sportCertSvc.add(sportCertList.get(0));
 			}
 
@@ -657,7 +663,7 @@ public class CoachController extends HttpServlet {
 				sportCertVo.setSportCertImg(coachCertImg2File);
 				sportCertVo.setSportType(Integer.parseInt(certSportType2));
 				sportCertSvc.add(sportCertVo);
-			} else if ((sportCertList != null && sportCertList.size() >= 2)) {
+			} else if (sportCertList != null && (sportCertList.size()) >= 2) {
 				sportCertSvc.add(sportCertList.get(1));
 			}
 
@@ -670,7 +676,7 @@ public class CoachController extends HttpServlet {
 				sportCertVo.setSportCertImg(coachCertImg3File);
 				sportCertVo.setSportType(Integer.parseInt(certSportType3));
 				sportCertSvc.add(sportCertVo);
-			} else if ((sportCertList != null && sportCertList.size() >= 3)) {
+			} else if (sportCertList != null && (sportCertList.size()) >= 3) {
 				sportCertSvc.add(sportCertList.get(2));
 			}
 			// 重新放置session中的vo
@@ -813,7 +819,8 @@ public class CoachController extends HttpServlet {
 			List<String> errorMsgs = new LinkedList<>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			// 取參數
-			String coachNo = req.getParameter("coachNo");
+			HttpSession session = req.getSession();
+			String coachNo = (String) session.getAttribute("coachNo");
 			String coachTempPwd = req.getParameter("coachTempPwd");
 			String coachPwd = req.getParameter("coachPwd");
 			String coachPwd2 = req.getParameter("coachPwd2");
@@ -855,7 +862,7 @@ public class CoachController extends HttpServlet {
 				cVo.setCoachPwd(coachPwd.trim());
 				String upResult = coachSvc.updatePwd(cVo);
 				if ("更新成功".equals(upResult)) {
-					HttpSession session = req.getSession();
+
 					session.setAttribute("registerSuccess", "密碼更改成功，請登入。");
 					res.sendRedirect(req.getContextPath() + "/coach/CoachLogin.jsp");
 					return;
