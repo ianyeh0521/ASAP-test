@@ -35,7 +35,7 @@ response.flushBuffer();
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>ASAP論壇首頁</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
@@ -99,11 +99,6 @@ response.flushBuffer();
 .forum-button, .user-button {
 	padding: 10px 20px;
 	margin-right: 10px;
-
-	/*border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;*/
 }
 
 .forum-dropdown {
@@ -127,9 +122,7 @@ response.flushBuffer();
 	border-radius: 5px;
 	overflow: hidden;
 	width: 70%;
-	/* 文章寬度佔70% */
 	margin: 0 auto;
-	/* 水平居中對齊 */
 	max-height: 220px;
 }
 
@@ -194,7 +187,7 @@ response.flushBuffer();
 <body>
 	<div class="page-wrapper">
 		<header class="header">
-			<div class="header-middle sticky-header"
+<div class="header-middle sticky-header"
 				data-sticky-options="{'mobile': true}"
 				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
 				<div class="container">
@@ -203,7 +196,7 @@ response.flushBuffer();
 							type="button">
 							<i class="fas fa-bars"></i>
 						</button>
-						<a href="#" width="222" height="88"> <img
+						<a href="${pageContext.request.contextPath}/member/MemberHome.jsp" style="width: 222; height: 88;"> <img
 							src="${pageContext.request.contextPath}/newImg/logo2.png"
 							alt="Logo" />
 						</a>
@@ -221,38 +214,54 @@ response.flushBuffer();
 						<ul class="menu" style="display: flex; justify-content: flex-end">
 							<li><a href="#">論壇</a>
 								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
+									<li><a href="${pageContext.request.contextPath}/forum/forum_home.jsp">論壇首頁</a></li>
+									<li><a href="${pageContext.request.contextPath}/forum/addpost.jsp">發佈貼文</a></li>
+									<li><a href="${pageContext.request.contextPath}/forum/my_post.jsp">我的貼文</a></li>
+									<li><a href="${pageContext.request.contextPath}/forum/my_save_post.jsp">收藏貼文</a></li>
 								</ul></li>
 							<li><a href="#">揪團</a>
 								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
+									<li><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
+									<li><a href="${pageContext.request.contextPath}/group/creategroup.jsp">發起揪團</a></li>
+									<li><a href="${pageContext.request.contextPath}/group/myJoinGroup.jsp">我的揪團-參加</a></li>
+									<li><a href="${pageContext.request.contextPath}/group/mycreateGroup.jsp">我的揪團-發起</a></li>
 								</ul></li>
-							<li><a href="#">找課程</a>
+							<li><a href="#">課程</a>
 								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
+									<li><a href="${pageContext.request.contextPath}/course/course_main.jsp">查詢課程</a></li>
+									<li><a href="${pageContext.request.contextPath}/course/course_orderlist.jsp">我的課程</a></li>
 								</ul></li>
-							<li><a href="#">找場地</a>
+							<li><a href="#">場地</a>
 								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
+									<li><a href="${pageContext.request.contextPath}/court/court_main.jsp">詢找場地</a></li>
+									<li><a href="${pageContext.request.contextPath}/court/court_orderlist.jsp">我的預約</a></li>
+									<li><a href="${pageContext.request.contextPath}/court/court_savelist.jsp">我的收藏</a></li>
 								</ul></li>
-							<li><a href="#">賣家入口</a>
+							<li><a href="#">賣家</a>
 								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
+									<li><a href="${pageContext.request.contextPath}/shop/ItemManage.jsp">商品管理</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/SellerOrderManage.jsp">訂單管理</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/SellerCmtManage.jsp">評論管理</a></li>
+								</ul>
+							</li>
 
-							<li><a href="">商城</a></li>
-							<li><a href="" style="color: red">登入</a></li>
+							<li><a href="#">商城</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/shop/AsapShop.jsp">商城首頁</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/AsapCart.jsp">購物車</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/MyCollection.jsp">我的收藏</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/PendingOrder.jsp">待付款訂單</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/BuyerOrderManage.jsp">已付款訂單</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/ItemComment.jsp">商品評論</a></li>
+								</ul>
+							</li>
+							<li><a href="#">個人首頁</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/member/MemberHome.jsp">我的帳戶</a></li>
+									<li><a href="${pageContext.request.contextPath}/member/MemberChat.jsp">客服</a></li>
+								</ul>
+							</li>
+							<li><a href="login.jsp" style="color: blue">登出</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -311,7 +320,7 @@ response.flushBuffer();
 				<button type="submit"
 					class="user-button btn btn-default btn-rounded btn-md">我的貼文</button>
 				<button type="submit"
-					class="user-button btn btn-default btn-rounded btn-md">已收藏貼文</button>
+					class="user-button btn btn-default btn-rounded btn-md">收藏貼文</button>
 			</div>
 		</div>
 
@@ -363,10 +372,6 @@ response.flushBuffer();
 		<!-- Main JS File -->
 		<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 		<script>
-      //$("header").load("header.html");
-      $("footer").load("footer.html");
-      $("div.sticky-navbar").load("sticky-navbar.html");
-      $("div.mobile-menu-container").load("mobile-menu-container.html");
       
 	      var state = {
 	    		  'querySet': [],
@@ -564,11 +569,7 @@ response.flushBuffer();
 		              }
 		            })
 		        }})
-
-
-			
-				
-				
+		
     </script>
 </body>
 
