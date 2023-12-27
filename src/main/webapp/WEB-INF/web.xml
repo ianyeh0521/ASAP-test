@@ -81,6 +81,12 @@
 		<url-pattern>/member/MemberChat.jsp</url-pattern>
 		<url-pattern>/member/MemberHome.jsp</url-pattern>
 		<url-pattern>/member/MemberUpdateInfo.jsp</url-pattern>
+<!-- 		<url-pattern>/group/*</url-pattern> -->
+		<url-pattern>/shop/*</url-pattern>
+		<url-pattern>/course/*</url-pattern>
+		<url-pattern>/court/*</url-pattern>
+		<url-pattern>/forum/*</url-pattern>
+		<url-pattern></url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
