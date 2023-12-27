@@ -30,16 +30,51 @@ public class GrpInfoDAO implements GrpInfoDAO_interface {
 
 	@Override
 	public int update(GrpInfoVO grpInfo) {
-		Query query;
+		
 		int updatedgrpInfo = 0;
 		try {			
-			String hql = "UPDATE GrpInfoVO SET GrpStat = :newGrpStat WHERE GrpNo = :grpNo";
-			query = getSession().createQuery(hql);
-			query.setParameter("newGrpStat", grpInfo.getGrpStat());
-			System.out.println("-----------TEST-----------"+grpInfo.getGrpStat());
-			query.setParameter("grpNo", grpInfo.getGrpNo());
-			System.out.println("-----------TEST-----------"+grpInfo.getGrpNo());
-			updatedgrpInfo = query.executeUpdate();
+			if(grpInfo.getGrpStat() == 1) {
+				Query query;
+				String hql = "UPDATE GrpInfoVO SET GrpStat = :newGrpStat WHERE GrpNo = :grpNo";
+				query = getSession().createQuery(hql);
+				query.setParameter("newGrpStat", grpInfo.getGrpStat());
+				query.setParameter("grpNo", grpInfo.getGrpNo());
+				updatedgrpInfo = query.executeUpdate();
+			}
+			else {
+				Query query;
+				String hql = "UPDATE GrpInfoVO SET "
+				        + "OrgMbrNo = :orgMbrNo, "
+				        + "SportTypeNo = :sportTypeNo, "
+				        + "GrpName = :grpName, "
+				        + "GrpDate = :grpDate, "
+				        + "GrpStartTime = :grpStartTime, "
+				        + "GrpEndTime = :grpEndTime, "
+				        + "GrpAddress = :grpAddress, "
+				        + "GrpPplLimit = :grpPplLimit, "
+				        + "GrpPplMin = :grpPplMin, "
+				        + "GrpSignStrTime = :grpSignStrTime, "
+				        + "GrpSignEndTime = :grpSignEndTime, "
+				        + "GrpNote = :grpNote, "
+				        + "GrpImg = :grpImg "
+				        + "WHERE GrpNo = :grpNo";
+				query = getSession().createQuery(hql);
+				query.setParameter("orgMbrNo", grpInfo.getOrgMbrNo());
+				query.setParameter("sportTypeNo", grpInfo.getSportTypeNo());
+				query.setParameter("grpName", grpInfo.getGrpName());
+				query.setParameter("grpDate", grpInfo.getGrpDate());
+				query.setParameter("grpStartTime", grpInfo.getGrpStartTime());
+				query.setParameter("grpEndTime", grpInfo.getGrpEndTime());
+				query.setParameter("grpAddress", grpInfo.getGrpAddress());
+				query.setParameter("grpPplLimit", grpInfo.getGrpPplLimit());
+				query.setParameter("grpPplMin", grpInfo.getGrpPplMin());
+				query.setParameter("grpSignStrTime", grpInfo.getGrpSignStrTime());
+				query.setParameter("grpSignEndTime", grpInfo.getGrpSignEndTime());
+				query.setParameter("grpNote", grpInfo.getGrpNote());
+				query.setParameter("grpImg", grpInfo.getGrpImg());
+				query.setParameter("grpNo", grpInfo.getGrpNo());
+				updatedgrpInfo = query.executeUpdate();
+			}
 					    
 		} catch (Exception e) {
 			e.printStackTrace();
