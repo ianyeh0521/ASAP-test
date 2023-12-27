@@ -129,7 +129,7 @@
 										style="margin: 5px 0 15px 0; justify-content: flex-end">
 										<div style="margin-right: 15px;">
 											<a
-												href="${pageContext.request.contextPath}/member/register.jsp"
+												href="${pageContext.request.contextPath}/member/MemberRegister.jsp"
 												class="forget-password text-dark form-footer-right"
 												style="text-decoration: underline;">註冊帳號</a>
 										</div>

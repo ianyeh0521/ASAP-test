@@ -87,7 +87,7 @@
 		<url-pattern>/course/*</url-pattern>
 		<url-pattern>/court/*</url-pattern>
 		<url-pattern>/forum/*</url-pattern>
-		<url-pattern></url-pattern>
+<!-- 		<url-pattern></url-pattern> -->
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
