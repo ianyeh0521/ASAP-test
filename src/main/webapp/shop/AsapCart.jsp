@@ -161,7 +161,8 @@ System.out.println(list);
 								<tbody>
 
 									<c:forEach items="${list}" var="cartItem" varStatus="status">
-										<tr class="product-row"  data-cartid="${cartItem.shoppingCartNo}">
+										<tr class="product-row"
+											data-cartid="${cartItem.shoppingCartNo}">
 											<td>
 												<figure class="product-image-container">
 													<a
@@ -173,9 +174,8 @@ System.out.println(list);
 
 
 													<a href="#" class="btn-remove icon-cancel"
-														title="Remove Product"
-														></a>
-														
+														title="Remove Product"></a>
+
 												</figure>
 											</td>
 											<td class="product-col" style="padding-left: 10px">
@@ -264,9 +264,14 @@ System.out.println(list);
 							</table>
 
 							<div class="checkout-methods">
-								<a href="AsapOrderCheck.jsp" class="btn btnoter-block btn-dark"
-									style="padding-left: 20px">確認訂單 <i
-									class="fa fa-arrow-right"></i>
+								<!-- 								<a href="AsapOrderCheck.jsp" class="btn btnoter-block btn-dark" -->
+								<!-- 									style="padding-left: 20px">確認訂單 <i -->
+								<!-- 									class="fa fa-arrow-right"></i> -->
+								<!-- 								</a>  -->
+
+								<a href="javascript:void(0);" id="confirmOrderBtn"
+									class="btn btnoter-block btn-dark" style="padding-left: 20px">確認訂單
+									<i class="fa fa-arrow-right"></i>
 								</a>
 
 							</div>
@@ -313,39 +318,53 @@ System.out.println(list);
 		$("footer").load("footer.html");
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
-		
-		$('.btn-remove').on('click', function(e) {
-		    e.preventDefault();
-		    var cartId = $(this).closest('tr').data('cartid'); // 獲取購物車項目 ID
-		    let r = confirm("確認刪除此項商品?");
-			console.log(cartId);
-		    // 發送 AJAX 請求到後端
-		    if (r){
-		    $.ajax({
-		        url: '${pageContext.request.contextPath}/shop/ShoppingCartServlet',
-		        method: 'POST',
-		        data: {
-		            action: 'remove',
-		            shoppingCartNo: cartId // 購物車項目 ID
-		        },
-		        success: function(response) {
-		        	alert("刪除成功")
-		           document.location.reload()
-		        },
-		        error: function(xhr, status, error) {
-		            // 處理錯誤
-		            console.error(error);
-		        }
-		    });
-		    }
-		});
-		
-		
-		
-		
-		
+
+		$('.btn-remove')
+				.on(
+						'click',
+						function(e) {
+							e.preventDefault();
+							var cartId = $(this).closest('tr').data('cartid'); // 獲取購物車項目 ID
+							let r = confirm("確認刪除此項商品?");
+							console.log(cartId);
+							// 發送 AJAX 請求到後端
+							if (r) {
+								$
+										.ajax({
+											url : '${pageContext.request.contextPath}/shop/ShoppingCartServlet',
+											method : 'POST',
+											data : {
+												action : 'remove',
+												shoppingCartNo : cartId
+											// 購物車項目 ID
+											},
+											success : function(response) {
+												alert("刪除成功")
+												document.location.reload()
+											},
+											error : function(xhr, status, error) {
+												// 處理錯誤
+												console.error(error);
+											}
+										});
+							}
+						});
+
+		//判斷購物車是否為空
+		document.getElementById('confirmOrderBtn').addEventListener('click',
+				function() {
+					var cartList =
+	<%=list.size()%>
+		; // 獲取購物車商品數量
+					if (cartList === 0) {
+						alert('購物車內無商品!');
+						window.location.href = 'AsapShop.jsp'; // 重定向到商城首頁
+					} else {
+						window.location.href = 'AsapOrderCheck.jsp'; // 如果購物車不為空，則轉到訂單確認頁面
+					}
+				});
 	</script>
-	
+
 </body>
 
 </html>

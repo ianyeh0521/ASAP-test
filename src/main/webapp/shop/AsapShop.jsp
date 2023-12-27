@@ -5,6 +5,9 @@
 <%@ page import="com.asap.shop.entity.ItemInfoVO"%>
 <%@ page import="com.asap.shop.service.ItemInfoService_interface"%>
 <%@ page import="com.asap.shop.service.ItemInfoService"%>
+<%@ page import="com.asap.shop.entity.ShoppingCartVO"%>
+<%@ page import="com.asap.shop.service.ShoppingCartService_interface"%>
+<%@ page import="com.asap.shop.service.ShoppingCartService"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -14,6 +17,14 @@
 // List<ItemInfoVO> list = ItemSvc.getAll();
 // pageContext.setAttribute("list", list);
 // System.out.println(list);
+
+// String shoppingCart = request.getParameter("mbrNo");
+ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
+ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
+List<ShoppingCartVO> cartlist = ShoppingCartSvc.findByMember("M1");
+pageContext.setAttribute("cartlist", cartlist);
+
+System.out.println(cartlist);
 %>
 
 <html lang="en">
@@ -61,7 +72,7 @@
 	href="../assets/vendor/fontawesome-free/css/all.min.css" />
 <style>
 .selected {
-	color: blue;
+	color: red;
 }
 </style>
 </head>
@@ -78,7 +89,7 @@
 							type="button">
 							<i class="fas fa-bars"></i>
 						</button>
-						<a href="#" width="222" height="88"> <img
+						<a href="javascript:void(0);" width="222" height="88"> <img
 							src="../newImg/logo2.png" alt="Logo" />
 						</a>
 					</div>
@@ -125,7 +136,7 @@
 									<li><a href="#">商品評論</a></li>
 								</ul></li>
 
-							<li><a href="">商城</a></li>
+							<li><a href="AsapShop.jsp">商城</a></li>
 							<li><a href="" style="color: red">登入</a></li>
 						</ul>
 					</nav>
@@ -136,16 +147,22 @@
 		</header>
 		<!-- End .header -->
 		<div class="header-middle">
-			<div class="container">
-				<div class="header-right w-lg-max">
+			<div class="container"
+				style="display: flex; justify-content: center; align-items: center; height: 100%;">
+				<div class="header-right w-lg-max"
+					style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
 					<div
-						class="header-search header-search-inline header-search-category d-lg-block d-none text-right mt-0">
+						class="header-search header-search-inline header-search-category d-lg-block d-none text-right mt-0"
+						style="flex-grow: 1;">
 						<a href="#" class="search-toggle" role="button"><i
 							class="icon-magnifier"></i></a>
-						<form action="ItemInfoServlet" method="get">
-							<div class="header-search-wrapper">
+						<form action="ItemInfoServlet" method="get"
+							style="display: flex; justify-content: center; align-items: center; width: 100%;">
+							<div class="header-search-wrapper"
+								style="display: flex; justify-content: center; align-items: center; width: 100%;">
 								<input type="search" class="form-control" name="q" id="q"
-									placeholder="尋找想要的商品吧!" required="" />
+									placeholder="尋找想要的商品吧!" required=""
+									style="flex-grow: 1; border: 2px solid #778899;" />
 								<button class="btn icon-magnifier p-0" id="itemsearch"
 									title="搜尋" type="button"></button>
 							</div>
@@ -158,640 +175,462 @@
 						<!-- 						class="cart-count badge-circle">3</span> --> </a>
 
 					<div class="dropdown cart-dropdown">
-						<a href="PendingOrder.jsp" title="購物車" class="dropdown-toggle cart-toggle"
-							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false" data-display="static"> <i
-							class="icon-cart-thick"></i> <span
-							class="cart-count badge-circle">2</span>
+						<a href="PendingOrder.jsp" title="購物車"
+							class="dropdown-toggle cart-toggle" role="button"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+							data-display="static"> <i class="icon-cart-thick"></i>
 						</a>
 
 						<div class="cart-overlay"></div>
 
 						<div class="dropdown-menu mobile-cart">
 							<a href="#" title="Close (Esc)" class="btn-close">×</a>
-
 							<div class="dropdownmenu-wrapper custom-scrollbar">
+
 								<div class="dropdown-cart-header">購物車</div>
 								<!-- End .dropdown-cart-header -->
 
-								<div class="dropdown-cart-products">
-									<div class="product">
-										<div class="product-details">
-											<h4 class="product-title">
-												<a href="AsapShopProduct.jsp">足球</a>
-											</h4>
+								<c:forEach items="${cartlist}" var="cartItem">
+									<div class="dropdown-cart-products">
 
-											<span class="cart-product-info"> <span
-												class="cart-product-qty">1</span> × $200.00
-											</span>
+										<div class="product" data-cartid="${cartItem.shoppingCartNo}">
+											<div class="product-details">
+												<h4 class="product-title">
+													<a href="ItemInfoServlet?action=increaseViewItem&itemNo=${cartItem.itemInfoVO.itemNo}">${cartItem.itemInfoVO.itemName}</a>
+												</h4>
+
+												<span class="cart-product-info"> <span
+													class="cart-product-qty">$${cartItem.itemInfoVO.itemPrice}</span>
+													× ${cartItem.itemShopQty}
+												</span>
+											</div>
+											<!-- End .product-details -->
+
+											<figure class="product-image-container">
+												<a href="ItemInfoServlet?action=increaseViewItem&itemNo=${cartItem.itemInfoVO.itemNo}" class="product-image"> <img
+													src="ItemInfoServlet?action=getImg&itemNo=${cartItem.itemInfoVO.itemNo}"
+													alt="product">
+												</a>
+
+														<a href="javascript:void(0);" class="btn-remove"
+														title="Remove Product"><span>×</span></a> <!-- 取消商品的動作 -->
+											</figure>
 										</div>
-										<!-- End .product-details -->
+										<!-- End .product -->
 
-										<figure class="product-image-container">
-											<a href="AsapShopProduct.jsp" class="product-image"> <img
-												src="../assets/images/asapshop/football.jpg" alt="product"
-												width="80" height="80" />
-											</a>
-
-											<a href="#" class="btn-remove" title="Remove Product"><span>×</span></a>
-											<!-- 取消商品的動作 -->
-										</figure>
 									</div>
-									<!-- End .product -->
 
-									<div class="product">
-										<div class="product-details">
-											<h4 class="product-title">
-												<a href="AsapShopProduct.jsp">棒球帽</a>
-											</h4>
+									<!-- End .cart-product -->
 
-											<span class="cart-product-info"> <span
-												class="cart-product-qty">3</span> × $400.00
-											</span>
-										</div>
-										<!-- End .product-details -->
-
-										<figure class="product-image-container">
-											<a href="AsapShopProduct.jsp" class="product-image"> <img
-												src="../assets/images/asapshop/baseballhat2.jpg"
-												alt="product" width="80" height="80" />
-											</a>
-
-											<a href="#" class="btn-remove" title="Remove Product"><span>×</span></a>
-											<!-- 取消商品的動作 -->
-										</figure>
+									<div class="dropdown-cart-total">
+										<span>小計:</span> <span class="cart-total-price float-right">$${cartItem.itemInfoVO.itemPrice
+											* cartItem.itemShopQty}</span>
 									</div>
-									<!-- End .product -->
-								</div>
-								<!-- End .cart-product -->
-
-								<div class="dropdown-cart-total">
-									<span>小計:</span> <span class="cart-total-price float-right">$1,400.00</span>
-								</div>
+								</c:forEach>
 								<!-- End .dropdown-cart-total -->
 
 								<div class="dropdown-cart-action">
 									<a href="AsapCart.jsp" class="btn btn-gray btn-block view-cart">查看購物車</a>
-									<a href="PendingOrder.jsp" class="btn btn-dark btn-block">確認訂單</a>
-									
-																</div>
-							<button type="submit" class="btn btn-dark btn-place-order"
-								name="action" value="ordercreate" form="checkout-form">前往待付款頁面</button>
-						</div>
-						
 								</div>
-								<!-- End .dropdown-cart-total -->
+
 							</div>
-							<!-- End .dropdownmenu-wrapper -->
+
 						</div>
-						<!-- End .dropdown-menu -->
+						<!-- End .dropdown-cart-total -->
 					</div>
-					<!-- End .dropdown -->
+					<!-- End .dropdownmenu-wrapper -->
 				</div>
-				<!-- End .header-right -->
+				<!-- End .dropdown-menu -->
 			</div>
-			<!-- End .container -->
+			<!-- End .dropdown -->
 		</div>
-		<!-- End .header-middle -->
-		<main class="main">
-			<div class="container">
+		<!-- End .header-right -->
+	</div>
+	<!-- End .container -->
+	</div>
+	<!-- End .header-middle -->
+	<main class="main">
+		<div class="container">
 
-				<div class="row">
-					<div class="col-lg-9 main-content">
-						<nav class="toolbox sticky-header"
-							data-sticky-options="{'mobile': true}">
-							<div class="toolbox-left">
+			<div class="row">
+				<div class="col-lg-9 main-content">
+					<nav class="toolbox sticky-header"
+						data-sticky-options="{'mobile': true}">
+						<div class="toolbox-left">
 
-								<div class="toolbox-item toolbox-sort">
-									<label>排序方式:</label>
+							<div class="toolbox-item toolbox-sort">
+								<label>排序方式:</label>
 
-									<div class="select-custom">
-										<select name="orderby" class="form-control orderby">
-											<option value="menu">請選擇</option>
+								<div class="select-custom">
+									<select name="orderby" class="form-control orderby">
+										<option value="menu">請選擇</option>
 
-											<option value="new_order">最新上架</option>
+										<option value="new_order">最新上架</option>
 
-											<option value="true">價格:高到低</option>
+										<option value="true">價格:高到低</option>
 
-											<option value="false">價格:低到高</option>
+										<option value="false">價格:低到高</option>
 
-											<option value="view_order">瀏覽人數</option>
+										<option value="view_order">瀏覽人數</option>
 
-										</select>
-									</div>
-									<!-- End .select-custom -->
+									</select>
 								</div>
-								<!-- End .toolbox-item -->
+								<!-- End .select-custom -->
 							</div>
-							<!-- End .toolbox-left -->
-						</nav>
+							<!-- End .toolbox-item -->
+						</div>
+						<!-- End .toolbox-left -->
+					</nav>
 
-						<div class="row" id="roworder">
-							<c:forEach var="ItemInfoVO" items="${list}">
-								<div class="col-6 col-sm-3">
-									<div class="product-default inner-quickview inner-icon">
-										<figure>
-											<span
-												style="display: flex; align-items: center; justify-content: center; height: 300px;">
-												<a
-												href="ItemInfoServlet?action=increaseViewItem&itemNo=${ItemInfoVO.itemNo}">
-													<img
-													src="ItemInfoServlet?action=getImg&itemNo=${ItemInfoVO.itemNo}"
-													alt="product" style="max-height: 100%;" />
+					<div class="row" id="roworder">
+						<c:forEach var="ItemInfoVO" items="${list}">
+							<div class="col-6 col-sm-3">
+								<div class="product-default inner-quickview inner-icon">
+									<figure>
+										<span
+											style="display: flex; align-items: center; justify-content: center; height: 300px;">
+											<a
+											href="ItemInfoServlet?action=increaseViewItem&itemNo=${ItemInfoVO.itemNo}">
+												<img
+												src="ItemInfoServlet?action=getImg&itemNo=${ItemInfoVO.itemNo}"
+												alt="product" style="max-height: 100%;" />
+										</a>
+										</span>
+
+
+										<div class="label-group">
+											<!-- 												<span class="product-label label-sale">-50%</span> -->
+										</div>
+
+										<a href="ProductQuickView.html" class="btn-quickview"
+											title="快速查看">快速查看</a>
+									</figure>
+									<div class="product-details">
+										<div class="category-wrap">
+											<div class="category-list">
+												<span>${ItemInfoVO.itemName}</span>、<span>${ItemInfoVO.itemTypeVO.itemTypeName}</span>、<span>${ItemInfoVO.itemStatVO.itemStatText}</span>
+											</div>
+											<!-- 												<a href="AsapShopWish.jsp" class="btn-icon-wish" -->
+											<!-- 													title="加入收藏"><i class="icon-heart"></i></a> -->
+										</div>
+										<h3 class="product-title">
+											<a href="AsapShopProduct.jsp?itemNo=${ItemInfoVO.itemNo}"><div>
+													商品名稱: <span>${ItemInfoVO.itemName}</span>
+												</div></a>
+											<div>
+												瀏覽人數: <span>${ItemInfoVO.itemView}</span>
+											</div>
+											<div>
+												商品庫存: <span class=itemstockqty>${ItemInfoVO.itemStockQty}</span>
+											</div>
+										</h3>
+										<div class="product-buttons"
+											style="display: flex; align-items: center;">
+											<input type="number" class="product-quantity"
+												placeholder="請選擇數量" min="1" max="${ItemInfoVO.itemStockQty}"
+												style="width: 100px; margin-right: 20px;" /> <a
+												href="javascript:;" class="btn-icon-cart" title="加入購物車"
+												data-itemno="${ItemInfoVO.itemNo}"> <i
+												class="icon-shopping-cart"></i> 加入購物車
 											</a>
-											</span>
 
+										</div>
+										<div style="margin-top: 1px; margin-left: 138px;">
+											<a href="AsapCart.jsp" class="btn-view-cart"> 查看購物車 </a>
+										</div>
 
-											<div class="label-group">
-												<!-- 												<span class="product-label label-sale">-50%</span> -->
-											</div>
-
-											<a href="ProductQuickView.html" class="btn-quickview"
-												title="快速查看">快速查看</a>
-										</figure>
-										<div class="product-details">
-											<div class="category-wrap">
-												<div class="category-list">
-													<span>${ItemInfoVO.itemName}</span>、<span>${ItemInfoVO.itemTypeVO.itemTypeName}</span>、<span>${ItemInfoVO.itemStatVO.itemStatText}</span>
-												</div>
-												<!-- 												<a href="AsapShopWish.jsp" class="btn-icon-wish" -->
-												<!-- 													title="加入收藏"><i class="icon-heart"></i></a> -->
-											</div>
-											<h3 class="product-title">
-												<a href="AsapShopProduct.jsp?itemNo=${ItemInfoVO.itemNo}"><div>
-														商品名稱: <span>${ItemInfoVO.itemName}</span>
-													</div></a>
-												<div>
-													瀏覽人數: <span>${ItemInfoVO.itemView}</span>
-												</div>
-												<div>
-													商品庫存: <span class=itemstockqty>${ItemInfoVO.itemStockQty}</span>
-												</div>
-											</h3>
-											<div class="product-buttons"
-												style="display: flex; align-items: center;">
-												<input type="number" class="product-quantity"
-													placeholder="請選擇數量" min="1"
-													max="${ItemInfoVO.itemStockQty}"
-													style="width: 100px; margin-right: 20px;" /> <a
-													href="javascript:;" class="btn-icon-cart" title="加入購物車"
-													data-itemno="${ItemInfoVO.itemNo}"> <i
-													class="icon-shopping-cart"></i> 加入購物車
-												</a>
-
-											</div>
-											<div style="margin-top: 1px; margin-left: 138px;">
-												<a href="AsapCart.jsp" class="btn-view-cart"> 查看購物車 </a>
-											</div>
-
-											<div class="price-box">
-												<c:if test="${ItemInfoVO.preItemPrice != 0}">
-													<del class="old-price">$${ItemInfoVO.preItemPrice}</del>
-												</c:if>
-												<span class="product-price">$${ItemInfoVO.itemPrice}</span>
-											</div>
-
+										<div class="price-box">
+											<c:if test="${ItemInfoVO.preItemPrice != 0}">
+												<del class="old-price">$${ItemInfoVO.preItemPrice}</del>
+											</c:if>
+											<span class="product-price">$${ItemInfoVO.itemPrice}</span>
 										</div>
 
 									</div>
+
 								</div>
-							</c:forEach>
+							</div>
+						</c:forEach>
 
-						</div>
-						<!-- End .row -->
-
-						<div class="pagination-container" style="text-align: center">
-							<div id="pagination-wrapper"></div>
-						</div>
-						<!-- 						<nav class="toolbox toolbox-pagination"> -->
-						<!-- 							<ul class="pagination toolbox-item"> -->
-						<!-- 								<li class="page-item disabled"><a -->
-						<!-- 									class="page-link page-link-btn" href="#"><i -->
-						<!-- 										class="icon-angle-left"></i></a></li> -->
-						<!-- 								<li class="page-item active"><a class="page-link" href="#">1 -->
-						<!-- 										<span class="sr-only">(current)</span> -->
-						<!-- 								</a></li> -->
-						<!-- 								<li class="page-item"><a class="page-link" href="#">2</a></li> -->
-						<!-- 								<li class="page-item"><a class="page-link page-link-btn" -->
-						<!-- 									href="#"><i class="icon-angle-right"></i></a></li> -->
-						<!-- 							</ul> -->
-						<!-- 						</nav> -->
 					</div>
-					<!-- End .col-lg-9 -->
+					<!-- End .row -->
 
-					<div class="sidebar-overlay"></div>
-					<aside class="sidebar-shop col-lg-3 order-lg-first mobile-sidebar">
-						<div class="sidebar-wrapper">
-							<div class="widget">
-								<h3 class="widget-title">
-									<a data-toggle="collapse" href="#widget-body-2" role="button"
-										aria-expanded="true" aria-controls="widget-body-2">商品分類</a>
-								</h3>
-
-								<div class="collapse show" id="widget-body-2">
-									<div class="widget-body">
-										<ul class="cat-list">
-											<li><a href="#widget-category-1" data-toggle="collapse"
-												role="button" aria-expanded="true"
-												aria-controls="widget-category-1"> 產品類型<span
-													class="products-count"></span> <span class="toggle"></span>
-											</a>
-												<div class="collapse show" id="widget-category-1">
-													<div class="row" id="item_type_select">
-														<div class="col-md-6">
-															<ul class="cat-sublist">
-																<li><div class="typeswim " data-category="1"
-																		data-column="itemTypeNo " style="cursor: pointer">
-																		帽子<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typebaseball " data-category="2"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		男上衣<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typetennis " data-category="3"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		男下身<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typehandball " data-category="4"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		男鞋<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typebasketball " data-category="5"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		女上衣<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typevolleyball " data-category="6"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		女下身<span class="products-count"></span>
-																	</div></li>
-															</ul>
-														</div>
-														<div class="col-md-6">
-															<ul class="cat-sublist">
-																<li><div class="typepingpong " data-category="7"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		女鞋<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typebanminton" data-category="8"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		配件<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typerun" data-category="9"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		球類<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typebike " data-category="10"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		健身器材<span class="products-count"></span>
-																	</div></li>
-																<li><div class="typesoccer " data-category="11"
-																		data-column="itemTypeNo" style="cursor: pointer">
-																		其他<span class="products-count"></span>
-																	</div></li>
-
-
-															</ul>
-														</div>
-													</div>
-												</div>
-											<li><a href="#widget-category-2" class="collapsed"
-												data-toggle="collapse" role="button" aria-expanded="false"
-												aria-controls="widget-category-2"> 商品尺寸<span
-													class="products-count"></span> <span class="toggle"></span>
-											</a>
-												<div class="collapse" id="widget-category-2">
-													<div class="row" id="item_size_select">
-														<ul class="cat-sublist">
-															<li><div class="sizenone" data-category="1"
-																	data-column="itemSizeNo" style="cursor: pointer">
-																	無<span class="products-count"></span>
-																</div></li>
-															<li><div class="sizexs" data-category="2"
-																	data-column="itemSizeNo" style="cursor: pointer">
-																	XS<span class="products-count"></span>
-																</div></li>
-															<li><div class="sizes" data-category="3"
-																	data-column="itemSizeNo" style="cursor: pointer">
-																	S<span class="products-count"></span>
-																</div></li>
-															<li><div class="sizem" data-category="4"
-																	data-column="itemSizeNo" style="cursor: pointer">
-																	M<span class="products-count"></span>
-																</div></li>
-															<li><div class="sizel" data-category="5"
-																	data-column="itemSizeNo" style="cursor: pointer">
-																	L<span class="products-count"></span>
-																</div></li>
-															<li><div class="sizexl" data-category="6"
-																	data-column="itemSizeNo" style="cursor: pointer">
-																	XL<span class="products-count"></span>
-																</div></li>
-
-														</ul>
-													</div>
-												</div></li>
-
-											<li><a href="#widget-category-3" class="collapsed"
-												data-toggle="collapse" role="button" aria-expanded="false"
-												aria-controls="widget-category-3"> 商品狀態<span
-													class="products-count"></span> <span class="toggle"></span>
-											</a>
-												<div class="collapse" id="widget-category-3">
-													<div class="row" id="item_stat_select">
-														<ul class="cat-sublist">
-															<li>
-																<div class="brandnew " data-category="1"
-																	data-column="itemStatNo" style="cursor: pointer">
-																	全新<span class="products-count"></span>
-																</div>
-															</li>
-															<li>
-																<div class="almostnew " data-category="2"
-																	data-column="itemStatNo" style="cursor: pointer">
-																	幾乎全新<span class="products-count"></span>
-																</div>
-															</li>
-															<li>
-																<div class="good " data-category="3"
-																	data-column="itemStatNo" style="cursor: pointer">
-																	狀況良好<span class="products-count"></span>
-																</div>
-															</li>
-															<li>
-																<div class="soso" data-category="4"
-																	data-column="itemStatNo" style="cursor: pointer">
-																	狀況尚可<span class="products-count"></span>
-																</div>
-															</li>
-														</ul>
-													</div>
-												</div></li>
-
-										</ul>
-									</div>
-									<!-- End .widget-body -->
-								</div>
-								<!-- End .collapse -->
-							</div>
-							<!-- End .widget -->
-
-							<div class="widget">
-								<h3 class="widget-title">
-									<a data-toggle="collapse" href="#widget-body-3" role="button"
-										aria-expanded="true" aria-controls="widget-body-3">價格範圍</a>
-								</h3>
-
-								<div class="collapse show" id="widget-body-3">
-									<div class="widget-body pb-0">
-										<form action="#">
-											<div class="price-slider-wrapper">
-												<!-- 												<div id="price-slider"></div> -->
-												<!-- 												End #price-slider -->
-												<!-- 											</div> -->
-												<!-- 											End .price-slider-wrapper -->
-
-												<!-- 											<div -->
-												<!-- 												class="filter-price-action d-flex align-items-center justify-content-between flex-wrap"> -->
-												<!-- 												<div class="filter-price-text"> -->
-												<!-- 													價格: <span id="filter-price-range"></span> -->
-												<!-- 												</div> -->
-												<!-- 												End .filter-price-text -->
-
-												<div class="slider-container">
-													<label for="min-price">最低價格:</label> <input type="range"
-														id="min-price" name="min-price" min="0" max="1000"
-														value="0"> <span id="min-price-value"></span>
-												</div>
-
-												<div class="slider-container">
-													<label for="max-price">最高價格:</label> <input type="range"
-														id="max-price" name="max-price" min="0" max="5000"
-														value="5000"> <span id="max-price-value"></span>
-												</div>
-
-												<p>
-													選擇的價格範圍: <span id="selected-price-range"></span>
-												</p>
-
-
-												<button type="button" id="select" class="btn btn-primary"
-													data-column="">篩選</button>
-
-											</div>
-											<!-- End .filter-price-action -->
-										</form>
-									</div>
-									<!-- End .widget-body -->
-
-								</div>
-								<!-- End .collapse -->
-
-							</div>
-							<!-- End .widget -->
-
-							<!-- 							<div class="widget widget-featured"> -->
-							<!-- 								<h3 class="widget-title">商品推薦</h3> -->
-
-							<!-- 								<div class="widget-body"> -->
-							<!-- 									<div class="owl-carousel widget-featured-products"> -->
-							<!-- 										<div class="featured-col"> -->
-							<!-- 											<div class="product-default left-details product-widget"> -->
-							<!-- 												<figure> -->
-							<!-- 													<a href="AsapShopProduct.jsp"> <img -->
-							<!-- 														src="../assets/images/demoes/demo41/product/product1-300x300.jpg" -->
-							<!-- 														width="75" height="75" alt="product" /> -->
-							<!-- 													</a> -->
-							<!-- 												</figure> -->
-							<!-- 												<div class="product-details"> -->
-							<!-- 													<h3 class="product-title"> -->
-							<!-- 														<a href="AsapShopProduct.jsp">Product Short Name</a> -->
-							<!-- 													</h3> -->
-							<!-- 													<div class="ratings-container"> -->
-							<!-- 														<div class="product-ratings"> -->
-							<!-- 															<span class="ratings" style="width: 100%"></span> -->
-							<!-- 															End .ratings -->
-							<!-- 															<span class="tooltiptext tooltip-top"></span> -->
-							<!-- 														</div> -->
-							<!-- 														End .product-ratings -->
-							<!-- 													</div> -->
-							<!-- 													End .product-container -->
-							<!-- 													<div class="price-box"> -->
-							<!-- 														<span class="product-price">$7.00</span> -->
-							<!-- 													</div> -->
-							<!-- 													End .price-box -->
-							<!-- 												</div> -->
-							<!-- 												End .product-details -->
-							<!-- 											</div> -->
-							<!-- 											<div class="product-default left-details product-widget"> -->
-							<!-- 												<figure> -->
-							<!-- 													<a href="AsapShopProduct.jsp"> <img -->
-							<!-- 														src="../assets/images/demoes/demo41/product/product2-300x300.jpg" -->
-							<!-- 														width="75" height="75" alt="product" /> -->
-							<!-- 													</a> -->
-							<!-- 												</figure> -->
-							<!-- 												<div class="product-details"> -->
-							<!-- 													<h3 class="product-title"> -->
-							<!-- 														<a href="AsapShopProduct.jsp">Product Short Name</a> -->
-							<!-- 													</h3> -->
-							<!-- 													<div class="ratings-container"> -->
-							<!-- 														<div class="product-ratings"> -->
-							<!-- 															<span class="ratings" style="width: 100%"></span> -->
-							<!-- 															End .ratings -->
-							<!-- 															<span class="tooltiptext tooltip-top"></span> -->
-							<!-- 														</div> -->
-							<!-- 														End .product-ratings -->
-							<!-- 													</div> -->
-							<!-- 													End .product-container -->
-							<!-- 													<div class="price-box"> -->
-							<!-- 														<span class="product-price">$19.00</span> -->
-							<!-- 													</div> -->
-							<!-- 													End .price-box -->
-							<!-- 												</div> -->
-							<!-- 												End .product-details -->
-							<!-- 											</div> -->
-							<!-- 											<div class="product-default left-details product-widget"> -->
-							<!-- 												<figure> -->
-							<!-- 													<a href="AsapShopProduct.jsp"> <img -->
-							<!-- 														src="../assets/images/demoes/demo41/product/product3-300x300.jpg" -->
-							<!-- 														width="75" height="75" alt="product" /> -->
-							<!-- 													</a> -->
-							<!-- 												</figure> -->
-							<!-- 												<div class="product-details"> -->
-							<!-- 													<h3 class="product-title"> -->
-							<!-- 														<a href="AsapShopProduct.jsp">Product Short Name</a> -->
-							<!-- 													</h3> -->
-							<!-- 													<div class="ratings-container"> -->
-							<!-- 														<div class="product-ratings"> -->
-							<!-- 															<span class="ratings" style="width: 100%"></span> -->
-							<!-- 															End .ratings -->
-							<!-- 															<span class="tooltiptext tooltip-top"></span> -->
-							<!-- 														</div> -->
-							<!-- 														End .product-ratings -->
-							<!-- 													</div> -->
-							<!-- 													End .product-container -->
-							<!-- 													<div class="price-box"> -->
-							<!-- 														<span class="product-price">$49.00</span> -->
-							<!-- 													</div> -->
-							<!-- 													End .price-box -->
-							<!-- 												</div> -->
-							<!-- 												End .product-details -->
-							<!-- 											</div> -->
-							<!-- 										</div> -->
-							<!-- 										End .featured-col -->
-
-							<!-- 										<div class="featured-col"> -->
-							<!-- 											<div class="product-default left-details product-widget"> -->
-							<!-- 												<figure> -->
-							<!-- 													<a href="AsapShopProduct.jsp"> <img -->
-							<!-- 														src="../assets/images/demoes/demo41/product/product4-300x300.jpg" -->
-							<!-- 														width="75" height="75" alt="product" /> -->
-							<!-- 													</a> -->
-							<!-- 												</figure> -->
-							<!-- 												<div class="product-details"> -->
-							<!-- 													<h3 class="product-title"> -->
-							<!-- 														<a href="AsapShopProduct.jsp">Product Short Name</a> -->
-							<!-- 													</h3> -->
-							<!-- 													<div class="ratings-container"> -->
-							<!-- 														<div class="product-ratings"> -->
-							<!-- 															<span class="ratings" style="width: 100%"></span> -->
-							<!-- 															End .ratings -->
-							<!-- 															<span class="tooltiptext tooltip-top"></span> -->
-							<!-- 														</div> -->
-							<!-- 														End .product-ratings -->
-							<!-- 													</div> -->
-							<!-- 													End .product-container -->
-							<!-- 													<div class="price-box"> -->
-							<!-- 														<span class="product-price">$19.00</span> -->
-							<!-- 													</div> -->
-							<!-- 													End .price-box -->
-							<!-- 												</div> -->
-							<!-- 												End .product-details -->
-							<!-- 											</div> -->
-							<!-- 											<div class="product-default left-details product-widget"> -->
-							<!-- 												<figure> -->
-							<!-- 													<a href="AsapShopProduct.jsp"> <img -->
-							<!-- 														src="../assets/images/demoes/demo41/product/product5-300x300.jpg" -->
-							<!-- 														width="75" height="75" alt="product" /> -->
-							<!-- 													</a> -->
-							<!-- 												</figure> -->
-							<!-- 												<div class="product-details"> -->
-							<!-- 													<h3 class="product-title"> -->
-							<!-- 														<a href="AsapShopProduct.jsp">Product Short Name</a> -->
-							<!-- 													</h3> -->
-							<!-- 													<div class="ratings-container"> -->
-							<!-- 														<div class="product-ratings"> -->
-							<!-- 															<span class="ratings" style="width: 100%"></span> -->
-							<!-- 															End .ratings -->
-							<!-- 															<span class="tooltiptext tooltip-top"></span> -->
-							<!-- 														</div> -->
-							<!-- 														End .product-ratings -->
-							<!-- 													</div> -->
-							<!-- 													End .product-container -->
-							<!-- 													<div class="price-box"> -->
-							<!-- 														<span class="product-price">$24.00</span> -->
-							<!-- 													</div> -->
-							<!-- 													End .price-box -->
-							<!-- 												</div> -->
-							<!-- 												End .product-details -->
-							<!-- 											</div> -->
-							<!-- 											<div class="product-default left-details product-widget"> -->
-							<!-- 												<figure> -->
-							<!-- 													<a href="AsapShopProduct.jsp"> <img -->
-							<!-- 														src="../assets/images/demoes/demo41/product/product6-300x300.jpg" -->
-							<!-- 														width="75" height="75" alt="product" /> -->
-							<!-- 													</a> -->
-							<!-- 												</figure> -->
-							<!-- 												<div class="product-details"> -->
-							<!-- 													<h3 class="product-title"> -->
-							<!-- 														<a href="AsapShopProduct.jsp">Product Short Name</a> -->
-							<!-- 													</h3> -->
-							<!-- 													<div class="ratings-container"> -->
-							<!-- 														<div class="product-ratings"> -->
-							<!-- 															<span class="ratings" style="width: 100%"></span> -->
-							<!-- 															End .ratings -->
-							<!-- 															<span class="tooltiptext tooltip-top"></span> -->
-							<!-- 														</div> -->
-							<!-- 														End .product-ratings -->
-							<!-- 													</div> -->
-							<!-- 													End .product-container -->
-							<!-- 													<div class="price-box"> -->
-							<!-- 														<span class="product-price">$11.00</span> -->
-							<!-- 													</div> -->
-							<!-- 													End .price-box -->
-							<!-- 												</div> -->
-							<!-- 												End .product-details -->
-							<!-- 											</div> -->
-							<!-- 										</div> -->
-							<!-- 										End .featured-col -->
-							<!-- 									</div> -->
-							<!-- 									End .widget-featured-slider -->
-							<!-- 									End .widget -->
-							<!-- 								</div> -->
-							<!-- 							</div> -->
-
-							<!-- 							<div class="widget widget-block"> -->
-							<!-- 								<h3 class="widget-title">親愛的購物好友</h3> -->
-							<!-- 								<p> -->
-							<!-- 									歡迎來到ASAP二手商城！這裡有各種令人驚喜的二手物品等著您發現。與友善賣家互動，輕鬆購物，開啟您的寶藏之旅。安全、方便，期待為您帶來愉快的購物體驗！ -->
-							<!-- 								</p> -->
-							<!-- 							</div> -->
-							<!-- 						</div> -->
-
-							<!-- End .widget -->
-					</aside>
-					<!-- End .col-lg-3 -->
+					<div class="pagination-container" style="text-align: center">
+						<div id="pagination-wrapper"></div>
+					</div>
+					<!-- 						<nav class="toolbox toolbox-pagination"> -->
+					<!-- 							<ul class="pagination toolbox-item"> -->
+					<!-- 								<li class="page-item disabled"><a -->
+					<!-- 									class="page-link page-link-btn" href="#"><i -->
+					<!-- 										class="icon-angle-left"></i></a></li> -->
+					<!-- 								<li class="page-item active"><a class="page-link" href="#">1 -->
+					<!-- 										<span class="sr-only">(current)</span> -->
+					<!-- 								</a></li> -->
+					<!-- 								<li class="page-item"><a class="page-link" href="#">2</a></li> -->
+					<!-- 								<li class="page-item"><a class="page-link page-link-btn" -->
+					<!-- 									href="#"><i class="icon-angle-right"></i></a></li> -->
+					<!-- 							</ul> -->
+					<!-- 						</nav> -->
 				</div>
-				<!-- End .row -->
+				<!-- End .col-lg-9 -->
+
+				<div class="sidebar-overlay"></div>
+				<aside class="sidebar-shop col-lg-3 order-lg-first mobile-sidebar">
+					<div class="sidebar-wrapper">
+						<div class="widget">
+							<h3 class="widget-title">
+								<a data-toggle="collapse" href="#widget-body-2" role="button"
+									aria-expanded="true" aria-controls="widget-body-2">商品分類</a>
+							</h3>
+
+							<div class="collapse show" id="widget-body-2">
+								<div class="widget-body">
+									<ul class="cat-list">
+										<li><a href="#widget-category-1" data-toggle="collapse"
+											role="button" aria-expanded="true"
+											aria-controls="widget-category-1"> 產品類型<span
+												class="products-count"></span> <span class="toggle"></span>
+										</a>
+											<div class="collapse show" id="widget-category-1">
+												<div class="row" id="item_type_select">
+													<div class="col-md-6">
+														<ul class="cat-sublist">
+															<li><div class="typeswim " data-category="1"
+																	data-column="itemTypeNo " style="cursor: pointer">
+																	帽子<span class="products-count"></span>
+																</div></li>
+															<li><div class="typebaseball " data-category="2"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	男上衣<span class="products-count"></span>
+																</div></li>
+															<li><div class="typetennis " data-category="3"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	男下身<span class="products-count"></span>
+																</div></li>
+															<li><div class="typehandball " data-category="4"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	男鞋<span class="products-count"></span>
+																</div></li>
+															<li><div class="typebasketball " data-category="5"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	女上衣<span class="products-count"></span>
+																</div></li>
+															<li><div class="typevolleyball " data-category="6"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	女下身<span class="products-count"></span>
+																</div></li>
+														</ul>
+													</div>
+													<div class="col-md-6">
+														<ul class="cat-sublist">
+															<li><div class="typepingpong " data-category="7"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	女鞋<span class="products-count"></span>
+																</div></li>
+															<li><div class="typebanminton" data-category="8"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	配件<span class="products-count"></span>
+																</div></li>
+															<li><div class="typerun" data-category="9"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	球類<span class="products-count"></span>
+																</div></li>
+															<li><div class="typebike " data-category="10"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	健身器材<span class="products-count"></span>
+																</div></li>
+															<li><div class="typesoccer " data-category="11"
+																	data-column="itemTypeNo" style="cursor: pointer">
+																	其他<span class="products-count"></span>
+																</div></li>
+
+
+														</ul>
+													</div>
+												</div>
+											</div>
+										<li><a href="#widget-category-2" class="collapsed"
+											data-toggle="collapse" role="button" aria-expanded="false"
+											aria-controls="widget-category-2"> 商品尺寸<span
+												class="products-count"></span> <span class="toggle"></span>
+										</a>
+											<div class="collapse" id="widget-category-2">
+												<div class="row" id="item_size_select">
+													<ul class="cat-sublist">
+														<li><div class="sizenone" data-category="1"
+																data-column="itemSizeNo" style="cursor: pointer">
+																無<span class="products-count"></span>
+															</div></li>
+														<li><div class="sizexs" data-category="2"
+																data-column="itemSizeNo" style="cursor: pointer">
+																XS<span class="products-count"></span>
+															</div></li>
+														<li><div class="sizes" data-category="3"
+																data-column="itemSizeNo" style="cursor: pointer">
+																S<span class="products-count"></span>
+															</div></li>
+														<li><div class="sizem" data-category="4"
+																data-column="itemSizeNo" style="cursor: pointer">
+																M<span class="products-count"></span>
+															</div></li>
+														<li><div class="sizel" data-category="5"
+																data-column="itemSizeNo" style="cursor: pointer">
+																L<span class="products-count"></span>
+															</div></li>
+														<li><div class="sizexl" data-category="6"
+																data-column="itemSizeNo" style="cursor: pointer">
+																XL<span class="products-count"></span>
+															</div></li>
+
+													</ul>
+												</div>
+											</div></li>
+
+										<li><a href="#widget-category-3" class="collapsed"
+											data-toggle="collapse" role="button" aria-expanded="false"
+											aria-controls="widget-category-3"> 商品狀態<span
+												class="products-count"></span> <span class="toggle"></span>
+										</a>
+											<div class="collapse" id="widget-category-3">
+												<div class="row" id="item_stat_select">
+													<ul class="cat-sublist">
+														<li>
+															<div class="brandnew " data-category="1"
+																data-column="itemStatNo" style="cursor: pointer">
+																全新<span class="products-count"></span>
+															</div>
+														</li>
+														<li>
+															<div class="almostnew " data-category="2"
+																data-column="itemStatNo" style="cursor: pointer">
+																幾乎全新<span class="products-count"></span>
+															</div>
+														</li>
+														<li>
+															<div class="good " data-category="3"
+																data-column="itemStatNo" style="cursor: pointer">
+																狀況良好<span class="products-count"></span>
+															</div>
+														</li>
+														<li>
+															<div class="soso" data-category="4"
+																data-column="itemStatNo" style="cursor: pointer">
+																狀況尚可<span class="products-count"></span>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div></li>
+
+									</ul>
+								</div>
+								<!-- End .widget-body -->
+							</div>
+							<!-- End .collapse -->
+						</div>
+						<!-- End .widget -->
+
+						<div class="widget">
+							<h3 class="widget-title">
+								<a data-toggle="collapse" href="#widget-body-3" role="button"
+									aria-expanded="true" aria-controls="widget-body-3">價格範圍</a>
+							</h3>
+
+							<div class="collapse show" id="widget-body-3">
+								<div class="widget-body pb-0">
+									<form action="#">
+										<div class="price-slider-wrapper">
+
+											<div class="slider-container">
+												<label for="min-price">最低價格:</label> <input type="range"
+													id="min-price" name="min-price" min="0" max="1000"
+													value="0"> <span id="min-price-value"></span>
+											</div>
+
+											<div class="slider-container">
+												<label for="max-price">最高價格:</label> <input type="range"
+													id="max-price" name="max-price" min="0" max="5000"
+													value="5000"> <span id="max-price-value"></span>
+											</div>
+
+											<p>
+												選擇的價格範圍: <span id="selected-price-range"></span>
+											</p>
+
+
+											<button type="button" id="select" class="btn btn-primary"
+												data-column="">篩選</button>
+
+										</div>
+										<!-- End .filter-price-action -->
+									</form>
+								</div>
+								<!-- End .widget-body -->
+
+							</div>
+							<!-- End .collapse -->
+
+						</div>
+						<!-- End .widget -->
+
+						<div class="widget widget-featured">
+							<h3 class="widget-title">近期瀏覽</h3>
+							<div class="widget-body">
+								<div class="owl-carousel widget-featured-products">
+									<div class="featured-col">
+										<!-- 迭代近期瀏覽的商品 -->
+										<c:if test="${not empty sessionScope.recentlyViewed}">
+											<c:forEach items="${sessionScope.recentlyViewed}" var="item"
+												varStatus="status">
+												<c:if test="${status.count <= 3}">
+													<div class="product-default left-details product-widget">
+														<figure>
+															<a href="AsapShopProduct.jsp?itemNo=${item.itemNo}">
+																<img
+																src="ItemInfoServlet?action=getImg&itemNo=${item.itemNo}"
+																width="75" height="75" alt="${item.itemName}" />
+															</a>
+														</figure>
+														<div class="product-details">
+															<h3 class="product-title">
+																<a href="AsapShopProduct.jsp?itemNo=${item.itemNo}">${item.itemName}</a>
+															</h3>
+															<div class="price-box">
+																<span class="product-price">$${item.itemPrice}</span>
+															</div>
+														</div>
+													</div>
+												</c:if>
+											</c:forEach>
+										</c:if>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="widget widget-block">
+							<h3 class="widget-title">親愛的購物好友</h3>
+							<p>
+								歡迎來到ASAP二手商城！這裡有各種令人驚喜的二手物品等著您發現。與友善賣家互動，輕鬆購物，開啟您的寶藏之旅。安全、方便，期待為您帶來愉快的購物體驗！
+							</p>
+						</div>
+					</div>
+
+					<!-- End .widget -->
+				</aside>
+				<!-- End .col-lg-3 -->
 			</div>
-			<!-- End .container -->
+			<!-- End .row -->
+		</div>
+		<!-- End .container -->
 
-			<div class="mb-4"></div>
-			<!-- margin -->
-		</main>
-		<!-- End .main -->
+		<div class="mb-4"></div>
+		<!-- margin -->
+	</main>
+	<!-- End .main -->
 
-		<footer class="footer"></footer>
-		<!-- End .footer -->
+	<footer class="footer bg-dark"></footer>
+	<!-- End .footer -->
 	</div>
 	<!-- End .page-wrapper -->
 
@@ -986,6 +825,11 @@ $(document).on("click", ".btn-icon-cart", function() {
         alert("超過庫存數量!");
         return; // 阻止後續執行
     }
+ 
+    if (quantity < 0) {
+        alert("不可填負數!");
+        return; // 阻止後續執行
+    }
     
     $.ajax({
         url: "ShoppingCartServlet",
@@ -1003,6 +847,7 @@ $(document).on("click", ".btn-icon-cart", function() {
         		alert("超過可購買上限!")
         	} else{ 
         		alert("加入成功")
+        		document.location.reload()
         		}
         	}
         }
@@ -1010,35 +855,35 @@ $(document).on("click", ".btn-icon-cart", function() {
 });
   
   
-  
-$(document).ready(function() {
+  //count
+// $(document).ready(function() {
    
-    updateCategoryCount('itemTypeNo', 4, 'typehandball');
-}); 
+//     updateCategoryCount('itemTypeNo', 4, 'typehandball');
+// }); 
 
-function updateCategoryCount(categoryType, categoryId, elementClass) {
-    $.ajax({
-        url: 'ItemInfoServlet',
-        type: 'POST',
-        data: {
-            action: 'countByCategory',
-            categoryType: categoryType,
-            categoryId: categoryId
-        },
-        success: function(count) {
+// function updateCategoryCount(categoryType, categoryId, elementClass) {
+//     $.ajax({
+//         url: 'ItemInfoServlet',
+//         type: 'POST',
+//         data: {
+//             action: 'countByCategory',
+//             categoryType: categoryType,
+//             categoryId: categoryId
+//         },
+//         success: function(count) {
            
-            $('.' + elementClass + ' .products-count').text('(' + count + ')');
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching category count:', error);
-        }
-    });
-}
+//             $('.' + elementClass + ' .products-count').text('(' + count + ')');
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Error fetching category count:', error);
+//         }
+//     });
+// }
 
 
-$(document).ready(function() {
-    updateCategoryCount('itemTypeNo', 4, 'typehandball'); 
-});
+// $(document).ready(function() {
+//     updateCategoryCount('itemTypeNo', 4, 'typehandball'); 
+// });
 
   //價格範圍功能
 document.addEventListener('DOMContentLoaded', function () {
@@ -1128,7 +973,7 @@ var state = {
                     </div>
                   </div> 
             <h3 class="product-title">
-                <span>\${item.itemName}</span><br>
+            <span style="color: blue; font-size: 16px; font-weight: bold;">\${item.itemName}</span><br>
                 瀏覽人數: <span>\${item.itemView}</span><br>
                 商品庫存: <span class="itemstockqty">\${item.itemStockQty}</span>
             </h3>
@@ -1189,14 +1034,70 @@ var state = {
 	    maxRight = pages;
 	  }
 	  if (state.page != 1) {
-	    wrapper.innerHTML += `<button value="1" class="page btn btn-sm btn-info" style="background-color:#007bff; border:0px">&#171; 第一頁</button>`;
-	  }
+		    wrapper.innerHTML += `
+		        <button value="1" class="page btn btn-sm" style="
+		        	 background-color: #6a1b9a; /* 深紫色 */
+	            border: 1px solid #4a148c; /* 更深紫色邊框 */
+	            color: #ffffff; /* 白色文字 */
+	            padding: 4px 8px;
+	            text-align: center;
+	            text-decoration: none;
+	            display: inline-block;
+	            font-size: 11px;
+	            margin: 2px;
+	            cursor: pointer;
+	            border-radius: 4px;
+	            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	            transition: all 0.2s ease;
+	            &:hover {
+	              background-color: #7b1fa2; /* 淺深紫色 */
+	              border-color: #6a1b9a; /* 原始深紫色 */
+	            }
+		        "
+		        >&#171; 第一頁</button>`;
+		}
 
 	  for (var page = maxLeft; page <= maxRight; page++) {
-	    wrapper.innerHTML += `<button value="\${page}" class="page btn btn-sm btn-info" style="background-color:#007bff; border:0px">\${page}</button>`;
+	    wrapper.innerHTML += `<button value="\${page}" class="page btn btn-sm btn-info" style="
+	    	 background-color: #6a1b9a; /* 深紫色 */
+            border: 1px solid #4a148c; /* 更深紫色邊框 */
+            color: #ffffff; /* 白色文字 */
+            padding: 4px 8px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 11px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            &:hover {
+              background-color: #7b1fa2; /* 淺深紫色 */
+              border-color: #6a1b9a; /* 原始深紫色 */
+            }
+	    ">\${page}</button>`;
 	  }
 	  if (state.page != pages) {
-	    wrapper.innerHTML += `<button value="\${pages}" class="page btn btn-sm btn-info" style="background-color:#007bff; border:0px">最末頁 &#187;</button>`;
+	    wrapper.innerHTML += `<button value="\${pages}" class="page btn btn-sm btn-info" style="
+	    	 background-color: #6a1b9a; /* 深紫色 */
+            border: 1px solid #4a148c; /* 更深紫色邊框 */
+            color: #ffffff; /* 白色文字 */
+            padding: 4px 8px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 11px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            &:hover {
+              background-color: #7b1fa2; /* 淺深紫色 */
+              border-color: #6a1b9a; /* 原始深紫色 */
+            }
+	    ">最末頁 &#187;</button>`;
 	  }
 	  $('.page').on('click', function() {
 	    $('div#roworder').empty();
@@ -1207,9 +1108,35 @@ var state = {
 	  });
 	}
   
+
+	//刪除購物車
+	$('.btn-remove').on('click', function(e) {
+	    e.preventDefault();
+	    var cartId = $(this).closest('div').data('cartid'); // 獲取購物車項目 ID
+	    let r = confirm("確認刪除此項商品?");
+		console.log(cartId);
+	    // 發送 AJAX 請求到後端
+	    if (r){
+	    $.ajax({
+	        url: '${pageContext.request.contextPath}/shop/ShoppingCartServlet',
+	        method: 'POST',
+	        data: {
+	            action: 'remove',
+	            shoppingCartNo: cartId // 購物車項目 ID
+	        },
+	        success: function(response) {
+	        	alert("刪除成功")
+	           document.location.reload()
+	        },
+	        error: function(xhr, status, error) {
+	            // 處理錯誤
+	            console.error(error);
+	        }
+	    });
+	    }
+	});
   
 </script>
-
 
 </body>
 </html>
