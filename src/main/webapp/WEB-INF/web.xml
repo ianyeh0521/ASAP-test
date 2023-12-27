@@ -41,9 +41,9 @@
 		<filter-name>BackLoginFilter</filter-name>
 	    <url-pattern>/backStage/*</url-pattern>
 		<url-pattern>/forum/backstage_forum_report.jsp</url-pattern>
-<!-- 		<url-pattern>/court/addCourt.jsp</url-pattern> -->
-<!-- 		<url-pattern>/court/updateCourt.jsp</url-pattern> -->
-<!-- 		<url-pattern>/court/listAllCourts_datatable_Ajax.html</url-pattern> -->
+		<url-pattern>/court/addCourt.jsp</url-pattern>
+		<url-pattern>/court/updateCourt.jsp</url-pattern>
+		<url-pattern>/court/listAllCourts_datatable_Ajax.html</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
@@ -61,6 +61,9 @@
 		<url-pattern>/coach/CoachChat.jsp</url-pattern>
 		<url-pattern>/coach/CoachHome.jsp</url-pattern>
 		<url-pattern>/coach/CoachUpdateInfo.jsp</url-pattern>
+		<url-pattern>/course/addCourse.jsp</url-pattern>
+		<url-pattern>/course/updateCourse.jsp</url-pattern>
+		<url-pattern>/course/listAllCourses_datatable.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
@@ -87,14 +90,14 @@
 
 	<!-- <error-page> -->
 	<!-- <error-code>400</error-code> -->
-	<!-- <location>/指專案</location> -->
+	<!-- <location>/error.jsp</location> -->
 	<!-- </error-page> -->
 	<!-- <error-page> -->
 	<!-- <error-code>404</error-code> -->
-	<!-- <location>/指專案</location> -->
+	<!-- <location>/error.jsp</location> -->
 	<!-- </error-page> -->
 	<!-- <error-page> -->
 	<!-- <error-code>500</error-code> -->
-	<!-- <location>/指專案</location> -->
+	<!-- <location>/error.jsp</location> -->
 	<!-- </error-page> -->
 </web-app>

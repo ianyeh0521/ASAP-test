@@ -21,9 +21,6 @@ public class CoachLoginFilter implements Filter {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-//		// 開放的頁面
-//		String[] openPath = {"/coach/CoachEmailVerify.jsp", "/coach/CoachForgetPwd.jsp", "/coach/CoachLogin.jsp", "/coach/CoachRegister.jsp", "/coach/CoachResetPwd.jsp"};
-//		String path = req.getServletPath();
         
 		//session有值
 		HttpSession session = req.getSession();
