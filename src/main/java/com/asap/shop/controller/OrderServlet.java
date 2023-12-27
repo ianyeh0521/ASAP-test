@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.asap.member.entity.MemberVO;
 import com.asap.shop.entity.ItemInfoVO;
 import com.asap.shop.entity.OrderDetailVO;
 import com.asap.shop.entity.OrderVO;
@@ -46,8 +47,8 @@ public class OrderServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		HttpSession session = req.getSession();
-
+		
+		
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String forwardPath = "";
@@ -69,6 +70,9 @@ public class OrderServlet extends HttpServlet {
 	private String insert(HttpServletRequest req, HttpServletResponse res) throws IOException {
 //			String mbrNo = req.getParameter("mbrNo"); 
 		Integer total = Integer.valueOf(req.getParameter("total"));
+		HttpSession session = req.getSession();
+		MemberVO membervo = (MemberVO)session.getAttribute("memberVo");
+		String mbrNo = membervo.getMbrNo();
 		String rcvrname = req.getParameter("rcvrname");
 		String rcvremail = req.getParameter("rcvremail");
 		String rcvrphone = req.getParameter("rcvrphone");
@@ -93,10 +97,10 @@ public class OrderServlet extends HttpServlet {
 					exceed = true;
 					ShoppingCartService shoppingCartSvc = new ShoppingCartService();
 					if(maxpurchase==0) {
-						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M1",Integer.parseInt(product[0]));
+						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo(mbrNo,Integer.parseInt(product[0]));
 						shoppingCartSvc.delete(modifyCart);
 					}else {
-						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo("M1",Integer.parseInt(product[0]));
+						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo(mbrNo,Integer.parseInt(product[0]));
 						modifyCart.setItemShopQty(maxpurchase);
 					}
 					
@@ -107,7 +111,7 @@ public class OrderServlet extends HttpServlet {
 		if (exceed == false) {
 			OrderVO entity = new OrderVO();
 ////		session.getAttribute("memberVo",mVo);
-			entity.setMbrNo("M1");
+			entity.setMbrNo(mbrNo);
 			entity.setOrderPrice(total);
 			entity.setOrderStat(0);
 			entity.setRcvrName(rcvrname);
@@ -131,7 +135,7 @@ public class OrderServlet extends HttpServlet {
 					orderDetail.setItemOrderQty(Integer.parseInt(product[2]));
 
 					orderDetail.setOrderNo(orderno);
-					orderDetail.setMbrNo("M1");
+					orderDetail.setMbrNo(mbrNo);
 					orderDetail.setDelyStat(false);
 
 					orderDetail.setItemInfoVO(itemInfoVO);
@@ -149,7 +153,6 @@ public class OrderServlet extends HttpServlet {
 			}
 			ItemInfoService_interface itemInfoSvc = new ItemInfoService();
 		    if (orderno != null) {
-		        String mbrNo = "M1";
 		        ShoppingCartService shoppingCartService = new ShoppingCartService();
 		        List<ShoppingCartVO> shoppingCartItems = shoppingCartService.findByMember(mbrNo);
 		        for (ShoppingCartVO item : shoppingCartItems) {

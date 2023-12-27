@@ -11,9 +11,6 @@
 <%@ page import="com.asap.shop.entity.ItemImgVO"%>
 <%@ page import="com.asap.shop.service.ItemImgService_interface"%>
 <%@ page import="com.asap.shop.service.ItemImgService"%>
-<%@ page import="com.asap.member.entity.MemberVO"%>
-<%@ page import="com.asap.member.service.MemberService_interface"%>
-<%@ page import="com.asap.member.service.MemberService"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.util.Date"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -27,13 +24,6 @@ ItemInfoVO list = ItemSvc.findByItemNo(itemInfo);
 pageContext.setAttribute("list", list);
 System.out.println(list);
 
-OrderDetailService_interface OrderDetailSvc = new OrderDetailService();
-List<OrderDetailVO> orderdetail = OrderDetailSvc.findByMbrNo("M1");
-pageContext.setAttribute("cmtlist", orderdetail);
-
-MemberService_interface MemberSvc = new MemberService();
-MemberVO member = MemberSvc.findByMbrNo("M1");
-pageContext.setAttribute("member", member);
 
 ItemImgService_interface itemImgSvc = new ItemImgService();
 List<String> itemImgBase64 = new ArrayList<>();
