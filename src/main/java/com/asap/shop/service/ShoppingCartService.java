@@ -24,7 +24,7 @@ public class ShoppingCartService implements ShoppingCartService_interface {
 			Integer max = itemInfoVO.getItemStockQty();
 			System.out.println("max is "+max);
 			Integer qty = vo.getItemShopQty() + itemShopQty;
-			if(max>qty) {
+			if(max>=qty) {
 				vo.setItemShopQty(qty);
 				int result = dao.update(vo);
 				return result;

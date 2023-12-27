@@ -35,8 +35,6 @@ MemberService_interface MemberSvc = new MemberService();
 MemberVO member = MemberSvc.findByMbrNo("M1");
 pageContext.setAttribute("member", member);
 
-
-
 ItemImgService_interface itemImgSvc = new ItemImgService();
 List<String> itemImgBase64 = new ArrayList<>();
 List<ItemImgVO> itemImgVOList = itemImgSvc.findByItemNo(itemInfo);
@@ -86,10 +84,12 @@ if (list.getItemAddTime() != null) {
 </script>
 
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/demo41.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/demo41.min.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 </head>
@@ -108,7 +108,8 @@ if (list.getItemAddTime() != null) {
 							<i class="fas fa-bars"></i>
 						</button>
 						<a href="#" width="222" height="88"> <img
-							src="${pageContext.request.contextPath}/newImg/logo2.png" alt="Logo" />
+							src="${pageContext.request.contextPath}/newImg/logo2.png"
+							alt="Logo" />
 						</a>
 					</div>
 					<!-- End .header-left -->
@@ -154,7 +155,7 @@ if (list.getItemAddTime() != null) {
 									<li><a href="#">商品評論</a></li>
 								</ul></li>
 
-							<li><a href="">商城</a></li>
+							<li><a href="AsapShop.jsp">商城</a></li>
 							<li><a href="" style="color: red">登入</a></li>
 						</ul>
 					</nav>
@@ -189,12 +190,14 @@ if (list.getItemAddTime() != null) {
 									class="product-single-carousel owl-carousel owl-theme show-nav-hover">
 
 									<c:forEach var="img" items="${itemimgbase64}">
+									<span style="display: flex; align-items: center; justify-content: center; height: 468px;">
 										<div class="product-item">
 											<img class="product-single-image"
 												src="data:image/jpg;base64,${img}"
 												data-zoom-image="data:image/jpg;base64,${img}" width="468"
 												height="468" alt="圖片" />
 										</div>
+										</span>
 									</c:forEach>
 
 								</div>
@@ -205,11 +208,15 @@ if (list.getItemAddTime() != null) {
 
 							<div class="prod-thumbnail owl-dots">
 
-								<c:forEach var="img" items="${itemimgbase64}">
+								<c:forEach var="img" items="${itemimgbase64}" >
+									<span style="display: flex; align-items: center; justify-content: center; height: 110px; margin: 8px 0" >
 									<div class="owl-dot">
-										<img src="data:image/jpg;base64,${img}" width="110"
-											height="110" alt="圖片" />
-									</div>
+
+											<img src="data:image/jpg;base64,${img}" width="110px"
+												height="110px" alt="圖片" />
+	
+										</div>
+										</span>
 								</c:forEach>
 
 							</div>
@@ -325,7 +332,7 @@ if (list.getItemAddTime() != null) {
 							id="product-tab-reviews" data-toggle="tab"
 							href="#product-reviews-content" role="tab"
 							aria-controls="product-reviews-content" aria-selected="false">賣家評論
-								</a></li>
+						</a></li>
 					</ul>
 
 					<div class="tab-content">
@@ -350,43 +357,43 @@ if (list.getItemAddTime() != null) {
 							role="tabpanel" aria-labelledby="product-tab-reviews">
 							<div class="product-reviews-content">
 								<h3 class="reviews-title">
-<!-- 								1 review for Men Black SportsShoes -->
+									<!-- 								1 review for Men Black SportsShoes -->
 								</h3>
 
 								<div class="comment-list">
-										<div class="comments">
-											<figure class="img-thumbnail">
-												<img src="${pageContext.request.contextPath}/newImg/user.png" alt="author"
-													width="80" height="80">
-											</figure>
+									<div class="comments">
+										<figure class="img-thumbnail">
+											<img src="${pageContext.request.contextPath}/newImg/user.png"
+												alt="author" width="80" height="80">
+										</figure>
 
-											<div class="comment-block">
-												<div class="comment-header">
-													<div class="comment-arrow"></div>
+										<div class="comment-block">
+											<div class="comment-header">
+												<div class="comment-arrow"></div>
 
-													<div class="ratings-container float-sm-right">
-														<div class="product-ratings">
-															<c:set var="ratingPercentage"
-																value="${member.cmtReScore/member.cmtReNum*20}" />
-															<!-- 計算百分比 -->
-															<span class="ratings" style="width: ${ratingPercentage}%"></span>
-															<!-- 應用百分比 -->
-															<!-- End .ratings -->
-															<span class="tooltiptext tooltip-top"></span>
-														</div>
-														<!-- End .product-ratings -->
+												<div class="ratings-container float-sm-right">
+													<div class="product-ratings">
+														<c:set var="ratingPercentage"
+															value="${member.cmtReScore/member.cmtReNum*20}" />
+														<!-- 計算百分比 -->
+														<span class="ratings" style="width: ${ratingPercentage}%"></span>
+														<!-- 應用百分比 -->
+														<!-- End .ratings -->
+														<span class="tooltiptext tooltip-top"></span>
 													</div>
-
-													<span class="comment-by"> <strong>${member.mbrName}</strong>
-														${member.mbrNo}
-													</span>
+													<!-- End .product-ratings -->
 												</div>
 
-												<div class="comment-content">
-													<p>${member.sellerIntro}</p>
-												</div>
+												<span class="comment-by"> <strong>${member.mbrName}</strong>
+													${member.mbrNo}
+												</span>
+											</div>
+
+											<div class="comment-content">
+												<p>${member.sellerIntro}</p>
 											</div>
 										</div>
+									</div>
 								</div>
 
 
@@ -406,7 +413,7 @@ if (list.getItemAddTime() != null) {
 		</main>
 		<!-- End .main -->
 
-		<footer class="footer"> </footer>
+		<footer class="footer bg-dark"> </footer>
 		<!-- End .footer -->
 	</div>
 	<!-- End .page-wrapper -->
@@ -431,12 +438,18 @@ if (list.getItemAddTime() != null) {
 		class="icon-angle-up"></i></a>
 
 	<!-- Plugins JS File -->
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/optional/isotope.pkgd.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.appear.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.plugin.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/optional/isotope.pkgd.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.appear.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.plugin.min.js"></script>
 
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
@@ -446,7 +459,6 @@ if (list.getItemAddTime() != null) {
 		$("div.sticky-navbar").load("sticky-navbar.html");
 		$("div.mobile-menu-container").load("mobile-menu-container.html");
 
-		
 		//確認已加入收藏
 		var itemNo = $(".product-title").attr("data-itemno");
 		var mbrNo = "M001";
@@ -476,11 +488,16 @@ if (list.getItemAddTime() != null) {
 			var max = $(".product-qty").text();
 			var cartQty = $(".horizontal-quantity").val();
 			var mbrNo = "M1";
-			
-			 if (cartQty > max) {
-			        alert("超過庫存數量！");
-			        return; // 阻止後續執行
-			    }
+
+			if (cartQty > max) {
+				alert("超過庫存數量！");
+				return; // 阻止後續執行
+			}
+
+			if (cartQty < 0) {
+				alert("不可選擇負數！");
+				return; // 阻止後續執行
+			}
 
 			console.log(addCart);
 			$.ajax({
@@ -506,7 +523,6 @@ if (list.getItemAddTime() != null) {
 			})
 		})
 
-		
 		//加入收藏
 		$("span.addwish")
 				.on(

@@ -182,7 +182,7 @@ if (list.getItemAddTime() != null) {
 					<hr class="divider mb-0 mt-0">
 
 					<div class="product-single-share mb-0">
-						<label class="sr-only">Share:</label>
+					
 
 						<div class="social-icons mr-2">
 
