@@ -223,6 +223,7 @@
 							<c:if test="${coachVo.coachStat}">
 							<li><a href="${pageContext.request.contextPath}/course/listAllCourses_datatable.jsp">課程管理</a></li>
 							</c:if>
+							<li><a href="${pageContext.request.contextPath}/coach/CoachChat.jsp">客服</a></li>
 							<li><a><form action="${pageContext.request.contextPath}/CoachController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
 						</ul>
 					</nav>
@@ -656,6 +657,7 @@
             <nav class="mobile-nav">
               <ul class="mobile-menu">
                 <li><a href="${pageContext.request.contextPath}/coach/CoachHome.jsp">首頁</a></li>
+                <li><a href="${pageContext.request.contextPath}/coach/CoachChat.jsp">客服</a></li>
                 <c:if test="${coachVo.coachStat}">
 				<li><a href="${pageContext.request.contextPath}/course/listAllCourses_datatable.jsp">課程管理</a></li>
 				</c:if>
