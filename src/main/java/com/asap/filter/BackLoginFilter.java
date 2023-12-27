@@ -32,9 +32,11 @@ public class BackLoginFilter implements Filter {
 		if (path.equals(openPath)) {
 			//開放頁
 			chain.doFilter(req, res);
+			return;
 		}else if (backVo != null) {
 			//有登入
 			chain.doFilter(req, res);
+			return;
 		}else {
 			res.sendRedirect(req.getContextPath()+"/backStage/BackageLogin.jsp");
 			return;
