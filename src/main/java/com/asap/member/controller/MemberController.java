@@ -94,11 +94,11 @@ public class MemberController extends HttpServlet {
 //			System.out.println(inputPwd);
 //			System.out.println(inputEmail);
 
-			if ((inputVerCode.trim()).length() == 0 || inputVerCode == null) {
+			if (inputVerCode == null || (inputVerCode.trim()).length() == 0) {
 				errorMsgs.add("請輸入驗證碼。");
 
 			} else {
-				if (!inputVerCode.trim().equals(verificationCode)) {
+				if (!(inputVerCode.trim()).equals(verificationCode)) {
 
 					errorMsgs.add("驗證碼錯誤，請重新登入。");
 				}
@@ -109,7 +109,8 @@ public class MemberController extends HttpServlet {
 				return;// 程式中斷
 			}
 
-			if ((inputEmail.trim()).length() == 0 || (inputPwd.trim()).length() == 0) {
+			if (inputEmail == null || inputPwd == null || (inputEmail.trim()).length() == 0
+					|| (inputPwd.trim()).length() == 0) {
 				errorMsgs.add("帳號或密碼不可為空，請重新登入。");
 
 			}
@@ -121,11 +122,11 @@ public class MemberController extends HttpServlet {
 
 			// 尋找資料庫
 
-			MemberVO mVo = mService.findByMbrEmail(inputEmail);
+			MemberVO mVo = mService.findByMbrEmail(inputEmail.trim());
 			// 未註冊
 			if (mVo == null) {
 				session.setAttribute("noRegister", "尚未註冊，請註冊後再登入。");
-				session.setAttribute("mbrEmail", inputEmail);
+				session.setAttribute("mbrEmail", inputEmail.trim());
 				res.sendRedirect(req.getContextPath() + "/member/MemberRegister.jsp");
 				return;// 程式中斷
 			}
@@ -141,7 +142,7 @@ public class MemberController extends HttpServlet {
 
 			// 登入失敗
 			String password = mVo.getMbrPwd();
-			if (!BCrypt.checkpw(inputPwd, password)) {
+			if (!BCrypt.checkpw(inputPwd.trim(), password)) {
 				errorMsgs.add("密碼錯誤，請重新登入。");
 				req.getRequestDispatcher("/member/MemberLogin.jsp").forward(req, res);
 				return;// 程式中斷
@@ -173,7 +174,7 @@ public class MemberController extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			// 驗證Email
-			if ((mbrEmail.trim()).length() == 0 || mbrEmail == null) {
+			if (mbrEmail == null || (mbrEmail.trim()).length() == 0) {
 				errorMsgs.add("請輸入Email");
 			} else {
 				if (!(mbrEmail.trim()).matches(emailRegex)) {
@@ -190,13 +191,13 @@ public class MemberController extends HttpServlet {
 			}
 
 			// 驗證密碼
-			if ((mbrPwd.trim()).length() == 0 || (mbrPwd2.trim()).length() == 0 || mbrPwd == null || mbrPwd2 == null) {
+			if (mbrPwd == null || mbrPwd2 == null || (mbrPwd.trim()).length() == 0 || (mbrPwd2.trim()).length() == 0) {
 				errorMsgs.add("請輸入密碼");
 			} else {
 				if (!(mbrPwd.trim()).matches(pwdRegex)) {
 					errorMsgs.add("密碼格式不正確");
 				}
-				if (!(mbrPwd.trim()).equals(mbrPwd2)) {
+				if (!(mbrPwd.trim()).equals(mbrPwd2.trim())) {
 					errorMsgs.add("二次密碼不一致");
 				}
 			}
@@ -207,7 +208,7 @@ public class MemberController extends HttpServlet {
 			}
 
 			// 驗證姓名
-			if ((mbrName.trim()).length() == 0 || mbrName == null) {
+			if (mbrName == null || (mbrName.trim()).length() == 0) {
 				errorMsgs.add("請輸入姓名");
 			} else {
 				if (!(mbrName.trim()).matches(nameRegex)) {
@@ -216,12 +217,12 @@ public class MemberController extends HttpServlet {
 			}
 
 			if (!errorMsgs.isEmpty()) {
-				req.getRequestDispatcher("/member/register.jsp").forward(req, res);
+				req.getRequestDispatcher("/member/MemberRegister.jsp").forward(req, res);
 				return;// 程式中斷
 			}
 
 			// 驗證手機
-			if ((mbrPhone.trim()).length() == 0) {
+			if (mbrPhone == null || (mbrPhone.trim()).length() == 0) {
 				errorMsgs.add("請輸入手機號碼");
 			} else {
 				if (!(mbrPhone.trim()).matches(phoneRegex)) {
@@ -233,7 +234,7 @@ public class MemberController extends HttpServlet {
 			}
 
 			if (!errorMsgs.isEmpty()) {
-				req.getRequestDispatcher("/member/register.jsp").forward(req, res);
+				req.getRequestDispatcher("/member/MemberRegister.jsp").forward(req, res);
 				return;// 程式中斷
 			}
 
@@ -244,7 +245,7 @@ public class MemberController extends HttpServlet {
 			mVo.setMbrPwd(mbrPwd.trim());
 			mVo.setMbrPhone(mbrPhone.trim());
 
-			if ((sellIntro.trim()).length() == 0 || sellIntro == null) {
+			if (sellIntro == null || (sellIntro.trim()).length() == 0) {
 				sellIntro = null;
 				mVo.setSellerIntro(sellIntro);
 			} else {
@@ -295,7 +296,7 @@ public class MemberController extends HttpServlet {
 
 			// 驗證資料
 			// 驗證名字
-			if ((mbrName.trim()).length() == 0 || mbrName == null) {
+			if (mbrName == null || (mbrName.trim()).length() == 0) {
 				errorMsgs.add("請輸入姓名");
 			} else {
 				if (!(mbrName.trim()).matches(nameRegex)) {
@@ -309,7 +310,7 @@ public class MemberController extends HttpServlet {
 			}
 
 			// 驗證手機
-			if ((mbrPhone.trim()).length() == 0 || mbrPhone == null) {
+			if (mbrPhone == null || (mbrPhone.trim()).length() == 0) {
 				errorMsgs.add("請輸入手機號碼");
 			} else {
 				if (!(mbrPhone.trim()).matches(phoneRegex)) {
@@ -317,7 +318,7 @@ public class MemberController extends HttpServlet {
 
 				}
 				if (!mbrPhoneOld.equals((mbrPhone.trim()))) {
-					if (mService.findByMbrPhone(mbrPhone) != null) {
+					if (mService.findByMbrPhone(mbrPhone.trim()) != null) {
 						errorMsgs.add("手機號碼已註冊");
 					}
 				}
@@ -345,6 +346,14 @@ public class MemberController extends HttpServlet {
 			// 取得資料
 			String memberNo = req.getParameter("memberNo");
 			String emailVerifyCode = req.getParameter("emailVerifyCode");
+
+			// 驗證資料
+			if (emailVerifyCode == null || emailVerifyCode.trim().length() == 0) {
+				req.setAttribute("errorMsg", "請輸入驗證碼");
+				req.getRequestDispatcher("/member/MemberEmailVerify.jsp").forward(req, res);
+				return;
+			}
+
 			// 取得redis資料
 			Jedis jedis = pool.getResource();
 			String tempAuth = jedis.get("MailVerify:" + memberNo);
@@ -356,7 +365,7 @@ public class MemberController extends HttpServlet {
 				req.setAttribute("errorMsg", "連結信已逾時，請重新申請。");
 				req.getRequestDispatcher("/member/MemberEmailVerify.jsp").forward(req, res);
 				return;
-			} else if (emailVerifyCode.equals(tempAuth)) {
+			} else if ((emailVerifyCode.trim()).equals(tempAuth)) {
 				System.out.println("驗證成功!");
 				MemberVO mVo = mService.findByMbrNo(memberNo);
 				// 更新資料庫
@@ -447,7 +456,8 @@ public class MemberController extends HttpServlet {
 			List<String> errorMsgs = new LinkedList<>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			// 取參數
-			String memberNo = req.getParameter("memberNo");
+			HttpSession session = req.getSession();
+			String memberNo = (String) session.getAttribute("memberNo");;
 			String mbrTempPwd = req.getParameter("mbrTempPwd");
 			String mbrPwd = req.getParameter("mbrPwd");
 			String mbrPwd2 = req.getParameter("mbrPwd2");
@@ -489,7 +499,6 @@ public class MemberController extends HttpServlet {
 				mVo.setMbrPwd(mbrPwd.trim());
 				String upResult = mService.updatePwd(mVo);
 				if ("更新成功".equals(upResult)) {
-					HttpSession session = req.getSession();
 					session.setAttribute("registerSuccess", "密碼更改成功，請登入。");
 					res.sendRedirect(req.getContextPath() + "/member/MemberLogin.jsp");
 					return;
