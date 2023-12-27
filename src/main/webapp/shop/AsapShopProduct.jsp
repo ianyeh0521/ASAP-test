@@ -56,7 +56,7 @@ if (list.getItemAddTime() != null) {
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>ASAP-ShopProduct</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -461,7 +461,7 @@ if (list.getItemAddTime() != null) {
 
 		//確認已加入收藏
 		var itemNo = $(".product-title").attr("data-itemno");
-		var mbrNo = "M001";
+		var mbrNo = "M1";
 		$
 				.ajax({
 					url : "${pageContext.request.contextPath}/shop/ItemCollectController",
@@ -489,13 +489,8 @@ if (list.getItemAddTime() != null) {
 			var cartQty = $(".horizontal-quantity").val();
 			var mbrNo = "M1";
 
-			if (cartQty > max) {
-				alert("超過庫存數量！");
-				return; // 阻止後續執行
-			}
-
-			if (cartQty < 0) {
-				alert("不可選擇負數！");
+			if (cartQty <= 0) {
+				alert("無效的商品數量！");
 				return; // 阻止後續執行
 			}
 
@@ -530,7 +525,7 @@ if (list.getItemAddTime() != null) {
 						function() {
 							var itemNo = $(".product-title")
 									.attr("data-itemno");
-							var mbrNo = "M001";
+							var mbrNo = "M1";
 							$
 									.ajax({
 										url : "${pageContext.request.contextPath}/shop/ItemCollectController",

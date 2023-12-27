@@ -17,30 +17,28 @@ public class ShoppingCartService implements ShoppingCartService_interface {
 
 	@Override
 	public Integer insert(String mbrNo, ItemInfoVO itemInfoVO, int itemShopQty) {
-		// 檢查是否有相同的記錄
 		ShoppingCartVO vo = dao.findByMemberAndItemNo(mbrNo, itemInfoVO.getItemNo());
-		if (vo != null) {
-			// 如果有存在相同的記錄，數量加一
-			Integer max = itemInfoVO.getItemStockQty();
-			System.out.println("max is "+max);
-			Integer qty = vo.getItemShopQty() + itemShopQty;
-			if(max>=qty) {
-				vo.setItemShopQty(qty);
-				int result = dao.update(vo);
-				return result;
-			} else {
-				return -2;
-			}
-
+		Integer max = itemInfoVO.getItemStockQty();
+		if (max < itemShopQty) {
+			return -2;
 		} else {
-			ShoppingCartVO newVo = new ShoppingCartVO();
-			newVo.setMbrNo(mbrNo);
-			newVo.setItemInfoVO(itemInfoVO);
-			newVo.setItemShopQty(itemShopQty);
-			
-			return dao.insert(newVo);
+			if (vo == null) {
+				ShoppingCartVO newVo = new ShoppingCartVO();
+				newVo.setMbrNo(mbrNo);
+				newVo.setItemInfoVO(itemInfoVO);
+				newVo.setItemShopQty(itemShopQty);
+				return dao.insert(newVo);
+			} else {
+				Integer qty = vo.getItemShopQty() + itemShopQty;
+				if (max >= qty) {
+					vo.setItemShopQty(qty);
+					int result = dao.update(vo);
+					return result;
+				} else {
+					return -2;
+				}
+			}
 		}
-
 	}
 
 	@Override

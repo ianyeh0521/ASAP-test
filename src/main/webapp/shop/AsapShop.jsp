@@ -8,22 +8,23 @@
 <%@ page import="com.asap.shop.entity.ShoppingCartVO"%>
 <%@ page import="com.asap.shop.service.ShoppingCartService_interface"%>
 <%@ page import="com.asap.shop.service.ShoppingCartService"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.util.Date"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 
 <%
-// ItemInfoService_interface ItemSvc = new ItemInfoService();
-// List<ItemInfoVO> list = ItemSvc.getAll();
-// pageContext.setAttribute("list", list);
-// System.out.println(list);
+ItemInfoService_interface ItemSvc = new ItemInfoService();
+List<ItemInfoVO> list = ItemSvc.getAll();
+pageContext.setAttribute("list", list);
+System.out.println(list);
 
 // String shoppingCart = request.getParameter("mbrNo");
 ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
 ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
 List<ShoppingCartVO> cartlist = ShoppingCartSvc.findByMember("M1");
 pageContext.setAttribute("cartlist", cartlist);
-
 System.out.println(cartlist);
 %>
 
@@ -34,7 +35,7 @@ System.out.println(cartlist);
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>ASAP-SHOP</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
@@ -156,21 +157,21 @@ System.out.println(cartlist);
 						style="flex-grow: 1;">
 						<a href="#" class="search-toggle" role="button"><i
 							class="icon-magnifier"></i></a>
-						<form action="ItemInfoServlet" method="get"
+						<!-- 						<form action="ItemInfoServlet" method="get" -->
+						<!-- 							style="display: flex; justify-content: center; align-items: center; width: 100%;"> -->
+						<div class="header-search-wrapper"
 							style="display: flex; justify-content: center; align-items: center; width: 100%;">
-							<div class="header-search-wrapper"
-								style="display: flex; justify-content: center; align-items: center; width: 100%;">
-								<input type="search" class="form-control" name="q" id="q"
-									placeholder="尋找想要的商品吧!" required=""
-									style="flex-grow: 1; border: 2px solid #778899;" />
-								<button class="btn icon-magnifier p-0" id="itemsearch"
-									title="搜尋" type="button"></button>
-							</div>
-							<!-- End .header-search-wrapper -->
+							<input type="search" class="form-control" name="q" id="q"
+								placeholder="尋找想要的商品吧!" required=""
+								style="flex-grow: 1; border: 2px solid #778899;" />
+							<button class="btn icon-magnifier p-0" id="itemsearch" title="搜尋"
+								type="button"></button>
+						</div>
+						<!-- End .header-search-wrapper -->
 						</form>
 					</div>
 
-					<a href="AsapShopWish.jsp" class="header-icon position-relative"
+					<a href="MyCollection.jsp" class="header-icon position-relative"
 						title="我的收藏"><i class="icon-wishlist-2"></i> <!-- 						 <span -->
 						<!-- 						class="cart-count badge-circle">3</span> --> </a>
 
@@ -196,7 +197,8 @@ System.out.println(cartlist);
 										<div class="product" data-cartid="${cartItem.shoppingCartNo}">
 											<div class="product-details">
 												<h4 class="product-title">
-													<a href="ItemInfoServlet?action=increaseViewItem&itemNo=${cartItem.itemInfoVO.itemNo}">${cartItem.itemInfoVO.itemName}</a>
+													<a
+														href="ItemInfoServlet?action=increaseViewItem&itemNo=${cartItem.itemInfoVO.itemNo}">${cartItem.itemInfoVO.itemName}</a>
 												</h4>
 
 												<span class="cart-product-info"> <span
@@ -207,13 +209,16 @@ System.out.println(cartlist);
 											<!-- End .product-details -->
 
 											<figure class="product-image-container">
-												<a href="ItemInfoServlet?action=increaseViewItem&itemNo=${cartItem.itemInfoVO.itemNo}" class="product-image"> <img
+												<a
+													href="ItemInfoServlet?action=increaseViewItem&itemNo=${cartItem.itemInfoVO.itemNo}"
+													class="product-image"> <img
 													src="ItemInfoServlet?action=getImg&itemNo=${cartItem.itemInfoVO.itemNo}"
 													alt="product">
 												</a>
 
-														<a href="javascript:void(0);" class="btn-remove"
-														title="Remove Product"><span>×</span></a> <!-- 取消商品的動作 -->
+												<a href="javascript:void(0);" class="btn-remove"
+													title="Remove Product"><span>×</span></a>
+												<!-- 取消商品的動作 -->
 											</figure>
 										</div>
 										<!-- End .product -->
@@ -314,7 +319,8 @@ System.out.println(cartlist);
 											<!-- 													title="加入收藏"><i class="icon-heart"></i></a> -->
 										</div>
 										<h3 class="product-title">
-											<a href="AsapShopProduct.jsp?itemNo=${ItemInfoVO.itemNo}"><div>
+											<a
+												href="ItemInfoServlet?action=increaseViewItem&itemNo=${ItemInfoVO.itemNo}"><div>
 													商品名稱: <span>${ItemInfoVO.itemName}</span>
 												</div></a>
 											<div>
@@ -358,19 +364,7 @@ System.out.println(cartlist);
 					<div class="pagination-container" style="text-align: center">
 						<div id="pagination-wrapper"></div>
 					</div>
-					<!-- 						<nav class="toolbox toolbox-pagination"> -->
-					<!-- 							<ul class="pagination toolbox-item"> -->
-					<!-- 								<li class="page-item disabled"><a -->
-					<!-- 									class="page-link page-link-btn" href="#"><i -->
-					<!-- 										class="icon-angle-left"></i></a></li> -->
-					<!-- 								<li class="page-item active"><a class="page-link" href="#">1 -->
-					<!-- 										<span class="sr-only">(current)</span> -->
-					<!-- 								</a></li> -->
-					<!-- 								<li class="page-item"><a class="page-link" href="#">2</a></li> -->
-					<!-- 								<li class="page-item"><a class="page-link page-link-btn" -->
-					<!-- 									href="#"><i class="icon-angle-right"></i></a></li> -->
-					<!-- 							</ul> -->
-					<!-- 						</nav> -->
+
 				</div>
 				<!-- End .col-lg-9 -->
 
@@ -443,7 +437,6 @@ System.out.println(cartlist);
 																	data-column="itemTypeNo" style="cursor: pointer">
 																	其他<span class="products-count"></span>
 																</div></li>
-
 
 														</ul>
 													</div>
@@ -543,14 +536,14 @@ System.out.println(cartlist);
 
 											<div class="slider-container">
 												<label for="min-price">最低價格:</label> <input type="range"
-													id="min-price" name="min-price" min="0" max="1000"
+													id="min-price" name="min-price" min="0" max="50000"
 													value="0"> <span id="min-price-value"></span>
 											</div>
 
 											<div class="slider-container">
 												<label for="max-price">最高價格:</label> <input type="range"
-													id="max-price" name="max-price" min="0" max="5000"
-													value="5000"> <span id="max-price-value"></span>
+													id="max-price" name="max-price" min="0" max="50000"
+													value="50000"> <span id="max-price-value"></span>
 											</div>
 
 											<p>
@@ -573,40 +566,63 @@ System.out.println(cartlist);
 						</div>
 						<!-- End .widget -->
 
-						<div class="widget widget-featured">
-							<h3 class="widget-title">近期瀏覽</h3>
-							<div class="widget-body">
-								<div class="owl-carousel widget-featured-products">
-									<div class="featured-col">
-										<!-- 迭代近期瀏覽的商品 -->
-										<c:if test="${not empty sessionScope.recentlyViewed}">
-											<c:forEach items="${sessionScope.recentlyViewed}" var="item"
-												varStatus="status">
-												<c:if test="${status.count <= 3}">
-													<div class="product-default left-details product-widget">
-														<figure>
-															<a href="AsapShopProduct.jsp?itemNo=${item.itemNo}">
-																<img
-																src="ItemInfoServlet?action=getImg&itemNo=${item.itemNo}"
-																width="75" height="75" alt="${item.itemName}" />
-															</a>
-														</figure>
-														<div class="product-details">
-															<h3 class="product-title">
-																<a href="AsapShopProduct.jsp?itemNo=${item.itemNo}">${item.itemName}</a>
-															</h3>
-															<div class="price-box">
-																<span class="product-price">$${item.itemPrice}</span>
-															</div>
-														</div>
-													</div>
-												</c:if>
-											</c:forEach>
-										</c:if>
-									</div>
-								</div>
-							</div>
-						</div>
+<div class="widget widget-featured">
+    <h3 class="widget-title">近期瀏覽</h3>
+    <div class="widget-body">
+        <div class="owl-carousel widget-featured-products">
+            <div class="featured-col">
+                <!-- 迭代顯示前三個近期瀏覽的商品 -->
+                <c:if test="${not empty sessionScope.recentlyViewed}">
+                    <c:forEach items="${sessionScope.recentlyViewed}" var="item" varStatus="status">
+                        <c:if test="${status.count le 3}">
+                            <div class="product-default left-details product-widget" style="height: 75px; overflow: hidden;">
+                                <figure style="width: 100px; float: left; margin-right: 10px;">
+                                    <a href="AsapShopProduct.jsp?itemNo=${item.itemNo}">
+                                        <img src="ItemInfoServlet?action=getImg&itemNo=${item.itemNo}" width="100" height="75" style="object-fit: cover;" alt="${item.itemName}" />
+                                    </a>
+                                </figure>
+                                <div class="product-details" style="overflow: hidden;">
+                                    <h3 class="product-title">
+                                        <a href="AsapShopProduct.jsp?itemNo=${item.itemNo}">${item.itemName}</a>
+                                    </h3>
+                                    <div class="price-box">
+                                        <span class="product-price">$${item.itemPrice}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </c:if>
+            </div>
+            <div class="featured-col">
+                <!-- 迭代顯示後三個近期瀏覽的商品 -->
+                <c:if test="${not empty sessionScope.recentlyViewed}">
+                    <c:forEach items="${sessionScope.recentlyViewed}" var="item" varStatus="status">
+                        <c:if test="${status.count gt 3 and status.count le 6}">
+                            <div class="product-default left-details product-widget" style="height: 75px; overflow: hidden;">
+                                <figure style="width: 100px; float: left; margin-right: 10px;">
+                                    <a href="AsapShopProduct.jsp?itemNo=${item.itemNo}">
+                                        <img src="ItemInfoServlet?action=getImg&itemNo=${item.itemNo}" width="100" height="75" style="object-fit: cover;" alt="${item.itemName}" />
+                                    </a>
+                                </figure>
+                                <div class="product-details">
+                                    <h3 class="product-title">
+                                        <a href="AsapShopProduct.jsp?itemNo=${item.itemNo}">${item.itemName}</a>
+                                    </h3>
+                                    <div class="price-box">
+                                        <span class="product-price">$${item.itemPrice}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </c:if>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 						<div class="widget widget-block">
 							<h3 class="widget-title">親愛的購物好友</h3>
@@ -674,7 +690,7 @@ System.out.println(cartlist);
   $("div.mobile-menu-container").load("mobile-menu-container.html");
   
   
-  //排序功能
+  //☆☆☆排序功能
 $("select.orderby").on("change", function() {
     var orderby = $(".orderby").val();
     var form_data = {};
@@ -710,7 +726,7 @@ $("select.orderby").on("change", function() {
     )
   })
   
-  //搜尋功能
+  //☆☆☆搜尋功能
   $(document).ready(function() {
 $("#itemsearch").on("click", function(event) {
     event.preventDefault(); // 阻止表單提交默認行為
@@ -733,7 +749,7 @@ $("#itemsearch").on("click", function(event) {
 	})
 })
 
-//複合查詢
+//☆☆☆複合查詢
 $(document).ready(function() {
     var itemTypeNo, itemSizeNo, itemStatNo;
 
@@ -752,7 +768,6 @@ $(document).ready(function() {
         }
         console.log("商品類型編號:", itemTypeNo);
     });
-    
 
     // 監聽尺寸的點擊事件，同理...
     $('#item_size_select div').on('click', function() {
@@ -783,8 +798,7 @@ $(document).ready(function() {
     // 綁定點擊事件
     $('body').on('click', 'button#select', function() {
     	var minPrice = $('#min-price').val();
-    	var maxPrice = $('#max-price').val();
-    	
+    	var maxPrice = $('#max-price').val();   	
     	
         $.ajax({
             url: "ItemInfoServlet",
@@ -811,7 +825,7 @@ $(document).ready(function() {
 		})
 	  })
 	      
-//加入購物車
+//☆☆☆加入購物車
 $(document).on("click", ".btn-icon-cart", function() {
     var itemNo = $(this).data("itemno");
     var productCard = $(this).closest('.product-default'); // 定位到商品卡片
@@ -819,15 +833,11 @@ $(document).on("click", ".btn-icon-cart", function() {
     var quantity = $(this).siblings(".product-quantity").val(); // 獲取數量框的值
     var mbrNo = "M1"; // 會員號碼
     console.log(max);
-
+    console.log(quantity);
  // 檢查選擇的數量是否超過庫存
-    if (quantity > max) {
-        alert("超過庫存數量!");
-        return; // 阻止後續執行
-    }
  
-    if (quantity < 0) {
-        alert("不可填負數!");
+    if (quantity <= 0) {
+        alert("無效的商品數量!");
         return; // 阻止後續執行
     }
     
@@ -854,38 +864,64 @@ $(document).on("click", ".btn-icon-cart", function() {
     )
 });
   
+//☆☆☆刪除購物車
+$('.btn-remove').on('click', function(e) {
+    e.preventDefault();
+    var cartId = $(this).closest('div').data('cartid'); // 獲取購物車項目 ID
+    let r = confirm("確認刪除此項商品?");
+	console.log(cartId);
+    // 發送 AJAX 請求到後端
+    if (r){
+    $.ajax({
+        url: '${pageContext.request.contextPath}/shop/ShoppingCartServlet',
+        method: 'POST',
+        data: {
+            action: 'remove',
+            shoppingCartNo: cartId // 購物車項目 ID
+        },
+        success: function(response) {
+        	alert("刪除成功")
+           document.location.reload()
+        },
+        error: function(xhr, status, error) {
+            // 處理錯誤
+            console.error(error);
+        }
+    });
+    }
+});  
   
-  //count
-// $(document).ready(function() {
-   
-//     updateCategoryCount('itemTypeNo', 4, 'typehandball');
-// }); 
+//發送 AJAX 請求獲取每個商品類型的數量
+function fetchItemCount() {
+    $.ajax({
+        url: "${pageContext.request.contextPath}/shop/ItemInfoServlet",
+        type: 'POST',
+        data: { action: 'getItemCountByType' },
+        success: function(response) {
+            // 處理成功響應
+            updateItemCount(response);
+        },
+        error: function(error) {
+            console.log('Error fetching item count: ', error);
+        }
+    });
+}
 
-// function updateCategoryCount(categoryType, categoryId, elementClass) {
-//     $.ajax({
-//         url: 'ItemInfoServlet',
-//         type: 'POST',
-//         data: {
-//             action: 'countByCategory',
-//             categoryType: categoryType,
-//             categoryId: categoryId
-//         },
-//         success: function(count) {
-           
-//             $('.' + elementClass + ' .products-count').text('(' + count + ')');
-//         },
-//         error: function(xhr, status, error) {
-//             console.error('Error fetching category count:', error);
-//         }
-//     });
-// }
+// 更新界面上的商品數量
+function updateItemCount(itemCountMap) {
+    console.log(itemCountMap); // 打印以檢查數據
+    for (const [typeNo, count] of Object.entries(itemCountMap)) {
+        $(`div[data-category='\${typeNo}'] .products-count`).text(`(\${count})`);
+    }
+}
+
+// 當頁面加載時調用
+$(document).ready(function() {
+    fetchItemCount();
+});
 
 
-// $(document).ready(function() {
-//     updateCategoryCount('itemTypeNo', 4, 'typehandball'); 
-// });
-
-  //價格範圍功能
+//☆☆☆價格範圍功能
 document.addEventListener('DOMContentLoaded', function () {
     const minPriceSlider = document.getElementById('min-price');
     const maxPriceSlider = document.getElementById('max-price');
@@ -895,10 +931,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updatePriceRangeDisplay() {
         // 更新最大最小價格顯示
-        minPriceValue.textContent = minPriceSlider.value;
-        maxPriceValue.textContent = maxPriceSlider.value;
+        minPriceValue.textContent =  "$" +minPriceSlider.value;
+        maxPriceValue.textContent = "$" +maxPriceSlider.value;
         // 更新價格範圍顯示
-        selectedPriceRangeDisplay.textContent = `\${minPriceSlider.value} - \${maxPriceSlider.value}`;
+        selectedPriceRangeDisplay.textContent = `$\${minPriceSlider.value} - $\${maxPriceSlider.value}`;
     }
 
     minPriceSlider.addEventListener('input', function() {
@@ -919,7 +955,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePriceRangeDisplay();
 });
   
- //首頁分頁
+//☆☆☆首頁分頁
 $.ajax({
         url: "${pageContext.request.contextPath}/shop/ItemInfoServlet",
         data: { "action": "page" },
@@ -934,8 +970,7 @@ $.ajax({
         }
       });
   
-  
- //功能分頁
+//☆☆☆功能分頁
 var state = {
 		  'querySet': [],
 		  'page': 1,
@@ -948,6 +983,8 @@ var state = {
 	  paginationData.querySet.forEach(function(item) {
 		    var soldOutLabel = item.itemStockQty == 0 ? `<div class="product-label label-hot">已完售</div>` : '';
 		    var hotSaleLabel = item.itemView > 180 ? `<span class="product-label label-sale">熱門瀏覽</span>` : '';
+	        var date = new Date(item.itemAddTime); 
+	        var formattedDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
 		  item_html += `<div class="col-6 col-sm-3">
         <div class="product-default inner-quickview inner-icon">
         <figure>
@@ -972,11 +1009,16 @@ var state = {
                 <span>\${item.itemTypeVO.itemTypeName}</span>, <span>\${item.itemStatVO.itemStatText}</span>,尺寸: <span>\${item.itemSizeVO.itemSizeText}</span>
                     </div>
                   </div> 
-            <h3 class="product-title">
-            <span style="color: blue; font-size: 16px; font-weight: bold;">\${item.itemName}</span><br>
-                瀏覽人數: <span>\${item.itemView}</span><br>
-                商品庫存: <span class="itemstockqty">\${item.itemStockQty}</span>
-            </h3>
+                  <h3 class="product-title">
+                  <span style="color: blue; font-size: 16px; font-weight: bold;">
+                      <a href="ItemInfoServlet?action=increaseViewItem&itemNo=\${item['itemNo']}">\${item.itemName}</a>
+                  </span>
+                  商品庫存: <span class="itemstockqty">\${item.itemStockQty}</span><br>       
+                  瀏覽人數: <span>\${item.itemView}</span><br>
+                  上架時間: <span>\${formattedDate}</span>
+
+
+              </h3>
             
             <div class="product-buttons" style="display: flex; align-items: center;">
             <input type="number" class="product-quantity" placeholder="請選擇數量" min="1"
@@ -1107,35 +1149,8 @@ var state = {
 	    pageButtons(paginationData.pages);
 	  });
 	}
-  
 
-	//刪除購物車
-	$('.btn-remove').on('click', function(e) {
-	    e.preventDefault();
-	    var cartId = $(this).closest('div').data('cartid'); // 獲取購物車項目 ID
-	    let r = confirm("確認刪除此項商品?");
-		console.log(cartId);
-	    // 發送 AJAX 請求到後端
-	    if (r){
-	    $.ajax({
-	        url: '${pageContext.request.contextPath}/shop/ShoppingCartServlet',
-	        method: 'POST',
-	        data: {
-	            action: 'remove',
-	            shoppingCartNo: cartId // 購物車項目 ID
-	        },
-	        success: function(response) {
-	        	alert("刪除成功")
-	           document.location.reload()
-	        },
-	        error: function(xhr, status, error) {
-	            // 處理錯誤
-	            console.error(error);
-	        }
-	    });
-	    }
-	});
-  
+	
 </script>
 
 </body>

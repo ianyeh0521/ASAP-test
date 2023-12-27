@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.asap.shop.entity.ItemInfoVO;
+import com.asap.shop.entity.ItemTypeVO;
 
 public interface ItemInfoDAO_interface {
 	// 新增商品資訊
@@ -51,8 +52,11 @@ public interface ItemInfoDAO_interface {
 	//找最高價
 	int getHighestPrice();
 	
+	
+	List<ItemTypeVO> getAllItemTypes();
+	
 	// 計算特定分類的商品數量
-	int countItemsByCategory(String categoryType, int categoryId);
+	int countItemsByType(Integer itemTypeNo);
 	
 	public ItemInfoVO checkerFindByItemNo(Integer itemNo);
 	

@@ -123,12 +123,7 @@ if (list.getItemAddTime() != null) {
 					<!-- End .product-single-carousel -->
 				</div>
 				<div class="prod-thumbnail owl-dots">
-					<c:forEach var="img" items="${itemimgbase64}">
-						<div class="owl-dot">
-							<img src="data:image/jpg;base64,${img}" width="110" height="110"
-								alt="圖片" />
-						</div>
-					</c:forEach>
+
 				</div>
 			</div>
 			<!-- End .product-single-gallery -->

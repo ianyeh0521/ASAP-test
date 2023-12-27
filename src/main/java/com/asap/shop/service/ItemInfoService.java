@@ -5,11 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Entity;
-
 import com.asap.shop.dao.ItemInfoDAO;
 import com.asap.shop.dao.ItemInfoDAO_interface;
 import com.asap.shop.entity.ItemInfoVO;
+import com.asap.shop.entity.ItemTypeVO;
 
 /**
  * 商品資訊服務類別，實作商品資訊服務介面(ItemInfoService_interface)。
@@ -131,9 +130,14 @@ public class ItemInfoService implements ItemInfoService_interface {
 		return dao.checkerUpdate(itemInfo);
 	}
 	
-	@Override
-    public int countItemsByCategory(String categoryType, int categoryId) {
-        return dao.countItemsByCategory(categoryType, categoryId);
+	public Map<Integer, Integer> getItemCountByType() {
+        Map<Integer, Integer> itemCountMap = new HashMap<>();
+        List<ItemTypeVO> itemTypes = dao.getAllItemTypes();
+        for (ItemTypeVO itemType : itemTypes) {
+            int count = dao.countItemsByType(itemType.getItemTypeNo());
+            itemCountMap.put(itemType.getItemTypeNo(), count);
+        }
+        return itemCountMap;
     }
 
 }

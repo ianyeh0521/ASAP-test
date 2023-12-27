@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.asap.shop.entity.ItemInfoVO;
+import com.asap.shop.entity.ItemTypeVO;
 
 public interface ItemInfoService_interface {
 
@@ -48,5 +49,6 @@ public interface ItemInfoService_interface {
 	
 	Integer checkerUpdate(ItemInfoVO itemInfo);
 	
-	int countItemsByCategory(String categoryType, int categoryId);
+	Map<Integer, Integer> getItemCountByType();
+	
 }
