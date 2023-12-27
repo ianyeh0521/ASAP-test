@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.asap.coach.entity.*"%>
 <%@ page import="com.asap.coach.service.*"%>
-
+<%@ page import="com.asap.course.entity.*"%>
+<%@ page import="com.asap.course.service.*"%>
+<%@ page import="java.text.SimpleDateFormat"%>
 <% 
    CoachVO cVo = (CoachVO)session.getAttribute("coachVo");
 
@@ -12,6 +15,20 @@
    List<CoachNewsVO> newslist = coachNewsSvc.findByCoachNo(cVo.getCoachNo());
    pageContext.setAttribute("newslist", newslist);
 
+   CourseService courseSvc = new CourseService();
+   List<CourseVO> activlist = courseSvc.findByCoach(cVo.getCoachNo());
+   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+   ArrayList allActiv = new ArrayList();
+   for(CourseVO vo: activlist){
+	   if(vo.getCourseStat()){
+		  ArrayList oneActiv = new ArrayList();
+		  oneActiv.add(vo.getCourseName());
+		  oneActiv.add(sdf.format(vo.getCourseStartTime()));
+		  oneActiv.add(sdf.format(vo.getCourseEndTime()));
+		  allActiv.add(oneActiv);
+	   }  
+   }
+   pageContext.setAttribute("allActiv", allActiv);
 %>
 
 <!DOCTYPE html>
@@ -34,25 +51,7 @@
       href="${pageContext.request.contextPath}/assets/images/icons/favicon.png"
     />
 
-    <script>
-      WebFontConfig = {
-        google: {
-          families: [
-            "Open+Sans:300,400,600,700,800",
-            "Poppins:300,400,500,600,700",
-            "Shadows+Into+Light:400",
-          ],
-        },
-      };
-      (function (d) {
-        var wf = d.createElement("script"),
-          s = d.scripts[0];
-        wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
-        wf.async = true;
-        s.parentNode.insertBefore(wf, s);
-      })(document);
-    </script>
-
+    
     <!-- Plugins CSS File -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
@@ -205,7 +204,7 @@
 							type="button">
 							<i class="fas fa-bars"></i>
 						</button>
-						<a href="#" style="width: 222; height: 88;"> <img
+						<a href="${pageContext.request.contextPath}/coach/CoachHome.jsp" style="width: 222; height: 88;"> <img
 							src="${pageContext.request.contextPath}/newImg/logo2.png"
 							alt="Logo" />
 						</a>
@@ -221,40 +220,10 @@
 				<div class="container">
 					<nav class="main-nav w-100">
 						<ul class="menu" style="display: flex; justify-content: flex-end">
-							<li><a href="#">論壇</a>
-								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
-								</ul></li>
-							<li><a href="#">揪團</a>
-								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
-								</ul></li>
-							<li><a href="#">找課程</a>
-								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
-								</ul></li>
-							<li><a href="#">找場地</a>
-								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
-								</ul></li>
-							<li><a href="#">賣家入口</a>
-								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
-
-							<li><a href="">商城</a></li>
-							<li><a href="login.jsp" style="color: blue">登出</a></li>
+							<c:if test="${coachVo.coachStat}">
+							<li><a href="${pageContext.request.contextPath}/course/listAllCourses_datatable.jsp">課程管理</a></li>
+							</c:if>
+							<li><a><form action="${pageContext.request.contextPath}/CoachController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
 						</ul>
 					</nav>
 				</div>
@@ -314,7 +283,7 @@
 						<c:forEach var="news" items="${newslist}">
 								<div style="margin-bottom: 5px;font-size: 1.5rem;padding: 2px 0;border-bottom: darkgray 1.5px dashed;">
                                       <p style="display: block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="news">
-                                           <b>${news.newsSubj}</b>&ensp;|&ensp;${news.newsText}&ensp;|&ensp;${news.newsTime}
+                                           <b>${news.newsSubj}</b>&ensp;|&ensp;${news.newsText}&ensp;|&ensp;<fmt:formatDate value="${news.newsTime}" pattern="yyyy-MM-dd HH:mm:ss"/> 
                                       </p>
                                  </div>							
 						</c:forEach>
@@ -597,7 +566,8 @@
       </main>
       <!-- End .main -->
 
-      <footer class="footer bg-dark">	<div class="footer-middle">
+      <footer class="footer bg-dark">	
+        <div class="footer-middle">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-3 col-sm-6">
@@ -633,13 +603,13 @@
 								<h4 class="widget-title">SiteMap</h4>
 
 								<ul class="links">
-									<li><a href="#">Account</a></li>
-									<li><a href="#">Course</a></li>
-									<li><a href="#">Forum</a></li>
-									<li><a href="#">Group</a></li>
-									<li><a href="#">Court</a></li>
-									<li><a href="#">Seller</a></li>
-									<li><a href="#">Mall</a></li>
+									<li><a>Account</a></li>
+									<li><a>Course</a></li>
+									<li><a>Forum</a></li>
+									<li><a>Group</a></li>
+									<li><a>Court</a></li>
+									<li><a>Seller</a></li>
+									<li><a>Mall</a></li>
 								</ul>
 							</div>
 							<!-- End .widget -->
@@ -664,7 +634,8 @@
 				</div>
 				<!-- End .footer-bottom -->
 			</div>
-			<!-- End .container --></footer>
+			<!-- End .container -->
+		</footer>
     </div>
     <!-- End .page-wrapper -->
 
@@ -679,10 +650,25 @@
     <div class="mobile-menu-overlay"></div>
     <!-- End .mobil-menu-overlay -->
 
-    <div class="mobile-menu-container"></div>
+    <div class="mobile-menu-container">
+     <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
+            <nav class="mobile-nav">
+              <ul class="mobile-menu">
+                <li><a href="${pageContext.request.contextPath}/coach/CoachHome.jsp">首頁</a></li>
+                <c:if test="${coachVo.coachStat}">
+				<li><a href="${pageContext.request.contextPath}/course/listAllCourses_datatable.jsp">課程管理</a></li>
+				</c:if>
+              </ul>
+            </nav>
+            <!-- End .mobile-nav -->
+          </div>
+          <!-- End .mobile-menu-wrapper -->
+          
+    </div>
     <!-- End .mobile-menu-container -->
 
-    <div class="sticky-navbar"></div>
+<!--     <div class="sticky-navbar"></div> -->
 
     <a id="scroll-top" href="#top" title="Top" role="button"
       ><i class="icon-angle-up"></i

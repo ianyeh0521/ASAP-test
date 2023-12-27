@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.asap.member.entity.*"%>
 <%@ page import="com.asap.member.service.*"%>
 <%@ page import="java.util.*"%>
@@ -312,7 +313,7 @@
 								<c:forEach var="news" items="${newslist}">
 								<div style="margin-bottom: 5px;font-size: 1.5rem;padding: 2px 0;border-bottom: darkgray 1.5px dashed;">
                                       <p style="display: block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="news">
-                                           <b>${news.newsSubj}</b>&ensp;|&ensp;${news.newsText}&ensp;|&ensp;${news.newsTime}
+                                           <b>${news.newsSubj}</b>&ensp;|&ensp;${news.newsText}&ensp;|&ensp;<fmt:formatDate value="${news.newsTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                       </p>
                                  </div>							
 						        </c:forEach>

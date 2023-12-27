@@ -874,6 +874,14 @@ public class CoachController extends HttpServlet {
 
 		}
 
+		// 登出
+		if ("logout".equals(action)) {
+			HttpSession session = req.getSession();
+			session.invalidate();
+			res.sendRedirect(req.getContextPath() + "/ASAPwelcome.jsp");
+			return;
+		}
+
 	}
 
 	@Override

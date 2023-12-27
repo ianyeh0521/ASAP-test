@@ -86,7 +86,7 @@ if(list.size()>= 3){
 							type="button">
 							<i class="fas fa-bars"></i>
 						</button>
-						<a href="#" style="width: 222; height: 88;"> <img
+						<a href="${pageContext.request.contextPath}/coach/CoachHome.jsp" style="width: 222; height: 88;"> <img
 							src="${pageContext.request.contextPath}/newImg/logo2.png"
 							alt="Logo" />
 						</a>
@@ -102,40 +102,10 @@ if(list.size()>= 3){
 				<div class="container">
 					<nav class="main-nav w-100">
 						<ul class="menu" style="display: flex; justify-content: flex-end">
-							<li><a href="#">論壇</a>
-								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
-								</ul></li>
-							<li><a href="#">揪團</a>
-								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
-								</ul></li>
-							<li><a href="#">找課程</a>
-								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
-								</ul></li>
-							<li><a href="#">找場地</a>
-								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
-								</ul></li>
-							<li><a href="#">賣家入口</a>
-								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
-
-							<li><a href="">商城</a></li>
-							<li><a href="login.jsp" style="color: red">登入</a></li>
+							<c:if test="${coachVo.coachStat}">
+							<li><a href="${pageContext.request.contextPath}/course/listAllCourses_datatable.jsp">課程管理</a></li>
+							</c:if>
+							<li><a><form action="${pageContext.request.contextPath}/CoachController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
 						</ul>
 					</nav>
 				</div>
@@ -692,13 +662,13 @@ if(list.size()>= 3){
 								<h4 class="widget-title">SiteMap</h4>
 
 								<ul class="links">
-									<li><a href="#">Account</a></li>
-									<li><a href="#">Course</a></li>
-									<li><a href="#">Forum</a></li>
-									<li><a href="#">Group</a></li>
-									<li><a href="#">Court</a></li>
-									<li><a href="#">Seller</a></li>
-									<li><a href="#">Mall</a></li>
+									<li><a>Account</a></li>
+									<li><a>Course</a></li>
+									<li><a>Forum</a></li>
+									<li><a>Group</a></li>
+									<li><a>Court</a></li>
+									<li><a>Seller</a></li>
+									<li><a>Mall</a></li>
 								</ul>
 							</div>
 							<!-- End .widget -->
@@ -739,10 +709,24 @@ if(list.size()>= 3){
     <div class="mobile-menu-overlay"></div>
     <!-- End .mobil-menu-overlay -->
 
-    <div class="mobile-menu-container"></div>
+    <div class="mobile-menu-container">
+     <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
+            <nav class="mobile-nav">
+              <ul class="mobile-menu">
+                <li><a href="${pageContext.request.contextPath}/coach/CoachHome.jsp">首頁</a></li>
+                <c:if test="${coachVo.coachStat}">
+				<li><a href="${pageContext.request.contextPath}/course/listAllCourses_datatable.jsp">課程管理</a></li>
+				</c:if>
+              </ul>
+            </nav>
+            <!-- End .mobile-nav -->
+          </div>
+          <!-- End .mobile-menu-wrapper -->
+    </div>
     <!-- End .mobile-menu-container -->
 
-    <div class="sticky-navbar"></div>
+<!--     <div class="sticky-navbar"></div> -->
 
     <a id="scroll-top" href="#top" title="Top" role="button"
       ><i class="icon-angle-up"></i
@@ -755,12 +739,7 @@ if(list.size()>= 3){
 
     <!-- Main JS File -->
     <script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
-<!--     <script> -->
-<!--       $("header").load("header.html"); -->
-<!--       $("div.sticky-navbar").load("sticky-navbar.html"); -->
-<!--       $("div.mobile-menu-container").load("mobile-menu-container.html"); -->
-<!--       $("footer").load("footer.html"); -->
-<!--     </script> -->
+
     <script>
       $(window).on("load", function () {
         //預覽

@@ -142,15 +142,8 @@
             <div class="container">
               <nav class="main-nav w-100" >
                 <ul class="menu" style="display: flex; justify-content: flex-end">
-                  <li>
-                    <a href="${pageContext.request.contextPath}/member/MemberLogin.jsp">會員登入</a>
-                    
-                  </li>
-                  <li>
-                    <a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp">教練登入</a>
-                    
-                  </li>
-                
+                  <li><a href="${pageContext.request.contextPath}/member/MemberLogin.jsp">會員登入</a></li>
+                  <li><a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp">教練登入</a></li>
                 </ul>
               </nav>
             </div>
@@ -329,6 +322,7 @@
             <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
             <nav class="mobile-nav">
               <ul class="mobile-menu">
+                <li><a href="${pageContext.request.contextPath}/ASAPwelcome.jsp">首頁</a></li>
                 <li><a href="${pageContext.request.contextPath}/member/MemberLogin.jsp">會員登入</a></li>
                 <li><a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp">教練登入</a></li>
               </ul>
