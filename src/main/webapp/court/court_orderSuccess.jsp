@@ -1,3 +1,4 @@
+<%@page import="com.asap.member.entity.MemberVO"%>
 <%@page import="com.asap.court.entity.CourtTypeVO"%>
 <%@page import="com.asap.court.service.CourtTypeService"%>
 <%@page import="com.asap.court.service.SiteService"%>
@@ -11,8 +12,8 @@
 
 
 <%
-	//先設一個 member，記得改
-	String mbrNo = "M1206202300001";
+	MemberVO mbrVO = (MemberVO)session.getAttribute("memberVo");
+	String mbrNo = mbrVO.getMbrNo();
 	pageContext.setAttribute("mbrNo",mbrNo);
 %>
 <html>
@@ -23,7 +24,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-<title>預約成功</title>
+<title>ASAP</title>
 
 
 
@@ -146,10 +147,6 @@
 
     <!-- header and footer template -->
     <script>
-		$("header").load("header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
         $(window).on("load", function(){
             $("#lookup").on("click", function(){
               $("#fs_alert").css("display", "block");

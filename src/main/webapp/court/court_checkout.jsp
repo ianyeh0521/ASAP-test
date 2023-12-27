@@ -45,11 +45,7 @@
 	pageContext.setAttribute("totalPrice", totalPrice);
 	
 	
-	// 這邊還會有一個 member 的session.getAttribute
-	// 先設一個 member，記得改
-	String mbrNo = "M1206202300001";
-	MemberService_interface mbrSvc = new MemberService();
-	MemberVO mbrVO = mbrSvc.findByMbrNo(mbrNo);
+	MemberVO mbrVO = (MemberVO)session.getAttribute("memberVo");
 	pageContext.setAttribute("mbrVO", mbrVO);
 %>
 <!DOCTYPE html>
@@ -60,7 +56,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>場地-付款頁面</title>
+    <title>ASAP</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -256,15 +252,7 @@
     <!-- Main JS File -->
     <script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
-    <!-- header and footer template -->
-	<script>
-		$("header").load("header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
-		
-
-	</script>
+   
 </body>
 
 </html>

@@ -3,10 +3,12 @@ package com.asap.course.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
@@ -74,6 +76,9 @@ public class CourseServlet extends HttpServlet{
 		case "getByCoach":
 			getByCoach(req, res);
 			break;
+		case "getByCompositeQuery":
+			getByCompositeQuery(req, res);
+			break;
 		default:
 			
 			break;
@@ -85,6 +90,32 @@ public class CourseServlet extends HttpServlet{
 	
 	
 	
+	private void getByCompositeQuery(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Map<String, String[]> map = req.getParameterMap();
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+		Gson gson = builder.create();
+		
+		if (map != null) {
+			List<CourseVO> courseList = courseSvc.getByCompositeQuery(map);
+			String json = gson.toJson(courseList);
+	        
+			req.setAttribute("courseData", json);
+			
+			System.out.println(courseList);
+			res.setContentType("application/json");
+	        res.setCharacterEncoding("UTF-8");
+	        res.getWriter().write(json);
+		} else {
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/course_main.jsp");
+			dispatcher.forward(req, res);
+		}
+		
+		
+	}
+
+
 	private void getByCoach(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		String coachNo = req.getParameter("coachNo");
 		
@@ -356,11 +387,7 @@ public class CourseServlet extends HttpServlet{
 			res.getWriter().write(jsonTotalPageString);
 		}else {
 			try {				
-				String page = req.getParameter("page");
-				int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-		        
-		        
-		        List<CourseVO> courseList = courseSvc.getAll(currentPage);
+		        List<CourseVO> courseList = courseSvc.getAll();
 
 		        String json = gson.toJson(courseList);
 		        res.setContentType("application/json");
@@ -495,7 +522,7 @@ public class CourseServlet extends HttpServlet{
 			
 			
 			res.setContentType("text/html; charset=UTF-8");
-			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/addCourse.jsp");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/listAllCourses_datatable.jsp");
 			dispatcher.forward(req, res);
 		}else {
 			req.setAttribute("nameError", nameError);

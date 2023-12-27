@@ -21,7 +21,7 @@ public interface CourseService_interface {
 	
 	List<CourseVO> findByCoach(String coachNo);
 	
-	List<CourseVO> getByCompositeQuery(Map<String, String> map);
+	List<CourseVO> getByCompositeQuery(Map<String, String[]> map);
 	
 	List<CourseVO> getAll();
 	

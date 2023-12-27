@@ -21,7 +21,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<title>地圖搜尋</title>
+<title>ASAP</title>
 
 <meta name="keywords" content="HTML5 Template" />
 <meta name="description" content="Porto - Bootstrap eCommerce Template" />
@@ -78,73 +78,7 @@ html, body {
 
 <body>
 	<div class="page-wrapper">
-		<header class="header">
-			<div class="header-middle sticky-header"
-				data-sticky-options="{'mobile': true}"
-				style="height: 75px; background: rgb(255, 250, 85); background: linear-gradient(90deg, rgba(255, 250, 85, 0.9081757703081232) 0%, rgba(9, 34, 121, 0.8773634453781513) 35%, rgba(0, 212, 255, 1) 100%);">
-				<div class="container">
-					<div class="header-left col-lg-2 w-auto pl-0">
-						<button class="mobile-menu-toggler text-primary mr-2"
-							type="button">
-							<i class="fas fa-bars"></i>
-						</button>
-						<a href="#" style="width: 222; height: 88;"> <img
-							src="${pageContext.request.contextPath}/newImg/logo2.png"
-							alt="Logo" />
-						</a>
-					</div>
-					<!-- End .header-left -->
-				</div>
-				<!-- End .container -->
-			</div>
-			<!-- End .header-middle -->
-
-			<div class="header-bottom sticky-header d-none d-lg-block"
-				data-sticky-options="{'mobile': false}">
-				<div class="container">
-					<nav class="main-nav w-100">
-						<ul class="menu" style="display: flex; justify-content: flex-end">
-							<li><a href="#">論壇</a>
-								<ul>
-									<li><a href="#">論壇首頁</a></li>
-									<li><a href="#">發佈貼文</a></li>
-									<li><a href="#">我的貼文</a></li>
-									<li><a href="#">收藏貼文</a></li>
-								</ul></li>
-							<li><a href="#">揪團</a>
-								<ul>
-									<li><a href="#">揪團首頁</a></li>
-									<li><a href="#">發起揪團</a></li>
-									<li><a href="#">我的揪團</a></li>
-								</ul></li>
-							<li><a href="#">找課程</a>
-								<ul>
-									<li><a href="#">查詢課程</a></li>
-									<li><a href="#">我的課程</a></li>
-								</ul></li>
-							<li><a href="#">找場地</a>
-								<ul>
-									<li><a href="#">詢找場地</a></li>
-									<li><a href="#">我的預約</a></li>
-									<li><a href="#">我的收藏</a></li>
-								</ul></li>
-							<li><a href="#">賣家入口</a>
-								<ul>
-									<li><a href="#">所有訂單</a></li>
-									<li><a href="#">所有商品</a></li>
-									<li><a href="#">新增商品</a></li>
-									<li><a href="#">商品評論</a></li>
-								</ul></li>
-
-							<li><a href="">商城</a></li>
-							<li><a href="login.jsp" style="color: blue">登出</a></li>
-						</ul>
-					</nav>
-				</div>
-				<!-- End .container -->
-			</div>
-			<!-- End .header-bottom -->
-		</header>
+		<header class="header"></header>
 		<!-- End .header -->
 
 		<main class="main">
@@ -206,13 +140,6 @@ html, body {
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
-	<!-- header and footer template -->
-	<script>
-//       $("header").load("header.html");
-      $("footer").load("footer.html");
-      $("div.sticky-navbar").load("sticky-navbar.html");
-      $("div.mobile-menu-container").load("mobile-menu-container.html");
-    </script>
 
 	<!-- map js -->
 	<script>
@@ -258,37 +185,50 @@ html, body {
 	<script>
       // 多個地點
       window.addEventListener("load", function(){
-         
-        // 獲取使用者位置，存入sessionStorage
-        var storedValue ={};
-        function getGeoloca(){
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              function (position) {
-                console.log(position);
-                var lng = position.coords.longitude;
-                var lat = position.coords.latitude;
-                storedValue.latitude = lat;
-                storedValue.longitude = lng;
-                sessionStorage.setItem("form_data", JSON.stringify(storedValue));
-                console.log(typeof(JSON.parse(sessionStorage.getItem("form_data")).latitude)); 
-                
-              },
-              function (error) {
-                alert("使用者不同意取得位置資訊或尚未取得位置資訊：ERROR(" + error.code + "): " + error.message);
-              },
-              {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 10,
-              }
-            );
-          } else {
-            alert("瀏覽器不支援 Geolocation 功能");
-          }
-        }
-
-        getGeoloca();
+    	 
+    	var storedValue = JSON.parse(sessionStorage.getItem("form_data")) || {};
+        // 沒拿到的話，再去獲取使用者位置，存入sessionStorage
+        function getGeoloca() {
+		  if (!storedValue.latitude || !storedValue.longitude) {
+		    if (navigator.geolocation) {
+		      navigator.geolocation.getCurrentPosition(
+		        function (position) {
+		          console.log(position);
+		         
+		          var lng = position.coords.longitude;
+		          var lat = position.coords.latitude;
+		          
+		          storedValue.latitude = lat;
+		          storedValue.longitude = lng;
+		          
+		          sessionStorage.setItem("form_data", JSON.stringify(storedValue));
+		          
+		          console.log(
+		            typeof JSON.parse(sessionStorage.getItem("form_data")).latitude
+		          );
+		          
+		          initMap();
+		        },
+		      
+		        function (error) {
+		          alert(
+		            "使用者不同意取得位置資訊或尚未取得位置資訊：ERROR(" +
+		              error.code +
+		              "): " +
+		              error.message
+		          );
+		        },
+		      );
+		    } else {
+		      alert("瀏覽器不支援 Geolocation 功能");
+		    }
+		  } else {
+		    console.log("Latitude and Longitude already present:", storedValue.latitude, storedValue.longitude);
+		    initMap();
+		  }
+		}
+		
+		getGeoloca();
 
         
         // 建立地圖
@@ -342,10 +282,6 @@ html, body {
 	            		markers[i] = new google.maps.Marker({
 	            			position: latLng,
 	                      	title: name,
-// 	                      	icon:{
-// 	                    	  url:"",
-// 	                    	  scaledSize: new google.map.Size(38,31),  	
-// 	                      	}
 	            			url:"/ASAP/court/court_page.jsp?courtNo="+courtNo,
 	            			map: map,	                      
 	                      	animation: google.maps.Animation.DROP,
@@ -391,7 +327,7 @@ html, body {
           
         }
 
-        initMap();
+        
 
        
         

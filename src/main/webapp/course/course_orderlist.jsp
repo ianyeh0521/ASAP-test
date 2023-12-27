@@ -1,3 +1,5 @@
+<%@page import="com.asap.member.entity.MemberVO"%>
+<%@page import="com.asap.member.service.MemberService_interface"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
@@ -9,9 +11,12 @@
 	pageContext.setAttribute("memberNo",memberNo);
 	*/
 	
-	String mbrNo = "M1206202300001";
-	pageContext.setAttribute("mbrNo",mbrNo);
+	
+	
 
+	MemberVO mbrVO = (MemberVO)session.getAttribute("memberVo");
+	String mbrNo = mbrVO.getMbrNo();
+	pageContext.setAttribute("mbrNo",mbrNo);
 %>
 
 <html lang="en">
@@ -21,7 +26,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>課程-我的課程</title>
+    <title>ASAP</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">

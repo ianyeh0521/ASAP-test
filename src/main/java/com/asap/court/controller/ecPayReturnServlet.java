@@ -167,7 +167,7 @@ public class ecPayReturnServlet extends HttpServlet{
 			String result = mail.sendMail();
 			System.out.println("SendMail : " + result);
 		}else {
-
+			System.out.println("失敗了拉");
 
 		}
 			

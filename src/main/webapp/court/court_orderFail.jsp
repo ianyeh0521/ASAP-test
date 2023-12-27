@@ -1,3 +1,4 @@
+<%@page import="com.asap.member.entity.MemberVO"%>
 <%@page import="com.asap.court.entity.CourtTypeVO"%>
 <%@page import="com.asap.court.service.CourtTypeService"%>
 <%@page import="com.asap.court.service.SiteService"%>
@@ -16,8 +17,8 @@
 	String error = request.getParameter("error");
 	pageContext.setAttribute("error", error);
 
-	//先設一個 member，記得改
-	String mbrNo = "M1206202300001";
+	MemberVO mbrVO = (MemberVO)session.getAttribute("memberVo");
+	String mbrNo = mbrVO.getMbrNo();
 	pageContext.setAttribute("mbrNo",mbrNo);
 	
 %>
@@ -29,7 +30,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>付款失敗</title>
+    <title>ASAP</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -147,10 +148,6 @@
 
     <!-- header and footer template -->
     <script>
-		$("header").load("header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
         $(window).on("load", function(){
             $("#lookup").on("click", function(){
               $("#fs_alert").css("display", "block");

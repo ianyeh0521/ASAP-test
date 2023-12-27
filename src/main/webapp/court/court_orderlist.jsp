@@ -1,3 +1,4 @@
+<%@page import="com.asap.member.entity.MemberVO"%>
 <%@page import="com.asap.court.entity.CourtVO"%>
 <%@page import="com.asap.court.service.CourtService_interface"%>
 <%@page import="com.asap.court.service.CourtService"%>
@@ -7,13 +8,10 @@
 <%@ page import="com.asap.court.*"%>
 <%@ page import="com.asap.util.*"%>
 <%
-	// 會員編號
-	/*
-	String memberNo = session.getAttribute("memberVO").getMbrNo();
-	pageContext.setAttribute("memberNo",memberNo);
-	*/
+
 	
-	String mbrNo = "M1206202300001";
+	MemberVO mbrVO = (MemberVO)session.getAttribute("memberVo");
+	String mbrNo = mbrVO.getMbrNo();
 	pageContext.setAttribute("mbrNo",mbrNo);
 
 %>
@@ -25,7 +23,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>場地-我的預約</title>
+    <title>ASAP</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -72,11 +70,7 @@
     />
 
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
-    <script>
-    $(document).ready(function () {
-       
-      });
-    </script>
+    
     <style>
         #fs_alert1 {
         width: 100vw;
@@ -297,10 +291,6 @@
 
     <!-- header and footer template -->
     <script>
-		$("header").load("header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
         $(window).on("load", function(){
         	
         	 $.ajax({
