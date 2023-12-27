@@ -42,6 +42,7 @@
 	    <url-pattern>/backStage/*</url-pattern>
 		<url-pattern>/forum/backstage_forum_report.jsp</url-pattern>
 		<url-pattern>/court/addCourt.jsp</url-pattern>
+		<url-pattern>/court/listOneCourt.jsp</url-pattern>
 		<url-pattern>/court/updateCourt.jsp</url-pattern>
 		<url-pattern>/court/listAllCourts_datatable_Ajax.html</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
