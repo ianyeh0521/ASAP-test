@@ -32,7 +32,7 @@ public class MemberLoginFilter implements Filter {
 				"/court/courtSaveListAjax.do", "/court/courtAjax.do", "/court/ecPayReturn.do", "/course/course.do",
 				"/course/courseEcPayReturn.do", "/course/DBGifReader", "/course/mbrCourseServlet",
 				"/forum/forumcomment.do", "/forum/forumlike.do", "/forum/forumreport.do", "/forum/post.do",
-				"/forum/savepost.do" };
+				"/forum/savepost.do","/shop/orderPayReturn.do" };
 		String path = req.getServletPath();
 
 		if (memberVo != null) {
