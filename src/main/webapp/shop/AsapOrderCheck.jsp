@@ -18,7 +18,7 @@ String mbrNo = member.getMbrNo();
 
 ShoppingCartService_interface ShoppingCartSvc = new ShoppingCartService();
 ItemInfoService_interface ItemInfoSvc = new ItemInfoService();
-List<ShoppingCartVO> list = ShoppingCartSvc.findByMember("mbrNo");
+List<ShoppingCartVO> list = ShoppingCartSvc.findByMember(mbrNo);
 pageContext.setAttribute("list", list);
 
 System.out.println(list);
