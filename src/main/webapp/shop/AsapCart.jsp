@@ -187,9 +187,9 @@ System.out.println(list);
 			<div class="container">
 				<ul
 					class="checkout-progress-bar d-flex justify-content-center flex-wrap">
-					<li class="active"><a href="asapcart.html">購物車</a></li>
+					<li class="active"><a href="AsapCart.jsp">購物車</a></li>
 					<li><span>確認訂單</span></li>
-					<li class="disabled"><a href="cart.html">訂單完成</a></li>
+					<li class="disabled"><a href="AsapOrderCheck.jsp">訂單完成</a></li>
 				</ul>
 
 				<div class="row">
