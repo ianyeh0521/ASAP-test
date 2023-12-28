@@ -19,6 +19,7 @@
    List<CourseVO> activlist = courseSvc.findByCoach(cVo.getCoachNo());
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
    ArrayList allActiv = new ArrayList();
+   if(activlist != null){
    for(CourseVO vo: activlist){
 	   if(vo.getCourseStat()){
 		  ArrayList oneActiv = new ArrayList();
@@ -27,6 +28,7 @@
 		  oneActiv.add(sdf.format(vo.getCourseEndTime()));
 		  allActiv.add(oneActiv);
 	   }  
+    }
    }
    pageContext.setAttribute("allActiv", allActiv);
 %>
@@ -176,6 +178,7 @@
           eventLimit: true,
           selectable: true,
           events: [
+        	  <c:if test="${not empty allActiv}">	
 				<c:forEach var="activ" items="${allActiv}">
 				{
 					title: "${activ[0]}",
@@ -184,6 +187,7 @@
 					
 				},					
 		        </c:forEach>
+				</c:if>
 			],
         });
 
@@ -281,6 +285,7 @@
               
               <div style="height: 300px; border: 1px dashed lightgray; border-radius: 15px; padding: 10px;">
 					<div class="scrollbar" style="overflow-y: scroll; overflow-x: hidden; max-height:250px" id="newsList">
+						<c:if test="${not empty newslist}">
 						<c:forEach var="news" items="${newslist}">
 								<div style="margin-bottom: 5px;font-size: 1.5rem;padding: 2px 0;border-bottom: darkgray 1.5px dashed;">
                                       <p style="display: block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="news">
@@ -288,6 +293,7 @@
                                       </p>
                                  </div>							
 						</c:forEach>
+						</c:if>
 					</div>
 			   </div>
            </div>
