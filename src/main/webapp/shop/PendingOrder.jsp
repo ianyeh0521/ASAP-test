@@ -12,6 +12,7 @@
 <%
 MemberVO member = (MemberVO)session.getAttribute("memberVo");
 String mbrNo = member.getMbrNo();
+pageContext.setAttribute("mbrNo", mbrNo);
 OrderService_interface orderSvc=new OrderService();
 List <OrderVO> list =orderSvc.findUnPaid(mbrNo);
 pageContext.setAttribute("list", list);
@@ -244,7 +245,7 @@ $(document).ready(function () {
 											<form METHOD="post" ACTION="<%=request.getContextPath()%>/shop/PayOrderServlet" style="margin-bottom:0">
 											<input type="hidden" name="action" value="payorder">
 <!-- 											記得改 -->
-											<input type="hidden" name="mbrNo" value="M001">
+											<input type="hidden" name="mbrNo" value="${mbrNo}">
 											<input type="hidden" name="orderNo" value="${list.orderNo}">
 											<input type="hidden" name="totalPrice" value="${list.orderPrice}">
 											<button type="submit"

@@ -145,6 +145,41 @@ $(document).ready(function () {
 <body>
 	<div class="page-wrapper">
 		<header class="header">
+		<div class="header-middle sticky-header" data-sticky-options="{'mobile': true}" style="
+          height: 75px;
+          background: rgb(255, 250, 85);
+          background: linear-gradient(
+            90deg,
+            rgba(255, 250, 85, 0.9081757703081232) 0%,
+            rgba(9, 34, 121, 0.8773634453781513) 35%,
+            rgba(0, 212, 255, 1) 100%
+          );
+        ">
+                <div class="container">
+                    <div class="header-left col-lg-2 w-auto pl-0">
+
+                        <a href="${pageContext.request.contextPath}/backStage/BackageHome.jsp" width="222" height="88">
+                            <img src="${pageContext.request.contextPath}/newImg/logo2.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <!-- End .header-left -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header d-none d-lg-block" data-sticky-options="{'mobile': false}">
+                <div class="container">
+                    <nav class="main-nav w-100">
+                        <ul class="menu" style="display: flex; justify-content: flex-end">
+                             <li><a><form action="${pageContext.request.contextPath}/BackStageController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-bottom -->
+		
 		</header>
 		<!-- End .header -->
 
@@ -343,6 +378,74 @@ $(document).ready(function () {
 		<!-- End .main -->
 
 		<footer class="footer bg-dark">
+		<div class="footer-middle">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-3 col-sm-6">
+							<div class="widget">
+								<h4 class="widget-title">Contact Info</h4>
+								<ul class="contact-info">
+									<li><span class="contact-info-label">Address:</span>5F.,
+										No. 219, Sec. 3, Nanjing E. Rd., Zhongshan Dist., Taipei City
+										104, Taiwan (R.O.C.)</li>
+									<li><span class="contact-info-label">Phone:</span><a
+										href="tel:">(02) 2712-0589</a></li>
+									<li><span class="contact-info-label">Email:</span> <a
+										href="mailto:mail@example.com">business@tibame.com</a></li>
+									<li><span class="contact-info-label">Working
+											Days/Hours:</span> Mon - Sun / 8:00 AM - 9:30 PM</li>
+								</ul>
+								<div class="social-icons">
+									<a href="#" class="social-icon social-facebook icon-facebook"
+										target="_blank" title="Facebook"></a> <a href="#"
+										class="social-icon social-twitter icon-twitter"
+										target="_blank" title="Twitter"></a> <a href="#"
+										class="social-icon social-instagram icon-instagram"
+										target="_blank" title="Instagram"></a>
+								</div>
+								<!-- End .social-icons -->
+							</div>
+							<!-- End .widget -->
+						</div>
+						<!-- End .col-lg-3 -->
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="widget">
+								<h4 class="widget-title">SiteMap</h4>
+
+								<ul class="links">
+									<li><a>Account</a></li>
+									<li><a>Course</a></li>
+									<li><a>Forum</a></li>
+									<li><a>Group</a></li>
+									<li><a>Court</a></li>
+									<li><a>Seller</a></li>
+									<li><a>Mall</a></li>
+								</ul>
+							</div>
+							<!-- End .widget -->
+						</div>
+						<!-- End .col-lg-3 -->
+
+					</div>
+					<!-- End .row -->
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .footer-middle -->
+
+			<div class="container">
+				<div class="footer-bottom">
+					<div class="container d-sm-flex align-items-center">
+						<div class="footer-left">
+							<span class="footer-copyright">© Tibame. 2023. All Rights
+								Reserved</span>
+						</div>
+					</div>
+				</div>
+				<!-- End .footer-bottom -->
+			</div>
+			<!-- End .container -->
 		</footer>
 		<!-- End .footer -->
 	</div>
@@ -495,7 +598,7 @@ $(document).ready(function () {
 										"frptNo" : frptNo,
 										"replyText" : replyText,
 										 "mbrNo" : mbrNo,
-//						 				"backNo": "${backNo}"
+						 				"backNo": "${backNo}"
 									},
 									success : function(data) {
 										alert("檢舉處理完成");
@@ -514,7 +617,7 @@ $(document).ready(function () {
 			        			  	 "frptNo": frptNo,
 			        			  	 "replyText": replyText,
 			        			  	"mbrNo" : mbrNo
-//			     					"backNo": "${backNo}"
+			     					"backNo": "${backNo}"
 			    				     }, 
 			        		  success: function(data){      
 			        			  alert("檢舉處理完成");
@@ -553,7 +656,7 @@ $(document).ready(function () {
 										"frptNo" : frptNo,
 										"replyText" : replyText,
 										"mbrNo": mbrNo,
-//					 					"backNo": "${backNo}"
+					 					"backNo": "${backNo}"
 									},
 									success : function(data) {
 										alert("檢舉處理完成");
@@ -572,7 +675,7 @@ $(document).ready(function () {
 			        			  	 "frptNo": frptNo,
 			        			  	 "replyText": replyText,
 			        			  	"mbrNo" : mbrNo,
-//			     					"backNo":"${backNo}"
+			     					"backNo":"${backNo}"
 			    				     }, 
 			        		  success: function(data){      
 			        			  alert("檢舉處理完成");
