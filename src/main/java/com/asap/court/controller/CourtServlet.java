@@ -571,14 +571,14 @@ public class CourtServlet extends HttpServlet {
 
 		}else {	// 全部沒填
 			System.out.println("4");
-			
 			res.setContentType("text/html; charset=UTF-8");
-			RequestDispatcher dispatcher = req.getRequestDispatcher("/court/court_main.jsp");
-			dispatcher.forward(req, res);
+			res.sendRedirect("/ASAP/court/court_main.jsp");
+			return;
 		}
 		res.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/court/court_main_search.jsp");
-		dispatcher.forward(req, res);	
+		dispatcher.forward(req, res);
+		
 	}
 	
 	// 用名稱找場地
