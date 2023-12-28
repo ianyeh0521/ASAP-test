@@ -76,22 +76,22 @@
 
 
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}//assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}//assets/css/style.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}//assets/vendor/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}//assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
+	href="${pageContext.request.contextPath}/assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
 	
 <!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.css" />
+	href="${pageContext.request.contextPath}/course/datetimepicker/jquery.datetimepicker.css" />
 <script
-	src="${pageContext.request.contextPath}/court/datetimepicker/jquery.js"></script>
+	src="${pageContext.request.contextPath}/course/datetimepicker/jquery.js"></script>
 <script
-	src="${pageContext.request.contextPath}/court/datetimepicker/jquery.datetimepicker.full.js"></script>
+	src="${pageContext.request.contextPath}/course/datetimepicker/jquery.datetimepicker.full.js"></script>
 
 <style>
     .outer-container {

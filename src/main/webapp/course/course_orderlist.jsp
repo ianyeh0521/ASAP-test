@@ -557,10 +557,6 @@
 
     <!-- header and footer template -->
     <script>
-		$("header").load("header.html");
-		$("footer").load("footer.html");
-		$("div.sticky-navbar").load("sticky-navbar.html");
-		$("div.mobile-menu-container").load("mobile-menu-container.html");
         $(window).on("load", function(){
         	 $.ajax({
                  type: "post",

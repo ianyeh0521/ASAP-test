@@ -112,5 +112,18 @@ public class MbrCourseDAO implements MbrCourseDAO_interface{
 		}
 	}
 
+	@Override
+	public List<MbrCourseVO> mbrCheckOrd(String mbrNo, Integer courseNo) {
+		String hql = "from MbrCourseVO mbrcs where mbrcs.memberVO.mbrNo = :mbrNo "
+				+ "and mbrcs.courseVO.courseNo = :courseNo "
+				+ "and mbrcs.mbrCourseStat = true";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("mbrNo", mbrNo);
+		query.setParameter("courseNo", courseNo);
+		return query.list();
+	}
+	
+	
+
 	
 }

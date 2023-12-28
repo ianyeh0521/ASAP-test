@@ -54,6 +54,12 @@ public class MbrCourseService implements MbrCourseService_interface{
 	public List<MbrCourseVO> getAll() {
 		return dao.getAll();
 	}
+
+	@Override
+	public List<MbrCourseVO> mbrCheckOrd(String mbrNo, Integer courseNo) {
+		return dao.mbrCheckOrd(mbrNo, courseNo);
+	}
+	
 	
 	
 	

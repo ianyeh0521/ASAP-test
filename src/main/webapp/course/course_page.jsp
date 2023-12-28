@@ -704,9 +704,7 @@
 			            type: 'GET',
 			            url: 'mbrCourseServlet?action=check&courseNo=' + courseNo,
 			        });
-			
-			        console.log(result);
-			
+						
 			        if ($(this).hasClass('disabled')) {
 			            e.preventDefault();
 			        }else if(result === "full"){
@@ -714,67 +712,28 @@
 			            alert('課程已額滿!');
 			        } else {
 			        	
-			        	$.ajax({
-			                url: 'mbrCourseServlet?action=getByMember&mbrNo=${mbrNo}',
+			        	var response = await $.ajax({
+			                url: 'mbrCourseServlet?action=mbrCheckOrd&mbrNo=${mbrNo}&courseNo=${courseNo}',
 			                type: 'get',
-			                success: function (response) {
-			                    console.log(response)
-			                    if (response.length != 0) {
-			                        for (let i = 0; i < response.length; i++) {
-			                            if (response[i]['mbrCourseStat'] == true) {
-			                            	e.preventDefault();
-			        			            alert('您已預約過了!');
-			                            }
-			                            else{
-			                            	var url = 'course_checkout.jsp?courseNo=' + encodeURIComponent(courseNo)
-			    			                + '&courseTime=' + encodeURIComponent(courseTime);
-			                            	
-			                            	window.location.href = url;
-			                            }
-			                        }
-			                    }else{
-			                    	var url = 'course_checkout.jsp?courseNo=' + encodeURIComponent(courseNo)
-	    			                + '&courseTime=' + encodeURIComponent(courseTime);
-	                            	
-	                            	window.location.href = url;
-			                    }
-			                },
-			                error: function () {
-			                    console.log('Error in AJAX request');
-			                }
-			            });
-			            
-			
+			        	});
+			                
+			        	
+	                    if (response == "true") {
+	                           	e.preventDefault();
+	                           	console.log(courseNo)
+	       			            alert('您已預約過了!');        
+	                    }else{
+	                    	var url = 'course_checkout.jsp?courseNo=' + encodeURIComponent(courseNo)
+   			                + '&courseTime=' + encodeURIComponent(courseTime);
+                           	
+                           	window.location.href = url;
+	                    }
 			            
 			        }
 			    } catch (error) {
 			        console.error('Error in AJAX call:', error);
 			    }
 			});
-			
-// 			$.ajax({
-// 	            url: 'mbrCourseServlet?action=getByMember&mbrNo=${mbrNo}', 
-// 	            type: 'get',
-// 	            success: function(response) {
-// 	            	console.log(response)
-// 					if(response.length != 0){
-// 						for(let i = 0; i < response.length;i++){
-// 							if(response[i]['mbrCourseStat']==true){
-// 								$("#reservationLink").remove();
-// 								$("#lookup").remove();
-								
-								
-// 							}
-// 						}
-// 					}
-// 	            },
-// 	            error: function() {
-// 	                console.log('Error in AJAX request');
-// 	            }
-// 	        });
-			        
-			
-			
 
 		})
 	

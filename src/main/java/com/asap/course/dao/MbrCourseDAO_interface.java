@@ -22,5 +22,7 @@ public interface MbrCourseDAO_interface {
 	// Find mbrCourseNo by coach number
 	List<MbrCourseVO> findByCoach(String coachNo);
 	
+	List<MbrCourseVO> mbrCheckOrd(String mbrNo, Integer courseNo);
+	
 	List<MbrCourseVO> getAll();
 }
