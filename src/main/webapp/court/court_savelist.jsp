@@ -547,7 +547,7 @@
                  dataType: 'json',
                  data: JSON.stringify({
                      action: "getByMember",
-                     mbrNo: ${mbrNo},
+                     mbrNo: "${mbrNo}",
                  }),
                  success: function(response){
                  	var courtSaveList = JSON.parse(response.courtSaveList);
@@ -660,7 +660,7 @@
 	    	           contentType: 'application/json',
 	    	           data: JSON.stringify({
 	    	               action: "delete",
-	    	               mbrNo: ${mbrNo},	
+	    	               mbrNo: "${mbrNo}",	
 	    	               courtNo: clickedId
 	    	           }),
 	    	           success: function(response) {
