@@ -74,7 +74,7 @@ public class PayOrderServlet extends HttpServlet {
 		// 呼叫綠界
 		AioCheckOutALL obj = new AioCheckOutALL();
 		int currentYear = getCurrentYear();
-		int merchantTradeNoSet = 50000 + ordNo;
+		int merchantTradeNoSet = 500000 + ordNo;
 		
 		
 		obj.setMerchantTradeNo("CT" + currentYear + merchantTradeNoSet);
@@ -84,7 +84,7 @@ public class PayOrderServlet extends HttpServlet {
 		obj.setItemName(items);
 		obj.setCustomField1(mbrNo);// 會員編號
 		obj.setCustomField2(String.valueOf(ordNo)); // 訂單編號（資料庫的）
-		obj.setReturnURL("https://24b6-114-24-160-162.ngrok-free.app/ASAP/shop/orderPayReturn.do");
+		obj.setReturnURL("https://1fca-1-164-227-13.ngrok-free.app/ASAP/shop/orderPayReturn.do");
 		obj.setOrderResultURL("http://localhost:8081/ASAP/shop/BuyerOrderManage.jsp");
 		obj.setNeedExtraPaidInfo("N");
 		String form = all.aioCheckOut(obj, null);

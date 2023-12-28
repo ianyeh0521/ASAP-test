@@ -41,7 +41,7 @@ System.out.println(list);
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
-	href="../assets/images/icons/favicon.png" />
+	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
 
 <script>
 	WebFontConfig = {
@@ -52,19 +52,19 @@ System.out.println(list);
 	};
 	(function(d) {
 		var wf = d.createElement("script"), s = d.scripts[0];
-		wf.src = "../assets/js/webfont.js";
+		wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
 		wf.async = true;
 		s.parentNode.insertBefore(wf, s);
 	})(document);
 </script>
 
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="../assets/css/style.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css" />
 <link rel="stylesheet" type="text/css"
-	href="../assets/vendor/fontawesome-free/css/all.min.css" />
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
 </head>
 
 <body>
@@ -620,12 +620,12 @@ System.out.println(list);
 	</script>
 
 	<!-- Plugins JS File -->
-	<script src="../assets/js/jquery.min.js"></script>
-	<script src="../assets/js/bootstrap.bundle.min.js"></script>
-	<script src="../assets/js/plugins.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 
 	<!-- Main JS File -->
-	<script src="../assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<script>
 		<c:if test="${not empty msg}">
