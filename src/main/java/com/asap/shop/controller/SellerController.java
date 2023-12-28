@@ -397,7 +397,7 @@ public class SellerController extends HttpServlet {
 			JSONArray array = new JSONArray();
 
 			// 取得所有商品
-			List<ItemInfoVO> itemList = itemInfoSvc.getAll();
+			List<ItemInfoVO> itemList = itemInfoSvc.findbyMbrNo(mbrNo);
 
 			if (itemList != null && !(itemList.isEmpty())) {
 
@@ -690,7 +690,7 @@ public class SellerController extends HttpServlet {
 			InputStream coverPicIn = coverPic.getInputStream();
 			if (coverPicIn.available() != 0) {
 				// 刪除舊的
-				if (!" ".equals((String) session.getAttribute("ItemFrontImg"))) {
+				if (!" ".equals(session.getAttribute("ItemFrontImg"))) {
 					ItemImgVO itemFrontImg = itemImgSvc.findByPK((Integer) session.getAttribute("ItemFrontImg"));
 					itemImgSvc.delete(itemFrontImg);
 				}
@@ -710,7 +710,7 @@ public class SellerController extends HttpServlet {
 			InputStream itemPic1In = itemPic1.getInputStream();
 			if (itemPic1In.available() != 0) {
 				// 刪除舊的
-				if (!" ".equals((String) session.getAttribute("ItemImg1"))) {
+				if (!" ".equals(session.getAttribute("ItemImg1"))) {
 					ItemImgVO itemImg1 = itemImgSvc.findByPK((Integer) session.getAttribute("ItemImg1"));
 					itemImgSvc.delete(itemImg1);
 				}
@@ -870,7 +870,7 @@ public class SellerController extends HttpServlet {
 			InputStream coverPicIn = coverPic.getInputStream();
 			if (coverPicIn.available() != 0) {
 				// 刪除舊的
-				if (!" ".equals((String) session.getAttribute("ItemFrontImg"))) {
+				if (!" ".equals(session.getAttribute("ItemFrontImg"))) {
 					ItemImgVO itemFrontImg = itemImgSvc.findByPK((Integer) session.getAttribute("ItemFrontImg"));
 					itemImgSvc.delete(itemFrontImg);
 				}

@@ -579,7 +579,10 @@ $(document).ready(function () {
 					var postStatus = $('input[name="remove"]:checked').val();
 					var replyText = $(this).closest(".modal-content").find(
 							"textarea.postcustretext").val();
-					
+					if (!replyText.trim()) {    
+				        alert("請輸入回覆內容");
+				        return; 
+				    }
 					console.log(replyText);
 					if (postStatus == 2) {
 						$.ajax({
@@ -616,7 +619,7 @@ $(document).ready(function () {
 			        		  data: {"action": "postrptmgmt",
 			        			  	 "frptNo": frptNo,
 			        			  	 "replyText": replyText,
-			        			  	"mbrNo" : mbrNo
+			        			  	"mbrNo" : mbrNo,
 			     					"backNo": "${backNo}"
 			    				     }, 
 			        		  success: function(data){      
@@ -635,9 +638,13 @@ $(document).ready(function () {
 					var mbrNo = $(this).attr('data-mbrno');
 					var cmtStatus = $('input[name="report-type"]:checked').val();
 					var replyText = $(this).closest(".modal-content").find(
-							"textarea.cmtcustretext").val();
+							"textarea.cmtcustretext").val().trim();
+					if (!replyText.trim()) {    
+				        alert("請輸入回覆內容");
+				        return; 
+				    }
 					console.log(cmtStatus)
-					;console.log(cmtNo);
+					console.log(cmtNo);
 					console.log(replyText);
 					if (cmtStatus == 0) {
 						$.ajax({

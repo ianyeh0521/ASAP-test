@@ -61,5 +61,7 @@ public interface ItemInfoDAO_interface {
 	public ItemInfoVO checkerFindByItemNo(Integer itemNo);
 	
 	Integer checkerUpdate(ItemInfoVO itemInfo);
+	
+	List<ItemInfoVO> findbyMbrNo(String mbrNo);
 
 }

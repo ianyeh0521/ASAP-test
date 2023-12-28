@@ -542,7 +542,8 @@
 //     	  
       })
       $("button.delete").on("click", function(){
-    	  var postNo = $(this).attr("data-postno");
+    	  var $button = $(this);
+    	  var postNo = $button.attr("data-postno");
     	  console.log(postNo)
     	  let r = confirm("確認刪除？");
     	  if (r){
@@ -554,7 +555,7 @@
 				     },  
     		  success: function(data){      
     			  alert("刪除成功")
-    			  document.location.reload()
+    			  $button.closest('tr').css("display", "none"); 
     		  }
     	})}
       })

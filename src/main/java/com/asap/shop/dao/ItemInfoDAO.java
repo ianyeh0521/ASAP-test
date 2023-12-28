@@ -383,5 +383,16 @@ public class ItemInfoDAO implements ItemInfoDAO_interface {
         }
     }
 
+    public List<ItemInfoVO> findbyMbrNo(String mbrNo){
+    	try {
+			String hqlQuery = "FROM ItemInfoVO Where mbrNo = :mbrNo ";
+			Query<ItemInfoVO> query = getSession().createQuery(hqlQuery, ItemInfoVO.class);
+			query.setParameter("mbrNo", mbrNo);
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
 
 }

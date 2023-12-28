@@ -528,7 +528,8 @@ $(document).ready(function () {
 	<script>
 
       $("button.removesave").on("click", function(){
-    	  var sPNo=$(this).attr('data-spno');
+    	  var $button = $(this);
+    	  var sPNo=$button.attr('data-spno');
     	  let r = confirm("確認刪除此筆收藏？");
     	  if (r){
     	  $.ajax({
@@ -540,7 +541,7 @@ $(document).ready(function () {
 				},
 				success : function(data) {
 					alert("刪除成功！")
-					document.location.reload();
+					$button.closest('tr').css("display", "none"); 
 				}
 			});
     	  }
