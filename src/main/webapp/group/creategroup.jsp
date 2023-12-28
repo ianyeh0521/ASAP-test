@@ -12,7 +12,7 @@
 	MemberService memberSvc = new MemberService();
 
 	//登入帳號->發起人
-	String LoginActNo = "M1206202300004";
+	String LoginActNo = "M1206202300001";
 	MemberVO MemberVoDetail = new MemberVO();
 	MemberVoDetail = memberSvc.findByMbrNo(LoginActNo);
 	pageContext.setAttribute("MemberVoDetail", MemberVoDetail);
@@ -161,103 +161,109 @@
 <body>
 	<div class="page-wrapper">
 		<header class="header">
-			        <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}"
-          style="
-            padding-top: 0;
-            padding-bottom: 0;
-            height: 75px;
-            background: rgb(255, 250, 85);
-            background: linear-gradient(
-              90deg,
-              rgba(255, 250, 85, 0.9081757703081232) 0%,
-              rgba(9, 34, 121, 0.8773634453781513) 35%,
-              rgba(0, 212, 255, 1) 100%
-            );
-            position: relative; /* Set position to relative for the parent */
-            display: flex;
-            align-items: center;
-          "
-        >
-          <div class="container" style="position: relative;">
-            <div class="header-left col-lg-2 w-auto pl-0"
-              style="
-                position: absolute;
-                top: 50%; /* Move 50% from the top */
-                transform: translateY(-50%);
-                z-index: 999;
-                left: 20px; /* Adjust distance from the left */
-              "
-            >
-              <button class="mobile-menu-toggler text-primary mr-2" type="button">
-                <i class="fas fa-bars"></i>
-              </button>
-              <a href="#" width="222" height="88">
-                <img src="newImg/logo2.png" style="max-width: 200px; height: auto; vertical-align: middle; border-style: none;">
-              </a>
-            </div>
-            <!-- End .header-left -->
-          </div>
-          <!-- End .container -->
-        </div>
-        <!-- End .header-middle -->
+			<div class="header-middle sticky-header" data-sticky-options="{'mobile': true}"
+            style="
+              padding-top: 0;
+              padding-bottom: 0;
+              height: 75px;
+              background: rgb(255, 250, 85);
+              background: linear-gradient(
+                90deg,
+                rgba(255, 250, 85, 0.9081757703081232) 0%,
+                rgba(9, 34, 121, 0.8773634453781513) 35%,
+                rgba(0, 212, 255, 1) 100%
+              );
+              position: relative; /* Set position to relative for the parent */
+              display: flex;
+              align-items: center;
+            "
+          >
+            <div class="container" style="position: relative;">
+              <div class="header-left col-lg-2 w-auto pl-0"
+                style="
+                  position: absolute;
+                  top: 50%; /* Move 50% from the top */
+                  transform: translateY(-50%);
+                  z-index: 999;
+                  left: 20px; /* Adjust distance from the left */
+                "
+              >
+						<button class="mobile-menu-toggler text-primary mr-2"
+							type="button">
+							<i class="fas fa-bars"></i>
+						</button>
+						<a href="${pageContext.request.contextPath}/member/MemberHome.jsp" style="width: 222; height: 88;"> <img
+							src="${pageContext.request.contextPath}/newImg/logo2.png"
+							alt="Logo" />
+						</a>
+					</div>
+					<!-- End .header-left -->
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .header-middle -->
 
-        <div
-          class="header-bottom sticky-header d-none d-lg-block"
-          data-sticky-options="{'mobile': false}" 
-        >
-          <div class="container">
-            <nav class="main-nav w-100" >
-              <ul class="menu" style="display: flex; justify-content: flex-end">
-                <li>
-                  <a href="#">論壇</a>
-                  <ul>
-                    <li><a href="#">論壇首頁</a></li>
-                    <li><a href="#">發佈貼文</a></li>
-                    <li><a href="#">我的貼文</a></li>
-                    <li><a href="#">收藏貼文</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#">揪團</a>
-                  <ul>
-                    <li><a href="#">揪團首頁</a></li>
-                    <li><a href="#">發起揪團</a></li>
-                    <li><a href="#">我的揪團</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#">找課程</a>
-                  <ul>
-                    <li><a href="#">查詢課程</a></li>
-                    <li><a href="#">我的課程</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#">找場地</a>
-                  <ul>
-                    <li><a href="#">詢找場地</a></li>
-                    <li><a href="#">我的預約</a></li>
-                    <li><a href="#">我的收藏</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#">賣家入口</a>
-                  <ul>
-                    <li><a href="#">所有訂單</a></li>
-                    <li><a href="#">所有商品</a></li>
-                    <li><a href="#">新增商品</a></li>
-                    <li><a href="#">商品評論</a></li>
-                  </ul>
-                </li>
+			<div class="header-bottom sticky-header d-none d-lg-block"
+				data-sticky-options="{'mobile': false}">
+				<div class="container">
+					<nav class="main-nav w-100">
+						<ul class="menu" style="display: flex; justify-content: flex-end">
+							<li><a href="#">論壇</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/forum/forum_home.jsp">論壇首頁</a></li>
+									<li><a href="${pageContext.request.contextPath}/forum/addpost.jsp">發佈貼文</a></li>
+									<li><a href="${pageContext.request.contextPath}/forum/my_post.jsp">我的貼文</a></li>
+									<li><a href="${pageContext.request.contextPath}/forum/my_save_post.jsp">收藏貼文</a></li>
+								</ul></li>
+							<li><a href="#">揪團</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
+									<li><a href="${pageContext.request.contextPath}/Grpinfo.do?action=creategroup&type=0">發起揪團</a></li>
+									<li><a href="${pageContext.request.contextPath}/group/myJoinGroup.jsp">我的揪團-參加</a></li>
+									<li><a href="${pageContext.request.contextPath}/group/mycreateGroup.jsp">我的揪團-發起</a></li>
+								</ul></li>
+							<li><a href="#">課程</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/course/course_main.jsp">查詢課程</a></li>
+									<li><a href="${pageContext.request.contextPath}/course/course_orderlist.jsp">我的課程</a></li>
+								</ul></li>
+							<li><a href="#">場地</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/court/court_main.jsp">尋找場地</a></li>
+									<li><a href="${pageContext.request.contextPath}/court/court_orderlist.jsp">我的預約</a></li>
+									<li><a href="${pageContext.request.contextPath}/court/court_savelist.jsp">我的收藏</a></li>
+								</ul></li>
+							<li><a href="#">賣家</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/shop/ItemManage.jsp">商品管理</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/SellerOrderManage.jsp">訂單管理</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/SellerCmtManage.jsp">評論管理</a></li>
+								</ul>
+							</li>
 
-                <li><a href="">商城</a></li>
-                <li><a href="" style="color: red">登入</a></li>
-              </ul>
-            </nav>
-          </div>
-          <!-- End .container -->
-        </div>
-        <!-- End .header-bottom -->
+							<li><a href="#">商城</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/shop/AsapShop.jsp">商城首頁</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/AsapCart.jsp">購物車</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/MyCollection.jsp">我的收藏</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/PendingOrder.jsp">待付款訂單</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/BuyerOrderManage.jsp">已付款訂單</a></li>
+									<li><a href="${pageContext.request.contextPath}/shop/ItemComment.jsp">商品評論</a></li>
+								</ul>
+							</li>
+							<li><a href="#">個人首頁</a>
+								<ul>
+									<li><a href="${pageContext.request.contextPath}/member/MemberHome.jsp">我的帳戶</a></li>
+									<li><a href="${pageContext.request.contextPath}/member/MemberChat.jsp">客服</a></li>
+								</ul>
+							</li>
+							<li><a><form action="${pageContext.request.contextPath}/MemberController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
+						</ul>
+					</nav>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .header-bottom -->
 		</header>
 		<!-- End .header -->
 		<c:set var="MemberVoDetail" value="${MemberVoDetail}" />
@@ -449,13 +455,13 @@
             <h4 class="widget-title">SiteMap</h4>
 
             <ul class="links">
-              <li><a href="#">Account</a></li>
-              <li><a href="#">Course</a></li>
-              <li><a href="#">Forum</a></li>
-              <li><a href="#">Group</a></li>
-              <li><a href="#">Court</a></li>
-              <li><a href="#">Seller</a></li>
-              <li><a href="#">Mall</a></li>
+              <li><a href="${pageContext.request.contextPath}/member/MemberHome.jsp">Account</a></li>
+              <li><a href="${pageContext.request.contextPath}/course/course_main.jsp">Course</a></li>
+              <li><a href="${pageContext.request.contextPath}/forum/forum_home.jsp">Forum</a></li>
+              <li><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">Group</a></li>
+              <li><a href="${pageContext.request.contextPath}/court/court_main.jsp">Court</a></li>
+              <li><a href="${pageContext.request.contextPath}/shop/SellerOrderManage.jsp">Seller</a></li>
+              <li><a href="${pageContext.request.contextPath}/shop/AsapShop.jsp">Mall</a></li>
             </ul>
           </div>
           <!-- End .widget -->
@@ -474,7 +480,7 @@
       <div class="container d-sm-flex align-items-center">
         <div class="footer-left">
           <span class="footer-copyright"
-            >© Porto eCommerce. 2021. All Rights Reserved</span
+            >© ASAP. 2023. All Rights Reserved</span
           >
         </div>
       </div>
@@ -498,64 +504,75 @@
 
 	<div class="mobile-menu-container">
 		<div class="mobile-menu-wrapper">
-		  <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
-			  <nav class="mobile-nav">
-			    <ul class="mobile-menu">
-			      <li><a href="#">首頁</a></li>
-			      <li>
-			        <a href="#">論壇</a>
-			        <ul>
-			          <li><a href="#">論壇首頁</a></li>
-			          <li>
-			            <a href="#">發佈貼文</a>
-			          </li>
-			          <li>
-			            <a href="#">我的貼文</a>
-			          </li>
-			          <li><a href="#">收藏貼文</a></li>
-			        </ul>
-			      </li>
-			      <li>
-			        <a href="#">揪團</a>
-			        <ul>
-			          <li><a href="#">揪團首頁</a></li>
-			          <li><a href="#">發起揪團</a></li>
-			          <li><a href="#">我的揪團</a></li>
-			        </ul>
-			      </li>
-			      <li>
-			        <a href="#">找課程</a>
-			        <ul>
-			          <li><a href="#">查詢課程</a></li>
-			          <li><a href="#">我的課程</a></li>
-			        </ul>
-			      </li>
-			
-			      <li>
-			        <a href="#">找場地</a>
-			        <ul>
-			          <li><a href="#">詢找場地</a></li>
-			          <li><a href="#">我的預約</a></li>
-			          <li><a href="#">我的收藏</a></li>
-			        </ul>
-			      </li>
-			
-			      <li>
-			        <a href="#">賣家入口</a>
-			        <ul>
-			          <li><a href="#">所有訂單</a></li>
-			          <li><a href="#">所有商品</a></li>
-			          <li><a href="#">新增商品</a></li>
-			          <li><a href="#">商品評論</a></li>
-			        </ul>
-			      </li>
-			      <li><a href="#">商城</a></li>
-			      <li><a href="#">登入</a></li>
-			    </ul>
-			  </nav>
-		  	  <!-- End .mobile-nav -->
-			</div>
-	<!-- End .mobile-menu-wrapper -->
+  <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
+  <nav class="mobile-nav">
+    <ul class="mobile-menu">
+      <li>
+        <a href="#">論壇</a>
+        <ul>
+			<li><a href="${pageContext.request.contextPath}/forum/forum_home.jsp">論壇首頁</a></li>
+			<li><a href="${pageContext.request.contextPath}/forum/addpost.jsp">發佈貼文</a></li>
+			<li><a href="${pageContext.request.contextPath}/forum/my_post.jsp">我的貼文</a></li>
+			<li><a href="${pageContext.request.contextPath}/forum/my_save_post.jsp">收藏貼文</a></li>
+		</ul>
+      </li>
+      <li>
+        <a href="#">揪團</a>
+        <ul>
+			<li><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
+			<li><a href="${pageContext.request.contextPath}/Grpinfo.do?action=creategroup&type=0">發起揪團</a></li>
+			<li><a href="${pageContext.request.contextPath}/group/myJoinGroup.jsp">我的揪團-參加</a></li>
+			<li><a href="${pageContext.request.contextPath}/group/mycreateGroup.jsp">我的揪團-發起</a></li>
+		</ul>
+      </li>
+      <li>
+        <a href="#">課程</a>
+        <ul>
+			<li><a href="${pageContext.request.contextPath}/course/course_main.jsp">查詢課程</a></li>
+			<li><a href="${pageContext.request.contextPath}/course/course_orderlist.jsp">我的課程</a></li>
+		</ul>
+      </li>
+
+      <li>
+        <a href="#">場地</a>
+        <ul>
+			<li><a href="${pageContext.request.contextPath}/court/court_main.jsp">尋找場地</a></li>
+			<li><a href="${pageContext.request.contextPath}/court/court_orderlist.jsp">我的預約</a></li>
+			<li><a href="${pageContext.request.contextPath}/court/court_savelist.jsp">我的收藏</a></li>
+		</ul>
+      </li>
+
+      <li>
+        <a href="#">賣家</a>
+        <ul>
+			<li><a href="${pageContext.request.contextPath}/shop/ItemManage.jsp">商品管理</a></li>
+			<li><a href="${pageContext.request.contextPath}/shop/SellerOrderManage.jsp">訂單管理</a></li>
+			<li><a href="${pageContext.request.contextPath}/shop/SellerCmtManage.jsp">評論管理</a></li>
+		</ul>
+      </li>
+      <li><a href="#">商城</a>
+      	<ul>
+			<li><a href="${pageContext.request.contextPath}/shop/AsapShop.jsp">商城首頁</a></li>
+			<li><a href="${pageContext.request.contextPath}/shop/AsapCart.jsp">購物車</a></li>
+			<li><a href="${pageContext.request.contextPath}/shop/MyCollection.jsp">我的收藏</a></li>
+			<li><a href="${pageContext.request.contextPath}/shop/PendingOrder.jsp">待付款訂單</a></li>
+			<li><a href="${pageContext.request.contextPath}/shop/BuyerOrderManage.jsp">已付款訂單</a></li>
+			<li><a href="${pageContext.request.contextPath}/shop/ItemComment.jsp">商品評論</a></li>
+		</ul>
+      </li>
+      <li><a href="#">個人首頁</a>
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/member/MemberHome.jsp">我的帳戶</a></li>
+			<li><a href="${pageContext.request.contextPath}/member/MemberChat.jsp">客服</a></li>
+		</ul>
+	  </li>
+      
+    </ul>
+  </nav>
+  <!-- End .mobile-nav -->
+</div>
+<!-- End .mobile-menu-wrapper -->
+
 	</div>
 	<!-- End .mobile-menu-container -->
 

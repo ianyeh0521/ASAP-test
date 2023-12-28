@@ -28,10 +28,15 @@ import com.asap.member.service.MbrNewsService;
 import com.asap.member.service.MbrNewsService_interface;
 import com.asap.member.service.MemberService;
 import com.asap.util.JavaMail;
+import com.asap.util.JedisPoolUtil;
 import com.asap.util.MailFormat;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/GrpJoinInfo.do")
 public class GrpJoinInfoServlet extends HttpServlet {
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 	private GrpJoinInfoService_interface grpJoinInfoService_interface;
 	private GrpInfoService grpInfoService;
 	private MemberService memberService;
@@ -40,6 +45,7 @@ public class GrpJoinInfoServlet extends HttpServlet {
 	private String LoginActNo = "M1206202300001";
 	@Override
 	public void init() throws ServletException {
+		
 		grpJoinInfoService_interface = new GrpJoinInfoService_interface();
 		grpInfoService = new GrpInfoService_interface();
 		memberService = new MemberService();
@@ -97,10 +103,10 @@ public class GrpJoinInfoServlet extends HttpServlet {
 		
 		// 參與狀態 true;false
 		grpJoinInfo.setGrpJoinStat(true);
-
+		
 		GrpJoinInfoService_interface grpJoinInfoSvc = new GrpJoinInfoService_interface();
 		grpJoinInfoSvc.insert(grpJoinInfo);
-
+		
 		GrpInfoVO grpVODetail = grpInfoService.getGrpInfoVOBygrpNo(joininfogrpNo);
 
 		MemberVO MemberVoDetail = new MemberVO();
@@ -152,7 +158,16 @@ public class GrpJoinInfoServlet extends HttpServlet {
 		JoinActivVO.setActivStartTime(grpVODetail.getGrpSignStrTime());
 		JoinActivVO.setActivEndTime(grpVODetail.getGrpSignEndTime());
 		
-		mbrActivService_interface.add(JoinActivVO);
+		int mbrActivNo = mbrActivService_interface.add(JoinActivVO);
+		String mbrActivNoStr = String.valueOf(mbrActivNo);
+		
+		// 會員活動編號存入 Redis
+		Jedis jedis = pool.getResource();
+		String groupOrdNoStr = "groupJoin" + grpJoinInfo.getGrpJoinInfoNo();
+		jedis.select(2);
+		jedis.append(groupOrdNoStr, mbrActivNoStr);
+		jedis.close();
+		
 		
 		
 		// 報名揪團成功通知信
