@@ -60,11 +60,11 @@ public class MemberLoginFilter implements Filter {
         boolean firstHeader = true;
         for (String header : headers) {  
             if (firstHeader) {
-                response.setHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=None; Secure"));
+                response.setHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=None"));
                 firstHeader = false;
                 continue;
             }
-            response.addHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=None; Secure"));
+            response.addHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=None"));
         }
     }
 
