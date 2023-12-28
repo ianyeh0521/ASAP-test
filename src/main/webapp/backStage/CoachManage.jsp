@@ -68,7 +68,7 @@
         '<p style="word-break: break-all; word-wrap: break-word">'+ d.SportType + '</p>'+
         '</div>'+ 
         '<div style="border: 1px gray solid; margin: 10px"></div>'+
-        '<div style="width: 45%; padding: 5px 10px">'+
+        '<div style="width: 45%; padding: 5px 10px; display: flex">'+
         '<label style="display: block; margin: 5px">個人照</label>'+
         '<img src="${pageContext.request.contextPath}/GifReader?action=getCoachImg&coachNo='+
          d.CoachNo +
