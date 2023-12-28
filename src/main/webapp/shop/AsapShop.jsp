@@ -46,7 +46,7 @@ System.out.println(cartlist);
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
-	href="../assets/images/icons/favicon.png" />
+	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
 
 <script>
       WebFontConfig = {
@@ -61,22 +61,25 @@ System.out.println(cartlist);
       (function (d) {
         var wf = d.createElement("script"),
           s = d.scripts[0];
-        wf.src = "../assets/js/webfont.js";
+        wf.src = "${pageContext.request.contextPath}/assets/js/webfont.js";
         wf.async = true;
         s.parentNode.insertBefore(wf, s);
       })(document);
     </script>
 
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="../assets/css/demo41.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/demo41.min.css" />
 <link rel="stylesheet" type="text/css"
-	href="../assets/vendor/fontawesome-free/css/all.min.css" />
+	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
 <style>
 .selected {
-	color: red;
+	color: blue;
+	font-weight: bold;
 }
 </style>
 </head>
@@ -598,9 +601,10 @@ System.out.println(cartlist);
 												選擇的價格範圍: <span id="selected-price-range"></span>
 											</p>
 
-
 											<button type="button" id="select" class="btn btn-primary"
-												data-column="">篩選</button>
+												data-column=""
+												style="background-color: #4CAF50; color: white; border-radius: 4px; border: none; padding: 8px 15px; font-size: 14px; box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.15); transition: all 0.2s ease; outline: none;">
+												篩選</button>
 
 										</div>
 										<!-- End .filter-price-action -->
@@ -917,15 +921,22 @@ System.out.println(cartlist);
 
 
 	<!-- Plugins JS File -->
-	<script src="../assets/js/jquery.min.js"></script>
-	<script src="../assets/js/bootstrap.bundle.min.js"></script>
-	<script src="../assets/js/optional/isotope.pkgd.min.js"></script>
-	<script src="../assets/js/plugins.min.js"></script>
-	<script src="../assets/js/jquery.appear.min.js"></script>
-	<script src="../assets/js/jquery.plugin.min.js"></script>
-	<script src="../assets/js/nouislider.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/optional/isotope.pkgd.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.appear.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.plugin.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/nouislider.min.js"></script>
 	<!-- Main JS File -->
-	<script src="../assets/js/main.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 
 
@@ -1133,7 +1144,6 @@ $('.btn-remove').on('click', function(e) {
     }
 });  
   
-  
 //☆☆☆商品分類數量顯示
 $(document).ready(function() {
 $.ajax({
@@ -1149,8 +1159,6 @@ $.ajax({
     }
 });
 });
-
-
 
 function updateAllCounts(allCounts) {
 //     console.log("Received all counts:", allCounts);
@@ -1205,14 +1213,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         updatePriceRangeDisplay();
     });
-
+    
     maxPriceSlider.addEventListener('input', function() {
         if (parseInt(maxPriceSlider.value) < parseInt(minPriceSlider.value)) {
             maxPriceSlider.value = minPriceSlider.value;
         }
         updatePriceRangeDisplay();
     });
-
     // 初始化頁面立即更新價格顯示
     updatePriceRangeDisplay();
 });
@@ -1250,7 +1257,9 @@ var state = {
 		  item_html += `<div class="col-6 col-sm-3">
         <div class="product-default inner-quickview inner-icon">
         <figure>
-        <span style="display: flex; align-items: center; justify-content: center; height: 300px;">
+        <span style="display: flex; align-items: center; justify-content: center; height: 270px; 
+            border: 1px solid black; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
+            
         <a href="ItemInfoServlet?action=increaseViewItem&itemNo=\${item["itemNo"]}">
     	<img
 			src="ItemInfoServlet?action=getImg&itemNo=\${item["itemNo"]}""
@@ -1340,67 +1349,42 @@ var state = {
 	  if (state.page != 1) {
 		    wrapper.innerHTML += `
 		        <button value="1" class="page btn btn-sm" style="
-		        	 background-color: #6a1b9a; /* 深紫色 */
-	            border: 1px solid #4a148c; /* 更深紫色邊框 */
-	            color: #ffffff; /* 白色文字 */
-	            padding: 4px 8px;
+		        	 background-color: #6a1b9a;
+	            border: 1px solid #4a148c; 
+	            color: #ffffff;
 	            text-align: center;
-	            text-decoration: none;
-	            display: inline-block;
-	            font-size: 11px;
 	            margin: 2px;
-	            cursor: pointer;
 	            border-radius: 4px;
 	            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	            transition: all 0.2s ease;
-	            &:hover {
-	              background-color: #7b1fa2; /* 淺深紫色 */
-	              border-color: #6a1b9a; /* 原始深紫色 */
-	            }
+
 		        "
 		        >&#171; 第一頁</button>`;
 		}
 
 	  for (var page = maxLeft; page <= maxRight; page++) {
 	    wrapper.innerHTML += `<button value="\${page}" class="page btn btn-sm btn-info" style="
-	    	 background-color: #6a1b9a; /* 深紫色 */
-            border: 1px solid #4a148c; /* 更深紫色邊框 */
-            color: #ffffff; /* 白色文字 */
-            padding: 4px 8px;
+	    	 background-color: #6a1b9a; 
+            border: 1px solid #4a148c;
+            color: #ffffff; 
             text-align: center;
             text-decoration: none;
-            display: inline-block;
-            font-size: 11px;
             margin: 2px;
-            cursor: pointer;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease;
-            &:hover {
-              background-color: #7b1fa2; /* 淺深紫色 */
-              border-color: #6a1b9a; /* 原始深紫色 */
-            }
+
 	    ">\${page}</button>`;
 	  }
 	  if (state.page != pages) {
 	    wrapper.innerHTML += `<button value="\${pages}" class="page btn btn-sm btn-info" style="
-	    	 background-color: #6a1b9a; /* 深紫色 */
-            border: 1px solid #4a148c; /* 更深紫色邊框 */
-            color: #ffffff; /* 白色文字 */
-            padding: 4px 8px;
+	    	 background-color: #6a1b9a; 
+            border: 1px solid #4a148c;
+            color: #ffffff;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
-            font-size: 11px;
             margin: 2px;
-            cursor: pointer;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease;
-            &:hover {
-              background-color: #7b1fa2; /* 淺深紫色 */
-              border-color: #6a1b9a; /* 原始深紫色 */
-            }
+
 	    ">最末頁 &#187;</button>`;
 	  }
 	  $('.page').on('click', function() {
