@@ -8,354 +8,393 @@
         content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       
       <title>ASAP</title>
-
- 
-      <!-- Plugins CSS File -->
-      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet" media="all" />
       
-      <!-- Main CSS File -->
-      <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet" media="all"/>
-      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" media="all"/>
-      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
       <style>
-      * {
-        box-sizing: border-box;
-      }
-      
-      body {
-        margin: 0;
-      }
-      
-      .welcome_box_bg {
-        height: 130px;
-      }
-      
-      .welcome_box {
-        position: relative;
-        left: 210px;
-        display: inline-block;
-        width: 100px;
-        height: 100px;
-        margin: 5px;
-        margin-left: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        background: url('newImg/your_image.jpg') center/cover no-repeat;
-        overflow: hidden;
-      }
-      
-      p.subtitle {
-        font-size: 30px;
-        font-weight: 900;
-        position: relative;
-        left: 120px;
-        margin-top: 5px;
-        margin-bottom: 20px;
-      }
-      
-      p.introduce {
-        position: relative;
-        left: 120px;
-      }
-      
-      p.subtitle2 {
-        font-size: 20px;
-        position: relative;
-        left: 120px;
-      }
-      
-      @media ( max-width : 768px) {
-        .welcome_box {
-          position: relative;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins');
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        a {
+          text-decoration: none;
+          color: whitesmoke;
+        }
+
+        ul{
+          list-style: none;
+        }
+
+        .active{
+          color: #9dd0f5;
+          text-decoration: underline;
+          font-weight: bold;
+        }
+        body, html{
+          overflow-x: hidden;
+        }
+
+        .navbar{
+          position: absolute;
+          top: 0;
           left: 0;
-          margin-top: 10px;
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          padding: 20px;
+          color: whitesmoke;
         }
-        p.subtitle {
-          position: relative;
-          left: 0;
-          margin-top: 10px;
+        .nav-links{
+          display: flex;
+          align-items: center;
         }
-        p.introduce {
-          position: relative;
-          right: 10px;
-          margin-top: 10px;
-          margin-bottom: 100px;
-          left: 0;
-          top: 100px;
+        .nav-links li{
+          margin: 0 30px;
+
         }
-        p.subtitle2 {
-          position: relative;
-          left: 0px;
-          margin-top: 10px;
+
+        header {
+          width: 100vw;
+          height: 100vh;
+          background-image: url('newImg/woman-running3.jpg');
+          background-position: bottom;
+          background-size: cover;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
         }
-      }
+
+        .header-content {
+          margin-bottom: 150px;
+          color: whitesmoke;
+          text-align: center;
+        }
+
+        .header-content h2{
+          font-size: 4vmin;
+        }
+
+        .line{
+          width: 150px;
+          height: 4px;
+          background: #70a9d2;
+          margin: 10px auto;
+          border-radius: 5px;
+        }
+
+        .header-content h1{
+          font-size: 7vmin;
+          margin-top: 50px;
+          margin-bottom: 30px;
+        }
+
+        .ctn{
+          padding: 8px 15px;
+          background: #70a9d2;
+          border-radius: 30px;
+          color: whitesmoke;
+        }
+        .menu-btn{
+          position: absolute;
+          top: 30px;
+          right: 30px;
+          width: 40px;
+          cursor: pointer;
+          display: none;
+        }
+
+        section{
+          width: 80%;
+          margin: 80px auto;
+        }
+        .title{
+          text-align:center;
+          font-size: 4vmin;
+          color: #49497e;
+
+        }
+        .row{
+          display: flex;
+          align-items: center;
+          width: 100%;
+          justify-content: space-between;
+          /* background: cyan; */
+        }
+        .row .col {
+          display: flex; 
+          flex-direction: column;
+          align-items: center;
+        } 
+        .row .col img{
+          width: 80%;
+        }
+        .events .row{
+          margin-top: 50px;
+        }
+        h4{
+          font-size: 3vmin;
+          color: #484872;
+          margin: 20px auto;
+        }
+        p{
+          color: #7c7c7c;
+          padding: 0px 40px;
+        }
+        .events .ctn{
+          margin-top: 30px;
+        }
+
+        .explore{
+          width: 100%;
+          height: 100vh;
+          background-image: url('newImg/bg2.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          display: flex;
+          align-items: center;
+        }
+        .explore-content{
+          width: 60%;
+          padding: 50px;
+          color: whitesmoke;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+        }
+        .explore-content h1{
+            font-size: 7vmin;
+        }
+        .explore-content .line{
+          margin-bottom: 50px;
+        }
+        .explore-content p{
+          color: whitesmoke;
+        }
+        .explore-content .ctn{
+          margin-top: 40px;
+        }
+
+        .content-col{
+          width: 40%;
+        }
+        .image-col{
+          width: 100%;
+        }
+       
+        .tours .image-gallery{
+          display: flex;
+          flex-wrap: wrap;
+          width: 100%;
+          align-items: center;
+        }
+        .image-gallery img{
+          max-width: 250px;
+          margin: 10px;
+        }
+        .content-col h1{
+          font-size: 7vmin;
+          color: #484872;
+        }
+        .content-col .line{
+          margin-left: -1px;
+        }
+        .content-col p{
+          padding: 0;
+          margin: 30px auto;
+        }
+        .content-col .ctn{
+          margin-left: -100px;
+        }
+
+        .footer{
+          width: 100%;
+          min-height: 100px;
+          padding: 20px 80px;
+          margin: 0;
+          background-color: #484872;
+          text-align: center;
+        }
+        .footer p {
+          color: whitesmoke;
+          margin: 20px auto;
+        }
+
+
+        @media only screen and (max-width:850px){
+          .menu-btn{
+            display: block;
+          }
+          .navbar{
+            padding:0;
+          }
+          .logo{
+            position: absolute;
+            top: 30px;
+            left: 30px;
+          }
+          .nav-links{
+            flex-direction: column;
+            width: 100%;
+            height: 100vh;
+            justify-content: center;
+            background: #484872;
+            margin-top: -1000px;
+            transition: all 0.5s ease;
+          }
+          .mobile-menu{
+            margin-top: 0px;
+            border-bottom-right-radius: 30%;
+          }
+          .nav-links li{
+            margin: 30px auto;
+          }
+
+          .row{
+            flex-direction: column;
+          }
+          .row .col{
+            margin: 20px auto;
+          }
+          .col img {
+            max-width: 90%;
+          }
+
+          .explore-content{
+            width: 100%;
+          }
+          .tours .col{
+            width: 100%;
+          }
+          .image-gallery{
+            justify-content: center;
+            align-items: center;
+          }
+          .image-gallery img{
+            width: 90%;
+          }
+          .footer{
+            padding: 10px;
+          }
+        }
+
+        img{
+          transition: transform .3s ease;
+        }
+        img:hover{
+          transform: scale(1.1);
+        }
+        .ctn:hover{
+          background: whitesmoke;
+          color: #70a9d2;
+          box-shadow: 2px 2px 5px black;
+
+        }
+        li:hover{
+          color: #70a9d2;
+          cursor: pointer;
+        }
+  
+
       </style>
+
       </head>
       
       <body>
-        <div class="page-wrapper">
-          <header class="header">        
-            <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}"
-            style="
-              padding-top: 0;
-              padding-bottom: 0;
-              height: 75px;
-              background: rgb(255, 250, 85);
-              background: linear-gradient(
-                90deg,
-                rgba(255, 250, 85, 0.9081757703081232) 0%,
-                rgba(9, 34, 121, 0.8773634453781513) 35%,
-                rgba(0, 212, 255, 1) 100%
-              );
-              position: relative; /* Set position to relative for the parent */
-              display: flex;
-              align-items: center;
-            "
-          >
-            <div class="container" style="position: relative;">
-              <div class="header-left col-lg-2 w-auto pl-0"
-                style="
-                  position: absolute;
-                  top: 50%; /* Move 50% from the top */
-                  transform: translateY(-50%);
-                  z-index: 999;
-                  left: 20px; /* Adjust distance from the left */
-                "
-              >
-                <button class="mobile-menu-toggler text-primary mr-2" type="button">
-                  <i class="fas fa-bars"></i>
-                </button>
-                <a href="${pageContext.request.contextPath}/ASAPwelcome.jsp" width="222" height="88">
-                  <img src="newImg/logo2.png" style="max-width: 200px; height: auto; vertical-align: middle; border-style: none;">
-                </a>
-              </div>
-              <!-- End .header-left -->
-            </div>
-            <!-- End .container -->
+
+        <nav class="navbar">
+          <h1 class="logo">
+           
+          </h1>
+          <ul class="nav-links">
+            <li class="active"><a href="javascript:void(0)"></a>Home</li>
+            <li><a href="${pageContext.request.contextPath}/member/MemberLogin.jsp">會員登入</a></li>
+            <li><a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp">教練登入</a></li>
+          </ul>
+          <img src="<%=request.getContextPath()%>/newImg/menu-btn.png" alt="" class="menu-btn">
+        </nav>
+        
+        <header>
+          <div class="header-content">
+            <h2> <img src="<%=request.getContextPath()%>/newImg/logo3.png" style="max-width: 200px; height: auto; vertical-align: middle; border-style: none;"></h2>
+            <div class="line"></div>
+            <h1>Find the Boundaries. Push Through!</h1>
+            <a href="${pageContext.request.contextPath}/member/MemberLogin.jsp" class="ctn">了解更多</a>
           </div>
-          <!-- End .header-middle -->
-  
-          <div
-            class="header-bottom sticky-header d-none d-lg-block"
-            data-sticky-options="{'mobile': false}" 
-          >
-            <div class="container">
-              <nav class="main-nav w-100" >
-                <ul class="menu" style="display: flex; justify-content: flex-end">
-                  <li><a href="${pageContext.request.contextPath}/member/MemberLogin.jsp">會員登入</a></li>
-                  <li><a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp">教練登入</a></li>
-                </ul>
-              </nav>
-            </div>
-            <!-- End .container -->
+        </header>
+        
+        <section class="events">
+          <div class="title">
+            <h1>會員制度</h1>
+            <div class="line"></div>
           </div>
-          <!-- End .header-bottom --></header>
-          <!-- End .header -->
-      
-          <main class="main about">
-            <div class="page-header page-header-bg text-left"
-              style="background: 50%/cover #d4e1ea url('newImg/runner.jpg')">
-              <div class="container">
-                <h1>
-                  <span>ASAP</span> Find the Boundaries. Push Through!
-                </h1>
-                <a href="${pageContext.request.contextPath}/member/MemberLogin.jsp" class="btn btn-dark"><strong>START!</strong></a>
-              </div>
-              <!-- End .container -->
+          <div class="row">
+            <div class="col">
+              <img src="<%=request.getContextPath()%>/newImg/member.jpg" alt="">
+              <h4>一般會員</h4>
+              <p>能在平台上使用多種功能，包括二手商城買賣、尋找場地租借、揪團、預約課程以及參與論壇討論。</p>
+              <a href="${pageContext.request.contextPath}/member/MemberLogin.jsp" class="ctn">了解更多</a>
             </div>
-            <!-- End .page-header -->
-      
-            <div class="about-section">
-              <div class="container">
-                <p class="subtitle" style="font-weight: 900;">關於我們</p>
-                <p class="subtitle2">
-                  針對不知道該從何開始運動的初學者、找不到夥伴一起運動的人，這裡提供了一個無壓力、充滿支援的地方。</p>
-                <div class="welcome_box_bg">
-                  <div class="welcome_box">
-                    <img src="<%=request.getContextPath()%>/newImg/forum.png" alt="project"
-                      style="width: 90px; height: 90px; position: relative; left: 5px; top: 5px;" />
-                  </div>
-                  <div class="welcome_box">
-                    <img src="<%=request.getContextPath()%>/newImg/coach.png" alt="project"
-                      style="width: 90px; height: 90px; position: relative; left: 5px;" />
-                  </div>
-                  <div class="welcome_box">
-                    <img src="<%=request.getContextPath()%>/newImg/networking.png" alt="project"
-                      style="width: 90px; height: 90px; position: relative; left: 5px; top: 5px;" />
-                  </div>
-                  <div class="welcome_box">
-                    <img src="<%=request.getContextPath()%>/newImg/basketball.png" alt="project"
-                      style="width: 90px; height: 90px; position: relative; left: 5px;" />
-                  </div>
-                  <div class="welcome_box">
-                    <img src="<%=request.getContextPath()%>/newImg/store.png" alt="project"
-                      style="width: 90px; height: 90px; position: relative; left: 5px; top: 5px;" />
-                  </div>
-                  <div class="welcome_box">
-                    <img src="<%=request.getContextPath()%>/newImg/shop.png" alt="project"
-                      style="width: 90px; height: 90px; position: relative; left: 5px; top: 5px;" />
-                  </div>
-                </div>
-                <p class="introduce" style="font-size: 16px;">
-                  <i class="fas fa-arrow-right"></i>新手要開始運動可能讓人感到迷茫，可以藉由在論壇上輕鬆提出任何運動相關的問題，會員們將樂意分享經驗、提供建議。<br />
-                  <i class="fas fa-arrow-right"></i>若需要更專業的引導，我們提供了專業教練的媒合服務，找到最適合的教練，一步步建立運動的習慣。<br />
-                  <i class="fas fa-arrow-right"></i>可隨時隨地，發起揪團，尋找同領域的運動夥伴，相互交流，共同進步。<br />
-                  <i class="fas fa-arrow-right"></i>透過平台上的即時搜尋功能，協助尋找、租借適合的場地，並提供專屬優惠。<br />
-                  <i class="fas fa-arrow-right"></i>可以在商城找到二手的運動商品，節省開支，為初學者打造的運動社群，提供了豐富的功能，輕鬆開啟運動。
-                </p>
-              </div>
-              <!-- End .container -->
+            <div class="col">
+              <img src="<%=request.getContextPath()%>/newImg/coach1.jpg" alt="">
+              <h4>教練會員</h4>
+              <p>教練會員負責提供專業的運動課程，分享專業知識和技能，可以在平台上開設課程同時管理會員預約。</p>
+              <a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp" class="ctn">了解更多</a>
             </div>
-            <!-- End .about-section -->
-      
-          </main>
-          <!-- End .main -->
-      
-          <footer class="footer bg-dark">
-            <div class="footer-middle">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-3 col-sm-6">
-                    <div class="widget">
-                      <h4 class="widget-title">Contact Info</h4>
-                      <ul class="contact-info">
-                        <li>
-                          <span class="contact-info-label">Address:</span>5F., No. 219, Sec. 3, Nanjing E. Rd., Zhongshan Dist., Taipei City 104, Taiwan (R.O.C.)
-                        </li>
-                        <li>
-                          <span class="contact-info-label">Phone:</span
-                          ><a href="tel:">(02) 2712-0589</a>
-                        </li>
-                        <li>
-                          <span class="contact-info-label">Email:</span>
-                          <a href="mailto:mail@example.com">business@tibame.com</a>
-                        </li>
-                        <li>
-                          <span class="contact-info-label"
-                            >Working Days/Hours:</span
-                          >
-                          Mon - Sun / 8:00 AM - 9:30 PM
-                        </li>
-                      </ul>
-                      <div class="social-icons">
-                        <a
-                          href="#"
-                          class="social-icon social-facebook icon-facebook"
-                          target="_blank"
-                          title="Facebook"
-                        ></a>
-                        <a
-                          href="#"
-                          class="social-icon social-twitter icon-twitter"
-                          target="_blank"
-                          title="Twitter"
-                        ></a>
-                        <a
-                          href="#"
-                          class="social-icon social-instagram icon-instagram"
-                          target="_blank"
-                          title="Instagram"
-                        ></a>
-                      </div>
-                      <!-- End .social-icons -->
-                    </div>
-                    <!-- End .widget -->
-                  </div>
-                  <!-- End .col-lg-3 -->
-          
-                  <div class="col-lg-3 col-sm-6">
-                    <div class="widget">
-                      <h4 class="widget-title">SiteMap</h4>
-          
-                      <ul class="links">
-                        <li><a>Account</a></li>
-                        <li><a>Course</a></li>
-                        <li><a>Forum</a></li>
-                        <li><a>Group</a></li>
-                        <li><a>Court</a></li>
-                        <li><a>Seller</a></li>
-                        <li><a>Mall</a></li>
-                      </ul>
-                    </div>
-                    <!-- End .widget -->
-                  </div>
-                  <!-- End .col-lg-3 -->
-          
-                </div>
-                <!-- End .row -->
-              </div>
-              <!-- End .container -->
-            </div>
-            <!-- End .footer-middle -->
-          
-            <div class="container">
-              <div class="footer-bottom">
-                <div class="container d-sm-flex align-items-center">
-                  <div class="footer-left">
-                    <span class="footer-copyright"
-                      >© Tibame. 2023. All Rights Reserved</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <!-- End .footer-bottom -->
-            </div>
-            <!-- End .container -->
-          </footer>
-          <!-- End .footer -->
-        </div>
-        <!-- End .page-wrapper -->
-      
-        <div class="loading-overlay">
-          <div class="bounce-loader">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
           </div>
-        </div>
-      
-        <div class="mobile-menu-overlay"></div>
-        <!-- End .mobil-menu-overlay -->
-      
-        <div class="mobile-menu-container">
-          <div class="mobile-menu-wrapper">
-            <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
-            <nav class="mobile-nav">
-              <ul class="mobile-menu">
-                <li><a href="${pageContext.request.contextPath}/ASAPwelcome.jsp">首頁</a></li>
-                <li><a href="${pageContext.request.contextPath}/member/MemberLogin.jsp">會員登入</a></li>
-                <li><a href="${pageContext.request.contextPath}/coach/CoachLogin.jsp">教練登入</a></li>
-              </ul>
-            </nav>
-            <!-- End .mobile-nav -->
+        </section>
+
+        <section class="explore">
+          <div class="explore-content">
+            <h1>關於ASAP</h1>
+            <div class="line"></div>
+            <p>你是否曾經想要開始運動，但卻不知道從何著手？</p>
+            <br>
+            <p>或者是渴望找到夥伴一同挑戰的運動愛好者？</p>
+            <br>
+            <p>這裡，是一個充滿活力、毫無壓力、滿載支援的據點！</p>
+            <br>
+            <p>在這裡，運動不再是孤單的旅程，而是一場熱情洋溢、充滿歡笑的社交饗宴。</p>
+            <a href="${pageContext.request.contextPath}/member/MemberLogin.jsp" class="ctn">了解更多</a>
           </div>
-          <!-- End .mobile-menu-wrapper -->
-          
-        </div>
-        <!-- End .mobile-menu-container -->
-      
-<!--         <div class="sticky-navbar"> -->
-<!--           <div class="sticky-info"> -->
-<!--             <a href="#"> <i class="icon-home"></i>Home </a> -->
-<!--           </div> -->
-<!--           <div class="sticky-info"> -->
-<!--             <a href="#" class=""> <i class="icon-edit"></i>Forum </a> -->
-<!--           </div> -->
-<!--           <div class="sticky-info"> -->
-<!--             <a href="#" class=""> <i class="icon-cat-sport"></i>Group</a> -->
-<!--           </div> -->
-<!--           <div class="sticky-info"> -->
-<!--             <a href="#" class=""> -->
-<!--               <i class="icon-shopping-cart position-relative"> </i>Mall -->
-<!--             </a> -->
-<!--           </div> -->
-<!--           <div class="sticky-info"> -->
-<!--             <a href="#" class=""> <i class="icon-user-2"></i>Account </a> -->
-<!--           </div> -->
-<!--         </div> -->
-      
-        <a id="scroll-top" href="#top" title="Top" role="button"><i
-          class="icon-angle-up"></i></a>
+        </section>
+
+        <section class="tours">
+          <div class="row">
+            <div class="col content-col">
+              <h1>快加入我們！</h1>
+              <div class="line"></div>
+              <p style="margin:13px">新手踏入運動領域 ➪ 論壇分享心得</p>
+              <p style="margin:13px">需專業引導、建立習慣 ➪ 教練課程</p>
+              <p style="margin:13px">社交支持、增添運動樂趣 ➪ 揪團</p>
+              <p style="margin:13px">找到合適環境 ➪ 搜尋場地</p>
+              <p style="margin:13px">節省開支輕鬆入門 ➪ 二手商品買賣</p>
+              <a href="${pageContext.request.contextPath}/member/MemberLogin.jsp" class="ctn">了解更多</a>
+            </div>
+            <div class="col image-col">
+              <div class="image-gallery">
+                <img src="<%=request.getContextPath()%>/newImg/coach2.jpg" alt="">
+                <img src="<%=request.getContextPath()%>/newImg/forum1.png" alt="">
+                <img src="<%=request.getContextPath()%>/newImg/shop4.png" alt="" >
+                <img src="<%=request.getContextPath()%>/newImg/gym2.jpg" alt="">
+               
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="footer">
+          <p>5F., No. 219, Sec. 3, Nanjing E. Rd., Zhongshan Dist., Taipei City 104, Taiwan (R.O.C.) | Phone:(02) 2712-0589 | Email:business@tibame.com</p>
+          <p>© Tibame. 2023. All Rights Reserved</p>
+        </section>
+
+        
+       
+
+
+
+
       
         <!-- Plugins JS File -->
         <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
@@ -364,6 +403,15 @@
       	<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/plugins/jquery.countTo.js"></script>
         <!-- Main JS File -->
         <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
+
+        <script>
+          const menuBtn = document.querySelector('.menu-btn');
+          const navlinks = document.querySelector('.nav-links');
+
+          menuBtn.addEventListener('click',()=>{
+            navlinks.classList.toggle('mobile-menu');
+          })
+        </script>
 
       </body>
       </html>
