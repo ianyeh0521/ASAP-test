@@ -188,6 +188,7 @@ public class PostServlet extends HttpServlet {
 		Integer posttypeno = Integer.parseInt(req.getParameter("posttypeno"));
 		String posttitle =req.getParameter("posttitle");
 		String posttext=req.getParameter("posttext");
+		String mbrNo =req.getParameter("mbrNo");
 		PostTypeVO postTypeVO=new PostTypeVO(posttypeno);
 
 		PostVO postvo=new PostVO();
@@ -196,10 +197,7 @@ public class PostServlet extends HttpServlet {
 		postvo.setPostText(posttext);
 		postvo.setPostStatus(0);
 		postvo.setPostViews(0);
-		
-//		--------待刪-----------
-		postvo.setMbrNo("M002");
-//		--------待刪-----------
+		postvo.setMbrNo(mbrNo);
 		postVOService.addPost(postvo);
 		return "/ASAP/forum/forum_home.jsp";
 	}
@@ -267,10 +265,8 @@ public class PostServlet extends HttpServlet {
 		postvo.setPostText(posttext);
 		postvo.setPostStatus(1);
 		postvo.setPostViews(0);
-		
-//		--------待刪-----------
+
 		postvo.setMbrNo(mbrNo);
-//		--------待刪-----------
 		PostVOService postVOService= new PostVOServiceImpl();
 		postVOService.addPost(postvo);
 		return "/ASAP/forum/forum_home.jsp";

@@ -57,8 +57,8 @@ public class ForumReportServlet extends HttpServlet {
 		String  replyText =req.getParameter("replyText");
 		String  mbrNo =req.getParameter("mbrNo");
 		ForumReportVO forumReportVO= forumreportVOService.findByPK(fRptno);
-//		String  backNo =req.getParameter("backNo");
-//		forumReportVO.setBackNo(backNo);		
+		String  backNo =req.getParameter("backNo");
+		forumReportVO.setBackNo(backNo);		
 		forumReportVO.setfRptReply(replyText);
 		forumReportVO.setfRptReplyTime(Timestamp.valueOf(LocalDateTime.now()));
 		forumreportVOService.update(forumReportVO);
@@ -75,8 +75,8 @@ public class ForumReportServlet extends HttpServlet {
 		String  replyText =req.getParameter("replyText");
 		String  mbrNo =req.getParameter("mbrNo");
 		ForumReportVO forumReportVO= forumreportVOService.findByPK(fRptno);
-//		String  backNo =req.getParameter("backNo");
-//		forumReportVO.setBackNo(backNo);
+		String  backNo =req.getParameter("backNo");
+		forumReportVO.setBackNo(backNo);
 		forumReportVO.setfRptReply(replyText);
 		forumReportVO.setfRptReplyTime(Timestamp.valueOf(LocalDateTime.now()));
 		forumreportVOService.update(forumReportVO);
