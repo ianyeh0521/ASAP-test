@@ -333,7 +333,8 @@ $(document).ready(function () {
 		      
 		      
 			$("button.deleteorder").on("click", function () {
-		      var orderNo = $(this).attr('data-orderno');
+			  var $button = $(this);
+			  var orderNo = $button.attr('data-orderno');
 		      let r = confirm("確認刪除？");
 		      if(r){
 		      $.ajax({
@@ -345,7 +346,7 @@ $(document).ready(function () {
 		        },
 		        success: function (data) {
 		        	alert("訂單已刪除！")
-		        	document.location.reload()
+		        	$button.closest('tr').css("display", "none"); 
 		        }
 
 		        }

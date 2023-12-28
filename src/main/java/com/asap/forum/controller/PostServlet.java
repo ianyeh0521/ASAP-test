@@ -151,11 +151,12 @@ public class PostServlet extends HttpServlet {
 	private String updateDraft(HttpServletRequest req, HttpServletResponse res) {
 		res.setContentType("text/html; charset=UTF-8");
 		Integer postno = Integer.parseInt(req.getParameter("postno"));
+		System.out.println(postno);
 		Integer posttypeno = Integer.parseInt(req.getParameter("posttypeno"));
 		String posttitle =req.getParameter("posttitle");
 		String posttext=req.getParameter("posttext");
 		PostTypeVO postTypeVO=new PostTypeVO(posttypeno);
-		PostVO post=postVOService.findbyPK(postno);
+		PostVO post=postVOService.backstageFindbyPK(postno);
 		post.setPostTitle(posttitle);
 		post.setPostText(posttext);
 		post.setPostTypeVO(postTypeVO);
