@@ -84,7 +84,11 @@
 		<url-pattern>/member/MemberUpdateInfo.jsp</url-pattern>
 		<url-pattern>/group/*</url-pattern>
 		<url-pattern>/shop/*</url-pattern>
-		<url-pattern>/course/*</url-pattern>
+		<url-pattern>/course/course_checkout.jsp</url-pattern>
+		<url-pattern>/course/course_main.jsp</url-pattern>
+		<url-pattern>/course/course_orderlist.jsp</url-pattern>
+		<url-pattern>/course/course_page.jsp</url-pattern>
+		<url-pattern>/course/course_paymentSuccess.jsp</url-pattern>
 		<url-pattern>/court/*</url-pattern>
 		<url-pattern>/forum/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
