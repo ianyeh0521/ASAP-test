@@ -438,7 +438,7 @@ System.out.println(cartlist);
 													<div class="col-md-6">
 														<ul class="cat-sublist">
 															<li><div class="typeswim " data-category="1"
-																	data-column="itemTypeNo " style="cursor: pointer">
+																	data-column="itemTypeNo" style="cursor: pointer">
 																	帽子<span class="products-count"></span>
 																</div></li>
 															<li><div class="typebaseball " data-category="2"
@@ -725,10 +725,10 @@ System.out.println(cartlist);
 							</ul>
 							<div class="social-icons">
 								<a href="#" class="social-icon social-facebook icon-facebook"
-									target="_blank" title="Facebook"></a> <a
-									href="#" class="social-icon social-twitter icon-twitter"
-									target="_blank" title="Twitter"></a> <a
-									href="#" class="social-icon social-instagram icon-instagram"
+									target="_blank" title="Facebook"></a> <a href="#"
+									class="social-icon social-twitter icon-twitter" target="_blank"
+									title="Twitter"></a> <a href="#"
+									class="social-icon social-instagram icon-instagram"
 									target="_blank" title="Instagram"></a>
 							</div>
 							<!-- End .social-icons -->
@@ -773,8 +773,8 @@ System.out.println(cartlist);
 			<div class="footer-bottom">
 				<div class="container d-sm-flex align-items-center">
 					<div class="footer-left">
-						<span class="footer-copyright">© ASAP. 2023.
-							All Rights Reserved</span>
+						<span class="footer-copyright">© ASAP. 2023. All Rights
+							Reserved</span>
 					</div>
 				</div>
 			</div>
@@ -1133,35 +1133,55 @@ $('.btn-remove').on('click', function(e) {
     }
 });  
   
-//發送 AJAX 請求獲取每個商品類型的數量
-function fetchItemCount() {
-    $.ajax({
-        url: "${pageContext.request.contextPath}/shop/ItemInfoServlet",
-        type: 'POST',
-        data: { action: 'getItemCountByType' },
-        success: function(response) {
-            // 處理成功響應
-            updateItemCount(response);
-        },
-        error: function(error) {
-            console.log('Error fetching item count: ', error);
-        }
-    });
-}
-
-// 更新界面上的商品數量
-function updateItemCount(itemCountMap) {
-    console.log(itemCountMap); // 打印以檢查數據
-    for (const [typeNo, count] of Object.entries(itemCountMap)) {
-        $(`div[data-category='\${typeNo}'] .products-count`).text(`\${count}`);
-    }
-}
-
-// 當頁面加載時調用
+  
+//☆☆☆商品分類數量顯示
 $(document).ready(function() {
-    fetchItemCount();
+$.ajax({
+    url: "${pageContext.request.contextPath}/shop/ItemInfoServlet",
+    type: 'POST',
+    dataType: 'json',
+    data: { "action": "getAllCountsByCategories" },
+    success: function(response) {
+        updateAllCounts(response);
+    },
+    error: function(error) {
+        console.log('Error fetching counts: ', error);
+    }
+});
 });
 
+
+
+function updateAllCounts(allCounts) {
+//     console.log("Received all counts:", allCounts);
+
+    for (let category in allCounts) {
+        let countMap = allCounts[category];
+//     console.log('Processing category:' + category +', Counts:' + countMap);
+
+
+        for (let id in countMap) {
+            let count = countMap[id];
+            console.log('Updating count for ' + category + ', ID: ' +id + ', Count: ' +count);
+            var categoryName;
+            if(category == "stat" ){
+            	categoryName = "Stat";
+            }
+            if(category == "size"){
+            	categoryName = "Size";
+            }
+            if(category == "type"){
+            	categoryName = "Type";
+            }
+//             console.log('div[data-column="item'+categoryName+'No"][data-category="'+id+'"]');
+            var countStr = "("+count+")";
+            $('div[data-column="item'+categoryName+'No"][data-category="'+id+'"]').find("span").text(countStr);
+//             console.log("Category:", category);
+//             console.log("ID:", id);
+//             console.log("Count:", count);
+        }
+    }
+}
 
 //☆☆☆價格範圍功能
 document.addEventListener('DOMContentLoaded', function () {

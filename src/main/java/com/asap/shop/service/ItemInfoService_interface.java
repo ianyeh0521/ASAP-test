@@ -45,11 +45,14 @@ public interface ItemInfoService_interface {
 	//找最高價
 	int getHighestPrice();
 	
+	// 找特定分類的商品
+	Map<String, Map<Integer, Integer>> getAllCountsByCategories();
+	// 計算特定分類的商品數量
+	Map<Integer, Integer> getItemsCountByCategory(String categoryType);
+	
 	ItemInfoVO checkerFindByItemNo(Integer itemNo);
 	
 	Integer checkerUpdate(ItemInfoVO itemInfo);
-	
-	Map<Integer, Integer> getItemCountByType();
 	
 	List<ItemInfoVO> findbyMbrNo(String mbrNo);
 	

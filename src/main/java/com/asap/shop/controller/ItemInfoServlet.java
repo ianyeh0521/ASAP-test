@@ -70,8 +70,8 @@ public class ItemInfoServlet extends HttpServlet {
 			getpage(req, res);
 			break;
 			
-		 case "getItemCountByType":
-	            getItemCountByType(req, res);
+		 case "getAllCountsByCategories":
+			 getAllCountsByCategories(req, res);
 	            break;
 		}
 
@@ -227,12 +227,13 @@ public class ItemInfoServlet extends HttpServlet {
 
 	}
 
-	 private void getItemCountByType(HttpServletRequest req, HttpServletResponse res) throws IOException {
-	        Map<Integer, Integer> itemCountMap = itemInfoService.getItemCountByType();
-	        String json = new Gson().toJson(itemCountMap);
+	 private void getAllCountsByCategories(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	        Map<String, Map<Integer, Integer>> allCounts = itemInfoService.getAllCountsByCategories();
+	        String json = new Gson().toJson(allCounts);
 	        res.setContentType("application/json; charset=UTF-8");
 	        res.getWriter().write(json);
 	    }
+
 
 	private void getpage(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		List<ItemInfoVO> list = itemInfoService.getAll();

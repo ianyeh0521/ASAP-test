@@ -8,6 +8,8 @@ import java.util.Set;
 import com.asap.shop.dao.ItemInfoDAO;
 import com.asap.shop.dao.ItemInfoDAO_interface;
 import com.asap.shop.entity.ItemInfoVO;
+import com.asap.shop.entity.ItemSizeVO;
+import com.asap.shop.entity.ItemStatVO;
 import com.asap.shop.entity.ItemTypeVO;
 
 /**
@@ -29,7 +31,7 @@ public class ItemInfoService implements ItemInfoService_interface {
 	}
 
 	@Override
-	public int update(ItemInfoVO itemInfo) {		
+	public int update(ItemInfoVO itemInfo) {
 		itemInfo.setItemUpdTime(new java.sql.Timestamp(System.currentTimeMillis()));
 		return dao.update(itemInfo);
 	}
@@ -80,11 +82,11 @@ public class ItemInfoService implements ItemInfoService_interface {
 
 	@Override
 	public List<ItemInfoVO> getByCompositeQuery(Map<String, String[]> map) {
-		
+
 		Map<String, String> query = new HashMap<>();
 		// Map.Entry即代表一組key-value
 		Set<Map.Entry<String, String[]>> entry = map.entrySet();
-		
+
 		for (Map.Entry<String, String[]> row : entry) {
 			String key = row.getKey();
 			// 因為請求參數裡包含了action，做個去除動作
@@ -129,18 +131,50 @@ public class ItemInfoService implements ItemInfoService_interface {
 		// TODO Auto-generated method stub
 		return dao.checkerUpdate(itemInfo);
 	}
-	
-	public Map<Integer, Integer> getItemCountByType() {
-        Map<Integer, Integer> itemCountMap = new HashMap<>();
-        List<ItemTypeVO> itemTypes = dao.getAllItemTypes();
-        for (ItemTypeVO itemType : itemTypes) {
-            int count = dao.countItemsByType(itemType.getItemTypeNo());
-            itemCountMap.put(itemType.getItemTypeNo(), count);
-        }
-        return itemCountMap;
-    }
 
-	public List<ItemInfoVO> findbyMbrNo(String mbrNo){
+	public List<ItemInfoVO> findbyMbrNo(String mbrNo) {
 		return dao.findbyMbrNo(mbrNo);
-	};
+	}
+
+	public Map<String, Map<Integer, Integer>> getAllCountsByCategories() {
+		Map<String, Map<Integer, Integer>> allCounts = new HashMap<>();
+		allCounts.put("type", getItemsCountByCategory("type"));
+		allCounts.put("stat", getItemsCountByCategory("stat"));
+		allCounts.put("size", getItemsCountByCategory("size"));
+		return allCounts;
+	}
+
+	public Map<Integer, Integer> getItemsCountByCategory(String categoryType) {
+		Map<Integer, Integer> countMap = new HashMap<>();
+		List<?> items;
+
+		switch (categoryType) {
+		case "type":
+			items = dao.getAllItemTypes();
+			break;
+		case "stat":
+			items = dao.getAllItemStats();
+			break;
+		case "size":
+			items = dao.getAllItemSizes();
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid category type");
+		}
+
+		for (Object item : items) {
+			Integer id;
+			if (item instanceof ItemTypeVO) {
+				id = ((ItemTypeVO) item).getItemTypeNo();
+			} else if (item instanceof ItemStatVO) {
+				id = ((ItemStatVO) item).getItemStatNo();
+			} else { // ItemSizeVO
+				id = ((ItemSizeVO) item).getItemSizeNo();
+			}
+			int count = dao.countItemsByCategory(categoryType, id);
+			countMap.put(id, count);
+		}
+		return countMap;
+	}
+
 }
