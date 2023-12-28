@@ -5,13 +5,6 @@
 <%@page import="com.asap.shop.entity.*"  %>
 <%@ page import="com.asap.member.entity.MemberVO"%>
 
-<%
-MemberVO member = (MemberVO)session.getAttribute("memberVo");
-pageContext.setAttribute("memberVo", member);
-%>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
