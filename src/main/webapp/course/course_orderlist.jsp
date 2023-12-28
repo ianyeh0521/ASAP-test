@@ -568,7 +568,7 @@
 //                  dataType: 'application/json',
                  data: {
                      action: "getByMember",
-                     mbrNo: "M1206202300001"	// 記得更動
+                     mbrNo: "${mbrNo}"	
                  },
                  success: function(response){
                 	 console.log(response);
@@ -688,11 +688,12 @@
 	    	           type: 'POST',
 	    	           data: {
 	    	               action: "cancel",
-	    	               mbrNo: "M1206202300001",	
+	    	               mbrNo: "${mbrNo}",	
 	    	               mbrCourseNo: clickedId
 	    	           },
 	    	           success: function(response) {
 	    	               console.log('Server response:', response);
+	    	               $('.lookup').prop('disabled', true);
 	    	           },
 	    	           error: function() {
 	    	               console.log('Error in AJAX request');

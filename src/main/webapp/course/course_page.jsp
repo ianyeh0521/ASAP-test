@@ -9,6 +9,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.asap.util.*"%>
+<%@ page import="com.asap.coach.entity.*"%>
+<%@ page import="com.asap.coach.service.*"%>
 
 <%
 	Integer courseNo = Integer.valueOf(request.getParameter("courseNo"));
@@ -421,7 +423,7 @@
 							            <ul>  
 							                <li> 
 							                <div class="coach-image">
-									            <img src="${pageContext.request.contextPath}/coach/CoachGifReader?action=getCertImg&coachNo=${courseVO.coachVO.coachNo}" alt="Coach Image" width="50" height="50">
+									            <img src="${pageContext.request.contextPath}/CoachGifReader?action=getCoachImg&coachNo=${courseVO.coachVO.coachNo}" alt="Coach Image" width="50" height="50">
 									        </div>
 							            </li>
 							            <li>

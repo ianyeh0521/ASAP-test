@@ -266,7 +266,7 @@ try {
 				style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
 				<a href="${pageContext.request.contextPath}/course/course_orderlist.jsp">
 				<button class="btn btn-primary btn-rounded btn-md">
-					我的預約
+					我的課程
 				</button>
 				</a>
 			</div>

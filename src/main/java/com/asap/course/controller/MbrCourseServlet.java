@@ -115,12 +115,13 @@ public class MbrCourseServlet extends HttpServlet{
 				AioCheckOutALL obj = new AioCheckOutALL();
 				int currentYear = getCurrentYear();
 				int merchantTradeNoSet = 10000 + mbrCousreOrderNo;
-				obj.setMerchantTradeNo("S" + currentYear + merchantTradeNoSet);			// 注意之後上線後訂單編號重複問題
+				obj.setMerchantTradeNo("ST" + currentYear + merchantTradeNoSet);			// 注意之後上線後訂單編號重複問題
 				obj.setMerchantTradeDate(formattedTradeDate);
 				obj.setTradeDesc(courseVO.getCourseName());
 				obj.setItemName(courseVO.getCourseName() + "  " + start + "~" + end);
 				obj.setTotalAmount(String.valueOf(courseVO.getCoursePrice()));
-				obj.setCustomField1(String.valueOf(courseNo)); // 訂單成立接收到CourseNo
+				obj.setCustomField1(String.valueOf(courseNo)); // 訂單成立接收到courseNo
+				obj.setCustomField2(String.valueOf(mbrCousreOrderNo)); // 訂單成立接收到mbrCousreOrderNo
 				obj.setCustomField4(mbrNo); // 會員編號
 				obj.setReturnURL("https://0485-114-24-160-162.ngrok-free.app/ASAP/course/courseEcPayReturn.do");	// 使用時要記得換成外網
 				obj.setOrderResultURL("http://localhost:8081/ASAP/course/course_paymentSuccess.jsp");  // 使用者付款完成跳轉頁面

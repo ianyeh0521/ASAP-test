@@ -74,6 +74,7 @@ public class CourseEcPayReturn extends HttpServlet{
 		String checkMacValue = req.getParameter("CheckMacValue");
 		String rtnCode = req.getParameter("RtnCode");
 		Integer courseNo = Integer.valueOf(req.getParameter("CustomField1"));
+		Integer mbrCourseNo = Integer.valueOf(req.getParameter("CustomField2"));
 		String mbrNo = req.getParameter("CustomField4");
 		
 		MemberService_interface memberSvc = new MemberService();
@@ -94,11 +95,11 @@ public class CourseEcPayReturn extends HttpServlet{
 			}
 			
 			// 更改訂單狀態成已付款（拆解 MerchantTradeNo）
-			String trimmedString = merchantTradeNo.substring(5);
-			Integer remainInteger = Integer.valueOf(trimmedString);
-			Integer orderNo = remainInteger - 10000;
-			System.out.println(orderNo);
-			MbrCourseVO courseOrderUpdate = mbrCourseService_interface.findByPK(orderNo);
+//			String trimmedString = merchantTradeNo.substring(5);
+//			Integer remainInteger = Integer.valueOf(trimmedString);
+//			Integer orderNo = remainInteger - 10000;
+//			System.out.println(orderNo);
+			MbrCourseVO courseOrderUpdate = mbrCourseService_interface.findByPK(mbrCourseNo);
 
 			courseOrderUpdate.setMbrCourseStat(true);
 			System.out.println(courseOrderUpdate.toString());

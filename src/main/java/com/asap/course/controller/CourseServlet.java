@@ -516,7 +516,7 @@ public class CourseServlet extends HttpServlet{
 			CoachNewsVO coachNewsVO = new CoachNewsVO();
 			coachNewsVO.setCoachNo(coachNo);
 			coachNewsVO.setNewsSubj("上架課程通知");
-			coachNewsVO.setNewsText("您以上架- " + courseName + " 課程，請至「所有課程」查看詳細資訊");
+			coachNewsVO.setNewsText("您以上架- " + courseName + " 課程，請至「課程管理」查看詳細資訊");
 			coachNewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
 			coachNewsSvc.add(coachNewsVO);
 			
