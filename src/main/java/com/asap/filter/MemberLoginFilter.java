@@ -34,8 +34,7 @@ public class MemberLoginFilter implements Filter {
 				"/forum/forumcomment.do", "/forum/forumlike.do", "/forum/forumreport.do", "/forum/post.do",
 				"/forum/savepost.do", "/shop/orderPayReturn.do", "/forum/backstage_forum_report.jsp",
 				"/court/addCourt.jsp", "/court/listOneCourt.jsp", "/court/updateCourt.jsp",
-				"/court/listAllCourts_datatable_Ajax.html", "/course/addCourse.jsp", "/course/updateCourse.jsp",
-				"/course/listAllCourses_datatable.jsp", "/course/datetimepicker/*", "/court/datetimepicker/*" };
+				"/court/listAllCourts_datatable_Ajax.html", "/court/datetimepicker/*" };
 		String path = req.getServletPath();
 
 		if (memberVo != null) {
