@@ -3,6 +3,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="com.asap.shop.service.*"  %>
 <%@page import="com.asap.shop.entity.*"  %>
+<%@ page import="com.asap.member.entity.MemberVO"%>
+
+<%
+MemberVO member = (MemberVO)session.getAttribute("memberVo");
+pageContext.setAttribute("memberVo", member);
+%>
+
 
 
 
