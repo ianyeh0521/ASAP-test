@@ -378,7 +378,7 @@ public class CoachController extends HttpServlet {
 //			System.out.println(inputEmail);
 
 			// 設定返回值
-			req.setAttribute("coachEmail", inputEmail.trim());
+			req.setAttribute("coachEmail", inputEmail);
 
 			if (inputVerCode == null || (inputVerCode.trim()).length() == 0) {
 				errorMsgs.add("請輸入驗證碼。");
