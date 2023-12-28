@@ -355,6 +355,8 @@ public class CourseServlet extends HttpServlet{
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/listAllCourses_datatable.jsp");
 			dispatcher.forward(req, res);
 		}else {
+			
+			// 錯誤訊息
 			req.setAttribute("nameError", nameError);
 			req.setAttribute("addressError", addressError);
 			req.setAttribute("pplLimitError", pplLimitError);
@@ -362,7 +364,24 @@ public class CourseServlet extends HttpServlet{
 			req.setAttribute("timeError", timeError);
 			req.setAttribute("textError", textError);
 			req.setAttribute("imgError", imgError);
-
+			
+			// 保留填入資訊
+			CourseVO courseVO = new CourseVO();
+			courseVO.setCourseNo(courseNo);
+			courseVO.setCourseName(courseName);
+			courseVO.setSportTypeVO(sportTypeVO);
+			courseVO.setCourseAddress(courseAddress);
+			courseVO.setCoursePplLimit(coursePplLimit);
+			courseVO.setCoursePrice(coursePrice);
+			courseVO.setCourseStartTime(courseStartTime);
+			courseVO.setCourseEndTime(courseEndTime);
+			courseVO.setCourseText(courseText);
+			courseVO.setCourseStat(courseStat);
+			courseVO.setCourseImg(upFiles1);
+			courseVO.setCoachVO(coachVO);
+			
+			req.setAttribute("courseVO", courseVO);
+			
 			res.setContentType("text/html; charset=UTF-8");
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/updateCourse.jsp");
 			dispatcher.forward(req, res);
@@ -525,6 +544,8 @@ public class CourseServlet extends HttpServlet{
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/listAllCourses_datatable.jsp");
 			dispatcher.forward(req, res);
 		}else {
+			
+			// 錯誤訊息
 			req.setAttribute("nameError", nameError);
 			req.setAttribute("addressError", addressError);
 			req.setAttribute("pplLimitError", pplLimitError);
@@ -532,6 +553,23 @@ public class CourseServlet extends HttpServlet{
 			req.setAttribute("timeError", timeError);
 			req.setAttribute("textError", textError);
 			req.setAttribute("imgError", imgError);
+			
+			
+			// 保留填入資訊
+			CourseVO courseVO = new CourseVO();
+			courseVO.setCourseName(courseName);
+			courseVO.setSportTypeVO(sportTypeVO);
+			courseVO.setCourseAddress(courseAddress);
+			courseVO.setCoursePplLimit(coursePplLimit);
+			courseVO.setCoursePrice(coursePrice);
+			courseVO.setCourseStartTime(courseStartTime);
+			courseVO.setCourseEndTime(courseEndTime);
+			courseVO.setCourseText(courseText);
+			courseVO.setCourseStat(courseStat);
+			courseVO.setCourseImg(upFiles1);
+			courseVO.setCoachVO(coachVO);
+			
+			req.setAttribute("courseVO", courseVO);
 
 			res.setContentType("text/html; charset=UTF-8");
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/course/addCourse.jsp");

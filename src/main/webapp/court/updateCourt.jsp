@@ -150,15 +150,7 @@
 				</a>
 			</div>
 			
-			<%-- 錯誤表列 --%>
-			<c:if test="${not empty errorMsgs}">
-				<font style="color:red">請修正以下錯誤:</font>
-				<ul>
-					<c:forEach var="message" items="${errorMsgs}">
-						<li style="color:red">${message}</li>
-					</c:forEach>
-				</ul>
-			</c:if>
+			
 
 			<div class="container account-container custom-account-container">
 				<div class="row justify-content-center align-items-center">
@@ -168,6 +160,16 @@
 						<div class="" id="shipping" role="tabpanel">
 							<div class="address account-content mt-0 pt-2" style="margin-bottom: 0px">
 								<h4 class="title mb-3"></h4>
+								
+								<%-- 錯誤表列 --%>
+								<c:if test="${not empty errorMsgs}">
+									<font style="color:red">請修正以下錯誤:</font>
+									<ul>
+										<c:forEach var="message" items="${errorMsgs}">
+											<li style="color:red">${message}</li>
+										</c:forEach>
+									</ul>
+								</c:if>
 
 								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/court/court.do" class="mb-2" enctype="multipart/form-data">
 									<div class="form-group" style="dispaly:none; margin-bottom:0px !important">

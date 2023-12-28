@@ -374,10 +374,10 @@
             </div>
             <div class="col image-col">
               <div class="image-gallery">
-                <img src="<%=request.getContextPath()%>/newImg/coach2.jpg" alt="">
-                <img src="<%=request.getContextPath()%>/newImg/forum1.png" alt="">
-                <img src="<%=request.getContextPath()%>/newImg/shop4.png" alt="" >
-                <img src="<%=request.getContextPath()%>/newImg/gym2.jpg" alt="">
+                <img src="<%=request.getContextPath()%>/newImg/welcome3.jpg" alt="">
+                <img src="<%=request.getContextPath()%>/newImg/welcome4.jpg" alt="">
+                <img src="<%=request.getContextPath()%>/newImg/welcome6.jpg" alt="" >
+                <img src="<%=request.getContextPath()%>/newImg/welcome7.jpg" alt="">
                
               </div>
             </div>

@@ -331,10 +331,9 @@ try {
 						<div
 							class="col-sm-12 col-6 product-default left-details product-list mb-2 d-flex justify-content-center">
 							<figure>
-								<a href="#"> <img
+								 <img
 									:src="'/ASAP/course/DBGifReader?courseNo=' + data.courseNo"
 									width="400" height="400" alt="圖片" />
-								</a>
 							</figure>
 							<div class="product-details">
 								<div class="category-list">

@@ -245,6 +245,24 @@ public class MbrCourseServlet extends HttpServlet{
 	        res.setCharacterEncoding("UTF-8");
 	        res.getWriter().write(memberJson);
 			
+		}else if("mbrCheckOrd".equals(action)) {
+			String mbrNo = req.getParameter("mbrNo");
+			Integer courseNo = Integer.valueOf(req.getParameter("courseNo"));
+			List<MbrCourseVO> mbrCourseVOs = mbrCourseService_interface.mbrCheckOrd(mbrNo, courseNo);
+			
+			if(mbrCourseVOs.size()!=0) {
+				res.setContentType("text/html");
+		        res.setCharacterEncoding("UTF-8");
+		        res.getWriter().write("true");
+			}else {
+				res.setContentType("text/html");
+		        res.setCharacterEncoding("UTF-8");
+		        res.getWriter().write("false");
+			}
+			
+			
+			
+			
 		}
 	}
 	

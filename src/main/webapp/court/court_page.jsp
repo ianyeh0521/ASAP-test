@@ -363,7 +363,7 @@
 				
 				<!-- 功能按鈕 -->
 				<div class="container" style="margin-top: 20px; margin-bottom: 20px !important; text-align: right !important;">
-					<button class="btn btn-primary btn-rounded btn-md"><a href="#"></a>地圖搜尋</button>
+					<a href="${pageContext.request.contextPath}/court/court_mapSearching.jsp"><button class="btn btn-primary btn-rounded btn-md">地圖搜尋</button></a>
 					<a href="${pageContext.request.contextPath}/court/court_savelist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的收藏</button></a>
 					<a href="${pageContext.request.contextPath}/court/court_orderlist.jsp"><button class="btn btn-primary btn-rounded btn-md">我的預約</button></a>
 				</div>

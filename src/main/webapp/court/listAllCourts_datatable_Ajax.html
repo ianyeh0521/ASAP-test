@@ -59,7 +59,7 @@
                 contentType: 'application/json',
                 success: function(result){
                 	console.log(result);
-                	 $("#table_id").DataTable({
+                	 let table = $("#table_id").DataTable({
                 		 data: result,
                 		 "scrollX": true,
                 		 "responsive": true,
@@ -73,6 +73,12 @@
                              ['5', '10', '25', '所有'] // 定義每頁顯示筆數選項文字
                          ],
                 		 columns:[
+                			{
+              		            className: 'dt-control',
+              		            orderable: false,
+              		            data: null,
+              		            defaultContent: '' 	
+              		    	},
                          	{"data": "courtNo"},
                          	{"data":"courtName"},
                          	{"data": "courtTypeVO.courtType"},
@@ -127,6 +133,43 @@
                             }
                          ]
                 	 });
+                	 
+                	 $("#table_id").on('click', 'td.dt-control', function (e) {
+                 	    let tr = e.target.closest('tr');
+                 	    let row = table.row(tr);
+                 	 
+                 	    if (row.child.isShown()) {
+                 	        row.child.hide();
+                 	    }
+                 	    else {
+                 	    	var courtNo = row.data().courtNo;
+                 	    	$.ajax({
+                                type: "get",
+                                url: 'courtImgAjax.do?getFromBackStage=True&courtNo='+courtNo,
+                                contentType: 'application/json',
+                                success: function(result){
+                                	var imageArray = JSON.parse(result);
+                                	var htmlContent = '';
+                                	imageArray.forEach(function(base64Image) {
+                                		htmlContent += '<img src="data:image/png;base64,' 
+                                		+ base64Image 
+                                		+ '" style="max-width: 100px; max-height: 100px; margin-right: 10px; display: inline-block; ">'
+                                                                       
+                                	});
+                     	        	row.child(htmlContent).show();
+                                },
+                                error:function(xhr){
+                                	console.log(xhr);
+                                }
+                            });
+                 	    	
+                 	    }
+                 	});
+                 	
+                 	// 創建要展開的內容
+//                      function format(d) {
+//  	                      return d.head + d.htmlString;
+//                      }
                 	 
                 	
                 	 
@@ -278,6 +321,7 @@
                   <thead>
                     <tr>
                       <!-- 欄位標題 可以調整欄位數量但標題和內容要一起-->
+                      <th></th>
                       <th width="70px">場地編號</th>
                       <th width="80px">場地名稱</th>
                       <th width="80px">場地類型</th>
@@ -299,6 +343,7 @@
                      <!-- 欄位內容 可以調整欄位數量但標題和內容要一起 也可以在欄位中加入需要的標籤img、buttom-->
                     <!-- 這裡轉成jsp時可用c:forEach方法 -->
                     <tr>
+                      <td></td>
                       <td></td>
                       <td></td>
                       <td></td>

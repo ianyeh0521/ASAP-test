@@ -21,4 +21,6 @@ public interface MbrCourseService_interface {
 	List<MbrCourseVO> findByCoach(String coachNo);
 	
 	List<MbrCourseVO> getAll();
+	
+	List<MbrCourseVO> mbrCheckOrd(String mbrNo, Integer courseNo);
 }

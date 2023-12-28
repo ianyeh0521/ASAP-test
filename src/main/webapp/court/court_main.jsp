@@ -352,7 +352,7 @@
 								</figure>
 								<div class="product-details" >
 									<div class="category-list">
-										<a href="category.html" class="type">{{data.courtTypeVO.courtType}}</a>
+										{{data.courtTypeVO.courtType}}
 									</div>
 									<h3 class="product-title" class="name"> <a :href="'/ASAP/court/court_page.jsp?courtNo='+ data.courtNo" @click="writeCourt(data.courtNo)">{{data.courtName}}</a></h3>
 									<p class="product-description" class="text">{{data.courtText}}</p>
