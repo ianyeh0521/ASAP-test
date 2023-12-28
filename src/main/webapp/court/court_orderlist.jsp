@@ -561,7 +561,7 @@
                  dataType: 'json',
                  data: JSON.stringify({
                      action: "getByMember",
-                     mbrNo: "M1206202300001"	// 記得更動
+                     mbrNo: "${mbrNo}",
                  }),
                  success: function(response){
                  	var courtOrderList = JSON.parse(response.courtOrderList);
@@ -712,12 +712,12 @@
 	    	           contentType: 'application/json',
 	    	           data: JSON.stringify({
 	    	               action: "cancel",
-	    	               mbrNo: "M1206202300001",	
+	    	               mbrNo: "${mbrNo}",	
 	    	               courtOrdNo: clickedId
 	    	           }),
 	    	           success: function(response) {
 	    	               console.log('Server response:', response);
-	    	           },
+	    	               $('.lookup').prop('disabled', true);	    	           },
 	    	           error: function() {
 	    	               console.log('Error in AJAX request');
 	    	           }
