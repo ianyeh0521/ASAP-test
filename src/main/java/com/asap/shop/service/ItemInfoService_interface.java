@@ -51,4 +51,6 @@ public interface ItemInfoService_interface {
 	
 	Map<Integer, Integer> getItemCountByType();
 	
+	List<ItemInfoVO> findbyMbrNo(String mbrNo);
+	
 }

@@ -140,4 +140,7 @@ public class ItemInfoService implements ItemInfoService_interface {
         return itemCountMap;
     }
 
+	public List<ItemInfoVO> findbyMbrNo(String mbrNo){
+		return dao.findbyMbrNo(mbrNo);
+	};
 }

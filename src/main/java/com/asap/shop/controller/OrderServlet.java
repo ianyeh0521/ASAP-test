@@ -133,9 +133,10 @@ public class OrderServlet extends HttpServlet {
 					ItemInfoVO itemInfoVO = new ItemInfoVO(Integer.parseInt(product[0]));
 					orderDetail.setItemOrderPrice(Integer.parseInt(product[1]));
 					orderDetail.setItemOrderQty(Integer.parseInt(product[2]));
-
+					ItemInfoVO itemInfoVO2 = itemInfoSvc.findByItemNo(Integer.parseInt(product[0]));
+					
 					orderDetail.setOrderNo(orderno);
-					orderDetail.setMbrNo(mbrNo);
+					orderDetail.setMbrNo(itemInfoVO2.getMbrNo());
 					orderDetail.setDelyStat(false);
 
 					orderDetail.setItemInfoVO(itemInfoVO);
