@@ -177,7 +177,7 @@
 				<div class="container">
 					<div class="header-left col-lg-2 w-auto pl-0">
 						
-						<a href="${pageContext.request.contextPath}/backStage/BackageHome" style="width: 222; height: 88;"> <img
+						<a href="${pageContext.request.contextPath}/backStage/BackageHome.jsp" style="width: 222; height: 88;"> <img
 							src="${pageContext.request.contextPath}/newImg/logo2.png"
 							alt="Logo" />
 						</a>

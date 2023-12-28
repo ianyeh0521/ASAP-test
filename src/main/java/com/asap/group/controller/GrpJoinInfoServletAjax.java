@@ -14,6 +14,7 @@ import com.asap.group.entity.GrpJoinInfoVO;
 import com.asap.group.service.GrpJoinInfoService_interface;
 import com.asap.member.dao.MemberDAO;
 import com.asap.member.entity.MemberVO;
+import com.asap.member.service.MemberService;
 import com.asap.util.HibernateProxyTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,11 +22,12 @@ import com.google.gson.GsonBuilder;
 @WebServlet("/GrpJoinInfoAjax.do")
 public class GrpJoinInfoServletAjax extends HttpServlet {
 	private GrpJoinInfoService_interface grpJoinInfoService_interface;
+	private MemberService memberService;
 	
 	@Override
 	public void init() throws ServletException {
 		grpJoinInfoService_interface = new GrpJoinInfoService_interface();
-
+		memberService = new MemberService();
 	}
 
 	@Override
@@ -50,10 +52,21 @@ public class GrpJoinInfoServletAjax extends HttpServlet {
 				if (grpJoinInfoList.size() != 0) {
 					// 先把 grpJoinInfoList 丟到暫存的 grpTempList
 					List<GrpJoinInfoVO> grpTempList = new ArrayList<>();
+//					MemberVO MemberVoDetail = new MemberVO();
+					
+					
+					
+//					GrpJoinInfoVO grpJoinInfovo = grpJoinInfoService_interface.findByGrpJoinInfoNo(grpNo);
+//					String strpartiMbrNo = grpJoinInfovo.getPartiMbrNo().toString();
+//					MemberVoDetail = memberService.findByMbrNo(strpartiMbrNo);
+					
+
 					// 把List中的資料 每筆抓出來判斷
 					for (GrpJoinInfoVO Vo : grpJoinInfoList) {
 						// 0:退出 1:參加;如果狀態為1,就把該筆資料新增
 						if (Vo.getGrpJoinStat()) {
+							
+//							Vo.setMemberVO(MemberVoDetail);
 							grpTempList.add(Vo);
 						}
 					}

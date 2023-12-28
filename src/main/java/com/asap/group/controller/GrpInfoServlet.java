@@ -39,12 +39,17 @@ import com.asap.member.service.MbrNewsService;
 import com.asap.member.service.MbrNewsService_interface;
 import com.asap.member.service.MemberService;
 import com.asap.util.JavaMail;
+import com.asap.util.JedisPoolUtil;
 import com.asap.util.MailFormat;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @MultipartConfig(fileSizeThreshold = 0 * 1024 * 1024, maxFileSize = 1 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
 @WebServlet("/Grpinfo.do")
 public class GrpInfoServlet extends HttpServlet {
-	// 一個 servlet 實體對應一個 service 實體
+
+	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 	private GrpInfoService grpInfoService;
 	private SportTypeService sportTypeService;
 	private GrpJoinInfoService grpJoinInfoService;
@@ -53,7 +58,7 @@ public class GrpInfoServlet extends HttpServlet {
 	private MbrActivService_interface mbrActivService_interface;
 	private MbrNewsService_interface mbrNewsService_interface;
 	private Integer m_GrpNo;
-	private String LoginActNo = "M1206202300004";
+	private String LoginActNo = "M1206202300001";
 	@Override
 	public void init() throws ServletException {
 		grpInfoService = new GrpInfoService_interface();
@@ -315,62 +320,74 @@ public class GrpInfoServlet extends HttpServlet {
 		
 		
 		grpInfo = setGrpInfomethod(req);
-		
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
 		if(type.equals("1")) {
 			grpInfo.setGrpNo(grpNo);
 
 			grpInfoSvc.update(grpInfo);
 			
-		}else {
+			// 寫入會員消息->編輯揪團成功寫入會員消息
+			MbrNewsVO NewsVO = new MbrNewsVO();
+			NewsVO.setMbrNo("M1206202300001");
+			NewsVO.setNewsSubj("編輯揪團成功通知");
+			NewsVO.setNewsText("您的揪團(揪團名稱:" + grpInfo.getGrpName() +"已編輯)");
+			NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
+			
+			mbrNewsService_interface.add(NewsVO);
+			
+		}
+		else 
+		{
 			grpInfoSvc.insert(grpInfo);
 			
-		}
-		
-		// 寫入會員消息->發起揪團成功寫入會員消息
-		MbrNewsVO NewsVO = new MbrNewsVO();
-		NewsVO.setMbrNo("M1206202300001");
-		NewsVO.setNewsSubj("發起成功通知");
-		NewsVO.setNewsText("您已成功發起揪團(揪團名稱:" + grpInfo.getGrpName() +")");
-		NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
-		
-		mbrNewsService_interface.add(NewsVO);
-		
-
-		// 寫入會員活動->發起揪團成功寫入會員活動
-		MbrActivVO ActivVO = new MbrActivVO();
-		
-		
-		ActivVO.setMbrNo("M1206202300001");
-		ActivVO.setActivSubj("發起揪團成功-" + grpInfo.getGrpName());
-		
-		ActivVO.setActivStartTime(grpInfo.getGrpSignStrTime());
-		ActivVO.setActivEndTime(grpInfo.getGrpSignEndTime());
-		
-		mbrActivService_interface.add(ActivVO);
-		
-		
-		
-		// 發起揪團成功通知信
-		MemberVO MemberVoDetail = new MemberVO();
-		String strOrgMbrNo = grpInfo.getOrgMbrNo().toString();
-		MemberVoDetail = memberService.findByMbrNo(strOrgMbrNo);
-		if (MemberVoDetail != null) {
-			String grpmailtitle = "ASAP揪團發起成功通知 - [" + grpInfo.getGrpName() + "]";
-			String content = "親愛的會員您好，您的揪團 " + grpInfo.getGrpSignStrTime() + "~" + grpInfo.getGrpSignEndTime()
-						+ "「" + grpInfo.getGrpName()+ "」已發起成功。如有任何問題或需要進一步協助，請隨時聯繫我們的客服部門。";
-			MailFormat mailFormat = new MailFormat(MemberVoDetail.getMbrName(), content);
-			InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
-			DataSource dataSource = new ByteArrayDataSource(in, "application/png");
 			
-			// 寄出信件
-			JavaMail mail = new JavaMail(MemberVoDetail.getMbrEmail(), grpmailtitle, mailFormat.getMessageTextAndImg(), dataSource);
-			String result = mail.sendMail();
-			System.out.println("SendMail : " + result);
+			// 寫入會員消息->發起揪團成功寫入會員消息
+			MbrNewsVO NewsVO = new MbrNewsVO();
+			NewsVO.setMbrNo("M1206202300001");
+			NewsVO.setNewsSubj("發起成功通知");
+			NewsVO.setNewsText("您已成功發起揪團(揪團名稱:" + grpInfo.getGrpName() +")");
+			NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
+			
+			mbrNewsService_interface.add(NewsVO);
+			
+
+			// 寫入會員活動->發起揪團成功寫入會員活動
+			MbrActivVO ActivVO = new MbrActivVO();
+			ActivVO.setMbrNo("M1206202300001");
+			ActivVO.setActivSubj("發起揪團成功-" + grpInfo.getGrpName());
+			
+			ActivVO.setActivStartTime(grpInfo.getGrpSignStrTime());
+			ActivVO.setActivEndTime(grpInfo.getGrpSignEndTime());
+			
+			int mbrActivNo = mbrActivService_interface.add(ActivVO);
+			String mbrActivNoStr = String.valueOf(mbrActivNo);
+			
+			// 會員活動編號存入 Redis
+			Jedis jedis = pool.getResource();
+			String groupOrdNoStr = "group" + grpInfo.getGrpNo();
+			jedis.select(2);
+			jedis.append(groupOrdNoStr, mbrActivNoStr);
+			jedis.close();
+			
+			
+			// 發起揪團成功通知信
+			MemberVO MemberVoDetail = new MemberVO();
+			String strOrgMbrNo = grpInfo.getOrgMbrNo().toString();
+			MemberVoDetail = memberService.findByMbrNo(strOrgMbrNo);
+			if (MemberVoDetail != null) {
+				String grpmailtitle = "ASAP揪團發起成功通知 - [" + grpInfo.getGrpName() + "]";
+				String content = "親愛的會員您好，您的揪團 " + grpInfo.getGrpSignStrTime() + "~" + grpInfo.getGrpSignEndTime()
+							+ "「" + grpInfo.getGrpName()+ "」已發起成功。如有任何問題或需要進一步協助，請隨時聯繫我們的客服部門。";
+				MailFormat mailFormat = new MailFormat(MemberVoDetail.getMbrName(), content);
+				InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
+				DataSource dataSource = new ByteArrayDataSource(in, "application/png");
+				
+				// 寄出信件
+				JavaMail mail = new JavaMail(MemberVoDetail.getMbrEmail(), grpmailtitle, mailFormat.getMessageTextAndImg(), dataSource);
+				String result = mail.sendMail();
+				System.out.println("SendMail : " + result);
+			}
 		}
-		
-		
-		
 		
 		return "/group/AllGroup.jsp";
 	}
