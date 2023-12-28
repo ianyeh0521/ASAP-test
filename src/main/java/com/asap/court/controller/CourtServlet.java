@@ -279,9 +279,12 @@ public class CourtServlet extends HttpServlet {
 		System.out.println(courtNo);
 		
 		List<CourtImgVO> courtImgVOs = courtImgService_interface.findByCourtNo(courtNo);
-		for (CourtImgVO courtImgVO : courtImgVOs) {
-			courtImgService_interface.delete(courtImgVO.getCourtImgNo());
+		if(courtImgVOs.size() !=0 ) {
+			for (CourtImgVO courtImgVO : courtImgVOs) {
+				courtImgService_interface.delete(courtImgVO.getCourtImgNo());
+			}	
 		}
+		
 		courtService_interface.delete(courtNo);
 		
 		res.setContentType("text/html; charset=UTF-8");
