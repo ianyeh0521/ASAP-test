@@ -14,71 +14,69 @@ import com.asap.court.service.CourtSaveListService;
 import com.asap.court.service.CourtSaveListService_interface;
 
 @WebServlet("/court/courtSaveList.do")
-public class CourtSaveListServlet extends HttpServlet{
-	
+public class CourtSaveListServlet extends HttpServlet {
+
 	private CourtSaveListService_interface courtSaveListService_interface;
 
 	@Override
-	public void init() throws ServletException{
+	public void init() throws ServletException {
 		courtSaveListService_interface = new CourtSaveListService();
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String forwardPath = "";
-		if(!(action.equals("add")||action.equals("delete"))) {
+		if (!(action.equals("add") || action.equals("delete"))) {
 			switch (action) {
-				case "getMbrSaveList":
-					forwardPath =  getMbrSaveList(req, res);
-					break;
-				default:
-					forwardPath = "/court_savelist.jsp";
+			case "getMbrSaveList":
+				forwardPath = getMbrSaveList(req, res);
+				break;
+			default:
+				forwardPath = "/court_savelist.jsp";
 			}
-			
+
 			res.setContentType("text/html; charset=UTF-8");
 			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 			dispatcher.forward(req, res);
-			
-		}else {
+
+		} else {
 			switch (action) {
-				case "add":
-					addToSaveList(req, res);
-					break;
-				case "delete":
-					deleteFromSaveList(req, res);
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected value: " + action);
+			case "add":
+				addToSaveList(req, res);
+				break;
+			case "delete":
+				deleteFromSaveList(req, res);
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + action);
 			}
-			
+
 		}
 
 	}
-	
-	
-	
+
 	private void deleteFromSaveList(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		BufferedReader reader = req.getReader();
-        StringBuilder jsonInput = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            jsonInput.append(line);
-        }
-        System.out.println("Received JSON: " + jsonInput.toString());
-		
+		StringBuilder jsonInput = new StringBuilder();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			jsonInput.append(line);
+		}
+		System.out.println("Received JSON: " + jsonInput.toString());
+
 	}
 
 	private void addToSaveList(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		BufferedReader reader = req.getReader();
-        StringBuilder jsonInput = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            jsonInput.append(line);
-        }
-        System.out.println("Received JSON: " + jsonInput.toString());
-		
+		StringBuilder jsonInput = new StringBuilder();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			jsonInput.append(line);
+		}
+		System.out.println("Received JSON: " + jsonInput.toString());
+
 	}
 
 	private String getMbrSaveList(HttpServletRequest req, HttpServletResponse res) {

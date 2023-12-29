@@ -10,14 +10,14 @@ import org.hibernate.query.Query;
 import com.asap.course.entity.MbrCourseVO;
 import com.asap.util.HibernateUtil;
 
-public class MbrCourseDAO implements MbrCourseDAO_interface{
+public class MbrCourseDAO implements MbrCourseDAO_interface {
 
 	private SessionFactory factory;
-	
+
 	public MbrCourseDAO() {
 		factory = HibernateUtil.getSessionFactory();
 	}
-	
+
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
@@ -26,8 +26,9 @@ public class MbrCourseDAO implements MbrCourseDAO_interface{
 	public int update(MbrCourseVO mbrCourseVO) {
 //		成功更新回傳 1，失敗回傳 -1
 		try {
-			MbrCourseVO mbrCourseUpdate = (MbrCourseVO) getSession().get(MbrCourseVO.class, mbrCourseVO.getMbrCourseNo());
-			if(mbrCourseUpdate != null) {
+			MbrCourseVO mbrCourseUpdate = (MbrCourseVO) getSession().get(MbrCourseVO.class,
+					mbrCourseVO.getMbrCourseNo());
+			if (mbrCourseUpdate != null) {
 				mbrCourseUpdate.setMbrCourseNo(mbrCourseVO.getMbrCourseNo());
 				mbrCourseUpdate.setMbrCourseTime(mbrCourseVO.getMbrCourseTime());
 				mbrCourseUpdate.setMbrCourseStat(mbrCourseVO.getMbrCourseStat());
@@ -115,15 +116,11 @@ public class MbrCourseDAO implements MbrCourseDAO_interface{
 	@Override
 	public List<MbrCourseVO> mbrCheckOrd(String mbrNo, Integer courseNo) {
 		String hql = "from MbrCourseVO mbrcs where mbrcs.memberVO.mbrNo = :mbrNo "
-				+ "and mbrcs.courseVO.courseNo = :courseNo "
-				+ "and mbrcs.mbrCourseStat = true";
+				+ "and mbrcs.courseVO.courseNo = :courseNo " + "and mbrcs.mbrCourseStat = true";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("mbrNo", mbrNo);
 		query.setParameter("courseNo", courseNo);
 		return query.list();
 	}
-	
-	
 
-	
 }

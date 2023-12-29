@@ -39,13 +39,12 @@ import com.asap.util.JavaMail;
 import com.asap.util.JedisPoolUtil;
 import com.asap.util.MailFormat;
 
-
 import ecpay.payment.integration.AllInOne;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 @WebServlet("/court/ecPayReturn.do")
-public class ecPayReturnServlet extends HttpServlet{
+public class ecPayReturnServlet extends HttpServlet {
 
 	public static AllInOne all;
 	private static JedisPool pool = JedisPoolUtil.getJedisPool();
@@ -54,7 +53,6 @@ public class ecPayReturnServlet extends HttpServlet{
 	private MbrActivService_interface mbrActivService_interface;
 	private MbrNewsService_interface mbrNewsService_interface;
 
-	
 	public void init() throws ServletException {
 		all = new AllInOne("");
 		courtClosedTimeService_interface = new CourtClosedTimeService();
@@ -63,9 +61,9 @@ public class ecPayReturnServlet extends HttpServlet{
 		mbrNewsService_interface = new MbrNewsService();
 
 	}
-	
+
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		System.out.println("進來囉!");
 		String merchantID = req.getParameter("MerchantID");
@@ -77,23 +75,19 @@ public class ecPayReturnServlet extends HttpServlet{
 		Integer courtOrderNo = Integer.valueOf(req.getParameter("CustomField2"));
 //		String courtOrdTimeAndEnd = req.getParameter("CustomField3");
 		String memberNo = req.getParameter("CustomField4");
-		
+
 		CourtService_interface courtSvc = new CourtService();
 		CourtVO courtVO = courtSvc.getCourtByCourtNo(courtNo);
 		MemberService_interface memberSvc = new MemberService();
 		MemberVO memberVO = memberSvc.findByMbrNo(memberNo);
 
-		System.out.println(merchantTradeNo + " " + RtnMsg + " RtnCode=" + rtnCode 
-				+ " courtNo=" + courtNo
-				+"courtOrdDateAndTimeAndEnd="
-				+"memberNo="+memberNo);
-		
+		System.out.println(merchantTradeNo + " " + RtnMsg + " RtnCode=" + rtnCode + " courtNo=" + courtNo
+				+ "courtOrdDateAndTimeAndEnd=" + "memberNo=" + memberNo);
+
 //		String[] stringArray = courtOrdDateAndTimeAndEnd.split(",");
 //		Date courtOrdDate = java.sql.Date.valueOf(stringArray[0].trim());
 //		Integer courtOrdTime = Integer.valueOf(stringArray[1].trim());
 //		Integer courtOrdTimeEnd = Integer.valueOf(stringArray[2].trim());
-		
-		
 
 		if ("1".equals(rtnCode)) {
 			// 付款成功
@@ -103,12 +97,12 @@ public class ecPayReturnServlet extends HttpServlet{
 			dict.put("CheckMacValue", checkMacValue);
 			res.setCharacterEncoding("UTF-8");
 			res.setContentType("text/html");
-			if(all.compareCheckMacValue(dict)) {
+			if (all.compareCheckMacValue(dict)) {
 				res.getWriter().write("1|OK");
 			}
-			
+
 			// 更改訂單狀態成已付款
-			//（拆解 MerchantTradeNo）
+			// （拆解 MerchantTradeNo）
 //			String trimmedString = merchantTradeNo.substring(6);
 //			Integer remainInteger = Integer.valueOf(trimmedString);
 //			Integer orderNo = remainInteger - 10000;
@@ -116,63 +110,63 @@ public class ecPayReturnServlet extends HttpServlet{
 			CourtOrderVO courtOrder = courtOrderService_interface.findByPK(courtOrderNo);
 			courtOrder.setCourtOrdStat(2);
 			System.out.println(courtOrder.toString());
-			System.out.println(courtOrderService_interface.update(courtOrder)); 
-			
-			
+			System.out.println(courtOrderService_interface.update(courtOrder));
+
 			// 寫入會員活動
 			MbrActivVO vo = new MbrActivVO();
 			vo.setMbrNo(memberNo);
 			vo.setActivSubj("場地預約-" + courtVO.getCourtName());
-			
+
 			LocalDate localDate = courtOrder.getCourtOrdDate().toLocalDate();
 			LocalTime localTime1 = LocalTime.of(courtOrder.getCourtOrdTime(), 0);
 			LocalDateTime localDateTime1 = LocalDateTime.of(localDate, localTime1);
 			Timestamp timestamp1 = Timestamp.valueOf(localDateTime1);
 			vo.setActivStartTime(timestamp1);
-			
+
 			LocalTime localTime2 = LocalTime.of(courtOrder.getCourtOrdTimeEnd(), 0);
 			LocalDateTime localDateTime2 = LocalDateTime.of(localDate, localTime2);
 			Timestamp timestamp2 = Timestamp.valueOf(localDateTime2);
 			vo.setActivEndTime(timestamp2);
-			
+
 			int mbrActivNo = mbrActivService_interface.add(vo);
-			String mbrActivNoStr = String.valueOf(mbrActivNo); 
-			
-			// 會員活動編號存入 Redis 
+			String mbrActivNoStr = String.valueOf(mbrActivNo);
+
+			// 會員活動編號存入 Redis
 			Jedis jedis = pool.getResource();
-			String courtOrdNoStr = "court" + courtOrder.getCourtOrdNo(); 
+			String courtOrdNoStr = "court" + courtOrder.getCourtOrdNo();
 			jedis.select(2);
 			jedis.append(courtOrdNoStr, mbrActivNoStr);
 			jedis.close();
-			
+
 			// 寫入會員消息
 			MbrNewsVO vo2 = new MbrNewsVO();
 			vo2.setMbrNo(memberNo);
 			vo2.setNewsSubj("預約成功通知");
 			vo2.setNewsText("您已成功預約場地，預約單編號" + merchantTradeNo);
 			vo2.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
-			
+
 			mbrNewsService_interface.add(vo2);
-			
+
 			// 預約成功通知信
 			String title = "ASAP場地預約成功通知 - [" + courtVO.getCourtName() + "]";
-			String content = "親愛的會員您好，您已預約 " + courtOrder.getCourtOrdDate() + " " + courtOrder.getCourtOrdTime() + ":00 ~ " + courtOrder.getCourtOrdTimeEnd() +":00 " 
-						+ "「" + courtVO.getCourtName()+ "」之場館使用，請務必在預約時間內準時到達，並遵守我們的場地使用規定。如有任何問題或需要進一步協助，請隨時聯繫我們的客服部門。";
+			String content = "親愛的會員您好，您已預約 " + courtOrder.getCourtOrdDate() + " " + courtOrder.getCourtOrdTime()
+					+ ":00 ~ " + courtOrder.getCourtOrdTimeEnd() + ":00 " + "「" + courtVO.getCourtName()
+					+ "」之場館使用，請務必在預約時間內準時到達，並遵守我們的場地使用規定。如有任何問題或需要進一步協助，請隨時聯繫我們的客服部門。";
 			MailFormat mailFormat = new MailFormat(memberVO.getMbrName(), content);
 			InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
 			DataSource dataSource = new ByteArrayDataSource(in, "application/png");
-			
+
 			// 寄出信件
 			JavaMail mail = new JavaMail(memberVO.getMbrEmail(), title, mailFormat.getMessageTextAndImg(), dataSource);
 			String result = mail.sendMail();
 			System.out.println("SendMail : " + result);
-		}else {
+		} else {
 			System.out.println("失敗了拉");
 
 		}
-			
+
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
