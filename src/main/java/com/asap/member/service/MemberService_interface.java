@@ -16,4 +16,6 @@ public interface MemberService_interface {
 	String addCmtByMbrNo(int cmtScore, String mbrNo);
 
 	String updatePwd(MemberVO member);
+
+	String addMemByGoogle(MemberVO member);
 }

@@ -317,7 +317,7 @@ public class MemberController extends HttpServlet {
 					errorMsgs.add("手機號碼格式不正確");
 
 				}
-				if (!mbrPhoneOld.equals((mbrPhone.trim()))) {
+				if (mbrPhoneOld != null && !(mbrPhoneOld.equals((mbrPhone.trim())))) {
 					if (mService.findByMbrPhone(mbrPhone.trim()) != null) {
 						errorMsgs.add("手機號碼已註冊");
 					}
@@ -457,7 +457,8 @@ public class MemberController extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 			// 取參數
 			HttpSession session = req.getSession();
-			String memberNo = (String) session.getAttribute("memberNo");;
+			String memberNo = (String) session.getAttribute("memberNo");
+			;
 			String mbrTempPwd = req.getParameter("mbrTempPwd");
 			String mbrPwd = req.getParameter("mbrPwd");
 			String mbrPwd2 = req.getParameter("mbrPwd2");

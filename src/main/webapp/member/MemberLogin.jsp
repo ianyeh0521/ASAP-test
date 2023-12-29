@@ -103,7 +103,7 @@
 
 								<form
 									action="${pageContext.request.contextPath}/MemberController"
-									method="post">
+									method="post"  style="margin-bottom:10px;">
 									<label for="login-email" style="margin-top: 20px"> 會員帳號
 									</label> <input type="email" class="form-input form-wide"
 										id="login-email" required name="mbrEmail" placeholder="email" value="${mbrEmail}" />
@@ -143,12 +143,11 @@
 									<input type="hidden" name="action" value="login">
 									<button type="submit" class="btn btn-dark btn-md w-100"
 										id="btn_login">登入</button>
-<!-- 									<hr style="margin: 15px 0" /> -->
-<!-- 									<button type="button" -->
-<!-- 										class="btn btn-primary btn-ellipse btn-md w-100" -->
-<!-- 										style="border-radius: 50px" id="btn_google"> -->
-<!-- 										使用Google帳號登入</button> -->
-								</form>
+									</form>	
+									<hr style="margin: 15px 0" />
+									<button type="button" style="margin-bottom:30px;border:1px solid black;background-color:white;border-radius: 50px; width:100%; height:50px; padding:10px;" id="btn_google">
+										<a href="${pageContext.request.contextPath}/login" style="display:block;width:100%;height:100%;"><img style="width:35px;height:35px;display: inline-block;margin-right:8px;" src="${pageContext.request.contextPath}/newImg/g_icon.svg"/>使用Google帳號登入</a></button>
+								
 							</div>
 
 						</div>

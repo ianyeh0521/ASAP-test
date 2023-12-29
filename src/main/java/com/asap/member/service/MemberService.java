@@ -80,10 +80,25 @@ public class MemberService implements MemberService_interface {
 
 	@Override
 	public String updatePwd(MemberVO member) {
-		
+
 		// 密碼加密
 		member.setMbrPwd(hashPassword(member.getMbrPwd()));
 		return dao.update(member);
 	}
 
+	@Override
+	public String addMemByGoogle(MemberVO member) {
+		// 產生序號
+		Date dNow = new Date();
+		SimpleDateFormat ft = new SimpleDateFormat("MMddyyyy");
+		String newMbrNo = "M" + ft.format(dNow) + String.format("%05d", dao.countAll() + 1);
+		member.setMbrNo(newMbrNo);
+		// 評價預設為0
+		member.setCmtReNum(0);
+		member.setCmtReScore(0);
+		member.setEmailStat(true);
+		String mbrNo = dao.add(member);
+
+		return mbrNo;
+	}
 }
