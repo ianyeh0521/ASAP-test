@@ -7,9 +7,9 @@ body {
 }
 
 /* 導覽列字放大 */
-.header-bottom .menu>li>a {
-	font-size: 15px;
-}
+/* .header-bottom .menu>li>a { */
+/* 	font-size: 15px; */
+/* } */
 
 /* 揪團首頁標題 */
 nav>span.titlegroup1 {

@@ -12,11 +12,8 @@
 	MemberService memberSvc = new MemberService();
 
 	//登入帳號->發起人
-	String LoginActNo = "M1206202300001";
-	MemberVO MemberVoDetail = new MemberVO();
-	MemberVoDetail = memberSvc.findByMbrNo(LoginActNo);
+	MemberVO MemberVoDetail = (MemberVO)session.getAttribute("memberVo");
 	pageContext.setAttribute("MemberVoDetail", MemberVoDetail);
-	
 %>
 
 
@@ -58,7 +55,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/demo2.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/css/style.min.css" />
+<!-- <link rel="stylesheet" type="text/css" -->
+<%-- 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" /> --%>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/vendor/simple-line-icons/css/simple-line-icons.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/group//mycss.css" />
@@ -203,7 +205,7 @@
 			</div>
 			<!-- End .header-middle -->
 
-			<div class="header-bottom sticky-header d-none d-lg-block"
+			<div style = "background-color:#fff;" class="header-bottom sticky-header d-none d-lg-block"
 				data-sticky-options="{'mobile': false}">
 				<div class="container">
 					<nav class="main-nav w-100">
@@ -269,8 +271,12 @@
 		<c:set var="MemberVoDetail" value="${MemberVoDetail}" />
 		
 		<main class="main">
+		<c:if test="${type eq '0'}">
 			<h2 class="creategrptitle">發起揪團</h2>
-			
+		</c:if>
+		<c:if test="${type eq '1'}">
+			<h2 class="creategrptitle">編輯揪團</h2>
+		</c:if>
 			<div class="createform">
 				<div class="createform_main">
 					<form id="creategrpform" action="<%=request.getContextPath()%>/Grpinfo.do?action=insertgrpInfo" method="post" enctype="multipart/form-data">
@@ -288,7 +294,7 @@
 						<span class="form_textbox"> 
 						<label for="create_phonenum">
 						<a class="x">*</a>連絡電話：</label> <input class="MbrPhone" type="tel"
-							id="MbrPhone" name="MbrPhone" value="${MemberVoDetail.mbrPhone}"required disabled />
+							id="MbrPhone" name="MbrPhone" value="${MemberVoDetail.mbrPhone}"required  />
 						</span> <br /> <span class="form_textbox"> 
 						<label for="create_email">電子信箱：</label> <input class="MbrEmail"
 							type="email" id="MbrEmail" name="MbrEmail" value="${MemberVoDetail.mbrEmail}"required disabled />
@@ -383,6 +389,7 @@
 						            <input type="hidden" name="GrpNo" value="${grpVO.grpNo}">
 									<input type="hidden" name="type" value="${type}">
 							   	    <input type="hidden" name="action" value="insertgrpInfo">
+							   	    <input type="hidden" name="mbrNo" value="${MemberVoDetail.mbrNo}">
 							   	    <input type="button" class="btn_s" id="alert_no" value="取消">
 						        </div> 
 						    </div>
@@ -608,12 +615,6 @@
 	<!-- Main JS File -->
 	<script src="assets/js/main.min.js"></script>
 
-<!-- 	<script> -->
-<!-- // 		$("header").load("header.html"); -->
-<!-- // 		$("footer").load("footer.html"); -->
-<!-- // 		$("div.sticky-navbar").load("sticky-navbar.html"); -->
-<!-- // 		$("div.mobile-menu-container").load("mobile-menu-container.html"); -->
-<!-- 	</script> -->
 
 <% 
 		// 抓伺服器時間
@@ -760,6 +761,15 @@
 		}
 		
 		if (form.reportValidity()) {
+			document.getElementById('SportTypeName').disabled = false;           	
+            document.getElementById('GrpName').disabled = false;
+            document.getElementById('GrpPplLimit').disabled = false;
+            document.getElementById('GrpSignStrTime1').disabled = false;
+            document.getElementById('GrpSignStrTime2').disabled = false;
+	      	document.getElementById('GrpSignEndTime1').disabled = false;
+	      	document.getElementById('GrpSignEndTime2').disabled = false;
+         	
+            
 		    creategrpfsfs_alert();
 		   }
 	 });
@@ -838,14 +848,17 @@
 		
 		if (type === '1'){
             
-			document.getElementById('SportTypeName').disabled = true;
-           	reserveText = "${grpVO.sportTypeNo}";
+			
+			var reserveText = "${MemberVoDetail.mbrPhone}";
+            document.getElementById('MbrPhone').value = reserveText;
+
+			reserveText = "${grpVO.sportTypeNo}";
             document.getElementById('SportTypeName').value = reserveText;
-            
-            document.getElementById('GrpName').disabled = true;
+            document.getElementById('SportTypeName').disabled = true;
+           	
             reserveText = "${grpVO.grpName}";
             document.getElementById('GrpName').value = reserveText;
-            
+            document.getElementById('GrpName').disabled = true;
             
             var reserveDate = "${grpVO.grpDate}"; 
           	//2023-12-17 00:00:00.0 取第0個位置開始10個數字
@@ -861,9 +874,9 @@
          	reserveText = "${grpVO.grpAddress}";
          	document.getElementById('GrpAddress2').value = reserveText;
          	
-         	document.getElementById('GrpPplLimit').disabled = true;
          	var reserveValue = "${grpVO.grpPplLimit}";
          	document.getElementById('GrpPplLimit').value = reserveValue;
+         	document.getElementById('GrpPplLimit').disabled = true;
          	
 
          	var previousValue = "${grpVO.grpPplMin}";
@@ -871,7 +884,7 @@
          	
          	//報名開始日期
          	document.getElementById('GrpSignStrTime1').disabled = true;
-         	reserveDate = "${grpVO.grpSignStrTime}"; 
+         	var reserveDate = "${grpVO.grpSignStrTime}"; 
             datePart = reserveDate.substring(0, 10); 
          	document.getElementById('GrpSignStrTime1').value = datePart;
          	

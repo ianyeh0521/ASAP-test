@@ -17,9 +17,6 @@
 <%@ page import="com.asap.member.service.MemberService_interface" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%-- <%@ page import="java.time.LocalDateTime" %> --%>
-
-<%-- <%! LocalDateTime currentDateTime = LocalDateTime.now(); %> --%>
 
 <%
 	SportTypeService grpSportSvc = new SportTypeService_interface();
@@ -30,13 +27,9 @@
 	List<GrpJoinInfoVO>grpJoinList = grpJoinInfoSvc.getALL();
 	pageContext.setAttribute("grpJoinList", grpJoinList);
 	
-// 	MemberDAO memberDAO = new MemberDAO();
-// 	List<MemberVO>memberList = memberDAO.getAll();
-	
-// 	MemberVO V = memberDAO.findByPK("M1206202300001");
-// 	System.out.println("======TESTVVV=========="+V);
-// 	pageContext.setAttribute("memberList", memberList);
-
+	 MemberVO memberVO = (MemberVO)session.getAttribute("memberVo");
+     String memberNo= memberVO.getMbrNo();
+     pageContext.setAttribute("mbrNo",memberNo);
 	
 %>
 
@@ -81,9 +74,12 @@
 
 <!-- Main CSS File -->
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/demo2.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/css/style.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/vendor/simple-line-icons/css/simple-line-icons.min.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/group/mycss.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/group/creategroup.css" />
 
@@ -134,12 +130,9 @@
 	                                }
 	                            },
 	                            {"data":"partiMbrNo", "width": "100px"},
-	                            {"data": "partiMbrNo", "width": "100px"},
-	                            {"data": "partiMbrNo", "width": "100px"},
-	                            {"data": "partiMbrNo", "width": "100px"}
-// 								{"data": "MemberVO.mbrName", "width": "100px"},
-//                          	{"data": "MemberVO.mbrPhone", "width": "100px"},
-//                          	{"data":"MemberVO.MbrEmail", "width": "100px"}
+	                            {"data": "m_MbrName", "width": "100px"},
+	                            {"data": "m_MbrPhone", "width": "100px"},
+	                            {"data": "m_MbrEmail", "width": "100px"}
 	                        ]
 	                    });
 	                },
@@ -428,7 +421,7 @@ b.Joinqty {
 			</div>
 			<!-- End .header-middle -->
 
-			<div class="header-bottom sticky-header d-none d-lg-block"
+			<div style = "background-color:#fff;" class="header-bottom sticky-header d-none d-lg-block"
 				data-sticky-options="{'mobile': false}">
 				<div class="container">
 					<nav class="main-nav w-100">
@@ -495,18 +488,14 @@ b.Joinqty {
 		<c:set var="MemberVoDetail" value="${MemberVoDetail}" />
 		<c:set var="partiMbrNoCount" value="${partiMbrNoCount}" />
 		
-
-
-
 		<main class="main">
 			<h2 class="creategrptitle">詳細資訊</h2>
 			<div class="createform">
 				<div class="createform_main">
 					<div>
-					<!-- 測試用登入帳號 -->
+					<!-- 登入帳號 -->
+					<c:set var="LoginActNo" value="${mbrNo}" />
 					<!-- 報名參加 -->
-					<c:set var="LoginActNo" value="M1206202300001" />
-					
 					<c:if test="${grpVODetail.orgMbrNo eq LoginActNo}">
 						<c:if test="${not empty partiMbrNoCount}">
 						<i class="fas fa-chevron-down" id="fas_fa"
@@ -650,10 +639,11 @@ b.Joinqty {
         //設定 formattedDateTime
         pageContext.setAttribute("formattedDateTime", formattedDateTime);
 %>		
+							<c:set var="SignStrTime" value="${grpVODetail.grpSignStrTime}" />
 							<c:set var="SignEndTime" value="${grpVODetail.grpSignEndTime}" />
 							
 							<!-- 判斷 現在時間(formattedDateTime) 超過 報名截止時間(SignEndTime) -->
-							<c:if test="${formattedDateTime gt SignEndTime}">
+							<c:if test="${formattedDateTime lt SignStrTime  and formattedDateTime gt SignEndTime}">
 							    <c:set var="IsPartiMbr" value="true" />
 							</c:if>		
 						
@@ -715,6 +705,7 @@ b.Joinqty {
 													<input type="submit" class="btn_s" id="Xjoinalert_yes" value="確定">
 													<input type="hidden" name="GrpNo" value="${grpVODetail.grpNo}">
 													<input type="hidden" name="PartiMbrNo" value="${LoginActNo}">
+													<input type="hidden" name="GrpJoinfoNo" value="${grpJoInfoList.grpJoinInfoNo}">
 													<input type="hidden" name="action" value="updateGrpJoinInfoNo">
 													<input type="button" class="btn_s" id="Xjoinalert_no" value="取消">
 												</div> 
@@ -730,7 +721,7 @@ b.Joinqty {
 								<c:if test="${grpVODetail.grpStat eq '0'}">
 								<FORM METHOD="post" class="Btn_allgrpJoin"   ACTION="<%=request.getContextPath()%>/Grpinfo.do?action=creategroup" style="margin-bottom: 0px;">
 									<input type="submit" value="編輯" style=" width:68px; border: none; background: none; color: white; cursor: pointer;text-align: center;">
-									<input type="hidden" name="type" value="1">								
+									<input type="hidden" name="type" value="1">									
 									<input type="hidden" name="action" value="creategroup">
 								</FORM>
 									<FORM METHOD="post" class="Btn_allgrpJoin" style="background-color:#EA0000;"  ACTION="<%=request.getContextPath()%>/Grpinfo.do?action=updatestatGrp" style="margin-bottom: 0px;">

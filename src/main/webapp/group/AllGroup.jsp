@@ -15,13 +15,18 @@
 <%@ page import="com.asap.group.service.GrpJoinInfoService_interface" %>
 <%@ page import="com.asap.group.service.GrpJoinInfoService" %>
 <%@ page import="com.asap.member.dao.MemberDAO" %>
-<%@page import="com.asap.member.entity.MemberVO"%>
+<%@ page import="com.asap.member.entity.MemberVO"%>
 <%@ page import="com.asap.member.service.MemberService" %>
 <%@ page import="com.asap.member.service.MemberService_interface" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
+	MemberVO memberVO = (MemberVO)session.getAttribute("memberVo");
+	String memberNo= memberVO.getMbrNo();
+	pageContext.setAttribute("mbrNo",memberNo);
+
 	Boolean bIsSkip = (Boolean) request.getAttribute("Skip");
+	
 	if(bIsSkip == null || !bIsSkip){
 		// 揪團資訊List
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
@@ -35,14 +40,7 @@
 		GrpJoinInfoService grpJoinInfoSvc = new GrpJoinInfoService_interface();
 		List<GrpJoinInfoVO>grpJoinList = grpJoinInfoSvc.getALL();
 		pageContext.setAttribute("grpJoinList", grpJoinList);
-		
-		MemberVO memberVO = (MemberVO)session.getAttribute("memberVo");
-	    String memberNo= memberVO.getMbrNo();
-	    pageContext.setAttribute("mbrNo",memberNo);
-		
-		
- 	}
-	
+	}
 	
 %>
 
@@ -56,21 +54,24 @@
 
 <title>ASAP</title>
 
-<meta name="keywords" content="HTML5 Template" />
-<meta name="description" content="Porto - Bootstrap eCommerce Template" />
-<meta name="author" content="SW-THEMES" />
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
-	href="../assets/images/icons/favicon.png" />
+	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png" />
 
 <!-- Plugins CSS File -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/demo2.min.css" />
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/demo2.min.css" /> --%>
+<!-- <link rel="stylesheet" type="text/css"  -->
+<%-- 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" /> --%>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/css/style.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/vendor/simple-line-icons/css/simple-line-icons.min.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/group/mycss.css" />
 
 
@@ -134,7 +135,7 @@
 			</div>
 			<!-- End .header-middle -->
 
-			<div class="header-bottom sticky-header d-none d-lg-block"
+			<div class="header-bottom sticky-header d-none d-lg-block" 
 				data-sticky-options="{'mobile': false}">
 				<div class="container">
 					<nav class="main-nav w-100">
@@ -200,11 +201,11 @@
 		<!-- End .header -->
 	</div>
 	<main class="main">
-		<div class="page-header">
-			<div class="container d-flex flex-column align-items-center">
-				<h1>揪團</h1>
-			</div>
-		</div>
+<!-- 		<div class="page-header"> -->
+<!-- 			<div class="container d-flex flex-column align-items-center"> -->
+<!-- 				<h1>揪團首頁</h1> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 	<div class="container">
 		<div class="row">
 			<nav class="toolbox-sticky-header"
@@ -239,7 +240,6 @@
         pageContext.setAttribute("formattedDateTime", formattedDateTime);
 %>		
 				<c:forEach var="grpInfoVO" items="${grpVOList}">
-<%-- 				<c:set var="MemberVoDetail" value="${MemberVoDetail}" /> --%>
 				<c:set var="IsOverDate" value="false" />
 				
 				<fmt:formatDate value="${grpInfoVO.grpDate}" pattern="yyyy-MM-dd" var="time1" />
@@ -264,11 +264,11 @@
 								    <input type="submit" value="詳細資訊" style="border: none; background: none; color: white; cursor: pointer;">
 								    <input type="hidden" name="grpdetailsinfo" value="${grpInfoVO.grpNo}">
 								    <input type="hidden" name="action" value="detailsinfo">
+								    
 									</FORM>
 								</figure>
 									
-									<!-- 測試用登入帳號 -->
-<%-- 									<c:set var="LoginActNo" value="M1206202300001" /> --%>
+									<!-- 登入帳號 -->
 									<c:set var="LoginActNo" value="${mbrNo}" />
 									<!-- 發起人icon -->
 									<c:if test="${grpInfoVO.orgMbrNo eq LoginActNo}">
