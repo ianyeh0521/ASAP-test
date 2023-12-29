@@ -19,15 +19,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @WebServlet("/court/courtImgAjax.do")
-public class CourtImgServletAjax extends HttpServlet{
+public class CourtImgServletAjax extends HttpServlet {
 
 	private CourtImgService_interface courtImgService_interface;
-	
+
 	@Override
-	public void init() throws ServletException{
+	public void init() throws ServletException {
 		courtImgService_interface = new CourtImgService();
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 //		res.setContentType("application/json;charset=UTF-8");
@@ -60,34 +60,34 @@ public class CourtImgServletAjax extends HttpServlet{
 //        String jsonObj = gson.toJson(result);
 //        System.out.println(jsonObj);
 //        res.getWriter().write(jsonObj);
-		
+
 		boolean getFromBackStage = Boolean.parseBoolean(req.getParameter("getFromBackStage"));
-		
-		if(getFromBackStage) {
+
+		if (getFromBackStage) {
 			Integer courtNo = Integer.valueOf(req.getParameter("courtNo"));
 			List<CourtImgVO> courtImgVOs = courtImgService_interface.findByCourtNo(courtNo);
-			
+
 			GsonBuilder builder = new GsonBuilder();
 			builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
 			Gson gson = builder.create();
-			
+
 			List<String> courtImgbase64 = new ArrayList<>();
-			for(final CourtImgVO courtImgVO:courtImgVOs) {
+			for (final CourtImgVO courtImgVO : courtImgVOs) {
 				courtImgbase64.add(Base64.getEncoder().encodeToString(courtImgVO.getCourtImg()));
 			}
 			String jsonObj = gson.toJson(courtImgbase64);
 			res.getWriter().write(jsonObj);
-			
-		}else {
+
+		} else {
 			res.setContentType("application/json;charset=UTF-8");
 
 			GsonBuilder builder = new GsonBuilder();
 			builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
-			
+
 			Gson gson = builder.create();
 			List<List<String>> result = new ArrayList<>();
 			List<CourtImgVO> courtImgList = courtImgService_interface.getAll();
-			for(final CourtImgVO courtImgVO:courtImgList) {
+			for (final CourtImgVO courtImgVO : courtImgList) {
 				List<String> NoAndImg = new ArrayList<>();
 				NoAndImg.add(String.valueOf(courtImgVO.getCourtVO().getCourtNo()));
 				NoAndImg.add(Base64.getEncoder().encodeToString(courtImgVO.getCourtImg()));
@@ -96,11 +96,9 @@ public class CourtImgServletAjax extends HttpServlet{
 			String jsonObj = gson.toJson(result);
 			res.getWriter().write(jsonObj);
 		}
-		
-		
-		
+
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);

@@ -1,6 +1,5 @@
 package com.asap.course.dao;
 
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +21,15 @@ import com.asap.course.entity.MbrCourseVO;
 import com.asap.court.entity.CourtVO;
 import com.asap.util.HibernateUtil;
 
-public class CourseDAO implements CourseDAO_interface{
+public class CourseDAO implements CourseDAO_interface {
 
 	private static final int PAGE_MAX_RESULT = 5;
 	private SessionFactory factory;
-	
+
 	public CourseDAO() {
 		factory = HibernateUtil.getSessionFactory();
 	}
-	
+
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
@@ -40,7 +39,7 @@ public class CourseDAO implements CourseDAO_interface{
 		// 成功更新回傳 1，失敗回傳 -1
 		try {
 			CourseVO courseUpdate = (CourseVO) getSession().get(CourseVO.class, courseVO.getCourseNo());
-			if(courseUpdate != null) {
+			if (courseUpdate != null) {
 				courseUpdate.setCourseNo(courseVO.getCourseNo());
 				courseUpdate.setCoachVO(courseVO.getCoachVO());
 				courseUpdate.setCourseAddress(courseVO.getCourseAddress());
@@ -59,7 +58,7 @@ public class CourseDAO implements CourseDAO_interface{
 		} catch (Exception e) {
 			return -1;
 		}
-		
+
 	}
 
 	@Override
@@ -84,7 +83,7 @@ public class CourseDAO implements CourseDAO_interface{
 			// 回傳給 service，-1代表刪除失敗
 			return -1;
 		}
-		
+
 	}
 
 	@Override
@@ -110,7 +109,7 @@ public class CourseDAO implements CourseDAO_interface{
 	public List<CourseVO> findByCoach(String coachNo) {
 		String hql = "from CourseVO cs where cs.coachVO.coachNo = :getno";
 		Query query = getSession().createQuery(hql);
-		query.setParameter("getno",coachNo);
+		query.setParameter("getno", coachNo);
 		return query.list();
 	}
 
@@ -132,33 +131,36 @@ public class CourseDAO implements CourseDAO_interface{
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (map.containsKey("startTime") && map.containsKey("endTime"))
-			predicates.add(builder.between(root.get("courseEndTime"), Timestamp.valueOf(map.get("startTime")), Timestamp.valueOf(map.get("endTime"))));
+			predicates.add(builder.between(root.get("courseEndTime"), Timestamp.valueOf(map.get("startTime")),
+					Timestamp.valueOf(map.get("endTime"))));
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
 			if ("courseSearch".equals(row.getKey())) {
-					Predicate courseNamePredicate = builder.like(root.get("courseName"), "%" + row.getValue() + "%");
-				    Predicate courseTextPredicate = builder.like(root.get("courseText"), "%" + row.getValue() + "%");
-				    Predicate courseAddressPredicate = builder.like(root.get("courseAddress"), "%" + row.getValue() + "%");
+				Predicate courseNamePredicate = builder.like(root.get("courseName"), "%" + row.getValue() + "%");
+				Predicate courseTextPredicate = builder.like(root.get("courseText"), "%" + row.getValue() + "%");
+				Predicate courseAddressPredicate = builder.like(root.get("courseAddress"), "%" + row.getValue() + "%");
 
-				    Predicate orPredicate = builder.or(courseNamePredicate, courseTextPredicate, courseAddressPredicate);
-				    
-				    predicates.add(orPredicate);
+				Predicate orPredicate = builder.or(courseNamePredicate, courseTextPredicate, courseAddressPredicate);
+
+				predicates.add(orPredicate);
 			}
 
 			if ("startTime".equals(row.getKey())) {
 				if (!map.containsKey("endTime"))
-					predicates.add(builder.greaterThanOrEqualTo(root.get("courseStartTime"), Timestamp.valueOf(row.getValue())));
+					predicates.add(builder.greaterThanOrEqualTo(root.get("courseStartTime"),
+							Timestamp.valueOf(row.getValue())));
 			}
 
 			if ("endTime".equals(row.getKey())) {
 				if (!map.containsKey("startTime"))
-					predicates.add(builder.lessThanOrEqualTo(root.get("courseTime"), Timestamp.valueOf(row.getValue())));
+					predicates
+							.add(builder.lessThanOrEqualTo(root.get("courseTime"), Timestamp.valueOf(row.getValue())));
 			}
-			
+
 			if ("sportType".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("sportTypeVO").get("sportTypeNo"), row.getValue()));
 			}
-			
+
 //			if ("site".equals(row.getKey())) {
 //				predicates.add(builder.like(root.get("courseAddress"), "%" + row.getValue() + "%"));
 //			}
@@ -175,7 +177,10 @@ public class CourseDAO implements CourseDAO_interface{
 	public List<CourseVO> getAll() {
 		// 取得全部的 CourseVO List，成功回傳 List，失敗回傳空值
 		try {
-			return getSession().createQuery("from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true", CourseVO.class).list();
+			return getSession()
+					.createQuery("from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true",
+							CourseVO.class)
+					.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			return null;
@@ -185,16 +190,17 @@ public class CourseDAO implements CourseDAO_interface{
 	@Override
 	public List<CourseVO> getAll(int currentPage) {
 		int first = (currentPage - 1) * PAGE_MAX_RESULT;
-		return getSession().createQuery("from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true", CourseVO.class).setFirstResult(first)
-				.setMaxResults(PAGE_MAX_RESULT).list();
+		return getSession()
+				.createQuery("from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true",
+						CourseVO.class)
+				.setFirstResult(first).setMaxResults(PAGE_MAX_RESULT).list();
 	}
 
 	@Override
 	public long getTotal() {
-		return getSession().createQuery("select count(*) from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true", Long.class).uniqueResult();
+		return getSession().createQuery(
+				"select count(*) from CourseVO cr where cr.courseEndTime > CURRENT_TIMESTAMP and cr.courseStat = true",
+				Long.class).uniqueResult();
 	}
-	
-	
-	
-	
+
 }

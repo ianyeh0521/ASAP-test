@@ -37,119 +37,114 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 @WebServlet("/court/courtSaveListAjax.do")
-public class CourtSaveListServletAjax extends HttpServlet{
-	
+public class CourtSaveListServletAjax extends HttpServlet {
+
 	private CourtSaveListService_interface courtSaveListService_interface;
 	private CourtImgService_interface courtImgService_interface;
 
 	@Override
-	public void init() throws ServletException{
+	public void init() throws ServletException {
 		courtSaveListService_interface = new CourtSaveListService();
 		courtImgService_interface = new CourtImgService();
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		 try (BufferedReader reader = req.getReader()) {
-            StringBuilder jsonPayload = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonPayload.append(line);
-            }
+		try (BufferedReader reader = req.getReader()) {
+			StringBuilder jsonPayload = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				jsonPayload.append(line);
+			}
 
-            JSONObject jsonData = new JSONObject(jsonPayload.toString());
-            
-            String action = jsonData.getString("action");
-    		String mbrNo = jsonData.getString("mbrNo");
-    		Integer courtNo = null;
-    		try {
-    			courtNo = Integer.valueOf(jsonData.getString("courtNo"));
+			JSONObject jsonData = new JSONObject(jsonPayload.toString());
+
+			String action = jsonData.getString("action");
+			String mbrNo = jsonData.getString("mbrNo");
+			Integer courtNo = null;
+			try {
+				courtNo = Integer.valueOf(jsonData.getString("courtNo"));
 			} catch (Exception e) {
 				courtNo = null;
 			}
-    		
-            
-            if("add".equals(action)) {
-            	addToSaveList(mbrNo, courtNo);
-            }else if("delete".equals(action)){
-            	deleteFromSaveList(mbrNo, courtNo);
-            }else if("check".equals(action)){
-            	checkSaveList(res, req, mbrNo, courtNo);
-            }else if ("getByMember".equals(action)) {
+
+			if ("add".equals(action)) {
+				addToSaveList(mbrNo, courtNo);
+			} else if ("delete".equals(action)) {
+				deleteFromSaveList(mbrNo, courtNo);
+			} else if ("check".equals(action)) {
+				checkSaveList(res, req, mbrNo, courtNo);
+			} else if ("getByMember".equals(action)) {
 				getByMember(res, req, mbrNo);
 			}
-         
-        } catch (JSONException e) {
-            e.printStackTrace();
-            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 	}
-	
-	
-	
+
 	private void getByMember(HttpServletResponse res, HttpServletRequest req, String mbrNo) throws IOException {
 		res.setContentType("application/json;charset=UTF-8");
 
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
 		Gson gson = builder.create();
-		
-		List<CourtSaveListVO> saveList= courtSaveListService_interface.findByMember(mbrNo);
+
+		List<CourtSaveListVO> saveList = courtSaveListService_interface.findByMember(mbrNo);
 		List<CourtImgVO> saveCourtImgList = new ArrayList<>();
 		List<String> saveImgBase64 = new ArrayList<>();
-		for (CourtSaveListVO courtSaveListVO: saveList) {
+		for (CourtSaveListVO courtSaveListVO : saveList) {
 			saveCourtImgList = courtImgService_interface.findByCourtNo(courtSaveListVO.getCourtVO().getCourtNo());
-			for(int i = 0; i < 1;i++) {
-				saveImgBase64.add(Base64.getEncoder().encodeToString(saveCourtImgList.get(i).getCourtImg())) ;
+			for (int i = 0; i < 1; i++) {
+				saveImgBase64.add(Base64.getEncoder().encodeToString(saveCourtImgList.get(i).getCourtImg()));
 			}
 		}
-		
+
 		String jsonObj = gson.toJson(saveList);
 		String jsonObjofImg = gson.toJson(saveImgBase64);
-		
+
 		JsonObject combinedJson = new JsonObject();
 		combinedJson.addProperty("courtSaveList", jsonObj);
 		combinedJson.addProperty("saveImgList", jsonObjofImg);
-		 try (PrintWriter out = res.getWriter()) {
-	            out.println(combinedJson.toString());
-	        }
-		
+		try (PrintWriter out = res.getWriter()) {
+			out.println(combinedJson.toString());
+		}
+
 	}
 
-	private void checkSaveList(HttpServletResponse res, HttpServletRequest req, String mbrNo,Integer courtNo ) throws IOException {
-		if(courtSaveListService_interface.findByMemberAndCourtNo(mbrNo, courtNo)==null) {
-			 res.setContentType("text/plain");
-			 res.getWriter().write("empty");
-		}else {
+	private void checkSaveList(HttpServletResponse res, HttpServletRequest req, String mbrNo, Integer courtNo)
+			throws IOException {
+		if (courtSaveListService_interface.findByMemberAndCourtNo(mbrNo, courtNo) == null) {
 			res.setContentType("text/plain");
-			 res.getWriter().write("isOne");
+			res.getWriter().write("empty");
+		} else {
+			res.setContentType("text/plain");
+			res.getWriter().write("isOne");
 		}
-		
+
 	}
 
 	private void deleteFromSaveList(String mbrNo, Integer courtNo) throws IOException {
 		CourtSaveListVO courtSaveListVOToD = courtSaveListService_interface.findByMemberAndCourtNo(mbrNo, courtNo);
-		courtSaveListService_interface.delete(courtSaveListVOToD) ;
-		
+		courtSaveListService_interface.delete(courtSaveListVOToD);
+
 	}
 
 	private void addToSaveList(String mbrNo, Integer courtNo) throws IOException {
-		if(courtSaveListService_interface.findByMemberAndCourtNo(mbrNo, courtNo)==null) {
+		if (courtSaveListService_interface.findByMemberAndCourtNo(mbrNo, courtNo) == null) {
 			MemberVO memberVO = new MemberVO();
 			memberVO.setMbrNo(mbrNo);
 			CourtVO courtVO = new CourtVO();
 			courtVO.setCourtNo(courtNo);
 			CourtSaveListVO courtSaveListVO = new CourtSaveListVO(memberVO, courtVO);
-				
-			courtSaveListService_interface.insert(courtSaveListVO); 
-		}
-		else {
+
+			courtSaveListService_interface.insert(courtSaveListVO);
+		} else {
 			System.out.println("已在收藏列中!");
 		}
 
 	}
-
-	
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
