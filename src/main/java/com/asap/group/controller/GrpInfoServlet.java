@@ -2,6 +2,7 @@ package com.asap.group.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.asap.group.entity.GrpInfoVO;
 import com.asap.group.entity.GrpJoinInfoVO;
@@ -58,7 +60,7 @@ public class GrpInfoServlet extends HttpServlet {
 	private MbrActivService_interface mbrActivService_interface;
 	private MbrNewsService_interface mbrNewsService_interface;
 	private Integer m_GrpNo;
-	private String LoginActNo = "M1206202300001";
+	private String LoginActNo;
 	@Override
 	public void init() throws ServletException {
 		grpInfoService = new GrpInfoService_interface();
@@ -78,6 +80,12 @@ public class GrpInfoServlet extends HttpServlet {
 			QueryType = "";
 		}
 		String forwardPath = "";
+		
+		HttpSession session = req.getSession();
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVo");
+		LoginActNo = memberVO.getMbrNo();
+		
+		
 		if (action != null) {
 			switch (action) {
 			// 查全部
@@ -304,31 +312,44 @@ public class GrpInfoServlet extends HttpServlet {
 
 	// 到新增頁面
 	private String grpInfoinsert(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		
 		GrpInfoVO grpInfo = new GrpInfoVO();
 		Integer grpNo = 0;
+		
 		// type 0:新增 1:編輯(修改)
 		String type = req.getParameter("type");
 		
-		
 		if(type.equals("1")) {
-		String strgrpNo = req.getParameter("GrpNo");
+			String strgrpNo = req.getParameter("GrpNo");
 		
 			if (strgrpNo != null) {
 				grpNo = Integer.valueOf(strgrpNo);
 			}
 		}
-		
-		
 		grpInfo = setGrpInfomethod(req);
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
 		if(type.equals("1")) {
 			grpInfo.setGrpNo(grpNo);
-
 			grpInfoSvc.update(grpInfo);
+
+			List<GrpJoinInfoVO> grpJoInfoList = grpJoinInfoService.getgrpjoinserviceQuery("grpNo",
+					String.valueOf(grpNo));
+			
+			for(GrpJoinInfoVO InfoVO : grpJoInfoList) {
+				if (InfoVO.getGrpJoinStat()) {
+					//寫入會員消息->編輯揪團成功寫入會員消息
+					MbrNewsVO vo2 = new MbrNewsVO();
+					vo2.setMbrNo(InfoVO.getPartiMbrNo());
+					vo2.setNewsSubj("編輯揪團通知");
+					vo2.setNewsText("您的揪團(揪團名稱:" + grpInfo.getGrpName() +")已被編輯");
+					vo2.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
+					mbrNewsService_interface.add(vo2);
+				}
+			}
 			
 			// 寫入會員消息->編輯揪團成功寫入會員消息
 			MbrNewsVO NewsVO = new MbrNewsVO();
-			NewsVO.setMbrNo("M1206202300001");
+			NewsVO.setMbrNo(LoginActNo);
 			NewsVO.setNewsSubj("編輯揪團成功通知");
 			NewsVO.setNewsText("您的揪團(揪團名稱:" + grpInfo.getGrpName() +"已編輯)");
 			NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
@@ -338,26 +359,37 @@ public class GrpInfoServlet extends HttpServlet {
 		}
 		else 
 		{
+
+
 			grpInfoSvc.insert(grpInfo);
+			
+			// datetime 格式化為需要的形式
+			String grpDate = grpInfo.getGrpDate().toString().substring(0, 10);
+			String startTime = grpInfo.getGrpStartTime().toString();
+			String endTime = grpInfo.getGrpEndTime().toString();
+			System.out.println(grpDate);
+			System.out.println(startTime);
+			String startDateTime = grpDate + " " + startTime;
+			String endDateTime = grpDate + " " + endTime;
+			System.out.println(startDateTime);
 			
 			
 			// 寫入會員消息->發起揪團成功寫入會員消息
 			MbrNewsVO NewsVO = new MbrNewsVO();
-			NewsVO.setMbrNo("M1206202300001");
+			NewsVO.setMbrNo(LoginActNo);
 			NewsVO.setNewsSubj("發起成功通知");
 			NewsVO.setNewsText("您已成功發起揪團(揪團名稱:" + grpInfo.getGrpName() +")");
 			NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
 			
 			mbrNewsService_interface.add(NewsVO);
-			
 
 			// 寫入會員活動->發起揪團成功寫入會員活動
-			MbrActivVO ActivVO = new MbrActivVO();
-			ActivVO.setMbrNo("M1206202300001");
-			ActivVO.setActivSubj("發起揪團成功-" + grpInfo.getGrpName());
 			
-			ActivVO.setActivStartTime(grpInfo.getGrpSignStrTime());
-			ActivVO.setActivEndTime(grpInfo.getGrpSignEndTime());
+			MbrActivVO ActivVO = new MbrActivVO();
+			ActivVO.setMbrNo(LoginActNo);
+			ActivVO.setActivSubj("發起揪團成功-" + grpInfo.getGrpName());
+			ActivVO.setActivStartTime(java.sql.Timestamp.valueOf(startDateTime));
+			ActivVO.setActivEndTime(java.sql.Timestamp.valueOf(endDateTime));
 			
 			int mbrActivNo = mbrActivService_interface.add(ActivVO);
 			String mbrActivNoStr = String.valueOf(mbrActivNo);
@@ -370,25 +402,25 @@ public class GrpInfoServlet extends HttpServlet {
 			jedis.close();
 			
 			
-			// 發起揪團成功通知信
+			// 發起揪團成功通知信OKKKKKKKK
 			MemberVO MemberVoDetail = new MemberVO();
 			String strOrgMbrNo = grpInfo.getOrgMbrNo().toString();
 			MemberVoDetail = memberService.findByMbrNo(strOrgMbrNo);
 			if (MemberVoDetail != null) {
+				
+
 				String grpmailtitle = "ASAP揪團發起成功通知 - [" + grpInfo.getGrpName() + "]";
-				String content = "親愛的會員您好，您的揪團 " + grpInfo.getGrpSignStrTime() + "~" + grpInfo.getGrpSignEndTime()
+				String content = "親愛的會員您好，您的揪團 " + startDateTime + "~" + endDateTime
 							+ "「" + grpInfo.getGrpName()+ "」已發起成功。如有任何問題或需要進一步協助，請隨時聯繫我們的客服部門。";
 				MailFormat mailFormat = new MailFormat(MemberVoDetail.getMbrName(), content);
 				InputStream in = getServletContext().getResourceAsStream("/newImg/mailLogo.png");
 				DataSource dataSource = new ByteArrayDataSource(in, "application/png");
-				
 				// 寄出信件
 				JavaMail mail = new JavaMail(MemberVoDetail.getMbrEmail(), grpmailtitle, mailFormat.getMessageTextAndImg(), dataSource);
 				String result = mail.sendMail();
 				System.out.println("SendMail : " + result);
 			}
 		}
-		
 		return "/group/AllGroup.jsp";
 	}
 
@@ -408,16 +440,25 @@ public class GrpInfoServlet extends HttpServlet {
 		grpInfo.setGrpStat(1);
 		GrpInfoService_interface grpInfoSvc = new GrpInfoService_interface();
 		grpInfoSvc.update(grpInfo);
-		
 		String GrpNameParam = req.getParameter("GrpName");
 		//寫入會員消息->解散揪團成功寫入會員消息
 		MbrNewsVO vo = new MbrNewsVO();
-		vo.setMbrNo("M1206202300001");
+		vo.setMbrNo(LoginActNo);
 		vo.setNewsSubj("解散揪團成功通知");
 		vo.setNewsText("您已成功解散揪團(揪團名稱:" + GrpNameParam +")");
 		vo.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
 		
 		mbrNewsService_interface.add(vo);
+		
+		//解散揪團->移除主揪的Redis
+		Jedis jedis = pool.getResource();
+		jedis.select(2);
+		Integer mbrActivNo = Integer.valueOf(jedis.get("group" + grpInfo.getGrpNo()));
+		mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
+		
+		
+		
+		
 		//用infogrpNo查參與人資訊
 		//查詢參與人人數
 		if (infogrpNo != 0) {
@@ -436,6 +477,12 @@ public class GrpInfoServlet extends HttpServlet {
 						vo2.setNewsText("您的揪團已解散(揪團名稱:" + GrpNameParam +")");
 						vo2.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
 						mbrNewsService_interface.add(vo2);
+						
+						//解散揪團->移除參與人的Redis
+						jedis = pool.getResource();
+						jedis.select(2);
+						mbrActivNo = Integer.valueOf(jedis.get("groupJoin" + InfoVO.getGrpJoinInfoNo()));
+						mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
 					}
 				}
 				req.setAttribute("partiMbrNoCount", partiMbrNoCount);
@@ -469,25 +516,27 @@ public class GrpInfoServlet extends HttpServlet {
 
 	// 設計讓insert跟update去呼叫setGrpInfomethod方法
 	private GrpInfoVO setGrpInfomethod(HttpServletRequest req) throws IOException, ServletException {
-
+		System.out.println("setGrpInfomethod:");
 		GrpInfoVO grpInfo = new GrpInfoVO();
 		String strError = "";
 
 		// 發起人(先用編號代替)(串會員資料)
 		// grpInfo.setOrgMbrNo("M0059");
 		grpInfo.setOrgMbrNo(LoginActNo);
-		
-		
 
 		// 活動名稱OK
 		// grpInfo.setGrpName("活動羽球");
+		System.out.println("GrpName:" + req.getParameter("GrpName"));
 		grpInfo.setGrpName(req.getParameter("GrpName"));
 
 		// 運動種類
 		// sportTypeNameParam = "8";
+		System.out.println("SportTypeName:" + req.getParameter("SportTypeName"));
 		String sportTypeNameParam = req.getParameter("SportTypeName");
 		if (sportTypeNameParam != null && !sportTypeNameParam.isEmpty()) {
 			Integer SportTypeName = Integer.valueOf(sportTypeNameParam);
+			
+			
 			grpInfo.setSportTypeNo(SportTypeName);
 		} else {
 			strError = "strError";
@@ -604,7 +653,9 @@ public class GrpInfoServlet extends HttpServlet {
 
 		// LocalDateTime 格式化為需要的形式
 		LocalDateTime startDateTime = LocalDateTime.parse(strgrpSignStrDate + "T" + strgrpSignStrTime);
+//		System.out.println("====TEST=startDateTime====="+startDateTime);
 		LocalDateTime endDateTime = LocalDateTime.parse(strgrpSignEndDate + "T" + strgrpSignEndTime);
+//		System.out.println("====TEST=endDateTime====="+endDateTime);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formattedStartDateTime = startDateTime.format(formatter);
 		String formattedEndDateTime = endDateTime.format(formatter);
@@ -660,38 +711,6 @@ public class GrpInfoServlet extends HttpServlet {
 		return grpInfo;
 	}
 	
-	
-	
-	
-	
-	
-	
-	// 首頁分頁
-//	private String currentPages(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException {
-//		Integer page=1;
-//		// 每頁顯示12筆資料
-//		Integer perPage=12;
-//		List<GrpInfoVO> grpVOList;
-//		List<GrpInfoVO> grpVOTempList= new ArrayList<>();;
-//		int startIndex = (page - 1) * perPage;
-//		int endIndex = Math.min(startIndex + perPage, grpVOTempList.size());
-//		
-//		
-//		// 檢查結束索引是否超過列表長度，若超過則增加頁數
-//		while (endIndex > grpVOTempList.size()) {
-//		    page++; // 增加頁數
-//		    startIndex = (page - 1) * perPage; // 更新起始索引
-//		    endIndex = Math.min(startIndex + perPage, grpVOTempList.size()); // 更新結束索引
-//		}
-//
-//		grpVOList = grpVOTempList.subList(startIndex, endIndex);
-//		req.setAttribute("grpVOList", grpVOList);
-//		
-//		
-//		
-//		return "/group/AllGroup.jsp";
-//
-//	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

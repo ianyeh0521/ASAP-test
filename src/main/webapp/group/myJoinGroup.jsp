@@ -1,3 +1,4 @@
+<%@page import="com.asap.member.entity.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -47,9 +48,11 @@
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
 		GrpJoinInfoService grpJoinInfoSvc = new GrpJoinInfoService_interface();
 		
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVo");
+	    String LoginActNo = memberVO.getMbrNo();
+		
 		List<GrpJoinInfoVO> grpJoinVOList = grpJoinInfoSvc.getALL();
 		List<GrpInfoVO> GrpInfoVOList = new ArrayList<>();
-		String LoginActNo = "M1206202300001";
 		for (GrpJoinInfoVO JoinVo : grpJoinVOList) {
 			String PartiMbrNo = JoinVo.getPartiMbrNo();
 			//當參與人資訊裡面的參與人編號等於目前登入的帳號
@@ -91,9 +94,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/demo2.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/css/style.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/assets/vendor/simple-line-icons/css/simple-line-icons.min.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/group/mycss.css" />
 
 
