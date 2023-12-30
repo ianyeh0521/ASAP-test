@@ -643,7 +643,8 @@ b.Joinqty {
 							<c:set var="SignEndTime" value="${grpVODetail.grpSignEndTime}" />
 							
 							<!-- 判斷 現在時間(formattedDateTime) 超過 報名截止時間(SignEndTime) -->
-							<c:if test="${formattedDateTime lt SignStrTime  and formattedDateTime gt SignEndTime}">
+							<!-- 或是 報名開始時間(formattedDateTime) 超過 現在時間(SignEndTime) -->
+							<c:if test="${formattedDateTime lt SignStrTime or formattedDateTime gt SignEndTime}">
 							    <c:set var="IsPartiMbr" value="true" />
 							</c:if>		
 						

@@ -328,38 +328,84 @@ public class GrpInfoServlet extends HttpServlet {
 		}
 		grpInfo = setGrpInfomethod(req);
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
+		
+		Integer mbrActivNo = 0;
+		Jedis jedis = pool.getResource();
+		MbrNewsVO NewsVO = new MbrNewsVO();
+		MbrActivVO ActivVO = new MbrActivVO();
+		String mbrActivNoStr = "";
+		String NewsSubjmsg = "";
+		String NewsTextmsg = "";
+		String groupOrdNoStr = "group" + grpNo;
 		if(type.equals("1")) {
 			grpInfo.setGrpNo(grpNo);
 			grpInfoSvc.update(grpInfo);
 
+			//原始資料處理
+			//編輯揪團->移除主揪原始資料的Redis
+			jedis.select(2);
+			
+			System.out.println("------------group--------------: group" + grpTempVo.getGrpNo());
+			mbrActivNo = Integer.valueOf(jedis.get("group" + grpTempVo.getGrpNo()));
+			System.out.println("------------findByPK--------------:"+mbrActivService_interface.findByPK(mbrActivNo));
+			mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
+			jedis.del(groupOrdNoStr);
+			System.out.println("------------mbrActivNo--------------:"+mbrActivNo);
+
+			
 			List<GrpJoinInfoVO> grpJoInfoList = grpJoinInfoService.getgrpjoinserviceQuery("grpNo",
 					String.valueOf(grpNo));
-			
+	
 			for(GrpJoinInfoVO InfoVO : grpJoInfoList) {
 				if (InfoVO.getGrpJoinStat()) {
 					//寫入會員消息->編輯揪團成功寫入會員消息
-					MbrNewsVO vo2 = new MbrNewsVO();
-					vo2.setMbrNo(InfoVO.getPartiMbrNo());
-					vo2.setNewsSubj("編輯揪團通知");
-					vo2.setNewsText("您的揪團(揪團名稱:" + grpInfo.getGrpName() +")已被編輯");
-					vo2.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
-					mbrNewsService_interface.add(vo2);
+					NewsVO = new MbrNewsVO();
+					NewsVO.setMbrNo(InfoVO.getPartiMbrNo());
+					NewsVO.setNewsSubj("編輯揪團通知");
+					NewsVO.setNewsText("您的揪團(揪團名稱:" + grpInfo.getGrpName() +")已被編輯");
+					NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
+					mbrNewsService_interface.add(NewsVO);
+					
+					//編輯揪團->移除參與人原始資料的Redis
+					jedis = pool.getResource();
+					jedis.select(2);
+					mbrActivNo = Integer.valueOf(jedis.get("groupJoin" + InfoVO.getGrpJoinInfoNo()));
+					mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
+					jedis.del("groupJoin" + InfoVO.getGrpJoinInfoNo());
+					
+					//編輯揪團->新增編輯後參與人的Redis
+					//活動日期
+					String grpDate = grpInfo.getGrpDate().toString().substring(0, 10);
+					//活動開始時間
+					String startTime = grpInfo.getGrpStartTime().toString();
+					//活動結束時間
+					String endTime = grpInfo.getGrpEndTime().toString();
+					//活動開始
+					String startDateTime = grpDate + " " + startTime;
+					//活動結束
+					String endDateTime = grpDate + " " + endTime;
+					
+					ActivVO.setMbrNo(LoginActNo);
+					ActivVO.setActivSubj("發起揪團-" + grpInfo.getGrpName());
+					ActivVO.setActivStartTime(java.sql.Timestamp.valueOf(startDateTime));
+					ActivVO.setActivEndTime(java.sql.Timestamp.valueOf(endDateTime));
+					
+					mbrActivNo = mbrActivService_interface.add(ActivVO);
+					mbrActivNoStr = String.valueOf(mbrActivNo);
+					
+					// 會員活動編號存入 Redis
+					jedis = pool.getResource();
+					jedis.select(2);
+					jedis.del(groupOrdNoStr);
+					jedis.append(groupOrdNoStr, mbrActivNoStr);
+					jedis.close();
 				}
-			}
-			
-			// 寫入會員消息->編輯揪團成功寫入會員消息
-			MbrNewsVO NewsVO = new MbrNewsVO();
-			NewsVO.setMbrNo(LoginActNo);
-			NewsVO.setNewsSubj("編輯揪團成功通知");
-			NewsVO.setNewsText("您的揪團(揪團名稱:" + grpInfo.getGrpName() +"已編輯)");
-			NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
-			
-			mbrNewsService_interface.add(NewsVO);
-			
+			}		
+			NewsSubjmsg = "編輯揪團成功通知";
+			NewsTextmsg = "您的揪團(揪團名稱:" + grpInfo.getGrpName() +"已編輯)";
 		}
 		else 
 		{
-
 
 			grpInfoSvc.insert(grpInfo);
 			
@@ -367,42 +413,11 @@ public class GrpInfoServlet extends HttpServlet {
 			String grpDate = grpInfo.getGrpDate().toString().substring(0, 10);
 			String startTime = grpInfo.getGrpStartTime().toString();
 			String endTime = grpInfo.getGrpEndTime().toString();
-			System.out.println(grpDate);
-			System.out.println(startTime);
+
 			String startDateTime = grpDate + " " + startTime;
 			String endDateTime = grpDate + " " + endTime;
-			System.out.println(startDateTime);
 			
-			
-			// 寫入會員消息->發起揪團成功寫入會員消息
-			MbrNewsVO NewsVO = new MbrNewsVO();
-			NewsVO.setMbrNo(LoginActNo);
-			NewsVO.setNewsSubj("發起成功通知");
-			NewsVO.setNewsText("您已成功發起揪團(揪團名稱:" + grpInfo.getGrpName() +")");
-			NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
-			
-			mbrNewsService_interface.add(NewsVO);
-
-			// 寫入會員活動->發起揪團成功寫入會員活動
-			
-			MbrActivVO ActivVO = new MbrActivVO();
-			ActivVO.setMbrNo(LoginActNo);
-			ActivVO.setActivSubj("發起揪團成功-" + grpInfo.getGrpName());
-			ActivVO.setActivStartTime(java.sql.Timestamp.valueOf(startDateTime));
-			ActivVO.setActivEndTime(java.sql.Timestamp.valueOf(endDateTime));
-			
-			int mbrActivNo = mbrActivService_interface.add(ActivVO);
-			String mbrActivNoStr = String.valueOf(mbrActivNo);
-			
-			// 會員活動編號存入 Redis
-			Jedis jedis = pool.getResource();
-			String groupOrdNoStr = "group" + grpInfo.getGrpNo();
-			jedis.select(2);
-			jedis.append(groupOrdNoStr, mbrActivNoStr);
-			jedis.close();
-			
-			
-			// 發起揪團成功通知信OKKKKKKKK
+			// 發起揪團成功通知信
 			MemberVO MemberVoDetail = new MemberVO();
 			String strOrgMbrNo = grpInfo.getOrgMbrNo().toString();
 			MemberVoDetail = memberService.findByMbrNo(strOrgMbrNo);
@@ -420,7 +435,48 @@ public class GrpInfoServlet extends HttpServlet {
 				String result = mail.sendMail();
 				System.out.println("SendMail : " + result);
 			}
+			NewsSubjmsg = "發起揪團成功通知";
+			NewsTextmsg = "您的揪團(揪團名稱:" + grpInfo.getGrpName() +"已發起成功)";
 		}
+		
+		
+		// 寫入會員消息->編輯揪團成功寫入會員消息
+		NewsVO = new MbrNewsVO();
+		NewsVO.setMbrNo(LoginActNo);
+		NewsVO.setNewsSubj(NewsSubjmsg);
+		NewsVO.setNewsText(NewsTextmsg);
+		NewsVO.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
+		
+		mbrNewsService_interface.add(NewsVO);
+		
+//		//編輯揪團->新增編輯後主揪的Redis
+		//活動日期
+		String grpDate = grpInfo.getGrpDate().toString().substring(0, 10);
+		//活動開始時間
+		String startTime = grpInfo.getGrpStartTime().toString();
+		//活動結束時間
+		String endTime = grpInfo.getGrpEndTime().toString();
+		//活動開始
+		String startDateTime = grpDate + " " + startTime;
+		//活動結束
+		String endDateTime = grpDate + " " + endTime;
+
+		ActivVO = new MbrActivVO();
+		ActivVO.setMbrNo(LoginActNo);
+		ActivVO.setActivSubj("發起揪團-" + grpInfo.getGrpName());
+		ActivVO.setActivStartTime(java.sql.Timestamp.valueOf(startDateTime));
+		ActivVO.setActivEndTime(java.sql.Timestamp.valueOf(endDateTime));
+		
+		mbrActivNo = mbrActivService_interface.add(ActivVO);
+		System.out.println("------------發起揪團 mbrActivNo--------------:"+mbrActivNo);
+		mbrActivNoStr = String.valueOf(mbrActivNo);
+		
+		jedis = pool.getResource();
+		jedis.select(2);
+		jedis.append(groupOrdNoStr, mbrActivNoStr);
+		jedis.close();
+//		
+		
 		return "/group/AllGroup.jsp";
 	}
 
@@ -455,7 +511,7 @@ public class GrpInfoServlet extends HttpServlet {
 		jedis.select(2);
 		Integer mbrActivNo = Integer.valueOf(jedis.get("group" + grpInfo.getGrpNo()));
 		mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
-		
+		jedis.del("groupJoin" + grpInfo.getGrpNo());
 		
 		
 		
@@ -483,6 +539,7 @@ public class GrpInfoServlet extends HttpServlet {
 						jedis.select(2);
 						mbrActivNo = Integer.valueOf(jedis.get("groupJoin" + InfoVO.getGrpJoinInfoNo()));
 						mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
+						jedis.del("groupJoin" + InfoVO.getGrpJoinInfoNo());
 					}
 				}
 				req.setAttribute("partiMbrNoCount", partiMbrNoCount);

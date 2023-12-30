@@ -275,7 +275,7 @@ public class GrpJoinInfoServlet extends HttpServlet {
 		System.out.println("join infono:" + grpJoinInfo.getGrpJoinInfoNo());
 		Integer mbrActivNo = Integer.valueOf(jedis.get("groupJoin" + grpJoinInfo.getGrpJoinInfoNo()));
 		mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
-
+		jedis.del("groupJoin" + grpJoinInfo.getGrpJoinInfoNo());
 		return "/group/grpinfoOrgMbr.jsp";
 	}
 

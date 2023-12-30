@@ -204,10 +204,10 @@
 <main class="main">
 		<div class="page-header">
 			<div class="container d-flex flex-column align-items-center">
-				<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li>
-				<li class="breadcrumb-item active" aria-current="page">我發起的揪團</li>
-				</ol>
+<!-- 				<ol class="breadcrumb"> -->
+<%-- 				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/group/AllGroup.jsp">揪團首頁</a></li> --%>
+<!-- 				<li class="breadcrumb-item active" aria-current="page">我發起的揪團</li> -->
+<!-- 				</ol> -->
 				<h1>我發起的揪團</h1>
 			</div>
 		</div>
