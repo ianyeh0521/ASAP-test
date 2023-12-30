@@ -513,7 +513,7 @@ html, body {
               	}]
             }],
             mapTypeControl: false,
-            fullscreenControl: false,
+            fullscreenControl: true,
             streetViewControl: false,
           });
           
@@ -545,8 +545,12 @@ html, body {
 	            			position: latLng,
 	                      	title: name,
 	            			url:"/ASAP/court/court_page.jsp?courtNo="+courtNo,
+	            			icon:{
+	            				url:"ASAP.svg",
+	            				scaledSize:new google.maps.Size(100, 30),
+	            			},
 	            			map: map,	                      
-	                      	animation: google.maps.Animation.DROP,
+	                      	animation: google.maps.Animation.BOUNCE,
 	            		});
 	            		console.log(markers[i])
 	            		
