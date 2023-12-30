@@ -9,7 +9,6 @@ public interface ItemImgDAO_interface {
 	//	以編號來進行增刪查改
 	int insert(ItemImgVO itemImg);
 
-	
 	int delete(ItemImgVO itemImg);
 
 	// 主鍵查找商品圖片

@@ -24,9 +24,7 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 	@Override
 	public Integer insert(ItemCollectVO entity) {
 		try {
-			// getSession().beginTransaction();
 			Integer id = (Integer) getSession().save(entity);
-			// getSession().getTransaction().commit();
 			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,7 +62,6 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 	@Override
 	public List<ItemCollectVO> findByMbrNo(String mbrNo) {
 		try {
-			// getSession().beginTransaction();
 			Query<ItemCollectVO> query = getSession().createQuery("FROM ItemCollectVO WHERE mbrNo = :mbrNo",
 					ItemCollectVO.class);
 			query.setParameter("mbrNo", mbrNo);
@@ -78,13 +75,11 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 	@Override
 	public ItemCollectVO findByMbrNoAndItemNo(String mbrNo, Integer itemNo) {
 		try {
-//			getSession().beginTransaction();
 			Query<ItemCollectVO> query = getSession()
 					.createQuery("FROM ItemCollectVO WHERE mbrNo = :mbrNo AND itemNo = :itemNo", ItemCollectVO.class);
 			query.setParameter("mbrNo", mbrNo);
 			query.setParameter("itemNo", itemNo);
 			ItemCollectVO vo = query.uniqueResult();
-//			getSession().getTransaction().commit();
 			return vo;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,7 +90,6 @@ public class ItemCollectDAO implements ItemCollectDAO_interface {
 	@Override
 	public List<ItemCollectVO> getAll() {
 		try {
-			// getSession().beginTransaction();
 			Query<ItemCollectVO> query = getSession().createQuery("FROM ItemCollectVO", ItemCollectVO.class);
 			return query.list();
 		} catch (Exception e) {

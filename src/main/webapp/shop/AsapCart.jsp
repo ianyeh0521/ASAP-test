@@ -57,10 +57,12 @@ System.out.println(list);
 </script>
 
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/style.min.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css">
 
@@ -68,7 +70,6 @@ System.out.println(list);
 
 <body>
 	<div class="page-wrapper">
-
 
 		<header class="header">
 			<div class="header-middle sticky-header"
@@ -219,7 +220,6 @@ System.out.println(list);
 														alt="product">
 													</a>
 
-
 													<a href="#" class="btn-remove icon-cancel"
 														title="Remove Product"></a>
 
@@ -242,16 +242,15 @@ System.out.println(list);
 										</tr>
 									</c:forEach>
 
-
 								</tbody>
-
 
 								<tfoot>
 									<tr>
 										<td colspan="5" class="clearfix">
 
 											<div class="float-right">
-												<a href="AsapShop.jsp" class="btn btn-shop btn-update-cart">
+												<a href="AsapShop.jsp" class="btn btn-shop btn-update-cart"
+													style="background-color: #343a40; color: #f8f9fa; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 5px; transition: background-color 0.3s, box-shadow 0.3s; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);">
 													繼續購物 </a>
 											</div> <!-- End .float-right -->
 										</td>
@@ -280,9 +279,12 @@ System.out.println(list);
 									<c:forEach items="${list}" var="cartItem" varStatus="status">
 										<tr>
 											<td class="product-col">
-												<h3 class="product-title">${cartItem.itemInfoVO.itemName}</h3>
+												<h3 class="product-title">
+													<a
+														href="AsapShopProduct.jsp?itemNo=${cartItem.itemInfoVO.itemNo}">
+														${cartItem.itemInfoVO.itemName} </a>
+												</h3>
 											</td>
-
 											<td class="price-col"><span class="unit-price">${cartItem.itemInfoVO.itemPrice}</span>
 											</td>
 											<td class="price-col"><span class="quantity">${cartItem.itemShopQty}</span></td>
@@ -293,10 +295,16 @@ System.out.println(list);
 								</tbody>
 								<tfoot>
 									<tr class="cart-subtotal">
-										<td>
-											<h4>商品小計</h4>
+										<td colspan="3">
+											<table style="height: 100%; width: 100%;">
+												<tr>
+													<td style="vertical-align: middle; text-align: left;">
+														<h4>商品小計:</h4>
+													</td>
+												</tr>
+											</table>
 										</td>
-										<td class="price-col"><span class="total-subtotal">
+										<td class="text-right"><span class="total-subtotal">
 												<c:set var="subtotalSum" value="0" /> <c:forEach
 													items="${list}" var="cartItem">
 													<c:set var="subtotal"
@@ -311,14 +319,11 @@ System.out.println(list);
 							</table>
 
 							<div class="checkout-methods">
-								<!-- 								<a href="AsapOrderCheck.jsp" class="btn btnoter-block btn-dark" -->
-								<!-- 									style="padding-left: 20px">確認訂單 <i -->
-								<!-- 									class="fa fa-arrow-right"></i> -->
-								<!-- 								</a>  -->
 
 								<a href="javascript:void(0);" id="confirmOrderBtn"
-									class="btn btnoter-block btn-dark" style="padding-left: 20px">確認訂單
-									<i class="fa fa-arrow-right"></i>
+									class="btn btn-block btn-dark"
+									style="padding: 10px 15px; background-color: #4CAF50; color: white; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 12px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); transition: all 0.3s ease; border: none;">
+									確認訂單 <i class="fa fa-arrow-right"></i>
 								</a>
 
 							</div>
@@ -356,10 +361,10 @@ System.out.println(list);
 								</ul>
 								<div class="social-icons">
 									<a href="#" class="social-icon social-facebook icon-facebook"
-										target="_blank" title="Facebook"></a> <a
-										href="#" class="social-icon social-twitter icon-twitter"
-										target="_blank" title="Twitter"></a> <a
-										href="#" class="social-icon social-instagram icon-instagram"
+										target="_blank" title="Facebook"></a> <a href="#"
+										class="social-icon social-twitter icon-twitter"
+										target="_blank" title="Twitter"></a> <a href="#"
+										class="social-icon social-instagram icon-instagram"
 										target="_blank" title="Instagram"></a>
 								</div>
 								<!-- End .social-icons -->
@@ -404,8 +409,8 @@ System.out.println(list);
 				<div class="footer-bottom">
 					<div class="container d-sm-flex align-items-center">
 						<div class="footer-left">
-							<span class="footer-copyright">© ASAP. 2023.
-								All Rights Reserved</span>
+							<span class="footer-copyright">© ASAP. 2023. All Rights
+								Reserved</span>
 						</div>
 					</div>
 				</div>
@@ -416,7 +421,6 @@ System.out.println(list);
 		<!-- End .footer -->
 	</div>
 	<!-- End .page-wrapper -->
-
 
 	<div class="mobile-menu-container">
 		<div class="mobile-menu-wrapper">
@@ -533,16 +537,16 @@ System.out.println(list);
 
 	</div>
 
-
-
 	<a id="scroll-top" href="#top" title="Top" role="button"><i
 		class="icon-angle-up"></i></a>
 
-
 	<!-- Plugins JS File -->
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>

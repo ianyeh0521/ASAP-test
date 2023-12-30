@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.asap.shop.entity.ItemInfoVO;
-import com.asap.shop.entity.ItemTypeVO;
 
 public interface ItemInfoService_interface {
 
@@ -22,7 +21,6 @@ public interface ItemInfoService_interface {
 
 	// 模糊查詢(HQL)(搜尋欄位)
 	List<ItemInfoVO> getByFuzzySearch(String itemInfoKeyword);
-
 		
 	// 按照商品價格排名
     List<ItemInfoVO> orderByItemPrice(boolean descending);

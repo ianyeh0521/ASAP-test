@@ -65,14 +65,14 @@ public class ItemInfoServlet extends HttpServlet {
 		case "getImg":
 			getImgByItemNo(req, res);
 			break;
-			
+
 		case "page":
 			getpage(req, res);
 			break;
-			
-		 case "getAllCountsByCategories":
-			 getAllCountsByCategories(req, res);
-	            break;
+
+		case "getAllCountsByCategories":
+			getAllCountsByCategories(req, res);
+			break;
 		}
 
 		res.setContentType("text/html; charset=UTF-8");
@@ -92,39 +92,39 @@ public class ItemInfoServlet extends HttpServlet {
 	}
 
 	private void updateRecentlyViewed(HttpServletRequest req, ItemInfoVO iteminfo) {
-	    HttpSession session = req.getSession();
-	    LinkedList<ItemInfoVO> recentlyViewed = (LinkedList<ItemInfoVO>) session.getAttribute("recentlyViewed");
+		HttpSession session = req.getSession();
+		LinkedList<ItemInfoVO> recentlyViewed = (LinkedList<ItemInfoVO>) session.getAttribute("recentlyViewed");
 
-	    if (recentlyViewed == null) {
-	        recentlyViewed = new LinkedList<>();
-	    }
+		if (recentlyViewed == null) {
+			recentlyViewed = new LinkedList<>();
+		}
 
-	    // 檢查商品是否已經存在於列表中
-	    int existingIndex = -1;
-	    for (int i = 0; i < recentlyViewed.size(); i++) {
-	        if (recentlyViewed.get(i).getItemNo().equals(iteminfo.getItemNo())) {
-	            existingIndex = i;
-	            break;
-	        }
-	    }
+		// 檢查商品是否已經存在於列表中
+		int existingIndex = -1;
+		for (int i = 0; i < recentlyViewed.size(); i++) {
+			if (recentlyViewed.get(i).getItemNo().equals(iteminfo.getItemNo())) {
+				existingIndex = i;
+				break;
+			}
+		}
 
-	    // 如果商品不在列表的前三個位置
-	    if (existingIndex > 2 || existingIndex == -1) {
-	        // 如果商品已經在列表中，先移除它
-	        if (existingIndex != -1) {
-	            recentlyViewed.remove(existingIndex);
-	        }
+		// 如果商品不在列表的前三個位置
+		if (existingIndex > 2 || existingIndex == -1) {
+			// 如果商品已經在列表中，先移除它
+			if (existingIndex != -1) {
+				recentlyViewed.remove(existingIndex);
+			}
 
-	        // 將商品添加到列表開頭
-	        recentlyViewed.addFirst(iteminfo);
+			// 將商品添加到列表開頭
+			recentlyViewed.addFirst(iteminfo);
 
-	        // 保持列表只有最新的6個商品
-	        if (recentlyViewed.size() > 6) {
-	            recentlyViewed.removeLast();
-	        }
-	    }
+			// 保持列表只有最新的6個商品
+			if (recentlyViewed.size() > 6) {
+				recentlyViewed.removeLast();
+			}
+		}
 
-	    session.setAttribute("recentlyViewed", recentlyViewed);
+		session.setAttribute("recentlyViewed", recentlyViewed);
 	}
 
 	private void orderByItemAddTime(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -227,13 +227,12 @@ public class ItemInfoServlet extends HttpServlet {
 
 	}
 
-	 private void getAllCountsByCategories(HttpServletRequest req, HttpServletResponse res) throws IOException {
-	        Map<String, Map<Integer, Integer>> allCounts = itemInfoService.getAllCountsByCategories();
-	        String json = new Gson().toJson(allCounts);
-	        res.setContentType("application/json; charset=UTF-8");
-	        res.getWriter().write(json);
-	    }
-
+	private void getAllCountsByCategories(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		Map<String, Map<Integer, Integer>> allCounts = itemInfoService.getAllCountsByCategories();
+		String json = new Gson().toJson(allCounts);
+		res.setContentType("application/json; charset=UTF-8");
+		res.getWriter().write(json);
+	}
 
 	private void getpage(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		List<ItemInfoVO> list = itemInfoService.getAll();

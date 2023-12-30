@@ -17,9 +17,6 @@ import com.asap.shop.service.ShoppingCartService;
 import com.asap.shop.service.ShoppingCartService_interface;
 import com.google.gson.Gson;
 
-/**
- * Servlet implementation class ShoppingCartController
- */
 @WebServlet("/shop/ShoppingCartServlet")
 public class ShoppingCartController extends HttpServlet {
 	private ShoppingCartService_interface shoppingCartService;
