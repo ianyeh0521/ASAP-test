@@ -5,16 +5,15 @@
 <%@page import="com.asap.shop.service.*"  %>
 <%@page import="com.asap.shop.entity.*"  %>
 <%@page import="com.asap.member.entity.*"  %>
+<%@page import="java.math.BigDecimal"%>
 
 <% 
    MemberVO vo = (MemberVO)session.getAttribute("memberVo");
 
-   Integer score = vo.getCmtReScore();
-   
-   Integer num = vo.getCmtReNum();
-   System.out.println("num is:"+num);
+   double score = (double)vo.getCmtReScore();
+   double num = (double)vo.getCmtReNum();
    if(num != 0){ 
-	   float avgScore = (float)score / (float)num;
+	   double avgScore =Math.round(score/num * 100.0) / 100.0;
 	   System.out.println("avgscore is:"+avgScore);
 	   pageContext.setAttribute("avgScore", avgScore);
     }else{
@@ -22,8 +21,7 @@
     	pageContext.setAttribute("avgScore", avgScore);
     	System.out.println("avgscore is:"+avgScore);
     }
-    System.out.println(vo.getEmailStat());
-    
+   
 %>
 
 
