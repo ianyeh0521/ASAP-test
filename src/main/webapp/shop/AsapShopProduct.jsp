@@ -65,7 +65,6 @@ if (list.getItemAddTime() != null) {
 <link rel="icon" type="${pageContext.request.contextPath}/image/x-icon"
 	href="${pageContext.request.contextPath}/assets/images/icons/favicon.png">
 
-
 <script>
 	WebFontConfig = {
 		google : {
@@ -272,20 +271,10 @@ if (list.getItemAddTime() != null) {
 						<div class="col-lg-7 col-md-6 product-single-details">
 							<h1 class="product-title" data-itemno=${list.itemNo}>${list.itemName}</h1>
 
-
-							<div class="ratings-container">
-								<!-- 								<div class="product-ratings"> -->
-								<!-- 									<span class="ratings" style="width: 80%"></span> -->
-								<!-- 									End .ratings -->
-								<!-- 									<span class="tooltiptext tooltip-top"></span> -->
-								<!-- 								</div> -->
-								<!-- 								End .product-ratings -->
-
-								<!-- 								<a href="#" class="rating-link">( 1 則評論 )</a> -->
-							</div>
+							<div class="ratings-container"></div>
 							<!-- End .ratings-container -->
 
-							<hr class="short-divider">
+							<hr class="short-divider" style="width: 100%;">
 
 							<div class="price-box">
 								<c:if test="${list.preItemPrice > list.itemPrice}">
@@ -293,7 +282,6 @@ if (list.getItemAddTime() != null) {
 								</c:if>
 								<span class="product-price">$${list.itemPrice}</span>
 							</div>
-
 
 							<!-- End .price-box -->
 
@@ -324,7 +312,6 @@ if (list.getItemAddTime() != null) {
 								<li>瀏覽人數: <strong> <a class="product-cview">${list.itemView}</a>
 								</strong>
 								</li>
-
 
 							</ul>
 
@@ -360,7 +347,6 @@ if (list.getItemAddTime() != null) {
 					</div>
 					<!-- End .row -->
 
-
 				</div>
 				<!-- End .product-single-container -->
 
@@ -371,7 +357,6 @@ if (list.getItemAddTime() != null) {
 							href="#product-desc-content" role="tab"
 							aria-controls="product-desc-content" aria-selected="true">商品描述</a>
 						</li>
-
 
 						<li class="nav-item"><a class="nav-link"
 							id="product-tab-reviews" data-toggle="tab"
@@ -384,13 +369,12 @@ if (list.getItemAddTime() != null) {
 						<div class="tab-pane fade show active" id="product-desc-content"
 							role="tabpanel" aria-labelledby="product-tab-desc">
 							<div class="product-desc-content">
-								<p>${list.itemText}</p>
 								<ul>
 									<li>商品狀態: <strong> <a class="product-category">${list.itemStatVO.itemStatText}</a>
 									</strong>
 									</li>
 									<li>安全支付選項</li>
-									<li>依據售出商品屬於個人衛生或特殊性質，故無法提供換貨服務。</li>
+									<li>依據售出商品屬於個人衛生或特殊性質，故無法提供退換貨服務。</li>
 								</ul>
 								<p>透過購買二手商品，有助於減少對自然資源的需求，降低環境影響，建立更為環保的生活方式。</p>
 							</div>
@@ -401,9 +385,7 @@ if (list.getItemAddTime() != null) {
 						<div class="tab-pane fade" id="product-reviews-content"
 							role="tabpanel" aria-labelledby="product-tab-reviews">
 							<div class="product-reviews-content">
-								<h3 class="reviews-title">
-									<!-- 								1 review for Men Black SportsShoes -->
-								</h3>
+								<h3 class="reviews-title"></h3>
 
 								<div class="comment-list">
 									<div class="comments">
@@ -441,7 +423,6 @@ if (list.getItemAddTime() != null) {
 									</div>
 								</div>
 
-
 								<div class="divider"></div>
 
 							</div>
@@ -478,10 +459,10 @@ if (list.getItemAddTime() != null) {
 								</ul>
 								<div class="social-icons">
 									<a href="#" class="social-icon social-facebook icon-facebook"
-										target="_blank" title="Facebook"></a> <a
-										href="#" class="social-icon social-twitter icon-twitter"
-										target="_blank" title="Twitter"></a> <a
-										href="#" class="social-icon social-instagram icon-instagram"
+										target="_blank" title="Facebook"></a> <a href="#"
+										class="social-icon social-twitter icon-twitter"
+										target="_blank" title="Twitter"></a> <a href="#"
+										class="social-icon social-instagram icon-instagram"
 										target="_blank" title="Instagram"></a>
 								</div>
 								<!-- End .social-icons -->
@@ -526,8 +507,8 @@ if (list.getItemAddTime() != null) {
 				<div class="footer-bottom">
 					<div class="container d-sm-flex align-items-center">
 						<div class="footer-left">
-							<span class="footer-copyright">© ASAP. 2023.
-								All Rights Reserved</span>
+							<span class="footer-copyright">© ASAP. 2023. All Rights
+								Reserved</span>
 						</div>
 					</div>
 				</div>
@@ -686,7 +667,7 @@ if (list.getItemAddTime() != null) {
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
 	<script>
-		//確認已加入收藏
+		//☆☆☆確認已加入收藏
 		var itemNo = $(".product-title").attr("data-itemno");
 
 		$
@@ -709,7 +690,7 @@ if (list.getItemAddTime() != null) {
 
 				})
 
-		//加入購物車
+		//☆☆☆加入購物車
 		$(".add-cart").on("click", function() {
 			var addCart = $(".product-title").attr("data-itemno");
 			var max = $(".product-qty").text();
@@ -744,7 +725,7 @@ if (list.getItemAddTime() != null) {
 			})
 		})
 
-		//加入收藏
+		//☆☆☆加入收藏
 		$("span.addwish")
 				.on(
 						"click",

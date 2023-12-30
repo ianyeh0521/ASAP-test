@@ -8,15 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ItemType")
-public class ItemTypeVO  {
+@Table(name = "ItemType")
+public class ItemTypeVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ItemTypeNo",updatable = false)
+	@Column(name = "ItemTypeNo", updatable = false)
 	private Integer itemTypeNo;
 
-	@Column(name="ItemTypeName")
+	@Column(name = "ItemTypeName")
 	private String itemTypeName;
 
 	public ItemTypeVO() {
@@ -28,15 +28,19 @@ public class ItemTypeVO  {
 		this.itemTypeNo = itemTypeNo;
 		this.itemTypeName = itemTypeName;
 	}
+
 	public Integer getItemTypeNo() {
 		return itemTypeNo;
 	}
+
 	public void setItemTypeNo(Integer itemTypeNo) {
 		this.itemTypeNo = itemTypeNo;
 	}
+
 	public String getItemTypeName() {
 		return itemTypeName;
 	}
+
 	public void setItemTypeName(String itemTypeName) {
 		this.itemTypeName = itemTypeName;
 	}
@@ -46,7 +50,4 @@ public class ItemTypeVO  {
 		return "ItemTypeVO [itemTypeNo=" + itemTypeNo + ", itemTypeName=" + itemTypeName + "]";
 	}
 
-
-
-	
 }

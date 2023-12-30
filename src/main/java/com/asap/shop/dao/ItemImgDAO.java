@@ -83,7 +83,6 @@ public class ItemImgDAO implements ItemImgDAO_interface {
 			return null;
 		}
 		
-//		return null;
 	}
 
 }

@@ -9,8 +9,8 @@ import com.asap.shop.entity.ItemStatVO;
 import com.asap.shop.entity.ItemTypeVO;
 
 public interface ItemInfoDAO_interface {
-	// 新增商品資訊
 
+	// 新增商品資訊
 	int insert(ItemInfoVO itemInfo);
 
 	int update(ItemInfoVO itemInfo);

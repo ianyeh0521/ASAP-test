@@ -355,7 +355,7 @@ System.out.println(cartlist);
 
 
 										<div class="label-group">
-											<!-- 												<span class="product-label label-sale">-50%</span> -->
+																							<span class="product-label label-sale">-50%</span>
 										</div>
 
 										<a href="ProductQuickView.html" class="btn-quickview"
@@ -366,8 +366,8 @@ System.out.println(cartlist);
 											<div class="category-list">
 												<span>${ItemInfoVO.itemName}</span>、<span>${ItemInfoVO.itemTypeVO.itemTypeName}</span>、<span>${ItemInfoVO.itemStatVO.itemStatText}</span>
 											</div>
-											<!-- 												<a href="AsapShopWish.jsp" class="btn-icon-wish" -->
-											<!-- 													title="加入收藏"><i class="icon-heart"></i></a> -->
+																							<a href="AsapShopWish.jsp" class="btn-icon-wish"
+																								title="加入收藏"><i class="icon-heart"></i></a>
 										</div>
 										<h3 class="product-title">
 											<a
@@ -686,8 +686,6 @@ System.out.println(cartlist);
 							</div>
 						</div>
 
-
-
 						<div class="widget widget-block">
 							<h3 class="widget-title">親愛的購物好友</h3>
 							<p>
@@ -919,7 +917,6 @@ System.out.println(cartlist);
 	<a id="scroll-top" href="#top" title="Top" role="button"><i
 		class="icon-angle-up"></i></a>
 
-
 	<!-- Plugins JS File -->
 	<script
 		src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
@@ -938,13 +935,9 @@ System.out.println(cartlist);
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
 
-
-
 	<script>
 	
-  
-  
-  //☆☆☆排序功能
+//☆☆☆排序功能
 $("select.orderby").on("change", function() {
     var orderby = $(".orderby").val();
     var form_data = {};
@@ -980,13 +973,13 @@ $("select.orderby").on("change", function() {
     )
   })
   
-  //☆☆☆搜尋功能
+//☆☆☆搜尋功能
   $(document).ready(function() {
 $("#itemsearch").on("click", function(event) {
     event.preventDefault(); // 阻止表單提交默認行為
     var searchQuery = $("#q").val(); // 獲取搜索關鍵詞
     $.ajax({
-        url: "ItemInfoServlet", // Servlet URL
+        url: "ItemInfoServlet", 
         type: "GET", // 使用GET方法
         data: { q: searchQuery, 
           action:"search"}, // 傳遞搜索參數
@@ -1023,7 +1016,7 @@ $(document).ready(function() {
         console.log("商品類型編號:", itemTypeNo);
     });
 
-    // 監聽尺寸的點擊事件，同理...
+    // 監聽尺寸的點擊事件
     $('#item_size_select div').on('click', function() {
         if($(this).hasClass('selected')) {
             $(this).removeClass('selected');
@@ -1036,7 +1029,7 @@ $(document).ready(function() {
         console.log("尺寸編號:", itemSizeNo);
     });
 
-    // 監聽商品狀態的點擊事件，同理...
+    // 監聽商品狀態的點擊事件
     $('#item_stat_select div').on('click', function() {
         if($(this).hasClass('selected')) {
             $(this).removeClass('selected');
@@ -1167,7 +1160,6 @@ function updateAllCounts(allCounts) {
         let countMap = allCounts[category];
 //     console.log('Processing category:' + category +', Counts:' + countMap);
 
-
         for (let id in countMap) {
             let count = countMap[id];
             console.log('Updating count for ' + category + ', ID: ' +id + ', Count: ' +count);
@@ -1267,7 +1259,6 @@ var state = {
 </a>
 </span>
 
-
 		<div class="label-group">
 		` + soldOutLabel + hotSaleLabel + `
 	
@@ -1287,7 +1278,6 @@ var state = {
                   商品庫存: <span class="itemstockqty">\${item.itemStockQty}</span><br>       
                   瀏覽人數: <span>\${item.itemView}</span><br>
                   上架時間: <span>\${formattedDate}</span>
-
 
               </h3>
             
@@ -1356,7 +1346,6 @@ var state = {
 	            margin: 2px;
 	            border-radius: 4px;
 	            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
 		        "
 		        >&#171; 第一頁</button>`;
 		}
@@ -1371,7 +1360,6 @@ var state = {
             margin: 2px;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
 	    ">\${page}</button>`;
 	  }
 	  if (state.page != pages) {
@@ -1384,7 +1372,6 @@ var state = {
             margin: 2px;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
 	    ">最末頁 &#187;</button>`;
 	  }
 	  $('.page').on('click', function() {

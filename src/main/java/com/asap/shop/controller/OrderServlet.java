@@ -47,15 +47,14 @@ public class OrderServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		
-		
+
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String forwardPath = "";
 		switch (action) {
 		case "ordercreate":
 			forwardPath = insert(req, res);
-			req.getRequestDispatcher(forwardPath).forward(req,res);
+			req.getRequestDispatcher(forwardPath).forward(req, res);
 			break;
 		case "deleteOrder":
 			deleteOrder(req, res);
@@ -71,7 +70,7 @@ public class OrderServlet extends HttpServlet {
 //			String mbrNo = req.getParameter("mbrNo"); 
 		Integer total = Integer.valueOf(req.getParameter("total"));
 		HttpSession session = req.getSession();
-		MemberVO membervo = (MemberVO)session.getAttribute("memberVo");
+		MemberVO membervo = (MemberVO) session.getAttribute("memberVo");
 		String mbrNo = membervo.getMbrNo();
 		String rcvrname = req.getParameter("rcvrname");
 		String rcvremail = req.getParameter("rcvremail");
@@ -96,15 +95,16 @@ public class OrderServlet extends HttpServlet {
 				if (maxpurchase < Integer.parseInt(product[2])) {
 					exceed = true;
 					ShoppingCartService shoppingCartSvc = new ShoppingCartService();
-					if(maxpurchase==0) {
-						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo(mbrNo,Integer.parseInt(product[0]));
+					if (maxpurchase == 0) {
+						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo(mbrNo,
+								Integer.parseInt(product[0]));
 						shoppingCartSvc.delete(modifyCart);
-					}else {
-						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo(mbrNo,Integer.parseInt(product[0]));
+					} else {
+						ShoppingCartVO modifyCart = shoppingCartSvc.findByMemberAndItemNo(mbrNo,
+								Integer.parseInt(product[0]));
 						modifyCart.setItemShopQty(maxpurchase);
 					}
-					
-					
+
 				}
 			}
 		}
@@ -134,7 +134,7 @@ public class OrderServlet extends HttpServlet {
 					orderDetail.setItemOrderPrice(Integer.parseInt(product[1]));
 					orderDetail.setItemOrderQty(Integer.parseInt(product[2]));
 					ItemInfoVO itemInfoVO2 = itemInfoSvc.findByItemNo(Integer.parseInt(product[0]));
-					
+
 					orderDetail.setOrderNo(orderno);
 					orderDetail.setMbrNo(itemInfoVO2.getMbrNo());
 					orderDetail.setDelyStat(false);
@@ -149,45 +149,23 @@ public class OrderServlet extends HttpServlet {
 					Integer newStockQty = Math.max(itemstockqty - sold, 0);
 					itemInfo.setItemStockQty(newStockQty);
 					itemInfoSvc.update(itemInfo);
-					
+
 				}
 			}
 			ItemInfoService_interface itemInfoSvc = new ItemInfoService();
-		    if (orderno != null) {
-		        ShoppingCartService shoppingCartService = new ShoppingCartService();
-		        List<ShoppingCartVO> shoppingCartItems = shoppingCartService.findByMember(mbrNo);
-		        for (ShoppingCartVO item : shoppingCartItems) {
-		            shoppingCartService.delete(item);
-		        }
-		    }			
+			if (orderno != null) {
+				ShoppingCartService shoppingCartService = new ShoppingCartService();
+				List<ShoppingCartVO> shoppingCartItems = shoppingCartService.findByMember(mbrNo);
+				for (ShoppingCartVO item : shoppingCartItems) {
+					shoppingCartService.delete(item);
+				}
+			}
 			return "/shop/PendingOrder.jsp";
-		}else {
+		} else {
 			req.setAttribute("msg", "超過可購買上限，已重設購物車數量");
 			return "/shop/AsapOrderCheck.jsp";
-			
+
 		}
-//		
-//				
-
-//		
-//		OrderVO entity = new OrderVO();
-//////			session.getAttribute("memberVo",mVo);
-//		entity.setMbrNo("M1");
-//		entity.setOrderPrice(total);
-//		entity.setOrderStat(0);
-//		entity.setRcvrName(rcvrname);
-//		entity.setRcvrEmail(rcvremail);
-//		entity.setRcvrPhone(rcvrphone);
-//		entity.setRcvrAddr(zip + rcvraddr + rcvraddrdetail);
-//		entity.setOrderCrtTime(new java.sql.Timestamp(System.currentTimeMillis()));
-//		entity.setOrderCancelTime(null);
-//
-//		Integer orderno= orderService.insert(entity);
-//
-//		
-//		
-////	    
-
 
 	}
 

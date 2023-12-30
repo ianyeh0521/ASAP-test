@@ -59,10 +59,12 @@ System.out.println(list);
 </script>
 
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/style.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/assets/vendor/fontawesome-free/css/all.min.css" />
 </head>
@@ -191,15 +193,17 @@ System.out.println(list);
 					<li class="disabled"><a href="#">付款頁面</a></li>
 				</ul>
 
-				<div class="row">
-					<div class="col-lg-7">
-						<ul class="checkout-steps">
-							<li>
-								<h2 class="step-title">帳單詳細資料</h2>
+				<form action="${pageContext.request.contextPath}/shop/OrderServlet"
+					id="checkout-form" method="post">
 
-								<form
-									action="${pageContext.request.contextPath}/shop/OrderServlet"
-									id="checkout-form" method="post">
+					<div class="row">
+						<div class="col-lg-7">
+							<ul class="checkout-steps">
+
+								<li>
+									<h2 class="step-title">帳單詳細資料</h2>
+
+
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
@@ -268,113 +272,112 @@ System.out.println(list);
 										<input type="tel" name="rcvrphone" class="form-control"
 											placeholder="可輸入市話或手機 ex.011234567、0912345678"
 											pattern="^[\d+]{7,10}$" required />
-									</div>
-
-									<input type="hidden" name="total" class="ordertotal" value="" />
-							</li>
-						</ul>
-					</div>
-					<!-- End .col-lg-8 -->
-
-
-
-					<div class="col-lg-5">
-						<div class="order-summary">
-							<h3>訂單詳情</h3>
-
-							<table class="table table-mini-cart">
-								<thead>
-
-									<tr>
-										<th>商品</th>
-										<th>商品編號</th>
-										<th>價格</th>
-										<th>數量</th>
-										<th>小計</th>
-									</tr>
-								</thead>
-								<tbody>
-
-									<c:forEach items="${list}" var="cartItem" varStatus="status">
-										<tr>
-
-											<td class="price-col"><a
-												href="AsapShopProduct.jsp?itemNo=${cartItem.itemInfoVO.itemNo}">${cartItem.itemInfoVO.itemName}</a>
-											</td>
-											<td class="price-col">${cartItem.itemInfoVO.itemNo}</td>
-											<td class="price-col"><span class="unit-price">${cartItem.itemInfoVO.itemPrice}</span>
-											</td>
-											<td class="price-col"><span class="quantity">${cartItem.itemShopQty}</span>
-											</td>
-											<td class="price-col"><span class="subtotal">$${cartItem.itemInfoVO.itemPrice
-													* cartItem.itemShopQty}</span></td>
-											<input type="hidden" name="product${status.index+1}"
-												value="${cartItem.itemInfoVO.itemNo},${cartItem.itemInfoVO.itemPrice},${cartItem.itemShopQty}" />
-										</tr>
-									</c:forEach>
-
-								</tbody>
-								</form>
-								<tfoot>
-
-									<tr class="cart-subtotal">
-										<td>
-											<h4>商品小計</h4>
-										</td>
-
-										<td class="price-col"><span class="total-subtotal"></span>
-										</td>
-									</tr>
-
-
-									<tr class="order-shipping">
-										<td class="text-left" colspan="2">
-											<h4 class="m-b-sm">付款方式</h4>
-
-
-
-											<div class="form-group form-group-custom-control mb-0">
-												<div class="custom-control custom-radio d-flex mb-0">
-													<input type="radio" name="radio" checked
-														class="custom-control-input" /> <label
-														class="custom-control-label">線上付款</label>
-												</div>
-												<!-- End .custom-checkbox -->
-											</div> <!-- End .form-group -->
-										</td>
-									</tr>
-
-									<tr class="order-total">
-										<td>
-											<h4>總計</h4>
-										</td>
-										<td><b class="total-price"><span></span></b></td>
-								</tfoot>
-							</table>
-
-
-							<div class="payment-methods">
-								<h4 class="">注意事項</h4>
-								<div class="info-box with-icon p-0">
-									<p>
-										親愛的顧客， <br /> <br /> 請確保下單前您的個人資料正確無誤： <br /> <br /> 聯絡資訊：
-										手機和電郵準確。 <br /> 寄送地址： 最新且正確。 <br /> 支付信息： 避免支付問題。 <br />
-										個人信息： 如姓名正確。 <br /> <br /> 謝謝您的合作！ <br /> <br /> ASAP 客服
-									</p>
-								</div>
-							</div>
-
-							<button type="submit" class="btn btn-dark btn-place-order"
-								name="action" value="ordercreate" form="checkout-form">前往待付款頁面</button>
+									</div> <input type="hidden" name="total" class="ordertotal" value="" />
+								</li>
+							</ul>
 						</div>
-						<!-- End .cart-summary -->
+						<!-- End .col-lg-8 -->
+
+
+
+						<div class="col-lg-5">
+							<div class="order-summary">
+								<h3>訂單詳情</h3>
+
+								<table class="table table-mini-cart">
+									<thead>
+
+										<tr>
+											<th>商品</th>
+											<th>商品編號</th>
+											<th>價格</th>
+											<th>數量</th>
+											<th>小計</th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<c:forEach items="${list}" var="cartItem" varStatus="status">
+											<tr>
+
+												<td class="price-col"><a
+													href="AsapShopProduct.jsp?itemNo=${cartItem.itemInfoVO.itemNo}">${cartItem.itemInfoVO.itemName}</a>
+												</td>
+												<td class="price-col">${cartItem.itemInfoVO.itemNo}</td>
+												<td class="price-col"><span class="unit-price">${cartItem.itemInfoVO.itemPrice}</span>
+												</td>
+												<td class="price-col"><span class="quantity">${cartItem.itemShopQty}</span>
+												</td>
+												<td class="price-col"><span class="subtotal">$${cartItem.itemInfoVO.itemPrice
+														* cartItem.itemShopQty}</span></td>
+												<input type="hidden" name="product${status.index+1}"
+													value="${cartItem.itemInfoVO.itemNo},${cartItem.itemInfoVO.itemPrice},${cartItem.itemShopQty}" />
+											</tr>
+										</c:forEach>
+
+									</tbody>
+
+									<tfoot>
+
+										<tr class="cart-subtotal">
+											<td>
+												<h4>商品小計</h4>
+											</td>
+
+											<td class="price-col"><span class="total-subtotal"></span>
+											</td>
+										</tr>
+
+
+										<tr class="order-shipping">
+											<td class="text-left" colspan="2">
+												<h4 class="m-b-sm">付款方式</h4>
+
+
+
+												<div class="form-group form-group-custom-control mb-0">
+													<div class="custom-control custom-radio d-flex mb-0">
+														<input type="radio" name="radio" checked
+															class="custom-control-input" /> <label
+															class="custom-control-label">線上付款</label>
+													</div>
+													<!-- End .custom-checkbox -->
+												</div> <!-- End .form-group -->
+											</td>
+										</tr>
+
+										<tr class="order-total">
+											<td>
+												<h4>總計</h4>
+											</td>
+											<td><b class="total-price"><span></span></b></td>
+									</tfoot>
+								</table>
+
+
+								<div class="payment-methods">
+									<h4 class="">注意事項</h4>
+									<div class="info-box with-icon p-0">
+										<p>
+											親愛的顧客: <br />在您下單前，請注意以下幾點以保障您的個人資訊安全 <br />  <br />
+											姓名：請填寫真實全名，確保送貨無誤。<br />電話：可聯繫的號碼，方便我們確認訂單或配送事宜。 <br /> 地址：提供準確的送貨地址，避免配送延誤。<br />
+											電子郵件：用於發送訂單確認和追蹤資訊，請確保郵箱正確。<br /> <br /> 謝謝您的合作！ <br /> <br /> ASAP 客服
+										</p>
+									</div>
+								</div>
+
+								<button type="submit" class="btn btn-dark btn-place-order"
+									name="action" value="ordercreate" form="checkout-form">前往待付款頁面</button>
+							</div>
+							<!-- End .cart-summary -->
+						</div>
+						<!-- End .col-lg-4 -->
+
+
+
 					</div>
-					<!-- End .col-lg-4 -->
-
-
-
-				</div>
-				<!-- End .row -->
+					<!-- End .row -->
+				</form>
 			</div>
 			<!-- End .container -->
 		</main>
@@ -400,10 +403,10 @@ System.out.println(list);
 								</ul>
 								<div class="social-icons">
 									<a href="#" class="social-icon social-facebook icon-facebook"
-										target="_blank" title="Facebook"></a> <a
-										href="#" class="social-icon social-twitter icon-twitter"
-										target="_blank" title="Twitter"></a> <a
-										href="#" class="social-icon social-instagram icon-instagram"
+										target="_blank" title="Facebook"></a> <a href="#"
+										class="social-icon social-twitter icon-twitter"
+										target="_blank" title="Twitter"></a> <a href="#"
+										class="social-icon social-instagram icon-instagram"
 										target="_blank" title="Instagram"></a>
 								</div>
 								<!-- End .social-icons -->
@@ -448,8 +451,8 @@ System.out.println(list);
 				<div class="footer-bottom">
 					<div class="container d-sm-flex align-items-center">
 						<div class="footer-left">
-							<span class="footer-copyright">© ASAP. 2023.
-								All Rights Reserved</span>
+							<span class="footer-copyright">© ASAP. 2023. All Rights
+								Reserved</span>
 						</div>
 					</div>
 				</div>
@@ -620,9 +623,12 @@ System.out.println(list);
 	</script>
 
 	<!-- Plugins JS File -->
-	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/plugins.min.js"></script>
 
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
