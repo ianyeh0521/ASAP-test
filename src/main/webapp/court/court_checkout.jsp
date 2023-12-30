@@ -215,7 +215,7 @@
 	                                        <div class="col-md-6">
 	                                             <div class="form-group">
 			                                        <label>連絡電話</label>
-			                                        <input type="tel" class="form-control text-center" value="${mbrVO.mbrPhone}" required readonly/>
+			                                        <input type="tel" class="form-control text-center" value="${mbrVO.mbrPhone}" required/>
 		                                    	</div>
 	                                        </div>
 	                                    </div>
