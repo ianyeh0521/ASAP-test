@@ -308,9 +308,13 @@ public class CourseServlet extends HttpServlet {
 			courseVO.setCourseStat(courseStat);
 			courseVO.setCourseImg(upFiles1);
 			courseVO.setCoachVO(coachVO);
+			
 
 			// 兩者不相同時，通知有預約的會員課程修改
-			if (!courseVO.equals(courseOriginal)) {
+			if (!courseVO.getCourseAddress().equals(courseOriginal.getCourseAddress())
+					|| !courseVO.getCourseText().equals(courseOriginal.getCourseText()) 
+					|| courseVO.getCourseImg()!=courseOriginal.getCourseImg()) {
+				
 				List<MbrCourseVO> orderList = mbrCourseSvc.findByCourseNo(courseNo);
 
 				if (orderList.size() != 0) {

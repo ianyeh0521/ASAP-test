@@ -119,7 +119,7 @@ public class MbrCourseServlet extends HttpServlet {
 				obj.setCustomField1(String.valueOf(courseNo)); // 訂單成立接收到courseNo
 				obj.setCustomField2(String.valueOf(mbrCousreOrderNo)); // 訂單成立接收到mbrCousreOrderNo
 				obj.setCustomField4(mbrNo); // 會員編號
-				obj.setReturnURL("https://0485-114-24-160-162.ngrok-free.app/ASAP/course/courseEcPayReturn.do"); // 使用時要記得換成外網
+				obj.setReturnURL("https://ecfb-118-232-113-169.ngrok-free.app/ASAP/course/courseEcPayReturn.do"); // 使用時要記得換成外網
 				obj.setOrderResultURL("http://localhost:8081/ASAP/course/course_paymentSuccess.jsp"); // 使用者付款完成跳轉頁面
 				obj.setNeedExtraPaidInfo("N");
 				String form = all.aioCheckOut(obj, null);
