@@ -210,7 +210,7 @@ public class GrpInfoServlet extends HttpServlet {
 	private String getByServiceFuzzySearch(HttpServletRequest req, HttpServletResponse res) {
 		String searchkey = req.getParameter("grpInfoKeyword");
 		List<GrpInfoVO> grpVOList;
-		String type = req.getParameter("type");// 0:全部 1:我的發起
+		String type = req.getParameter("type");// 0:全部 1:我的發起 2:我參加的
 
 		if (searchkey != null && !searchkey.isEmpty()) {
 			grpVOList = grpInfoService.getByServiceFuzzySearch(searchkey);
@@ -229,11 +229,31 @@ public class GrpInfoServlet extends HttpServlet {
 			}
 			grpVOList = grpVOTempList;
 		}
+		else if (type.equals("2")) {
+
+			List<GrpInfoVO> grpVOTempList = new ArrayList<>();
+			
+			for (GrpInfoVO vo : grpVOList) {
+				
+				List<GrpJoinInfoVO> grpJoInfoList = grpJoinInfoService.getgrpjoinserviceQuery("grpNo",
+						String.valueOf(vo.getGrpNo()));
+				
+				for(GrpJoinInfoVO JoinVo : grpJoInfoList) {
+					if (LoginActNo.equals(JoinVo.getPartiMbrNo()) && JoinVo.getGrpJoinStat()) {
+						grpVOTempList.add(vo);
+					}
+				}				
+			}
+			grpVOList = grpVOTempList;
+		}
 
 		req.setAttribute("grpVOList", grpVOList);
 		req.setAttribute("Skip", true);
 		if (type.equals("1")) {
 			return "/group/mycreateGroup.jsp";
+		}
+		else if (type.equals("2")) {
+			return "/group/myJoinGroup.jsp";
 		}
 		return "/group/AllGroup.jsp";
 	}
@@ -336,11 +356,11 @@ public class GrpInfoServlet extends HttpServlet {
 		String mbrActivNoStr = "";
 		String NewsSubjmsg = "";
 		String NewsTextmsg = "";
-		String groupOrdNoStr = "group" + grpNo;
+		String groupOrdNoStr = "";
 		if(type.equals("1")) {
 			grpInfo.setGrpNo(grpNo);
 			grpInfoSvc.update(grpInfo);
-
+			groupOrdNoStr = "group" + grpNo;
 			//原始資料處理
 			//編輯揪團->移除主揪原始資料的Redis
 			jedis.select(2);
@@ -385,7 +405,7 @@ public class GrpInfoServlet extends HttpServlet {
 					//活動結束
 					String endDateTime = grpDate + " " + endTime;
 					
-					ActivVO.setMbrNo(LoginActNo);
+					ActivVO.setMbrNo(InfoVO.getPartiMbrNo());//找到問題了
 					ActivVO.setActivSubj("發起揪團-" + grpInfo.getGrpName());
 					ActivVO.setActivStartTime(java.sql.Timestamp.valueOf(startDateTime));
 					ActivVO.setActivEndTime(java.sql.Timestamp.valueOf(endDateTime));
@@ -396,8 +416,8 @@ public class GrpInfoServlet extends HttpServlet {
 					// 會員活動編號存入 Redis
 					jedis = pool.getResource();
 					jedis.select(2);
-					jedis.del(groupOrdNoStr);
-					jedis.append(groupOrdNoStr, mbrActivNoStr);
+					jedis.del("groupJoin" + InfoVO.getGrpJoinInfoNo());
+					jedis.set("groupJoin" + InfoVO.getGrpJoinInfoNo(), mbrActivNoStr);
 					jedis.close();
 				}
 			}		
@@ -408,7 +428,8 @@ public class GrpInfoServlet extends HttpServlet {
 		{
 
 			grpInfoSvc.insert(grpInfo);
-			
+			grpNo = grpInfo.getGrpNo();
+			groupOrdNoStr = "group" + grpNo;
 			// datetime 格式化為需要的形式
 			String grpDate = grpInfo.getGrpDate().toString().substring(0, 10);
 			String startTime = grpInfo.getGrpStartTime().toString();
@@ -423,7 +444,6 @@ public class GrpInfoServlet extends HttpServlet {
 			MemberVoDetail = memberService.findByMbrNo(strOrgMbrNo);
 			if (MemberVoDetail != null) {
 				
-
 				String grpmailtitle = "ASAP揪團發起成功通知 - [" + grpInfo.getGrpName() + "]";
 				String content = "親愛的會員您好，您的揪團 " + startDateTime + "~" + endDateTime
 							+ "「" + grpInfo.getGrpName()+ "」已發起成功。如有任何問題或需要進一步協助，請隨時聯繫我們的客服部門。";
@@ -473,7 +493,7 @@ public class GrpInfoServlet extends HttpServlet {
 		
 		jedis = pool.getResource();
 		jedis.select(2);
-		jedis.append(groupOrdNoStr, mbrActivNoStr);
+		jedis.set(groupOrdNoStr, mbrActivNoStr);
 		jedis.close();
 //		
 		
