@@ -113,7 +113,7 @@
 	<session-config>
 		<session-timeout>30</session-timeout>
 		<cookie-config>
-			<secure>true</secure>
+			<secure>false</secure>
 		</cookie-config>
 	</session-config>
 </web-app>
