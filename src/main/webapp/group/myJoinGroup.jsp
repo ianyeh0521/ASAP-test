@@ -249,7 +249,7 @@
 						<form id="search_formid" class="search_c" action="<%=request.getContextPath()%>/Grpinfo.do" method="post">
 						<input type="text" name="grpInfoKeyword" id="search" class="search" placeholder="搜尋" value="${param.grpInfoKeyword}" > 
 						<input type="hidden" name="action" value="FuzzySearch">
-						<input type="hidden" name="type" value="1">
+						<input type="hidden" name="type" value="2">
 						<input type="submit" id="searchBtn" value="搜尋" style="font-size:10px;border:white;height:29.6px;width:36px;">	
 						</form>
 					</div>

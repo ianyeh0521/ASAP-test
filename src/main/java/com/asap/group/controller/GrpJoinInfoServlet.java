@@ -159,7 +159,7 @@ public class GrpJoinInfoServlet extends HttpServlet {
 
 		// 寫入會員消息->報名揪團成功寫入會員消息
 		MbrNewsVO vo = new MbrNewsVO();
-		vo.setMbrNo(LoginActNo);
+		vo.setMbrNo(grpJoinInfo.getPartiMbrNo());
 		vo.setNewsSubj("報名成功通知");
 		vo.setNewsText("您已成功報名揪團(揪團名稱:" + grpVODetail.getGrpName() + ")");
 		vo.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
@@ -169,7 +169,7 @@ public class GrpJoinInfoServlet extends HttpServlet {
 		// 寫入會員活動->報名揪團成功寫入會員活動
 		MbrActivVO JoinActivVO = new MbrActivVO();
 
-		JoinActivVO.setMbrNo(LoginActNo);
+		JoinActivVO.setMbrNo(grpJoinInfo.getPartiMbrNo());
 		JoinActivVO.setActivSubj("報名揪團成功-" + grpVODetail.getGrpName());
 		JoinActivVO.setActivStartTime(java.sql.Timestamp.valueOf(startDateTime));
 		JoinActivVO.setActivEndTime(java.sql.Timestamp.valueOf(endDateTime));
@@ -262,7 +262,7 @@ public class GrpJoinInfoServlet extends HttpServlet {
 
 		// 寫入會員消息->退出揪團成功寫入會員消息
 		MbrNewsVO vo = new MbrNewsVO();
-		vo.setMbrNo(LoginActNo);
+		vo.setMbrNo(grpJoinInfo.getPartiMbrNo());
 		vo.setNewsSubj("退出成功通知");
 		vo.setNewsText("您已成功退出揪團(揪團名稱:" + grpVODetail.getGrpName() + ")");
 		vo.setNewsTime(new java.sql.Timestamp(System.currentTimeMillis()));
