@@ -107,10 +107,10 @@
 <%-- 					</c:if> --%>
                     <c:if test="${not empty msg}">
 							<p style="color: green; font-size: 12px;">${msg}</p>
-							<script>
-							document.getElementById("genVerifyCode").disabled = true;
-							document.getElementById("btn_verify").disabled = true;
-							</script>
+<!-- 							<script> -->
+<!--  				       		document.getElementById("genVerifyCode").disabled = true; -->
+<!--  							document.getElementById("btn_verify").disabled = true; -->
+<!-- 							</script> -->
 					</c:if>
 					<c:if test="${not empty errorMsg}">
 							<p style="color: red; font-size: 12px;">${errorMsg}</p>
@@ -270,6 +270,13 @@
 
 	<!-- Main JS File -->
 	<script src="${pageContext.request.contextPath}/assets/js/main.min.js"></script>
+
+    <c:if test="${not empty msg}">
+		<script>
+		document.getElementById("genVerifyCode").disabled = true;
+		document.getElementById("btn_verify").disabled = true;
+		</script>
+	</c:if>
 
 	<script>
 		
