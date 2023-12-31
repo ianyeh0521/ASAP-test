@@ -151,7 +151,7 @@ public class CourtOrderServlet extends HttpServlet {
 		AioCheckOutALL obj = new AioCheckOutALL();
 		int currentYear = getCurrentYear();
 		int merchantTradeNoSet = 10000 + courtOrdNo;
-		obj.setMerchantTradeNo("CTS" + currentYear + merchantTradeNoSet); // 注意之後上線後訂單編號重複問題
+		obj.setMerchantTradeNo("CTSC" + currentYear + merchantTradeNoSet); // 注意之後上線後訂單編號重複問題
 		obj.setMerchantTradeDate(formattedTradeDate);
 		obj.setTradeDesc(courtOrderVO.getCourtVO().getCourtName());
 		obj.setItemName(courtOrderVO.getCourtVO().getCourtName() + "  " + courtOrderVO.getCourtOrdDate() + "  "
@@ -160,8 +160,8 @@ public class CourtOrderServlet extends HttpServlet {
 		obj.setCustomField1(String.valueOf(courtOrderVO.getCourtVO().getCourtNo())); // 訂單成立接收到CourtNo
 		obj.setCustomField2(String.valueOf(courtOrdNo)); // 預約單編號（資料庫的）
 		obj.setCustomField4(mbrNo); // 會員編號
-		obj.setReturnURL("https://0485-114-24-160-162.ngrok-free.app/ASAP/court/ecPayReturn.do"); // 使用時要記得換成外網
-		obj.setOrderResultURL("http://localhost:8081/ASAP/court/court_paymentSuccess.jsp"); // 使用者付款完成跳轉頁面
+		obj.setReturnURL(req.getContextPath()+"/court/ecPayReturn.do"); // 使用時要記得換成外網
+		obj.setOrderResultURL("http://asportsap.ddns.net/ASAP/court/court_paymentSuccess.jsp"); // 使用者付款完成跳轉頁面
 		obj.setNeedExtraPaidInfo("N");
 		String form = all.aioCheckOut(obj, null);
 		System.out.println(form);
