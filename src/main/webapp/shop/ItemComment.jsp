@@ -230,7 +230,7 @@
 									<li><a href="${pageContext.request.contextPath}/member/MemberChat.jsp">客服</a></li>
 								</ul>
 							</li>
-							<li><a><form action="${pageContext.request.contextPath}/MemberController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
+							<li><a><form action="${pageContext.request.contextPath}/MemberController" method="post" style="margin: 0px;"><button type="submit" style="border:0px; background-color:white; width:auto;height:auto;margin:0px;">登出</button><input type="hidden" name="action" value="logout"/></form></a></li>
 						</ul>
 					</nav>
 				</div>
