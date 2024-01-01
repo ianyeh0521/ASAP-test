@@ -117,7 +117,11 @@ public class GrpInfoServlet extends HttpServlet {
 					if (req.getParameter("type").equals("1")) {
 						// 先把資料設定到欄位上
 						creategrpupdate(req, res);
-						// 傳送給creategroup.jsp 判斷某些欄位要disabled
+					}
+					else
+					{
+						//發起揪團的話，把原本暫存的資料清空
+						grpTempVo = new GrpInfoVO();
 					}
 				}			
 				forwardPath = "/group/creategroup.jsp";
@@ -297,12 +301,10 @@ public class GrpInfoServlet extends HttpServlet {
 		MemberVO MemberVoDetail = new MemberVO();
 		String strOrgMbrNo = grpVODetail.getOrgMbrNo().toString();
 		MemberVoDetail = memberService.findByMbrNo(strOrgMbrNo);
-		//System.out.println("=======TEST/MemberVoDetail======="+MemberVoDetail);
 		req.setAttribute("grpVODetail", grpVODetail);
 		req.setAttribute("MemberVoDetail", MemberVoDetail);
 		// 查詢詳細資料的時候把 GrpInfoVO 存起來
 		// 按編輯的時候 把資料傳到發起揪團的畫面
-		System.out.println("----TEST----grpVODetail:"+grpVODetail);
 		grpTempVo = grpVODetail;
 		
 		//查詢參與人人數
@@ -322,10 +324,10 @@ public class GrpInfoServlet extends HttpServlet {
 				req.setAttribute("grpJoInfoList", grpJoInfoList);
 
 			} catch (NumberFormatException e) {
-				System.out.println("-------Invalid GrpNo format-------");
+				System.out.println("-------NumberFormatException Invalid GrpNo format-------" + e);
 			}
 		} else {
-			System.out.println("-------IGrpNo parameter is missing-------");
+			System.out.println("-------GrpNo parameter is missing-------");
 		}
 		return "/group/grpinfoOrgMbr.jsp";
 	}
@@ -346,7 +348,7 @@ public class GrpInfoServlet extends HttpServlet {
 				grpNo = Integer.valueOf(strgrpNo);
 			}
 		}
-		grpInfo = setGrpInfomethod(req);
+		grpInfo = setGrpInfomethod(req, grpNo);
 		GrpInfoService grpInfoSvc = new GrpInfoService_interface();
 		
 		Integer mbrActivNo = 0;
@@ -365,14 +367,9 @@ public class GrpInfoServlet extends HttpServlet {
 			//編輯揪團->移除主揪原始資料的Redis
 			jedis.select(2);
 			
-			System.out.println("------------group--------------: group" + grpTempVo.getGrpNo());
 			mbrActivNo = Integer.valueOf(jedis.get("group" + grpTempVo.getGrpNo()));
-			System.out.println("------------findByPK--------------:"+mbrActivService_interface.findByPK(mbrActivNo));
 			mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
-			jedis.del(groupOrdNoStr);
-			System.out.println("------------mbrActivNo--------------:"+mbrActivNo);
-
-			
+			jedis.del(groupOrdNoStr);			
 			List<GrpJoinInfoVO> grpJoInfoList = grpJoinInfoService.getgrpjoinserviceQuery("grpNo",
 					String.valueOf(grpNo));
 	
@@ -453,7 +450,6 @@ public class GrpInfoServlet extends HttpServlet {
 				// 寄出信件
 				JavaMail mail = new JavaMail(MemberVoDetail.getMbrEmail(), grpmailtitle, mailFormat.getMessageTextAndImg(), dataSource);
 				String result = mail.sendMail();
-				System.out.println("SendMail : " + result);
 			}
 			NewsSubjmsg = "發起揪團成功通知";
 			NewsTextmsg = "您的揪團(揪團名稱:" + grpInfo.getGrpName() +"已發起成功)";
@@ -488,14 +484,12 @@ public class GrpInfoServlet extends HttpServlet {
 		ActivVO.setActivEndTime(java.sql.Timestamp.valueOf(endDateTime));
 		
 		mbrActivNo = mbrActivService_interface.add(ActivVO);
-		System.out.println("------------發起揪團 mbrActivNo--------------:"+mbrActivNo);
 		mbrActivNoStr = String.valueOf(mbrActivNo);
 		
 		jedis = pool.getResource();
 		jedis.select(2);
 		jedis.set(groupOrdNoStr, mbrActivNoStr);
-		jedis.close();
-//		
+		jedis.close();	
 		
 		return "/group/AllGroup.jsp";
 	}
@@ -566,7 +560,7 @@ public class GrpInfoServlet extends HttpServlet {
 				req.setAttribute("grpJoInfoList", grpJoInfoList);
 				
 			} catch (NumberFormatException e) {
-				System.out.println("-------Invalid GrpNo format-------");
+				System.out.println("-------NumberFormatException Invalid GrpNo format-------"+ e);
 			}
 		}
 
@@ -592,8 +586,7 @@ public class GrpInfoServlet extends HttpServlet {
 	}
 
 	// 設計讓insert跟update去呼叫setGrpInfomethod方法
-	private GrpInfoVO setGrpInfomethod(HttpServletRequest req) throws IOException, ServletException {
-		System.out.println("setGrpInfomethod:");
+	private GrpInfoVO setGrpInfomethod(HttpServletRequest req, Integer grpNo) throws IOException, ServletException {
 		GrpInfoVO grpInfo = new GrpInfoVO();
 		String strError = "";
 
@@ -603,12 +596,10 @@ public class GrpInfoServlet extends HttpServlet {
 
 		// 活動名稱OK
 		// grpInfo.setGrpName("活動羽球");
-		System.out.println("GrpName:" + req.getParameter("GrpName"));
 		grpInfo.setGrpName(req.getParameter("GrpName"));
 
 		// 運動種類
 		// sportTypeNameParam = "8";
-		System.out.println("SportTypeName:" + req.getParameter("SportTypeName"));
 		String sportTypeNameParam = req.getParameter("SportTypeName");
 		if (sportTypeNameParam != null && !sportTypeNameParam.isEmpty()) {
 			Integer SportTypeName = Integer.valueOf(sportTypeNameParam);
@@ -730,9 +721,7 @@ public class GrpInfoServlet extends HttpServlet {
 
 		// LocalDateTime 格式化為需要的形式
 		LocalDateTime startDateTime = LocalDateTime.parse(strgrpSignStrDate + "T" + strgrpSignStrTime);
-//		System.out.println("====TEST=startDateTime====="+startDateTime);
 		LocalDateTime endDateTime = LocalDateTime.parse(strgrpSignEndDate + "T" + strgrpSignEndTime);
-//		System.out.println("====TEST=endDateTime====="+endDateTime);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formattedStartDateTime = startDateTime.format(formatter);
 		String formattedEndDateTime = endDateTime.format(formatter);
@@ -772,16 +761,18 @@ public class GrpInfoServlet extends HttpServlet {
 				GrpImg = new byte[in.available()];
 				in.read(GrpImg);
 				in.close();
-			} else {
-				GrpInfoService_interface grpInfoSvc = new GrpInfoService_interface();
-				GrpImg = grpInfoSvc.getGrpInfoVOBygrpNo(m_GrpNo).getGrpImg();
+				
+			} 
+			else {
+				if (grpNo != 0) {
+					GrpInfoService_interface grpInfoSvc = new GrpInfoService_interface();
+					GrpImg = grpInfoSvc.getGrpInfoVOBygrpNo(grpNo).getGrpImg();
+					}
 			}
 		} catch (Exception e) {
-			System.out.println("壞掉");
+			System.out.println("Exception 圖片讀取異常:" +  e);
 		}
-		System.out.println(req.getPart("GrpImg"));
 		grpInfo.setGrpImg(GrpImg);
-		System.out.println("處理" + req.getPart("GrpImg"));
 		// 活動狀態
 		grpInfo.setGrpStat(0);
 
