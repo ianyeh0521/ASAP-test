@@ -402,7 +402,7 @@ public class GrpInfoServlet extends HttpServlet {
 					//活動結束
 					String endDateTime = grpDate + " " + endTime;
 					
-					ActivVO.setMbrNo(InfoVO.getPartiMbrNo());//找到問題了
+					ActivVO.setMbrNo(InfoVO.getPartiMbrNo());
 					ActivVO.setActivSubj("發起揪團-" + grpInfo.getGrpName());
 					ActivVO.setActivStartTime(java.sql.Timestamp.valueOf(startDateTime));
 					ActivVO.setActivEndTime(java.sql.Timestamp.valueOf(endDateTime));
@@ -419,7 +419,7 @@ public class GrpInfoServlet extends HttpServlet {
 				}
 			}		
 			NewsSubjmsg = "編輯揪團成功通知";
-			NewsTextmsg = "您的揪團(揪團名稱:" + grpInfo.getGrpName() +"已編輯)";
+			NewsTextmsg = "您的揪團(揪團名稱:" + grpInfo.getGrpName() +")已編輯";
 		}
 		else 
 		{
@@ -452,7 +452,7 @@ public class GrpInfoServlet extends HttpServlet {
 				String result = mail.sendMail();
 			}
 			NewsSubjmsg = "發起揪團成功通知";
-			NewsTextmsg = "您的揪團(揪團名稱:" + grpInfo.getGrpName() +"已發起成功)";
+			NewsTextmsg = "您的揪團(揪團名稱:" + grpInfo.getGrpName() +")已發起成功";
 		}
 		
 		
