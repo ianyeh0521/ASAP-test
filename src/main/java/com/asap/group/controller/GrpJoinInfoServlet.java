@@ -141,7 +141,7 @@ public class GrpJoinInfoServlet extends HttpServlet {
 				req.setAttribute("grpJoInfoList", grpJoInfoList);
 
 			} catch (NumberFormatException e) {
-				System.out.println("-------Invalid GrpNo format-------");
+				System.out.println("-------NumberFormatException Invalid GrpNo format-------" + e);
 			}
 		} else {
 			System.out.println("-------IGrpNo parameter is missing-------");
@@ -151,11 +151,9 @@ public class GrpJoinInfoServlet extends HttpServlet {
 		String grpDate = grpVODetail.getGrpDate().toString().substring(0, 10);
 		String startTime = grpVODetail.getGrpStartTime().toString();
 		String endTime = grpVODetail.getGrpEndTime().toString();
-		System.out.println(grpDate);
-		System.out.println(startTime);
+
 		String startDateTime = grpDate + " " + startTime;
 		String endDateTime = grpDate + " " + endTime;
-		System.out.println(startDateTime);
 
 		// 寫入會員消息->報名揪團成功寫入會員消息
 		MbrNewsVO vo = new MbrNewsVO();
@@ -198,8 +196,6 @@ public class GrpJoinInfoServlet extends HttpServlet {
 		JavaMail mail = new JavaMail(memberVo.getMbrEmail(), grpmailtitle, mailFormat.getMessageTextAndImg(),
 				dataSource);
 		String result = mail.sendMail();
-		System.out.println("SendMail : " + result);
-
 		return "/group/grpinfoOrgMbr.jsp";
 	}
 
@@ -234,10 +230,6 @@ public class GrpJoinInfoServlet extends HttpServlet {
 		MemberVoDetail = memberService.findByMbrNo(strOrgMbrNo);
 		req.setAttribute("grpVODetail", grpVODetail);
 		req.setAttribute("MemberVoDetail", MemberVoDetail);
-		// 查詢詳細資料的時候把 GrpInfoVO 存起來
-
-		System.out.println("=======我的grpVODetail去哪了?======" + grpVODetail);
-
 		// 查詢參與人人數
 		if (joininfogrpNo != 0) {
 			try {
@@ -254,7 +246,7 @@ public class GrpJoinInfoServlet extends HttpServlet {
 				req.setAttribute("grpJoInfoList", grpJoInfoList);
 
 			} catch (NumberFormatException e) {
-				System.out.println("-------Invalid GrpNo format-------");
+				System.out.println("-------NumberFormatExceptionInvalid GrpNo format-------" + e);
 			}
 		} else {
 			System.out.println("-------IGrpNo parameter is missing-------");
@@ -272,7 +264,6 @@ public class GrpJoinInfoServlet extends HttpServlet {
 		// 退出揪團Redis
 		Jedis jedis = pool.getResource();
 		jedis.select(2);
-		System.out.println("join infono:" + grpJoinInfo.getGrpJoinInfoNo());
 		Integer mbrActivNo = Integer.valueOf(jedis.get("groupJoin" + grpJoinInfo.getGrpJoinInfoNo()));
 		mbrActivService_interface.delete(mbrActivService_interface.findByPK(mbrActivNo));
 		jedis.del("groupJoin" + grpJoinInfo.getGrpJoinInfoNo());

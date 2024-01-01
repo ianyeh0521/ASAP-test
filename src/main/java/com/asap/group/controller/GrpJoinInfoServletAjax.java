@@ -108,7 +108,7 @@ public class GrpJoinInfoServletAjax extends HttpServlet {
 				}
 				
 			} catch (NumberFormatException e) {
-				System.out.println("-------Invalid GrpNo format-------");
+				System.out.println("-------NumberFormatException Invalid GrpNo format-------" + e);
 			}
 		}		
 	}
