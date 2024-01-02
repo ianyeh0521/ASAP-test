@@ -10,16 +10,16 @@
 <% 
    MemberVO vo = (MemberVO)session.getAttribute("memberVo");
 
-   double score = (double)vo.getCmtReScore();
-   double num = (double)vo.getCmtReNum();
-   if(num != 0){ 
-	   double avgScore =Math.round(score/num * 100.0) / 100.0;
+   Double score = new Double(vo.getCmtReScore());
+   Integer num = vo.getCmtReNum();
+   if(!num.equals(0)){ 
+	   Double avgScore = Math.round(score * 100.0 / num) / 100.0 ;
 	   System.out.println("AAAavgscore is:"+avgScore);
 	   pageContext.setAttribute("avgScore", avgScore);
     }else{
     	int avgScore = 0;
-    	pageContext.setAttribute("avgScore", avgScore);
     	System.out.println("BBBavgscore is:"+avgScore);
+    	pageContext.setAttribute("avgScore", avgScore);
     }
    
 %>
