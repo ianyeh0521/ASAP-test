@@ -14,12 +14,12 @@
    double num = (double)vo.getCmtReNum();
    if(num != 0){ 
 	   double avgScore =Math.round(score/num * 100.0) / 100.0;
-	   System.out.println("avgscore is:"+avgScore);
+	   System.out.println("AAAavgscore is:"+avgScore);
 	   pageContext.setAttribute("avgScore", avgScore);
     }else{
     	int avgScore = 0;
     	pageContext.setAttribute("avgScore", avgScore);
-    	System.out.println("avgscore is:"+avgScore);
+    	System.out.println("BBBavgscore is:"+avgScore);
     }
    
 %>
