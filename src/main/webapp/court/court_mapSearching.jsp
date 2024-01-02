@@ -479,10 +479,12 @@ html, body {
 		              "): " +
 		              error.message
 		          );
+		          initMap();
 		        },
 		      );
 		    } else {
 		      alert("瀏覽器不支援 Geolocation 功能");
+		      initMap();
 		    }
 		  } else {
 		    console.log("Latitude and Longitude already present:", storedValue.latitude, storedValue.longitude);
@@ -503,8 +505,8 @@ html, body {
           // Map options
           map = new Map(document.getElementById("map"), {
             center: { 
-              lat: parseFloat(JSON.parse(sessionStorage.getItem("form_data")).latitude), 
-              lng: parseFloat(JSON.parse(sessionStorage.getItem("form_data")).longitude)},
+              lat: 25.05630, 
+              lng: 121.54343},
             zoom: 16,
             styles: [{
             	featureType: 'poi',
