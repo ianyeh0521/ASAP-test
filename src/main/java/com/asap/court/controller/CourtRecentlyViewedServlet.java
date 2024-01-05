@@ -56,7 +56,7 @@ public class CourtRecentlyViewedServlet extends HttpServlet {
 
 		// Redis 連線
 		Jedis jedis = pool.getResource();
-		jedis.select(2);
+		jedis.select(7);
 
 		if ("write".equals(action)) {
 			Integer courtNo = Integer.valueOf(req.getParameter("courtNo"));
