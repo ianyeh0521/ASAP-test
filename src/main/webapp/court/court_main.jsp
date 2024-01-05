@@ -615,7 +615,7 @@
 <!-- 	<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a> -->
 
 	<!-- import Vue 3.0 -->
-	<script src="https://unpkg.com/vue@next"></script>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
 	<!-- CDN import Axios -->
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
